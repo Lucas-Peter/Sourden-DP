@@ -477,6 +477,37 @@ if (!existsSync(WRANGLER)) {
   }
 }
 
+/* ------------------------------------------------------ GitHub Pages guard */
+
+/**
+ * `.nojekyll` is one line of insurance against a confusing failure.
+ *
+ * The repo is hosted on Cloudflare; GitHub is only the source of truth. But if
+ * GitHub Pages is ever switched on for this repository, GitHub runs Jekyll over
+ * whatever branch it is pointed at. Astro page files open with `---`, which
+ * Jekyll reads as YAML front matter, so it aborts the build with
+ *
+ *   YAML Exception reading …/BaseLayout.astro: mapping values are not allowed
+ *   Invalid YAML front matter in …/src/pages/services/index.astro
+ *
+ * — a hosting setting masquerading as a code bug, and one that local `verify`
+ * could not see before this check existed. An empty `.nojekyll` at the repo
+ * root makes Jekyll skip the tree entirely.
+ *
+ * A warning, not an error: the real fix is to keep Pages OFF, and its absence
+ * does not affect the Cloudflare deploy at all.
+ */
+const noJekyllPresent = existsSync(join(ROOT, '.nojekyll'));
+
+if (!noJekyllPresent) {
+  warn(
+    '.nojekyll',
+    'missing — if GitHub Pages is ever enabled on this repo, GitHub will run Jekyll over the ' +
+      '.astro sources and fail with "Invalid YAML front matter". Keep Pages off and add the empty ' +
+      'file back. See README → 部署 → 排错：推送后 GitHub 报 "Build with Jekyll" 失败'
+  );
+}
+
 /* ------------------------------------------------------------------ summary */
 
 notes.push(`HTML pages:        ${htmlFiles.length}`);
@@ -488,6 +519,9 @@ notes.push(`css breakpoints:   ${classicBreakpoints} classic min/max-width · ra
 notes.push(`indexable pages:   ${sitemapPaths.length}`);
 notes.push(`sitemap entries:   ${sitemapPaths.map((p) => p).join(', ')}`);
 notes.push(`cloudflare:        worker "${deployName}" · html_handling ${deployHandler}`);
+notes.push(
+  `github pages:      ${noJekyllPresent ? '.nojekyll present → Jekyll disabled (Cloudflare hosts the site)' : 'guard missing'}`
+);
 
 console.log('\nSOURDEN — build audit\n');
 console.log(notes.join('\n'));
