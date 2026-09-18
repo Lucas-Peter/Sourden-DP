@@ -1,0 +1,16 @@
+---
+/**
+ * ScaleBlock — spec §14 "SOURCE AT YOUR SCALE."
+ *
+ * A distinct editorial block carrying the MOQ message. Read the wording rule at
+ * the top of `src/data/audiences.js` before editing the copy: it may never
+ * claim "no MOQ", and it may never imply every factory accepts small orders.
+ * The only truthful statement is that Sourden itself imposes no fixed MOQ.
+ */
+import { scaleBlock } from '../data/audiences.js';
+---
+
+<div class="scale-block">
+  <p class="eyebrow">{scaleBlock.eyebrow}</p>
+  <p class="scale-block__copy">{scaleBlock.copy}</p>
+</div>

@@ -1,0 +1,38 @@
+---
+/**
+ * InsightsFeature — spec §18, the single featured article.
+ *
+ * Like the featured case study, the whole block is one link and the trailing
+ * "Read Article" is rendered with `as="span"`.
+ */
+import Media from './Media.astro';
+import ArrowLink from './ArrowLink.astro';
+
+interface Article {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  imageKey: string | null;
+  published: boolean;
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+---
+
+<article class="article-feature">
+  <a class="article-feature__link" href={`/insights/${article.slug}`}>
+    {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom />}
+
+    <div class="article-feature__body">
+      <span class="article__category">{article.category}</span>
+      <h3 class="article-feature__title">{article.title}</h3>
+      <p class="article-feature__excerpt">{article.excerpt}</p>
+      <ArrowLink as="span" label="Read Article" caps />
+    </div>
+  </a>
+</article>

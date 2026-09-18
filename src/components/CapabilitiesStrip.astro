@@ -1,0 +1,23 @@
+---
+/**
+ * CapabilitiesStrip — spec §8
+ * Dark, ~96px, five items, thin vertical dividers, brass numbers, NO icons.
+ * Mobile stacks vertically rather than compressing five items into one row.
+ */
+import { capabilities } from '../data/process.js';
+---
+
+<section class="capabilities section--dark" aria-label="Sourcing capabilities">
+  <div class="container">
+    <ol class="capabilities__list" data-reveal-group>
+      {
+        capabilities.map((item) => (
+          <li class="capabilities__item">
+            <span class="num">{item.number}</span>
+            <span class="capabilities__label">{item.label}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

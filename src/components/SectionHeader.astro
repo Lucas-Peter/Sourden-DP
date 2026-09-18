@@ -1,0 +1,68 @@
+---
+/**
+ * SectionHeader — eyebrow + heading (+ optional lead)
+ *
+ * `title` may contain "\n" to force an editorial line break, e.g.
+ *   title="Practical knowledge\nfor sourcing from China."
+ * The break is intentional and must not be collapsed (spec §7, §18).
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** One lead paragraph, or several. */
+  lead?: string | string[];
+  /** Uppercase statement treatment (spec §11, §13, §16). */
+  caps?: boolean;
+  wide?: boolean;
+  as?: 'h1' | 'h2' | 'h3';
+  id?: string;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  lead,
+  caps = false,
+  wide = false,
+  as = 'h2',
+  id,
+  class: className = '',
+} = Astro.props;
+
+const lines = title.split('\n');
+const leadParagraphs = lead ? (Array.isArray(lead) ? lead : [lead]) : [];
+
+const classes = ['section-head', wide && 'section-head--wide', className]
+  .filter(Boolean)
+  .join(' ');
+
+const titleClasses = ['section-head__title', caps && 'heading--caps']
+  .filter(Boolean)
+  .join(' ');
+
+const Tag = as;
+---
+
+<div class={classes}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+
+  <Tag class={titleClasses} id={id}>
+    {lines.map((line, index) => (
+      <>
+        {line}
+        {index < lines.length - 1 && <br />}
+      </>
+    ))}
+  </Tag>
+
+  {
+    leadParagraphs.length > 0 && (
+      <div class="section-head__lead-group">
+        {leadParagraphs.map((paragraph) => (
+          <p class="section-head__lead">{paragraph}</p>
+        ))}
+      </div>
+    )
+  }
+</div>

@@ -1,0 +1,28 @@
+---
+/**
+ * FinalCTA — spec §19
+ * Ink background, 400–480px tall, exactly ONE primary call to action.
+ *
+ * Deliberately absent (spec §19) as competing buttons:
+ *   Book a Call · WhatsApp · Get a Free Quote · Contact Sales
+ */
+import Button from './Button.astro';
+import { primaryCta } from '../data/site.js';
+---
+
+<section class="section--dark final-cta" aria-labelledby="final-cta-title">
+  <div class="container final-cta__inner">
+    <p class="eyebrow">START WITH A REQUEST</p>
+
+    <h2 class="final-cta__title" id="final-cta-title">Ready to source from China?</h2>
+
+    <p class="final-cta__description">
+      Tell us what you’re looking for.<br />
+      We’ll take it from there.
+    </p>
+
+    <div class="final-cta__actions">
+      <Button href={primaryCta.href} label={primaryCta.label} variant="inverse" arrow />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+# ---------------------------------------------------------------------------
+# SOURDEN — Cloudflare Pages redirects
+# ---------------------------------------------------------------------------
+# Syntax: <from> <to> [status]
+# Reference: https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# The site builds with Astro `build.format: 'file'`, so every page ships as
+# `<route>.html` and is served at the clean, slash-less URL documented in the
+# spec (§33) — e.g. `/services/product-sourcing`. No route rewrites are needed
+# for the pages themselves. The rules below only tidy up legacy / alias URLs.
+# ---------------------------------------------------------------------------
+
+# Canonicalise the root
+/index.html          /                        301
+/home                /                        301
+
+# Sitemap alias — @astrojs/sitemap emits sitemap-index.xml
+/sitemap.xml         /sitemap-index.xml       301
+
+# ---------------------------------------------------------------------------
+# RESERVED — when /products/ (spec §32) goes live, keep old category URLs
+# pointing at the right place rather than letting them 404. Example:
+#
+# /products/hair-extensions/tape-in   /product-categories/tape-in-hair-extensions   301
+# ---------------------------------------------------------------------------

@@ -1,0 +1,70 @@
+---
+/**
+ * CaseStudyCard — spec §17, secondary entries
+ *
+ * Two shapes:
+ *   · a real entry  → link, thumbnail, title, market
+ *   · a reserved slot (`slug === null`) → an explicitly dashed placeholder box
+ *     that is NOT a link and states it is awaiting content
+ *
+ * Spec §17 forbids fabricating a third project, so the reserved slot must stay
+ * visually non-committal.
+ */
+import Media from './Media.astro';
+import ArrowLink from './ArrowLink.astro';
+
+interface Study {
+  number: string;
+  slug: string | null;
+  title: string;
+  market: string | null;
+  images: Array<{ key: string; caption: string | null }>;
+  scope: string[];
+  isPlaceholder: boolean;
+  reservedSlot?: boolean;
+}
+
+interface Props {
+  study: Study;
+}
+
+const { study } = Astro.props;
+
+const isReserved = !study.slug;
+const imageKey = study.images?.[0]?.key;
+---
+
+{
+  isReserved ? (
+    <article class="case-secondary case-secondary--reserved">
+      <div class="placeholder-media media--3x2">
+        <span class="placeholder-media__label">[ Case study image ]</span>
+        <span class="placeholder-media__meta">Slot reserved</span>
+      </div>
+
+      <div class="case-secondary__reserved-body">
+        <span class="num">{study.number}</span>
+        <h3 class="case-secondary__title">{study.title}</h3>
+        <span class="status-chip">Details to be added</span>
+      </div>
+    </article>
+  ) : (
+    <article class="case-secondary">
+      <a class="case-secondary__link" href={`/case-studies/${study.slug}`}>
+        {imageKey && <Media imageKey={imageKey} ratio="3x2" zoom />}
+
+        <div class="case-secondary__body">
+          <span class="num">{study.number}</span>
+          <h3 class="case-secondary__title">{study.title}</h3>
+
+          <span class="case-secondary__meta">
+            {study.market && <span>{study.market}</span>}
+            {study.isPlaceholder && <span>Details to be added</span>}
+          </span>
+
+          <ArrowLink as="span" label="View Case Study" caps />
+        </div>
+      </a>
+    </article>
+  )
+}

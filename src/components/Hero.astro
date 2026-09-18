@@ -1,0 +1,63 @@
+---
+/**
+ * Hero — spec §7
+ *
+ * Mobile order (spec §21): eyebrow → heading → description → CTA → secondary
+ * link → image. That is the source order, so no CSS reordering is needed.
+ *
+ * The H1 keeps its three stanzas and their exact line breaks. Read end to end it
+ * produces the spec §26 sentence.
+ *
+ * COMPLIANCE NOTE — the spec asks for "Left: 5 columns / Right: 7 columns" while
+ * also mandating a 64–72px hero and five exact lines. Measured, the widest
+ * mandated line ("Manage the process.") is 594px at 64px, but a 5-column block
+ * is only 492.7px — so the two rules cannot both hold at any size in range.
+ * The line breaks take precedence (spec §7 states them explicitly and forbids
+ * collapsing them), so the text block takes 7 columns and the image 5. Both
+ * spans are variables in home.css (`--hero-text-span` / `--hero-media-span`) —
+ * set them to 5 / 7 to restore the literal split.
+ */
+import Button from './Button.astro';
+import ArrowLink from './ArrowLink.astro';
+import Media from './Media.astro';
+import { hero } from '../data/home.js';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow">{hero.eyebrow}</p>
+
+        <h1 class="hero__title" id="hero-title">
+          {
+            hero.stanzas.map((stanza) => (
+              <span class="hero__stanza">
+                {stanza.lines.map((line, index) => (
+                  <>
+                    {line}
+                    {index < stanza.lines.length - 1 && <br />}
+                  </>
+                ))}
+              </span>
+            ))
+          }
+        </h1>
+
+        <p class="hero__description">{hero.description}</p>
+
+        <div class="hero__actions">
+          <Button href={hero.primaryCta.href} label={hero.primaryCta.label} />
+          <ArrowLink href={hero.secondaryCta.href} label={hero.secondaryCta.label} />
+        </div>
+      </div>
+
+      <div class="hero__media-col">
+        <figure class="hero__media-figure">
+          <Media imageKey={hero.image.key} priority class="hero__media" />
+          <figcaption class="media-caption">{hero.image.caption}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>

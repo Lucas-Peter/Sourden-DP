@@ -1,0 +1,78 @@
+---
+/**
+ * SOURDEN — Homepage
+ * ---------------------------------------------------------------------------
+ * Section order is fixed by spec §42. Do not add sections.
+ *
+ *   01 Header              ← BaseLayout
+ *   02 Hero
+ *   03 Capabilities
+ *   04 What We Do
+ *   05 Services
+ *   06 How It Works
+ *   07 Industries
+ *   08 Sourcing Without the Barriers  (§13 + §14 + §15)
+ *   09 Why Sourden
+ *   10 Case Studies
+ *   11 Insights
+ *   12 Final CTA
+ *   13 Footer              ← BaseLayout
+ *
+ * Background rhythm ivory → dark → ivory → white → ivory → white → ivory →
+ * dark → white → ivory → dark → dark is intentional (spec §25) and carried by
+ * each component's own class, not by this file.
+ * ---------------------------------------------------------------------------
+ */
+
+// Page-level styles only. The shared core (tokens/base/layout/components) is
+// imported once by BaseLayout, so `/services` and every future page never ship
+// the homepage's CSS.
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/* Import order is load-bearing.
+   Astro evaluates rules of equal specificity in import order, so the LAYOUT
+   must be imported first: that gives the shared core the LOWEST precedence,
+   which is what allows this page's stylesheet to override component
+   defaults. Swap these two lines and the overrides silently stop applying.
+   https://docs.astro.build/en/guides/styling/  ("Import Order") */
+import '../styles/home.css';
+import Hero from '../components/Hero.astro';
+import CapabilitiesStrip from '../components/CapabilitiesStrip.astro';
+import ProcessList from '../components/ProcessList.astro';
+import ServiceList from '../components/ServiceList.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import IndustryGrid from '../components/IndustryGrid.astro';
+import AudienceList from '../components/AudienceList.astro';
+import WhySourdenList from '../components/WhySourdenList.astro';
+import CaseStudies from '../components/CaseStudies.astro';
+import Insights from '../components/Insights.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+
+import { homeMeta } from '../data/home.js';
+import { webPageSchema } from '../data/schema.js';
+---
+
+<BaseLayout
+  title={homeMeta.title}
+  description={homeMeta.description}
+  path="/"
+  schema={[
+    webPageSchema({
+      title: homeMeta.title,
+      description: homeMeta.description,
+      path: '/',
+    }),
+  ]}
+>
+  <Hero />
+  <CapabilitiesStrip />
+  <ProcessList />
+  <ServiceList />
+  <ProcessTimeline />
+  <IndustryGrid />
+  <AudienceList />
+  <WhySourdenList />
+  <CaseStudies />
+  <Insights />
+  <FinalCTA />
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+/**
+ * CaseStudies — spec §17
+ * A PROOF section, not a marketing-statistics section.
+ *
+ * Layout: one large featured case + two smaller entries in an editorial
+ * composition — never a standard 3-card grid.
+ *
+ * The visible notice plus the per-card status chips exist so a visitor can
+ * never mistake a placeholder for real evidence (spec §39, §43).
+ */
+import SectionHeader from './SectionHeader.astro';
+import CaseStudyFeature from './CaseStudyFeature.astro';
+import CaseStudyCard from './CaseStudyCard.astro';
+import ArrowLink from './ArrowLink.astro';
+import {
+  caseStudiesIntro,
+  featuredCaseStudy,
+  secondaryCaseStudies,
+} from '../data/caseStudies.js';
+---
+
+<section class="section case-studies" aria-labelledby="case-studies-title">
+  <div class="container">
+    <div class="case-studies__head" data-reveal>
+      <SectionHeader
+        id="case-studies-title"
+        eyebrow={caseStudiesIntro.eyebrow}
+        title={caseStudiesIntro.title}
+        lead={caseStudiesIntro.supporting}
+      />
+      <p class="case-studies__notice">{caseStudiesIntro.placeholderNotice}</p>
+    </div>
+
+    <div class="case-studies__grid">
+      <CaseStudyFeature study={featuredCaseStudy} />
+
+      <div class="case-secondary-col" data-reveal-group>
+        {secondaryCaseStudies.map((study) => <CaseStudyCard study={study} />)}
+      </div>
+    </div>
+
+    <div class="section-foot">
+      <ArrowLink href="/case-studies" label="View All Case Studies" />
+    </div>
+  </div>
+</section>

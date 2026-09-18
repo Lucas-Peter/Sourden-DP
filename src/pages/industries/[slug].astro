@@ -1,0 +1,31 @@
+---
+/**
+ * RESERVED DETAIL ROUTE — /industries/[slug]
+ * ---------------------------------------------------------------------------
+ * Generated from the shared data files, so adding a service, category, article
+ * or case study creates its route automatically — no new page file needed.
+ *
+ * One page file therefore covers every child route in this group, and they all
+ * render the same reservation shell until real content is written.
+ *
+ * TO BUILD A DETAIL PAGE FOR REAL
+ * Replace <ReservationPage /> with the real sections and remove the
+ * corresponding entries from `detailRoutePaths` in `src/data/routes.js`
+ * so the URLs re-enter sitemap.xml.
+ * ---------------------------------------------------------------------------
+ */
+import ReservationPage from '../../components/ReservationPage.astro';
+
+import { detailRouteGroups, reservationForDetail } from '../../data/routes.js';
+
+export function getStaticPaths() {
+  return detailRouteGroups['industries'].map((entry) => ({
+    params: { slug: entry.slug },
+    props: { page: reservationForDetail(entry.kind, entry.item, entry.parent) },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<ReservationPage {...page} />

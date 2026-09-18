@@ -1,0 +1,25 @@
+---
+/**
+ * RESERVATION PAGE — /sourcing-request
+ * ---------------------------------------------------------------------------
+ * This route is reserved by the site architecture (spec §33) and its content is
+ * not written yet. The page resolves, reads in the brand's voice, and is
+ * excluded from search engines while it has nothing substantial to offer.
+ *
+ * TO BUILD THIS PAGE FOR REAL
+ *   1. Copy the shell from this file (imports, BaseLayout, page hero).
+ *   2. Replace <ReservationPage /> with the real sections.
+ *   3. Remove the `/sourcing-request` entry from `reservedTopLevel` in
+ *      `src/data/routes.js` so it re-enters sitemap.xml.
+ *
+ * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * ---------------------------------------------------------------------------
+ */
+import ReservationPage from '../components/ReservationPage.astro';
+
+import { reservationFor } from '../data/routes.js';
+
+const page = reservationFor('/sourcing-request');
+---
+
+<ReservationPage {...page} />

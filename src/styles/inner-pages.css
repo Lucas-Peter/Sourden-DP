@@ -1,0 +1,233 @@
+/* ===========================================================================
+   SOURDEN — 06 INNER PAGES
+   ---------------------------------------------------------------------------
+   Shared styling for every page that is not the homepage:
+     · reservation pages (routes reserved by spec §33, content not yet written)
+     · service / industry / insight / case-study detail pages
+     · the 404 page
+
+   Imported directly by each page, so `/services` never ships `home.css`.
+   These classes deliberately reuse the tokens and the editorial row language
+   from the homepage — a visitor should never be able to tell which page was
+   built first.
+   =========================================================================== */
+
+/* ===========================================================================
+   PAGE HERO
+   =========================================================================== */
+
+.reserved-hero {
+  background-color: var(--ivory);
+  padding-block: clamp(40px, 5vw, 72px) clamp(40px, 4.5vw, 64px);
+}
+
+.reserved-hero__head {
+  display: grid;
+  gap: var(--sp-4);
+  max-width: 46ch;
+}
+
+.reserved-hero__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+  text-wrap: balance;
+}
+
+.reserved-hero__summary {
+  max-width: 54ch;
+  color: var(--muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+}
+
+/* ===========================================================================
+   BODY
+   =========================================================================== */
+
+.reserved-body {
+  background-color: var(--white);
+}
+
+.reserved-body__inner {
+  display: grid;
+  gap: clamp(40px, 4.5vw, 64px);
+}
+
+/* --- the "in development" notice ------------------------------------------ */
+
+.reserved-notice {
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 64ch;
+  padding: clamp(20px, 2.4vw, 30px);
+  background-color: var(--ivory);
+  border: var(--rule) solid var(--stone);
+  border-left: 2px solid var(--brass);
+}
+
+.reserved-notice__label {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.reserved-notice__body {
+  max-width: 58ch;
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* --- "what this page will cover" ----------------------------------------- */
+
+.reserved-block__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: 1.24;
+  letter-spacing: var(--ls-display);
+}
+
+.reserved-list {
+  margin: var(--sp-5) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+  max-width: 64ch;
+}
+
+.reserved-list__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-4);
+  padding-block: var(--sp-4);
+  border-bottom: var(--rule) solid var(--divider-light);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+.reserved-list__item::before {
+  content: '—';
+  color: var(--brass-ink);
+  line-height: 1.6;
+}
+
+/* --- child-page links ---------------------------------------------------- */
+
+.reserved-links {
+  max-width: 64ch;
+}
+
+.reserved-links__list {
+  margin: var(--sp-5) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.reserved-links__item {
+  border-bottom: var(--rule) solid var(--divider-light);
+}
+
+.reserved-links__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-block: var(--sp-4);
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+}
+
+.reserved-links__arrow {
+  color: var(--brass-ink);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.reserved-links__link:hover .reserved-links__arrow,
+.reserved-links__link:focus-visible .reserved-links__arrow {
+  transform: translateX(4px);
+}
+
+/* --- actions -------------------------------------------------------------- */
+
+.reserved-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-5) var(--sp-6);
+  padding-block-start: clamp(16px, 2vw, 24px);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.reserved-actions__primary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+.reserved-actions__email {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+}
+
+/* ===========================================================================
+   404
+   =========================================================================== */
+
+.not-found {
+  display: grid;
+  place-items: center;
+  min-height: min(72vh, 620px);
+  padding-block: var(--section-y);
+  background-color: var(--ivory);
+  text-align: center;
+}
+
+.not-found__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-5);
+}
+
+.not-found__code {
+  color: var(--brass-ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.not-found__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  max-width: 24ch;
+}
+
+.not-found__body {
+  max-width: 48ch;
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-5);
+  margin-block-start: var(--sp-3);
+}

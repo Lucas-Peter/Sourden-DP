@@ -1,0 +1,43 @@
+/* ===========================================================================
+   SOURDEN — STYLESHEET ENTRY POINT
+   ---------------------------------------------------------------------------
+   All site styling lives in this folder. There are no inline <style> blocks
+   and no per-component style files: one organised system, one place to edit.
+
+   Load order matters and mirrors CSS layering:
+
+     0 fonts             self-hosted @font-face declarations
+     1 tokens.css        design decisions (colour, type, space, motion)
+     2 base.css          reset + element defaults + accessibility primitives
+     3 layout.css        container, section rhythm, grid, motion utility
+     4 components.css    buttons, links, labels, media, editorial rows
+
+   Fonts are imported HERE rather than in the layout so Vite bundles everything
+   into a single stylesheet — one CSS request instead of two, and the
+   @font-face declarations are guaranteed to precede any rule that uses them.
+
+   `index.css` (this file) is the SHARED CORE. It is imported once, by
+   `src/layouts/BaseLayout.astro`, so every page gets it.
+
+   PAGE-SPECIFIC STYLES are imported directly by the page that needs them, so
+   a future page never ships the homepage's CSS:
+
+     src/pages/index.astro          →  import '../styles/home.css'
+     src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
+
+   ADDING A NEW PAGE
+     1. Create `src/styles/<page>.css`.
+     2. `import '../styles/<page>.css'` in the page's frontmatter.
+     3. Reuse the component classes from components.css before inventing new
+        ones — that is what keeps the site visually coherent.
+   =========================================================================== */
+
+/* Manrope (headings) — variable, weights 200–800 */
+@import '@fontsource-variable/manrope';
+/* Inter (body) — variable, weights 100–900 */
+@import '@fontsource-variable/inter';
+
+@import './tokens.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';

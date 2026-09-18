@@ -1,0 +1,52 @@
+---
+/**
+ * AudienceList — spec §13 + §14 + §15
+ * "SOURCING WITHOUT THE BARRIERS." — the most important section on the page.
+ *
+ * Three blocks, in order:
+ *   a) heading (anchored left) + large statement (given prominence right)
+ *   b) four audience groups as editorial rows, ~140px with thin separators
+ *   c) the no-fixed-MOQ block (§14) and the "Start where you are." progression
+ *      (§15)
+ *
+ * Four generic cards are explicitly forbidden here — these are rows.
+ */
+import SectionHeader from './SectionHeader.astro';
+import ScaleBlock from './ScaleBlock.astro';
+import GrowBlock from './GrowBlock.astro';
+import { audienceIntro, audienceGroups } from '../data/audiences.js';
+---
+
+<section class="section barriers" aria-labelledby="barriers-title">
+  <div class="container">
+    <div class="grid barriers__grid">
+      <div class="barriers__head-col" data-reveal>
+        <SectionHeader
+          id="barriers-title"
+          eyebrow={audienceIntro.eyebrow}
+          title={audienceIntro.title}
+          caps
+        />
+      </div>
+
+      <div class="barriers__statement-col" data-reveal>
+        <p class="barriers__statement">{audienceIntro.statement}</p>
+      </div>
+    </div>
+
+    <ol class="rows barriers__list" data-reveal-group>
+      {
+        audienceGroups.map((group) => (
+          <li class="audience-row">
+            <span class="num">{group.number}</span>
+            <h3 class="audience-row__title">{group.title}</h3>
+            <p class="audience-row__desc">{group.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <ScaleBlock />
+    <GrowBlock />
+  </div>
+</section>

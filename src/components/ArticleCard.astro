@@ -1,0 +1,31 @@
+---
+/**
+ * ArticleCard — spec §18, secondary articles.
+ * No image: the secondary column stays typographic so the featured article
+ * keeps the visual weight, and the homepage ships fewer image requests.
+ */
+import ArrowLink from './ArrowLink.astro';
+
+interface Article {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  published: boolean;
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+---
+
+<article class="article-secondary">
+  <a class="article-secondary__link" href={`/insights/${article.slug}`}>
+    <span class="article__category">{article.category}</span>
+    <h3 class="article-secondary__title">{article.title}</h3>
+    <p class="article-secondary__excerpt">{article.excerpt}</p>
+    <ArrowLink as="span" label="Read Article" caps />
+  </a>
+</article>

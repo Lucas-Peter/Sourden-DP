@@ -1,0 +1,32 @@
+---
+/**
+ * GrowBlock — spec §15 "START WHERE YOU ARE."
+ * Simple editorial progression. No growth charts, no cartoon graphics.
+ *
+ * Desktop shows a horizontal progression with brass arrows; on mobile the same
+ * markup becomes a vertical progression and the arrow rotates to point down.
+ */
+import { growBlock } from '../data/audiences.js';
+
+const lastIndex = growBlock.progression.length - 1;
+---
+
+<div class="grow-block">
+  <h3 class="grow-block__title">{growBlock.title}</h3>
+  <p class="grow-block__supporting">{growBlock.supporting}</p>
+
+  <ol class="grow-block__progression">
+    {
+      growBlock.progression.map((step, index) => (
+        <li class="prog__item">
+          <span>{step}</span>
+          {index < lastIndex && (
+            <span class="prog__sep" aria-hidden="true">
+              →
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</div>

@@ -1,0 +1,38 @@
+---
+/**
+ * WhySourdenList — spec §16
+ * Dark section. Five reasons as editorial rows with thin dividers, anchored by
+ * the "ONE PARTNER. THE WHOLE PROCESS." statement on the left.
+ *
+ * The closing philosophy line is brand philosophy, NOT a measurable claim
+ * (spec §16). Never attach numbers, percentages or timeframes to it.
+ */
+import SectionHeader from './SectionHeader.astro';
+import { whyIntro, whyReasons, whyPhilosophy } from '../data/whySourden.js';
+---
+
+<section class="section section--dark why" aria-labelledby="why-title">
+  <div class="container">
+    <div class="why__grid">
+      <div class="why__head" data-reveal>
+        <SectionHeader id="why-title" eyebrow={whyIntro.eyebrow} title={whyIntro.title} caps />
+      </div>
+
+      <div class="why__body">
+        <ol class="rows why__list" data-reveal-group>
+          {
+            whyReasons.map((reason) => (
+              <li class="reason-row">
+                <span class="num">{reason.number}</span>
+                <h3 class="reason-row__title">{reason.title}</h3>
+                <p class="reason-row__desc">{reason.description}</p>
+              </li>
+            ))
+          }
+        </ol>
+
+        <p class="why__philosophy">{whyPhilosophy}</p>
+      </div>
+    </div>
+  </div>
+</section>

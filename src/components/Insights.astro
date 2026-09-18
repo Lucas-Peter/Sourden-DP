@@ -1,0 +1,43 @@
+---
+/**
+ * Insights — spec §18
+ * A professional knowledge section, not a company-news blog.
+ *
+ * Homepage shows exactly 1 featured + 2 secondary articles, in an editorial
+ * composition. Never six or eight blog cards.
+ *
+ * The section doubles as the SEO entry point: `plannedTopics` in
+ * `src/data/insights.js` declares the content backlog, but is deliberately not
+ * rendered — a topic appears here only once the article actually exists.
+ */
+import SectionHeader from './SectionHeader.astro';
+import InsightsFeature from './InsightsFeature.astro';
+import ArticleCard from './ArticleCard.astro';
+import ArrowLink from './ArrowLink.astro';
+import { insightsIntro, featuredArticle, secondaryArticles } from '../data/insights.js';
+---
+
+<section class="section insights" aria-labelledby="insights-title">
+  <div class="container">
+    <div class="insights__head" data-reveal>
+      <SectionHeader
+        id="insights-title"
+        eyebrow={insightsIntro.eyebrow}
+        title={insightsIntro.title}
+        lead={insightsIntro.supporting}
+      />
+    </div>
+
+    <div class="insights__grid">
+      <InsightsFeature article={featuredArticle} />
+
+      <div class="insights__secondary-col" data-reveal-group>
+        {secondaryArticles.map((article) => <ArticleCard article={article} />)}
+      </div>
+    </div>
+
+    <div class="section-foot">
+      <ArrowLink href="/insights" label="View All Insights" />
+    </div>
+  </div>
+</section>

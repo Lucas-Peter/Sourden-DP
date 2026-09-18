@@ -1,0 +1,93 @@
+---
+/**
+ * Footer — spec §20
+ * Brand block, three navigation columns, footer CTA, contact email, legal row.
+ *
+ * No social media links until real accounts exist (spec §20).
+ * The Services and Industries columns are derived from the shared data files,
+ * so adding a service or category updates the section AND the footer at once.
+ *
+ * The footer CTA is a text link, not a second filled button: the Final CTA
+ * section owns the single primary button on the page (spec §19).
+ */
+import ArrowLink from './ArrowLink.astro';
+import { site, footerCompanyNav, footerLegalNav, primaryCta } from '../data/site.js';
+import { services } from '../data/services.js';
+import { industries } from '../data/industries.js';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="footer-brand__wordmark" href="/">SOURDEN</a>
+        <p class="footer-brand__tagline">{site.tagline}</p>
+        <p class="footer-brand__positioning">{site.positioning}</p>
+
+        <div class="footer-brand__cta">
+          <ArrowLink href={primaryCta.href} label={primaryCta.label} caps brass />
+        </div>
+
+        <a class="footer-brand__email" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+
+      <nav class="footer-col footer-col--services" aria-labelledby="footer-nav-services">
+        <h2 class="footer-col__title" id="footer-nav-services">Services</h2>
+        <ul class="footer-col__list">
+          {
+            services.map((service) => (
+              <li>
+                <a class="footer-col__link" href={service.href}>
+                  {service.shortTitle}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav class="footer-col footer-col--industries" aria-labelledby="footer-nav-industries">
+        <h2 class="footer-col__title" id="footer-nav-industries">Industries</h2>
+        <ul class="footer-col__list">
+          {
+            industries.map((industry) => (
+              <li>
+                <a class="footer-col__link" href={industry.href}>
+                  {industry.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav class="footer-col footer-col--company" aria-labelledby="footer-nav-company">
+        <h2 class="footer-col__title" id="footer-nav-company">Company</h2>
+        <ul class="footer-col__list">
+          {
+            footerCompanyNav.map((item) => (
+              <li>
+                <a class="footer-col__link" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {site.copyrightYear} Sourden</p>
+      <ul class="footer-bottom__legal">
+        {
+          footerLegalNav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>

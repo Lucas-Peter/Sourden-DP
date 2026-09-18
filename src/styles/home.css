@@ -1,0 +1,1297 @@
+/* ===========================================================================
+   SOURDEN — HOMEPAGE SECTIONS
+   ---------------------------------------------------------------------------
+   ONLY the sections of the homepage (spec §42), in order:
+
+     01 Hero                                 07 Case Studies
+     02 Capabilities Strip                   08 Insights
+     03 What We Do                           09 Final CTA
+     04 Services
+     05 How It Works
+     06 Industries
+     07 Sourcing Without the Barriers (§13-15)
+     08 Why Sourden
+
+   Imported by `src/pages/index.astro` only, so no future page ships the
+   homepage's CSS.
+
+   SITE CHROME IS NOT HERE. The header, mobile menu, footer and sticky mobile
+   CTA appear on every page, so their rules live in `components.css`. They used
+   to live in this file, which meant every non-homepage route rendered an
+   unstyled header — see the note at the top of components.css.
+
+   Background alternation follows spec §25 and must not be flattened.
+   =========================================================================== */
+
+
+
+/* ===========================================================================
+   02 — HERO  (spec §7)
+   =========================================================================== */
+
+.hero {
+  background-color: var(--ivory);
+  color: var(--ink);
+  padding-block: clamp(40px, 5.5vw, 80px);
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: 680px;
+  }
+
+  .hero > .container {
+    width: 100%;
+  }
+}
+
+/* Column geometry.
+   COMPLIANCE NOTE — the spec asks for "Left: 5 columns / Right: 7 columns"
+   while also mandating a 64–72px hero and five exact lines (spec §7). Those two
+   requirements are mathematically incompatible, and the line breaks win because
+   §7 states them as explicit text and forbids collapsing them.
+
+   Measured in Manrope 500 with the hero's letter-spacing (-0.02em), the widest
+   mandated line "Manage the process." is 594px at 64px and 668px at 72px. In
+   this grid a 5-column block is 492.7px wide — narrower than that line even at
+   56px (520px) — so no font size in the spec's range can honour both rules.
+
+   The text block is therefore widened to 7 columns (699px) so every mandated
+   line renders exactly; the image takes the remaining 5 (493px). The image's
+   4:3 aspect ratio and caption are unchanged, which is what §23 actually
+   depends on. Only the column split and the image's rendered width differ.
+
+   This also keeps the hero type inside the mandated range: with
+   --fs-hero-container at 10cqw of the 652.7–699.3px column the H1 settles at
+   65–70px. A 6/6 split would drop it to 56px — below the 64px floor.
+
+   Both spans are variables — set --hero-text-span: 5 to restore the literal
+   split, accepting that "Manage the process." will then wrap to two lines. */
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-8));
+  align-items: center;
+}
+
+@media (min-width: 1200px) {
+  .hero__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    --hero-text-span: 7;
+    --hero-media-span: 5;
+  }
+
+  .hero__content {
+    grid-column: 1 / span var(--hero-text-span, 7);
+  }
+
+  .hero__media-col {
+    grid-column: span var(--hero-media-span, 5) / -1;
+  }
+}
+
+/* The containment context that drives --fs-hero-container. Applied only where
+   container query units are actually supported, so unsupported browsers keep
+   the plain viewport-based fallback and are never left without a font size. */
+@supports (font-size: 1cqw) {
+  .hero__content {
+    container-type: inline-size;
+  }
+}
+
+.hero__eyebrow {
+  margin-block-end: clamp(var(--sp-4), 1.6vw, var(--sp-6));
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  /* Fallback first: viewport-driven, conservative enough that the mandated
+     line breaks hold. Then, where container query units exist, scale the type
+     to the text column itself so the breaks hold at every desktop width. */
+  font-size: var(--fs-hero);
+  /* spec §3: 500–600. 500 at display scale reads more editorial and premium
+     than 600 without losing authority. */
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-hero);
+  letter-spacing: var(--ls-tight);
+  text-wrap: pretty;
+}
+
+@supports (font-size: 1cqw) {
+  .hero__title {
+    font-size: var(--fs-hero-container);
+  }
+}
+
+/* The three stanzas stay visually separate — they must never collapse into
+   one paragraph (spec §7). */
+.hero__stanza {
+  display: block;
+}
+
+.hero__stanza + .hero__stanza {
+  margin-block-start: 0.44em;
+}
+
+.hero__description {
+  max-width: 540px;
+  margin-block-start: clamp(var(--sp-5), 2.4vw, var(--sp-7));
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-5) var(--sp-6);
+  margin-block-start: clamp(var(--sp-5), 2.6vw, var(--sp-7));
+}
+
+.hero__media-figure {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.hero__media {
+  height: clamp(360px, 90vw, 450px);
+}
+
+@media (min-width: 768px) {
+  .hero__media {
+    height: clamp(380px, 46vw, 480px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero__media {
+    height: 520px;
+  }
+}
+
+/* ===========================================================================
+   03 — CAPABILITIES STRIP  (spec §8)
+   Dark, ~96px, thin dividers, brass numbers, no icons.
+   Mobile: stacked vertically — never five items squeezed into one row.
+   =========================================================================== */
+
+.capabilities {
+  background-color: var(--ink);
+  color: var(--text-on-dark);
+}
+
+.capabilities__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .capabilities__list {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    align-items: center;
+    min-height: 96px;
+  }
+}
+
+.capabilities__item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding-block: var(--sp-4);
+}
+
+@media (max-width: 767px) {
+  .capabilities__item + .capabilities__item {
+    border-top: var(--rule) solid var(--divider-dark);
+  }
+}
+
+@media (min-width: 768px) {
+  .capabilities__item {
+    padding-block: var(--sp-5);
+    padding-inline: clamp(12px, 1.5vw, 24px);
+  }
+
+  .capabilities__item:first-child {
+    padding-inline-start: 0;
+  }
+
+  .capabilities__item:last-child {
+    padding-inline-end: 0;
+  }
+
+  .capabilities__item + .capabilities__item {
+    border-inline-start: var(--rule) solid var(--divider-dark);
+  }
+}
+
+.capabilities__label {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  letter-spacing: 0.002em;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .capabilities__label {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===========================================================================
+   04 — WHAT WE DO  (spec §9)
+   =========================================================================== */
+
+.what-we-do {
+  background-color: var(--ivory);
+}
+
+@media (min-width: 1200px) {
+  .what-we-do__grid {
+    align-items: start;
+  }
+
+  .what-we-do__head {
+    grid-column: 1 / span 5;
+  }
+
+  .what-we-do__list-col {
+    grid-column: 7 / span 6;
+  }
+}
+
+.what-we-do__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.process-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--sp-4);
+  min-height: 62px;
+  padding-block: var(--sp-3);
+  padding-inline: 0;
+}
+
+/* Subtle brass line that grows along the row's bottom edge on hover. */
+.process-row::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: var(--rule);
+  background-color: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.process-row .num,
+.process-row__title {
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* Slight horizontal movement on hover (spec §9). Transform only — no reflow. */
+.process-row:hover .num,
+.process-row:hover .process-row__title {
+  transform: translateX(8px);
+}
+
+.process-row:hover::after {
+  transform: scaleX(1);
+}
+
+.process-row__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-medium);
+  line-height: 1.25;
+  letter-spacing: var(--ls-display);
+}
+
+/* Touch devices have no hover — nothing is hidden, so no rule is needed.
+   The list is fully readable at every breakpoint by design. */
+
+/* ===========================================================================
+   05 — SERVICES  (spec §10)
+   Full-width editorial rows. No cards, no shadows, no icons, no gradients.
+   =========================================================================== */
+
+.services {
+  background-color: var(--white);
+}
+
+.services__head {
+  display: grid;
+  gap: var(--sp-5);
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+@media (min-width: 1200px) {
+  .services__head {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    align-items: end;
+    gap: var(--grid-gap);
+  }
+}
+
+.services__supporting {
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+@media (min-width: 1200px) {
+  .services__supporting {
+    padding-block-end: 6px;
+  }
+}
+
+.services__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-row__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--sp-2) var(--sp-5);
+  min-height: 108px;
+  padding-block: var(--sp-5);
+}
+
+@media (min-width: 1200px) {
+  .service-row__link {
+    grid-template-columns: 68px minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--sp-6);
+    align-items: start;
+  }
+}
+
+.service-row__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-display);
+}
+
+.service-row__arrow {
+  color: var(--brass-ink);
+  font-size: 0.8em;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.service-row__link:hover .service-row__arrow,
+.service-row__link:focus-visible .service-row__arrow {
+  transform: translateX(5px);
+}
+
+/* Description reveal.
+   Collapsed with `grid-template-rows: 0fr → 1fr`, which animates height
+   without a hard-coded max-height. The text stays in the accessibility tree
+   at all times; it is revealed on keyboard focus as well as hover, and is
+   always expanded on touch devices and mobile. */
+.service-row__desc {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+.service-row__desc > p {
+  overflow: hidden;
+  margin: 0;
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.service-row__link:hover .service-row__desc,
+.service-row__link:focus-visible .service-row__desc {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* On mobile and any hoverless device the description is always visible
+   (spec §21: "No hover dependency"). */
+@media (max-width: 1199px), (hover: none) {
+  .service-row__desc {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .service-row__link {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: var(--sp-3);
+  }
+
+  .service-row__desc {
+    grid-column: 2;
+  }
+}
+
+/* ===========================================================================
+   06 — HOW IT WORKS  (spec §11)
+   Editorial timeline. Thin line, five dots, brass numbers — not SaaS cards.
+   =========================================================================== */
+
+.how-it-works {
+  background-color: var(--ivory);
+}
+
+.how-it-works__head {
+  margin-block-end: clamp(var(--sp-7), 5.5vw, var(--sp-9));
+}
+
+.timeline {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-2);
+  padding-block-end: var(--sp-7);
+}
+
+.timeline__step:last-child {
+  padding-block-end: 0;
+}
+
+.timeline__dot {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  width: 11px;
+  height: 11px;
+  margin-block-start: 5px;
+  background-color: var(--brass);
+  border-radius: 50%;
+}
+
+/* Vertical connector between steps (mobile / tablet). */
+.timeline__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  bottom: 0;
+  width: var(--rule);
+  background-color: var(--stone);
+}
+
+.timeline__num {
+  grid-column: 2;
+  grid-row: 1;
+  margin-block-start: 1px;
+}
+
+.timeline__title {
+  grid-column: 2;
+  grid-row: 2;
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-medium);
+  line-height: 1.24;
+  letter-spacing: var(--ls-display);
+}
+
+.timeline__desc {
+  grid-column: 2;
+  grid-row: 3;
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+/* Desktop: horizontal timeline, 01 ─ 02 ─ 03 ─ 04 ─ 05 */
+@media (min-width: 1200px) {
+  .timeline {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    height: var(--rule);
+    background-color: var(--stone);
+  }
+
+  .timeline__step {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    column-gap: 0;
+    row-gap: var(--sp-3);
+    padding-block-end: 0;
+  }
+
+  .timeline__step:not(:last-child)::after {
+    content: none;
+  }
+
+  .timeline__dot {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    z-index: var(--z-base);
+    width: 11px;
+    height: 11px;
+    margin-block-start: 5px;
+    background-color: var(--ivory);
+    border: var(--rule) solid var(--brass);
+  }
+
+  .timeline__num {
+    grid-column: 1;
+    grid-row: 2;
+    margin-block-start: 0;
+  }
+
+  .timeline__title {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .timeline__desc {
+    grid-column: 1;
+    grid-row: 4;
+    max-width: 30ch;
+  }
+}
+
+/* "FROM NEED → DONE" */
+.timeline-phrase {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-8));
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.timeline-phrase__arrow {
+  color: var(--brass-ink);
+}
+
+.timeline-phrase__to {
+  color: var(--brass-ink);
+}
+
+/* ===========================================================================
+   07 — INDUSTRIES  (spec §12)
+   Asymmetrical editorial image grid — deliberately NOT six identical cards.
+   Row 1 is taller than row 2, and column widths differ inside each row.
+   =========================================================================== */
+
+.industries {
+  background-color: var(--white);
+}
+
+.industries__head {
+  margin-block-end: clamp(var(--sp-7), 5.5vw, var(--sp-8));
+}
+
+.industry-grid {
+  display: grid;
+  gap: var(--grid-gap);
+}
+
+.industry {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--sp-4);
+  min-height: 0;
+}
+
+.industry__media {
+  min-height: 0;
+}
+
+.industry__caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.industry__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: var(--fw-semibold);
+  line-height: 1.28;
+  letter-spacing: var(--ls-display);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.industry__arrow {
+  flex: none;
+  color: var(--brass-ink);
+  font-size: 1rem;
+  opacity: 0.5;
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.industry:hover .industry__title,
+.industry:focus-within .industry__title {
+  transform: translateX(4px);
+}
+
+.industry:hover .industry__arrow,
+.industry:focus-within .industry__arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* Mobile — simple editorial list with images (spec §21). */
+@media (max-width: 767px) {
+  .industry-grid {
+    gap: var(--sp-7);
+  }
+
+  .industry {
+    grid-template-rows: auto auto;
+  }
+
+  .industry__media {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Tablet — 8-column grid, three asymmetric rows. */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .industry-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-auto-rows: clamp(260px, 30vw, 330px);
+  }
+
+  .industry[data-span-md='3'] {
+    grid-column: span 3;
+  }
+
+  .industry[data-span-md='5'] {
+    grid-column: span 5;
+  }
+}
+
+/* Desktop — 12-column grid, a tall row followed by a shorter one. */
+@media (min-width: 1200px) {
+  .industry-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: clamp(380px, 29vw, 470px) clamp(270px, 21vw, 350px);
+  }
+
+  .industry[data-span-lg='3'] {
+    grid-column: span 3;
+  }
+
+  .industry[data-span-lg='4'] {
+    grid-column: span 4;
+  }
+
+  .industry[data-span-lg='5'] {
+    grid-column: span 5;
+  }
+}
+
+/* ===========================================================================
+   08 — SOURCING WITHOUT THE BARRIERS  (spec §13 + §14 + §15)
+   The most important section on the page. Three distinct blocks:
+     a) header + large statement + four audience rows
+     b) no-fixed-MOQ editorial block
+     c) "Start where you are." progression
+   =========================================================================== */
+
+.barriers {
+  background-color: var(--ivory);
+}
+
+.barriers__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.barriers__statement {
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.18rem + 1.55vw, 2.25rem);
+  font-weight: var(--fw-medium);
+  line-height: 1.22;
+  letter-spacing: var(--ls-display);
+  text-wrap: pretty;
+}
+
+@media (min-width: 1200px) {
+  .barriers__grid {
+    align-items: start;
+  }
+
+  /* Heading anchors the left; the statement gains prominence on the right. */
+  .barriers__head-col {
+    grid-column: 1 / span 6;
+  }
+
+  .barriers__statement-col {
+    grid-column: 8 / span 5;
+  }
+}
+
+.barriers__list {
+  margin: clamp(var(--sp-7), 5vw, var(--sp-9)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.audience-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-2);
+  align-items: baseline;
+  padding-block: var(--sp-6);
+}
+
+.audience-row .num {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.audience-row__title {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-display);
+}
+
+.audience-row__desc {
+  grid-column: 2;
+  grid-row: 2;
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+@media (min-width: 1200px) {
+  .audience-row {
+    grid-template-columns: 72px minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto;
+    align-items: center;
+    gap: var(--sp-6);
+    min-height: 140px;
+    padding-block: 0;
+  }
+
+  .audience-row .num {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .audience-row__title {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .audience-row__desc {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+/* --- b) no-fixed-MOQ block (spec §14) ------------------------------------- */
+
+.scale-block {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-9));
+  padding-block-start: clamp(var(--sp-5), 3vw, var(--sp-6));
+  border-top: var(--rule) solid var(--brass);
+}
+
+.scale-block__copy {
+  max-width: 26ch;
+  margin-block-start: var(--sp-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-regular);
+  line-height: 1.34;
+  letter-spacing: var(--ls-display);
+  text-wrap: pretty;
+}
+
+@media (min-width: 1200px) {
+  .scale-block {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .scale-block__copy {
+    grid-column: 2;
+    margin-block-start: 0;
+    max-width: 34ch;
+  }
+}
+
+/* --- c) grow with the customer (spec §15) --------------------------------- */
+
+.grow-block {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-9));
+  padding-block-start: clamp(var(--sp-5), 3vw, var(--sp-6));
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.grow-block__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+}
+
+.grow-block__supporting {
+  max-width: 46ch;
+  margin-block-start: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.grow-block__progression {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-4);
+  margin: clamp(var(--sp-6), 4vw, var(--sp-7)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prog__item {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.prog__sep {
+  margin-inline-start: var(--sp-3);
+  color: var(--brass-ink);
+}
+
+@media (max-width: 767px) {
+  .grow-block__progression {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-2);
+  }
+
+  /* The arrow becomes a down-arrow in the vertical progression. */
+  .prog__sep {
+    transform: rotate(90deg);
+    margin-inline-start: 10px;
+  }
+}
+
+/* ===========================================================================
+   09 — WHY SOURDEN  (spec §16)
+   =========================================================================== */
+
+.why {
+  background-color: var(--ink);
+  color: var(--text-on-dark);
+}
+
+.why__grid {
+  display: grid;
+  gap: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+@media (min-width: 1200px) {
+  .why__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .why__head {
+    grid-column: 1 / span 5;
+  }
+
+  .why__body {
+    grid-column: 7 / span 6;
+  }
+}
+
+.why__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reason-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-2);
+  align-items: baseline;
+  padding-block: var(--sp-5);
+}
+
+.reason-row .num {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.reason-row__title {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+  letter-spacing: var(--ls-display);
+}
+
+.reason-row__desc {
+  grid-column: 2;
+  grid-row: 2;
+  max-width: 50ch;
+  color: var(--muted-dark);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.why__philosophy {
+  margin: clamp(var(--sp-7), 5vw, var(--sp-8)) 0 0;
+  padding-inline-start: clamp(var(--sp-5), 3vw, var(--sp-6));
+  border-left: var(--rule) solid var(--brass);
+  max-width: 42ch;
+  color: var(--text-on-dark);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-regular);
+  line-height: 1.36;
+  letter-spacing: var(--ls-display);
+  text-wrap: pretty;
+}
+
+/* ===========================================================================
+   10 — CASE STUDIES  (spec §17)
+   A proof section — never a marketing-statistics section.
+   =========================================================================== */
+
+.case-studies {
+  background-color: var(--white);
+}
+
+.case-studies__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.case-studies__notice {
+  max-width: 52ch;
+  margin-block-start: var(--sp-5);
+  padding-block: var(--sp-3);
+  padding-inline-start: var(--sp-4);
+  border-left: var(--rule) solid var(--brass);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+.case-studies__grid {
+  display: grid;
+  gap: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+@media (min-width: 1200px) {
+  .case-studies__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .case-feature {
+    grid-column: 1 / span 7;
+  }
+
+  .case-secondary-col {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+  }
+}
+
+.case-feature__link {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+@media (min-width: 768px) {
+  .case-feature__link {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.case-feature__body {
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+}
+
+.case-feature__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: 1.18;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+}
+
+.case-feature__market,
+.case-secondary__title {
+  letter-spacing: var(--ls-display);
+}
+
+.case-feature__market {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+}
+
+.case-feature__scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+/* Secondary entries */
+.case-secondary {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.case-secondary__link {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.case-secondary__body {
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+}
+
+.case-secondary__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: var(--fw-semibold);
+  line-height: 1.26;
+  text-transform: uppercase;
+}
+
+.case-secondary__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--muted);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+/* Reserved, non-linked slot — case study 03 must never be invented. */
+.case-secondary--reserved {
+  opacity: 1;
+}
+
+.case-secondary__reserved-body {
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+}
+
+/* ===========================================================================
+   11 — INSIGHTS  (spec §18)
+   =========================================================================== */
+
+.insights {
+  background-color: var(--ivory);
+}
+
+.insights__head {
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+.insights__grid {
+  display: grid;
+  gap: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+@media (min-width: 1200px) {
+  .insights__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .article-feature {
+    grid-column: 1 / span 7;
+  }
+
+  .insights__secondary-col {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+  }
+}
+
+.article-feature__link {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.article-feature__body {
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+}
+
+.article__category {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.article-feature__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: 1.2;
+  letter-spacing: var(--ls-display);
+}
+
+.article-feature__excerpt,
+.article-secondary__excerpt {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.article-feature__excerpt {
+  max-width: 52ch;
+}
+
+.article-secondary {
+  display: grid;
+  gap: var(--sp-4);
+  padding-block-start: var(--sp-5);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.article-secondary__link {
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+}
+
+.article-secondary__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: var(--fw-semibold);
+  line-height: 1.26;
+  letter-spacing: var(--ls-display);
+}
+
+/* ===========================================================================
+   12 — FINAL CTA  (spec §19)
+   Exactly one primary call to action. No competing buttons.
+   =========================================================================== */
+
+.final-cta {
+  display: grid;
+  place-items: center;
+  min-height: 440px;
+  padding-block: var(--section-y);
+  background-color: var(--ink);
+  color: var(--text-on-dark);
+  text-align: center;
+}
+
+.final-cta__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-5);
+}
+
+.final-cta__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.final-cta__description {
+  color: var(--muted-dark);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
+
+.final-cta__actions {
+  margin-block-start: var(--sp-4);
+}

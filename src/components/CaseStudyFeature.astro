@@ -1,0 +1,60 @@
+---
+/**
+ * CaseStudyFeature — spec §17, featured entry
+ * One large featured case. Editorial layout, not a 3-card grid.
+ *
+ * The whole block is a single link (valid: <a> accepts flow content, and the
+ * heading is the accessible name). The trailing "View Case Study" is therefore
+ * rendered with `as="span"` so no interactive element is nested.
+ *
+ * Placeholder discipline: while `isPlaceholder` is true the card carries an
+ * explicit status chip. Never swap that chip for invented results.
+ */
+import Media from './Media.astro';
+import ArrowLink from './ArrowLink.astro';
+
+interface Study {
+  number: string;
+  slug: string | null;
+  title: string;
+  market: string | null;
+  images: Array<{ key: string; caption: string | null }>;
+  scope: string[];
+  isPlaceholder: boolean;
+}
+
+interface Props {
+  study: Study;
+}
+
+const { study } = Astro.props;
+
+const href = `/case-studies/${study.slug}`;
+const imageKey = study.images[0]?.key;
+---
+
+<article class="case-feature">
+  <a class="case-feature__link" href={href}>
+    {imageKey && <Media imageKey={imageKey} ratio="4x3" zoom />}
+
+    <div class="case-feature__body">
+      <span class="num">{study.number}</span>
+      <h3 class="case-feature__title">{study.title}</h3>
+      {study.market && <span class="case-feature__market">{study.market}</span>}
+
+      {
+        study.scope.length > 0 && (
+          <span class="case-feature__scope">
+            {study.scope.map((tag) => (
+              <span>{tag}</span>
+            ))}
+          </span>
+        )
+      }
+
+      {study.isPlaceholder && <span class="status-chip">Details to be added</span>}
+
+      <ArrowLink as="span" label="View Case Study" caps />
+    </div>
+  </a>
+</article>

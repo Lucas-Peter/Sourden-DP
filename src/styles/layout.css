@@ -1,0 +1,168 @@
+/* ===========================================================================
+   SOURDEN — 03 LAYOUT
+   Structural primitives only: container, section rhythm, grid, and a small
+   set of generic helpers. Section-specific composition lives in home.css /
+   the relevant page stylesheet.
+   =========================================================================== */
+
+/* -------------------------------------------------------------- container -- */
+
+/* spec §4: max-width 1280px, centred, ~32px horizontal padding.
+   At a 1440px viewport this yields ~80px of visual side margin. */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Long-form reading measure, used by reservation pages. */
+.container--narrow {
+  max-width: 860px;
+}
+
+/* ---------------------------------------------------------------- section -- */
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--major {
+  padding-block: var(--section-y-major);
+}
+
+.section--tight {
+  padding-block: var(--section-y-tight);
+}
+
+/* Page rhythm (spec §25) — the alternation between these three is
+   intentional and must not be flattened into one background colour. */
+.section--ivory {
+  background-color: var(--ivory);
+  color: var(--ink);
+}
+
+.section--white {
+  background-color: var(--white);
+  color: var(--ink);
+}
+
+.section--dark {
+  background-color: var(--ink);
+  color: var(--text-on-dark);
+}
+
+.section--dark .muted {
+  color: var(--muted-dark);
+}
+
+/* ------------------------------------------------------------- 12-col grid -- */
+
+/* Custom properties carry the column spans so each section can describe its
+   own composition without a utility-class explosion:
+     <div class="grid" style="--cols-lg: 7">  …  */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--grid-gap);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+/* ------------------------------------------------------------- helpers -- */
+
+/* Vertical rhythm without ad-hoc margins. */
+.stack > * + * {
+  margin-block-start: var(--stack-gap, var(--sp-5, 24px));
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Full-bleed horizontal rule that respects the container gutter. */
+.rule {
+  border: 0;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.section--dark .rule {
+  border-top-color: var(--divider-dark);
+}
+
+/* Any element that must remain reachable off-screen (e.g. skip targets). */
+[hidden] {
+  display: none !important;
+}
+
+/* ===========================================================================
+   MOTION UTILITY — restrained reveal (spec §24)
+   ---------------------------------------------------------------------------
+   Progressive enhancement contract:
+     · Without JavaScript  → markup is fully visible (no class, no hiding).
+     · With JavaScript     → an inline <head> script adds `js-reveal` to
+                             <html>, which arms the transitions.
+     · Reduced motion      → the media query below disables the shift.
+   Content can therefore never be trapped in an invisible state.
+   =========================================================================== */
+
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-shift), 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.js-reveal [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Staggered children inside a revealed group. */
+.js-reveal [data-reveal-group] > * {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-shift), 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.js-reveal [data-reveal-group].is-revealed > * {
+  opacity: 1;
+  transform: none;
+}
+
+.js-reveal [data-reveal-group].is-revealed > *:nth-child(1) { transition-delay: 0ms; }
+.js-reveal [data-reveal-group].is-revealed > *:nth-child(2) { transition-delay: 60ms; }
+.js-reveal [data-reveal-group].is-revealed > *:nth-child(3) { transition-delay: 120ms; }
+.js-reveal [data-reveal-group].is-revealed > *:nth-child(4) { transition-delay: 180ms; }
+.js-reveal [data-reveal-group].is-revealed > *:nth-child(5) { transition-delay: 240ms; }
+.js-reveal [data-reveal-group].is-revealed > *:nth-child(6) { transition-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal-group] > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

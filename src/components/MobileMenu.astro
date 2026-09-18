@@ -1,0 +1,36 @@
+---
+/**
+ * MobileMenu — spec §6 / §21 / §28
+ * Clean full-width navigation panel. No phone number, no WhatsApp, no login,
+ * no cart, no currency or language selector (spec §6).
+ *
+ * The panel is hidden with `visibility: hidden` rather than `display: none`,
+ * so the open/close transition runs while its links stay out of the tab order.
+ * The toggle button lives in Header.astro; this file is the panel only.
+ */
+import Button from './Button.astro';
+import { nav, primaryCta } from '../data/site.js';
+---
+
+<div class="mobile-menu" id="mobile-menu" data-menu-panel>
+  <nav aria-label="Mobile">
+    <ul class="mobile-menu__list">
+      {
+        nav.map((item) => (
+          <li class="mobile-menu__item">
+            <a class="mobile-menu__link" href={item.href}>
+              <span>{item.label}</span>
+              <span class="mobile-menu__arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="mobile-menu__cta">
+    <Button href={primaryCta.href} label={primaryCta.label} />
+  </div>
+</div>

@@ -1,0 +1,49 @@
+---
+/**
+ * 404 — not found
+ * ---------------------------------------------------------------------------
+ * Cloudflare Pages serves `dist/404.html` for any unmatched path, so this file
+ * must exist at the site root. It carries `noindex`.
+ *
+ * Keep it short: one statement, the one primary call to action, and a way back.
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/* Import order is load-bearing.
+   Astro gives the shared core the lowest precedence only when the LAYOUT is
+   imported before this line, so keep it directly under the layout import.
+   This page uses the `.not-found` shell from `inner-pages.css`; unlike the
+   reservation routes it does not render `ReservationPage`, so it has to pull
+   the stylesheet in itself. */
+import '../styles/inner-pages.css';
+
+import Button from '../components/Button.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import { primaryCta } from '../data/site.js';
+---
+
+<BaseLayout
+  title="Page not found | Sourden"
+  description="The page you are looking for could not be found."
+  path="/404"
+  noindex
+>
+  <section class="not-found">
+    <div class="container">
+      <div class="not-found__inner">
+        <p class="not-found__code">404 — Not found</p>
+        <h1 class="not-found__title">This page isn’t here.</h1>
+        <p class="not-found__body">
+          The link may be out of date, or the page may not exist yet. You can go
+          back to the homepage, or send a sourcing request and we will take it
+          from there.
+        </p>
+        <div class="not-found__actions">
+          <Button href={primaryCta.href} label={primaryCta.label} />
+          <ArrowLink href="/" label="Back to Home" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

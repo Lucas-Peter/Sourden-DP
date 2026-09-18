@@ -1,0 +1,175 @@
+---
+/**
+ * SOURDEN — BaseLayout
+ * ---------------------------------------------------------------------------
+ * The single document shell for every page on the site.
+ *
+ * Responsibilities
+ *   · <head>     — charset, viewport, title, description, canonical, robots,
+ *                  Open Graph / Twitter cards, favicon, sitemap link
+ *   · fonts      — self-hosted via Fontsource (no third-party request, no
+ *                  render-blocking external stylesheet)
+ *   · chrome     — skip link, header, main landmark, footer, sticky mobile CTA
+ *   · JSON-LD    — Organization + WebSite on every page; pages append their own
+ *   · motion     — progressive-enhancement flag + reveal observer
+ *
+ * NOTHING about SEO is left to a page. A page supplies `title`, `description`
+ * and (optionally) `path`; everything else is derived.
+ * ---------------------------------------------------------------------------
+ */
+
+// Shared style core: fonts → tokens → base → layout → components.
+// Fonts are imported inside index.css so Vite emits ONE stylesheet.
+import '../styles/index.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyMobileCTA from '../components/StickyMobileCTA.astro';
+
+import { site, seoDefaults } from '../data/site.js';
+import { IMAGE_DIR, images } from '../data/media.js';
+import { organizationSchema, websiteSchema, graph } from '../data/schema.js';
+
+interface Props {
+  /** Full <title>. Defaults to the homepage title. */
+  title?: string;
+  /** Meta description. Keep under ~155 characters. */
+  description?: string;
+  /** Root-relative path for canonical + og:url. Defaults to the current URL. */
+  path?: string;
+  ogType?: 'website' | 'article';
+  /** Root-relative or absolute social image. */
+  ogImage?: string;
+  /** Emit robots noindex,nofollow. Used by the 404 page. */
+  noindex?: boolean;
+  /** Extra JSON-LD nodes appended to the site graph. */
+  schema?: Array<Record<string, unknown>>;
+  bodyClass?: string;
+}
+
+const {
+  title = seoDefaults.title,
+  description = seoDefaults.description,
+  path,
+  ogType = 'website',
+  ogImage = `${IMAGE_DIR}/${images.ogDefault.file}`,
+  noindex = false,
+  schema = [],
+  bodyClass = '',
+} = Astro.props;
+
+/* --- canonical --------------------------------------------------------------
+   Built with Astro `build.format: 'file'` + `trailingSlash: 'never'`, so
+   `Astro.url.pathname` is already the clean, slash-less route (e.g. `/about`). */
+const rawPath = path ?? Astro.url.pathname;
+const resolved = new URL(rawPath, site.url);
+const canonical = resolved.pathname === '/' ? `${site.url}/` : resolved.href;
+
+/* --- social image ---------------------------------------------------------- */
+const socialImage = /^https?:\/\//.test(ogImage)
+  ? ogImage
+  : new URL(ogImage, site.url).href;
+
+/* --- structured data ------------------------------------------------------- */
+const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+    <!-- Colour used by the browser UI on mobile -->
+    <meta name="theme-color" content="#F6F5F1" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.ogLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!--
+      Progressive enhancement flag.
+      Runs before first paint and only arms the reveal transitions when the
+      visitor has JavaScript AND has not asked for reduced motion. If this
+      script never runs, the CSS keeps every element fully visible — content can
+      never be trapped in a hidden state.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          if (
+            'IntersectionObserver' in window &&
+            !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ) {
+            document.documentElement.classList.add('js-reveal');
+          }
+        } catch (e) {
+          /* no-op: leave content visible */
+        }
+      })();
+    </script>
+  </head>
+
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <Header />
+
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer />
+    <StickyMobileCTA />
+
+    <script>
+      /* ---------------------------------------------------------------------
+         Reveal observer — spec §24 (restrained: fade + 14px translateY,
+         400ms, one-shot). Elements opt in with `data-reveal` (whole block) or
+         `data-reveal-group` (children stagger via CSS).
+         ------------------------------------------------------------------- */
+      const targets = document.querySelectorAll('[data-reveal], [data-reveal-group]');
+
+      if (targets.length > 0 && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      } else {
+        // No observer support — show everything immediately.
+        targets.forEach((el) => el.classList.add('is-revealed'));
+      }
+    </script>
+  </body>
+</html>

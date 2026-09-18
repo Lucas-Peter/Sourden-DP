@@ -1,0 +1,47 @@
+---
+/**
+ * ProcessTimeline — spec §11 "How It Works"
+ * Desktop: editorial horizontal timeline  01 ─ 02 ─ 03 ─ 04 ─ 05
+ * Mobile:  vertical timeline  01 │ 02 │ 03 │ 04 │ 05
+ *
+ * Thin line, five dots, brass numbers — deliberately not conventional SaaS
+ * step cards.
+ */
+import SectionHeader from './SectionHeader.astro';
+import { howItWorksIntro, howItWorksSteps } from '../data/process.js';
+
+const { visualPhrase } = howItWorksIntro;
+---
+
+<section class="section how-it-works" aria-labelledby="how-it-works-title">
+  <div class="container">
+    <div class="how-it-works__head">
+      <SectionHeader
+        id="how-it-works-title"
+        eyebrow={howItWorksIntro.eyebrow}
+        title={howItWorksIntro.title}
+        lead={howItWorksIntro.supporting}
+        caps
+      />
+    </div>
+
+    <ol class="timeline" data-reveal-group>
+      {
+        howItWorksSteps.map((step) => (
+          <li class="timeline__step">
+            <span class="timeline__dot" aria-hidden="true" />
+            <span class="num timeline__num">{step.number}</span>
+            <h3 class="timeline__title">{step.title}</h3>
+            <p class="timeline__desc">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="timeline-phrase">
+      <span>{visualPhrase.from}</span>
+      <span class="timeline-phrase__arrow" aria-hidden="true">→</span>
+      <span class="timeline-phrase__to">{visualPhrase.to}</span>
+    </p>
+  </div>
+</section>

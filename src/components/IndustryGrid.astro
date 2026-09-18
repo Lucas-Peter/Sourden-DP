@@ -1,0 +1,55 @@
+---
+/**
+ * IndustryGrid — spec §12
+ * Asymmetrical editorial image grid. Deliberately NOT six identical cards:
+ * the first row is taller than the second, and column widths differ inside
+ * each row. Placement comes from `grid.spanLg` / `grid.spanMd` in the data
+ * file, so the composition can be reshaped without touching markup.
+ *
+ * The supporting copy makes clear these six categories are not exclusive, and
+ * the closing link invites a specific enquiry (spec §12).
+ */
+import SectionHeader from './SectionHeader.astro';
+import Media from './Media.astro';
+import ArrowLink from './ArrowLink.astro';
+import { industries, industriesIntro } from '../data/industries.js';
+---
+
+<section class="section industries" aria-labelledby="industries-title">
+  <div class="container">
+    <div class="industries__head" data-reveal>
+      <SectionHeader
+        id="industries-title"
+        eyebrow={industriesIntro.eyebrow}
+        title={industriesIntro.title}
+        lead={industriesIntro.supporting}
+      />
+    </div>
+
+    <div class="industry-grid" data-reveal-group>
+      {
+        industries.map((item) => (
+          <a
+            class="industry"
+            href={item.href}
+            data-span-lg={item.grid.spanLg}
+            data-span-md={item.grid.spanMd}
+          >
+            <Media imageKey={item.imageKey} zoom class="industry__media" />
+
+            <span class="industry__caption">
+              <span class="industry__title">{item.title}</span>
+              <span class="industry__arrow" aria-hidden="true">
+                →
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="section-foot">
+      <ArrowLink href={industriesIntro.bottomCta.href} label={industriesIntro.bottomCta.label} />
+    </div>
+  </div>
+</section>

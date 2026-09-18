@@ -1,0 +1,150 @@
+---
+/**
+ * Header — spec §6
+ * Sticky. Desktop: wordmark + inline nav + CTA. Mobile: wordmark + toggle.
+ * Desktop height ~80px, mobile 68px — both driven by tokens.
+ *
+ * Deliberately absent (spec §6): phone, WhatsApp, login, cart, currency
+ * selector, language selector.
+ */
+import Button from './Button.astro';
+import MobileMenu from './MobileMenu.astro';
+import { nav, primaryCta } from '../data/site.js';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="wordmark" href="/" aria-label={`${'SOURDEN'} — home`}>SOURDEN</a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                class="site-nav__link"
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <Button
+        class="site-header__cta"
+        href={primaryCta.href}
+        label={primaryCta.label}
+        size="sm"
+      />
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+        data-menu-toggle
+      >
+        <span class="menu-toggle__bars" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <MobileMenu />
+</header>
+
+<script>
+  /* ---------------------------------------------------------------------
+     Header chrome: scroll state + accessible mobile menu.
+     Deliberately plain ES5-compatible JavaScript — no framework, no library,
+     and no TypeScript syntax, so the shipped bundle stays tiny.
+     ------------------------------------------------------------------- */
+
+  /* 1. Divider appears only after the page has moved. */
+  var header = document.querySelector('[data-header]');
+  if (header) {
+    var ticking = false;
+    var sync = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 4);
+      ticking = false;
+    };
+    sync();
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(sync);
+      },
+      { passive: true }
+    );
+  }
+
+  /* 2. Mobile menu. */
+  var toggle = document.querySelector('[data-menu-toggle]');
+  var panel = document.querySelector('[data-menu-panel]');
+
+  if (toggle && panel) {
+    /* Everything behind the panel is made `inert` while it is open, so
+       keyboard focus cannot wander into invisible content. Browsers without
+       `inert` simply skip this step — the menu still works. */
+    var behind = [
+      document.querySelector('main'),
+      document.querySelector('footer'),
+      document.querySelector('.sticky-cta'),
+    ].filter(Boolean);
+
+    var setOpen = function (open, restoreFocus) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      panel.classList.toggle('is-open', open);
+      document.body.classList.toggle('is-menu-open', open);
+
+      behind.forEach(function (el) {
+        if ('inert' in el) el.inert = open;
+      });
+
+      var firstLink = panel.querySelector('a, button');
+
+      if (open) {
+        if (firstLink) firstLink.focus({ preventScroll: true });
+      } else if (restoreFocus) {
+        toggle.focus({ preventScroll: true });
+      }
+    };
+
+    toggle.addEventListener('click', function () {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    /* Escape closes and returns focus to the toggle. */
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      if (!panel.classList.contains('is-open')) return;
+      setOpen(false, true);
+    });
+
+    /* Following a link inside the panel closes it without stealing focus. */
+    panel.addEventListener('click', function (event) {
+      if (event.target.closest('a')) setOpen(false);
+    });
+
+    /* Crossing into the desktop breakpoint resets the panel. */
+    var desktop = window.matchMedia('(min-width: 1200px)');
+    desktop.addEventListener('change', function (event) {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

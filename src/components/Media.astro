@@ -1,0 +1,60 @@
+---
+/**
+ * Media — the only image frame on the site.
+ *
+ * Spec §23: documentary photography, no filters, no heavy overlays,
+ * `object-fit: cover`, subtle hover scale of 1.02–1.04 over 200–300ms.
+ * Spec §7: the hero image must NOT be turned into a card — so this component
+ * never adds a border, radius or shadow.
+ *
+ * Width and height are always emitted. That reserves the correct space before
+ * the file loads, which is what keeps Cumulative Layout Shift at zero.
+ *
+ * Replace a placeholder by editing `src/data/media.js` — never by changing
+ * markup. See IMAGES.md.
+ */
+import { img } from '../data/media.js';
+
+interface Props {
+  /** Key from the image manifest in src/data/media.js — unknown keys throw. */
+  imageKey: string;
+  /** Optional fixed aspect ratio. Omit when a grid row dictates the height. */
+  ratio?: '4x3' | '3x2' | '16x10' | '4x5';
+  /** Enable the subtle hover scale. */
+  zoom?: boolean;
+  /** Above-the-fold images: load eagerly with high fetch priority. */
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  imageKey,
+  ratio,
+  zoom = false,
+  priority = false,
+  class: className = '',
+} = Astro.props;
+
+const image = img(imageKey);
+
+const classes = [
+  'media',
+  ratio && `media--${ratio}`,
+  zoom && 'media--zoom',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class={classes}>
+  <img
+    src={image.src}
+    width={image.width}
+    height={image.height}
+    alt={image.alt}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'sync' : 'async'}
+    fetchpriority={priority ? 'high' : undefined}
+  />
+</div>

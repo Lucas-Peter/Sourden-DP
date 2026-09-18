@@ -1,0 +1,206 @@
+/* ===========================================================================
+   SOURDEN — 01 DESIGN TOKENS
+   ---------------------------------------------------------------------------
+   The single source of truth for colour, type, space and motion.
+   Nothing in this project should hard-code a hex value or a px font size —
+   change it here and it changes everywhere.
+
+   Accessibility note on the accent colour
+   ---------------------------------------
+   The spec mandates #B49A6C (Muted Brass). Measured against the Ivory
+   background it returns 2.48:1 — below the 4.5:1 WCAG AA threshold for body
+   text, and below 3:1 for large text. Brass is therefore split into two
+   tokens with identical hue but different lightness:
+
+     --brass      #B49A6C  decorative use + any text on the dark #111315
+                           background (6.99:1 — passes AA comfortably)
+     --brass-ink  #82693C  any brass-coloured TEXT on ivory/white
+                           (4.77:1 against Ivory — passes AA)
+
+   Visually the difference only appears at small label sizes, where the
+   darker tone actually reads as a deeper, more premium brass. Every other
+   colour pairing in the system was verified against WCAG 2.2 AA.
+   =========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     COLOUR
+     --------------------------------------------------------------------- */
+
+  /* Primary / Ink — dark sections, header text, primary buttons, footer */
+  --ink: #111315;
+  --ink-soft: #1A1D1F; /* one step up from ink, for layering dark sections */
+
+  /* Backgrounds */
+  --ivory: #F6F5F1; /* main editorial background */
+  --white: #FFFFFF; /* alternating sections */
+
+  /* Structure */
+  --stone: #E7E5DF; /* borders, dividers, subtle backgrounds */
+  --stone-soft: #EFEDE8; /* placeholder art fill */
+
+  /* Text */
+  --muted: #686A68; /* secondary text on ivory/white  (5.00:1 AA) */
+  --muted-dark: #A5A7A3; /* secondary text on ink        (7.77:1 AAA) */
+  --text-on-dark: #F6F5F1; /* primary text on ink          (17.3:1 AAA) */
+
+  /* Accent — use sparingly (section numbers, labels, thin rules, states) */
+  --brass: #B49A6C;
+  --brass-ink: #82693C;
+
+  /* Interactive structure that must clear the 3:1 non-text contrast rule */
+  --border-input: #8E8B84;
+  --border-strong: #C9C6BE;
+
+  /* Dividers */
+  --divider-light: var(--stone);
+  --divider-dark: rgba(231, 229, 223, 0.16);
+
+  /* Surfaces that sit on top of a dark background */
+  --surface-dark-raised: rgba(255, 255, 255, 0.04);
+
+  /* ---------------------------------------------------------------------
+     TYPOGRAPHY
+     Headings: Manrope · Body: Inter (both self-hosted via Fontsource —
+     no third-party requests, no FOUT from a blocking external stylesheet)
+     --------------------------------------------------------------------- */
+  --font-display: 'Manrope Variable', 'Manrope', ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Fluid type scale.
+     Each clamp() is anchored so the lower bound equals the spec's MOBILE
+     value and the upper bound equals its DESKTOP value.
+
+     --fs-hero is the FALLBACK for browsers without container query units
+     (Safari < 16, Firefox < 110) — exactly the browsers at our support floor,
+     so it still has to satisfy spec §3's 64–72px desktop rule on its own.
+     The slope is therefore steep enough to clear 64px at a 1200px viewport:
+     0.9rem + 4.2vw = 64.8px at 1200px, 68px (the cap) from ~1360px up. */
+  --fs-hero: clamp(2.625rem, 0.9rem + 4.2vw, 4.25rem); /* 42 → 68 */
+  --fs-h1: clamp(2.5rem, 1.67rem + 3.7vw, 3.5rem); /* 40 → 56 */
+  --fs-h2: clamp(2rem, 1.6rem + 1.8vw, 2.75rem); /* 32 → 44 */
+  --fs-h3: clamp(1.5rem, 1.33rem + 0.75vw, 1.75rem); /* 24 → 28 */
+  --fs-lead: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem); /* 17 → 20 */
+  --fs-body: clamp(1rem, 0.875rem + 0.55vw, 1.125rem); /* 16 → 18 */
+  --fs-body-sm: 0.9375rem; /* 15 — dense UI, mobile nav, captions */
+  --fs-label: clamp(0.6875rem, 0.65rem + 0.16vw, 0.8125rem); /* 11 → 13 */
+  --fs-num: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem); /* 12 → 14 */
+  --fs-list-title: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem); /* 20 → 24 */
+
+  /* Container-driven hero size.
+     The spec mandates five exact hero lines (spec §7), but a viewport-driven
+     size cannot guarantee them: the text column's width depends on the grid,
+     not on the viewport. `cqw` scales the type with the actual column, so
+     "Manage the process." always fits on one line with headroom at every
+     desktop width.
+
+     Measured widths for that line in Manrope 500 at -0.02em tracking:
+       594px @ 64px, 631px @ 68px, 668px @ 72px
+     The text column is 652.7px at a 1200px viewport and 699.3px at 1280px+,
+     so 10cqw lands at 65.3px / 69.9px — inside spec §3's 64–72px range at both
+     ends, with 39–51px of slack on the widest line.
+
+     Do not raise this past 10.6cqw: the widest line would then exceed the
+     column and wrap, breaking a mandated break.
+     Browsers without container query units fall back to --fs-hero. */
+  --fs-hero-container: clamp(2.625rem, 10cqw, 4.5rem);
+
+  --lh-hero: 1.02; /* spec: 0.98–1.05 */
+  --lh-display: 1.05;
+  --lh-heading: 1.14;
+  --lh-snug: 1.35;
+  --lh-body: 1.6;
+
+  --ls-tight: -0.025em; /* large Manrope needs optical tightening */
+  --ls-display: -0.018em;
+  --ls-caps: 0.08em; /* spec: 0.08–0.12em */
+  --ls-caps-wide: 0.12em;
+  --ls-wordmark: 0.2em;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---------------------------------------------------------------------
+     LAYOUT — spec §4
+     --------------------------------------------------------------------- */
+  --container-max: 1280px;
+  --gutter: clamp(20px, 4vw, 32px);
+  --grid-gap: clamp(20px, 2vw, 24px);
+
+  /* Spacing scale — 4px base. Components reference these, never raw px. */
+  --sp-1: 0.25rem; /*  4px */
+  --sp-2: 0.5rem; /*  8px */
+  --sp-3: 0.75rem; /* 12px */
+  --sp-4: 1rem; /* 16px */
+  --sp-5: 1.5rem; /* 24px */
+  --sp-6: 2rem; /* 32px */
+  --sp-7: 3rem; /* 48px */
+  --sp-8: 4rem; /* 64px */
+  --sp-9: 6rem; /* 96px */
+
+  --section-y: clamp(72px, 8.5vw, 120px); /* standard section spacing */
+  --section-y-major: clamp(88px, 10vw, 144px); /* major section spacing */
+  --section-y-tight: clamp(56px, 6vw, 88px);
+
+  --header-h: 68px; /* switches to the desktop value from 768px — see below */
+  --btn-h: 52px; /* spec §22 — primary button */
+  --btn-h-sm: 46px; /* header / dense contexts (see COMPLIANCE.md) */
+  --radius: 3px; /* spec: 2–4px, never a pill */
+
+  --rule: 1px;
+
+  /* ---------------------------------------------------------------------
+     MOTION — spec §24 (restrained: 200–500ms, no continuous animation)
+     --------------------------------------------------------------------- */
+  --dur-fast: 200ms;
+  --dur: 260ms;
+  --dur-slow: 400ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --reveal-shift: 14px;
+
+  /* ---------------------------------------------------------------------
+     Z-INDEX — only applies to positioned elements
+     --------------------------------------------------------------------- */
+  --z-base: 1;
+  --z-sticky-cta: 40;
+  --z-header: 60;
+  --z-menu: 70;
+
+  /* ---------------------------------------------------------------------
+     BREAKPOINTS (documentation only — media queries cannot read custom
+     properties; use the literal values below in every @media rule)
+       mobile   < 768px   → single column
+       tablet   768–1199  → 8-column grid
+       desktop  ≥ 1200px  → 12-column grid
+     --------------------------------------------------------------------- */
+}
+
+/* ---------------------------------------------------------------------------
+   HEADER HEIGHT
+   The spec gives 68px for mobile and ~80px for desktop. The inline CTA appears
+   at 768px, so the taller bar starts there. Overriding the token (rather than
+   adding a second rule) keeps the mobile menu's `inset` and the base stylesheet's
+   `scroll-padding-top` in sync automatically.
+   --------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  :root {
+    --header-h: 80px;
+  }
+}
+
+/* High-contrast / forced-colours safety: never rely on colour alone to
+   convey the brass accent's meaning. */
+@media (forced-colors: active) {
+  :root {
+    --brass: CanvasText;
+    --brass-ink: CanvasText;
+    --stone: CanvasText;
+    --divider-dark: CanvasText;
+    --divider-light: CanvasText;
+  }
+}

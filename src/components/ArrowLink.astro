@@ -1,0 +1,55 @@
+---
+/**
+ * ArrowLink — spec §22 "Secondary Links"
+ * Editorial text link with an arrow that moves on hover.
+ *
+ * `as="span"` is used when the link sits inside another anchor (for example a
+ * whole-card link) so the document never nests interactive elements.
+ */
+interface Props {
+  href?: string;
+  label: string;
+  /** Uppercase treatment — footer CTA, "View All Insights". */
+  caps?: boolean;
+  /** Brass accent. */
+  brass?: boolean;
+  as?: 'a' | 'span';
+  class?: string;
+}
+
+const {
+  href = '#',
+  label,
+  caps = false,
+  brass = false,
+  as = 'a',
+  class: className = '',
+} = Astro.props;
+
+const classes = [
+  'arrow-link',
+  caps && 'arrow-link--caps',
+  brass && 'arrow-link--brass',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{
+  as === 'a' ? (
+    <a class={classes} href={href}>
+      <span class="arrow-link__label">{label}</span>
+      <span class="arrow-link__arrow" aria-hidden="true">
+        →
+      </span>
+    </a>
+  ) : (
+    <span class={classes}>
+      <span class="arrow-link__label">{label}</span>
+      <span class="arrow-link__arrow" aria-hidden="true">
+        →
+      </span>
+    </span>
+  )
+}

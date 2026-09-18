@@ -1,0 +1,45 @@
+---
+/**
+ * StickyMobileCTA — spec §21
+ * Fixed to the bottom of the viewport on mobile only.
+ *
+ * Never covers content: `home.css` adds matching bottom padding to the footer
+ * (plus `env(safe-area-inset-bottom)` for iPhone home indicators).
+ *
+ * Refinement: the bar withdraws once the Final CTA section — which carries the
+ * same call to action — comes into view, so the page never shows the identical
+ * button twice at once. Without JavaScript the bar simply does not appear,
+ * which is a safe degradation: nothing is ever hidden behind it.
+ */
+import Button from './Button.astro';
+import { primaryCta } from '../data/site.js';
+---
+
+<div class="sticky-cta" data-sticky-cta>
+  <Button href={primaryCta.href} label={primaryCta.label} arrow />
+</div>
+
+<script>
+  (function () {
+    var bar = document.querySelector('[data-sticky-cta]');
+    var finalCta = document.querySelector('.final-cta');
+
+    if (!bar) return;
+
+    if (!finalCta || !('IntersectionObserver' in window)) {
+      bar.classList.add('is-visible');
+      return;
+    }
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          bar.classList.toggle('is-visible', !entry.isIntersecting);
+        });
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(finalCta);
+  })();
+</script>

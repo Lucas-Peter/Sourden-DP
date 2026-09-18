@@ -1,0 +1,45 @@
+---
+/**
+ * ServiceList — spec §10 "Services"
+ * Full-width editorial rows, 105–115px, no cards, no shadows, no icons,
+ * no gradient backgrounds.
+ *
+ * Desktop: the description is revealed on hover/focus and the arrow advances.
+ * Mobile and every hoverless device: the description is always visible, so the
+ * section never depends on hover (spec §21).
+ */
+import SectionHeader from './SectionHeader.astro';
+import { services, servicesIntro } from '../data/services.js';
+---
+
+<section class="section services" aria-labelledby="services-title">
+  <div class="container">
+    <div class="services__head">
+      <SectionHeader id="services-title" eyebrow={servicesIntro.eyebrow} title={servicesIntro.title} />
+      <p class="services__supporting">{servicesIntro.supportingLine}</p>
+    </div>
+
+    <ul class="rows services__list" data-reveal-group>
+      {
+        services.map((service) => (
+          <li>
+            <a class="service-row__link" href={service.href}>
+              <span class="num">{service.number}</span>
+
+              <h3 class="service-row__title">
+                <span>{service.title}</span>
+                <span class="service-row__arrow" aria-hidden="true">
+                  →
+                </span>
+              </h3>
+
+              <div class="service-row__desc">
+                <p>{service.description}</p>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

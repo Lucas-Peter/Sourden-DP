@@ -1,0 +1,44 @@
+---
+/**
+ * Button — spec §22
+ * The only filled control on the site. Never a pill, never a gradient.
+ *
+ * variant
+ *   primary  ink on ivory/white surfaces (52px, spec default)
+ *   inverse  ivory on ink surfaces — #111315 on #111315 would be invisible,
+ *            so dark sections invert the same geometry (17.3:1 contrast)
+ *   ghost    outlined, used only inside the mobile menu panel
+ */
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'inverse' | 'ghost';
+  /** `sm` is the compact header variant. See COMPLIANCE.md. */
+  size?: 'md' | 'sm';
+  arrow?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  label,
+  variant = 'primary',
+  size = 'md',
+  arrow = false,
+  class: className = '',
+} = Astro.props;
+
+const classes = [
+  'btn',
+  variant !== 'primary' && `btn--${variant}`,
+  size === 'sm' && 'btn--sm',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<a class={classes} href={href}>
+  <span>{label}</span>
+  {arrow && <span class="btn__arrow" aria-hidden="true">→</span>}
+</a>
