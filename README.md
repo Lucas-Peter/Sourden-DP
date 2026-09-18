@@ -43,8 +43,12 @@ npm run preview      # 本地预览构建产物
 ### 验证
 
 ```bash
-npm run verify       # 构建 + 审计  ← 每次推送前都要跑
+npm run verify       # 构建 + 审计  ← 每次上传前都要跑
 ```
+
+> `npm run verify` 只证明**本地**这棵树是完整的，它看不到**远端**缺了什么 ——
+> 而 Cloudflare 构建的是远端。上传之后请再跑一次 `npm run check:remote`，
+> 见[上传后核对](#上传后核对)。
 
 `npm run verify` 会针对**真实构建产物**（不是源码）运行 `scripts/audit.mjs`。审计不通过就意味着**不要部署**。检查项如下：
 
@@ -81,7 +85,8 @@ npm run verify       # 构建 + 审计  ← 每次推送前都要跑
 │   ├── README.md             # 预留后端接入说明（规范 §36）
 │   └── api/                  # /api/inquiry · /api/upload · /api/contact
 ├── scripts/
-│   ├── audit.mjs             # 构建后质量闸门
+│   ├── audit.mjs             # 构建后质量闸门（针对产物）
+│   ├── remote-diff.mjs       # 远端一致性核对 ← 上传后跑，见「上传后核对」
 │   └── generate-placeholders.mjs
 └── src/
     ├── data/                 # ← 所有文案与内容都在这里
@@ -360,6 +365,48 @@ git status          # .env 不应出现（它已被 git 忽略）
 ```
 
 `node_modules/`、`dist/`、`.astro/` 和 `.env*` 都已经在忽略规则里。
+
+#### 上传后核对
+
+**本地 `verify` 通过 ≠ GitHub 上是完整的。** 两者之间的缝隙来自网页上传的三个固有行为：
+
+| 网页上传的行为 | 后果 |
+| --- | --- |
+| **不会同步删除** | 本地删掉的文件，GitHub 上原样留着 |
+| **默认忽略点开头的文件** | `.nojekyll` 这类必须手动勾选才会被带上 |
+| **一次只能传一个目录** | 上传页的目标目录是固定的，跨目录得分几次传 |
+
+所以每次上传完，跑一次：
+
+```bash
+npm run check:remote
+```
+
+它下载 `main` 分支的 tarball，与本地**逐文件按内容比对**（不比 blob SHA —— 网页上传会忽略
+`.gitattributes` 而以 CRLF 存文件，SHA 必然不同但内容一致，拿 SHA 比会误报），分三类输出：
+
+| 输出 | 含义 | 处理 |
+| --- | --- | --- |
+| ① ON DISK BUT NOT ON GITHUB | 本地有、远端没有 | **必须上传**。若被 import，这就是构建失败的根因 |
+| ② ON GITHUB BUT NOT ON DISK | 远端有、本地已删 | 在 GitHub 上删掉，否则留下无人引用的死文件 |
+| ③ CONTENT DIFFERS | 两边都有但内容不同 | 重新上传该文件 |
+
+全部一致时输出 `✓ IN SYNC`；有差异时退出码为 1。仓库名可用环境变量覆盖：
+`SOURDEN_REPO=owner/name npm run check:remote`。
+
+#### 排错：Cloudflare 构建报 `UNRESOLVED_IMPORT / Could not resolve`
+
+```text
+[UNRESOLVED_IMPORT] Could not resolve '../components/ReservationPage.astro' in src/pages/about.astro
+```
+
+**这是 GitHub 上少了这个文件，不是代码写错了。** 同一个文件在本地能解析、在云端解析不了，
+只有一种解释：云端那棵树里没有它。先跑 `npm run check:remote`，输出的第 ① 类会直接点名缺的是哪个。
+
+最常见的成因是**删错了文件**。GitHub 网页上删一个文件只需要点一下图标加一次提交，
+`src/components/` 下的文件名又长得很像，很容易点在相邻的一行上 —— 而删掉的往往是某个
+被十几个页面共同引用的组件，于是全站构建同时失败。删除前核对文件名；删完立刻跑一次
+`check:remote`，第 ② 类应当**只剩下你打算删的那一个**。
 
 #### 排错：推送后 GitHub 报 “Build with Jekyll” 失败
 
