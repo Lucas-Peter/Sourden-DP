@@ -31,12 +31,12 @@ export const services = [
   },
   {
     number: '03',
-    title: 'Purchasing & Order Management',
+    title: 'Purchasing Management',
     slug: 'purchasing-order-management',
     href: '/services/purchasing-order-management',
     description:
       'Coordinate quotations, purchasing, supplier communication, production progress and order details.',
-    shortTitle: 'Purchasing & Order Management',
+    shortTitle: 'Purchasing Management',
   },
   {
     number: '04',

@@ -365,7 +365,10 @@ export function reservationForDetail(kind, item, parent) {
       : kind === 'insight'
         ? item.excerpt
         : kind === 'industry'
-          ? `Sourden sources ${item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`
+          ? // `summaryNoun` exists because a few category titles do not slot
+            // into this sentence naturally ("sources sports & outdoors").
+            // Categories that read fine omit it and fall back to the title.
+            `Sourden sources ${item.summaryNoun ?? item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`
           : 'This case is published only once the real requirement, process and outcome are confirmed. Details are being prepared.';
 
   const eyebrow = kind === 'insight' ? item.category : copy.eyebrow;

@@ -1,13 +1,17 @@
 ---
 /**
  * IndustryGrid — spec §12
- * Asymmetrical editorial image grid. Deliberately NOT six identical cards:
- * the first row is taller than the second, and column widths differ inside
- * each row. Placement comes from `grid.spanLg` / `grid.spanMd` in the data
- * file, so the composition can be reshaped without touching markup.
+ * Asymmetrical editorial image grid. Deliberately NOT a row of identical
+ * cards: on desktop the three rows have different heights (tall, short,
+ * medium) and different column widths inside each row; on tablet the last
+ * category closes the grid full width.
  *
- * The supporting copy makes clear these six categories are not exclusive, and
- * the closing link invites a specific enquiry (spec §12).
+ * Placement comes from `grid.spanLg` / `grid.spanMd` in the data file, so the
+ * composition can be reshaped without touching markup. Every row sums to the
+ * full column count at both breakpoints — an orphaned span leaves a hole.
+ *
+ * The supporting copy makes clear these categories are not exclusive, and the
+ * closing link invites a specific enquiry (spec §12).
  */
 import SectionHeader from './SectionHeader.astro';
 import Media from './Media.astro';

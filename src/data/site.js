@@ -15,6 +15,22 @@ export const primaryCta = {
   href: '/sourcing-request',
 };
 
+/* ---------------------------------------------------------------------------
+   CONFIRMED CONTACT FACTS — do not change without asking the business.
+   These three values are the real, published contact details:
+     domain   sourden.com
+     email    service@sourden.com
+     WhatsApp +86 19861639802
+   The domain and email are also the fallbacks used when PUBLIC_SITE_URL /
+   PUBLIC_CONTACT_EMAIL are not set at build time, so a build with no
+   environment variables configured still produces correct canonical URLs.
+   --------------------------------------------------------------------------- */
+
+/* One number, two channels: WhatsApp chat and telephone. Declared once, with
+   every derived form computed from it, so the readable number, the wa.me link
+   and the E.164 value can never drift apart. */
+const CONTACT_NUMBER_DISPLAY = '+86 19861639802';
+
 export const site = {
   name: 'SOURDEN',
   /** Primary tagline — spec §41 */
@@ -29,7 +45,37 @@ export const site = {
   processLine: 'Find. Verify. Source. Ship.',
 
   /** Public contact address. Overridable per-environment. */
-  email: import.meta.env?.PUBLIC_CONTACT_EMAIL || 'hello@sourden.com',
+  email: import.meta.env?.PUBLIC_CONTACT_EMAIL || 'service@sourden.com',
+
+  /**
+   * WhatsApp — a contact channel, not a social account, so it is allowed by
+   * spec §20's "no social links" rule (which exists to stop the site linking
+   * to empty profiles).
+   *
+   * `href` is DERIVED from `display`, so the readable number and the click-to-
+   * chat number can never drift apart. wa.me needs digits only, country code
+   * first, with NO leading "+" — a "+" or a space makes the link open an empty
+   * chat instead of failing loudly.
+   */
+  whatsapp: {
+    display: CONTACT_NUMBER_DISPLAY,
+    href: `https://wa.me/${CONTACT_NUMBER_DISPLAY.replace(/\D/g, '')}`,
+  },
+
+  /**
+   * The same number as an E.164 telephone value, published to search engines
+   * and AI assistants through schema.org `telephone` on the Organization node.
+   *
+   * E.164 = "+" + country code + subscriber digits, no spaces or punctuation.
+   * That is the only form parsers expect, and it is DERIVED from the display
+   * string rather than typed a second time.
+   *
+   * Note: NOT rendered as a clickable `tel:` link anywhere on the site. It is
+   * a WhatsApp-first number, so a tap-to-call link would invite voice calls to
+   * a line that is not staffed for them. Declaring it in structured data is a
+   * factual statement of how to reach the business, not an invitation to ring.
+   */
+  phone: `+${CONTACT_NUMBER_DISPLAY.replace(/\D/g, '')}`,
 
   /** Canonical origin, no trailing slash. Kept in sync with astro.config.mjs. */
   url: (import.meta.env?.PUBLIC_SITE_URL || 'https://sourden.com').replace(/\/$/, ''),

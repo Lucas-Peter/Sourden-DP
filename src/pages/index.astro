@@ -2,25 +2,32 @@
 /**
  * SOURDEN — Homepage
  * ---------------------------------------------------------------------------
- * Section order is fixed by spec §42. Do not add sections.
+ * Section order follows spec §42, with one deliberate exception: the "What We
+ * Do" section (spec §9, eyebrow "SOURCING, SIMPLIFIED") has been REMOVED.
  *
- *   01 Header              ← BaseLayout
+ * WHY: its numbered list (Supplier Research / Quotation / Purchasing / Quality
+ * Control / Shipping) restated the Services section almost item for item, and
+ * the dark capabilities strip directly above it already carries a third copy
+ * of the same five nouns. Three overlapping lists in the top half of one page
+ * read as padding. The Services section keeps the real, differentiated copy
+ * (one description per service) and the capabilities strip keeps the overview.
+ * Do not reintroduce it.
+ *
+ *   01 Header
  *   02 Hero
  *   03 Capabilities
- *   04 What We Do
- *   05 Services
- *   06 How It Works
- *   07 Industries
- *   08 Sourcing Without the Barriers  (§13 + §14 + §15)
- *   09 Why Sourden
- *   10 Case Studies
- *   11 Insights
- *   12 Final CTA
- *   13 Footer              ← BaseLayout
+ *   04 Services
+ *   05 How It Works
+ *   06 Industries
+ *   07 Sourcing Without the Barriers  (§13 + §14 + §15)
+ *   08 Why Sourden
+ *   09 Case Studies
+ *   10 Insights
+ *   11 Final CTA
+ *   12 Footer
  *
- * Background rhythm ivory → dark → ivory → white → ivory → white → ivory →
- * dark → white → ivory → dark → dark is intentional (spec §25) and carried by
- * each component's own class, not by this file.
+ * Colour rhythm ivory → dark → white → ivory → white → ivory → dark → white →
+ * ivory → dark is carried by each component's own class, not by this file.
  * ---------------------------------------------------------------------------
  */
 
@@ -38,7 +45,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/home.css';
 import Hero from '../components/Hero.astro';
 import CapabilitiesStrip from '../components/CapabilitiesStrip.astro';
-import ProcessList from '../components/ProcessList.astro';
 import ServiceList from '../components/ServiceList.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
 import IndustryGrid from '../components/IndustryGrid.astro';
@@ -66,7 +72,6 @@ import { webPageSchema } from '../data/schema.js';
 >
   <Hero />
   <CapabilitiesStrip />
-  <ProcessList />
   <ServiceList />
   <ProcessTimeline />
   <IndustryGrid />

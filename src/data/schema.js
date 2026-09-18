@@ -18,7 +18,12 @@ const ORG_ID = `${site.url}/#organization`;
 const WEBSITE_ID = `${site.url}/#website`;
 
 /**
- * The organisation itself. Only verifiable facts: name, url, contact point.
+ * The organisation itself. Only verifiable facts: name, url, email, telephone,
+ * contact point.
+ *
+ * `telephone` is a confirmed published number, so it passes the honesty rule
+ * above. It is derived from `site.whatsapp.display` — see site.js — so the
+ * value here and the number shown in the footer are always the same string.
  * @returns {Record<string, unknown>}
  */
 export function organizationSchema() {
@@ -28,6 +33,7 @@ export function organizationSchema() {
     name: site.name,
     url: site.url,
     email: site.email,
+    telephone: site.phone,
     slogan: site.tagline,
     description: seoDescription(),
     contactPoint: [
@@ -35,6 +41,7 @@ export function organizationSchema() {
         '@type': 'ContactPoint',
         contactType: 'sales',
         email: site.email,
+        telephone: site.phone,
         availableLanguage: ['en'],
       },
     ],

@@ -833,15 +833,26 @@ body.is-menu-open .sticky-cta {
   margin-block-start: var(--sp-6);
 }
 
-.footer-brand__email {
-  display: inline-block;
+/* Contact channels: email first, WhatsApp directly beneath it. Stacked in a
+   grid so both lines start on the same left edge — as two inline links they
+   would sit side by side and the shorter one would look misplaced. */
+.footer-brand__contact {
+  display: grid;
+  justify-items: start;
+  gap: var(--sp-2);
   margin-block-start: var(--sp-4);
+}
+
+.footer-brand__email,
+.footer-brand__whatsapp {
+  display: inline-block;
   color: var(--muted-dark);
   font-size: var(--fs-body-sm);
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.footer-brand__email:hover {
+.footer-brand__email:hover,
+.footer-brand__whatsapp:hover {
   color: var(--text-on-dark);
 }
 

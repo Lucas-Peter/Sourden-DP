@@ -121,6 +121,42 @@ export const images = {
     placeholder: true,
     artDirection: 'Machinery, tooling or metal/industrial component production. Portrait crop.',
   },
+  industrySportsOutdoors: {
+    file: 'industry-sports-outdoors.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'SPORTS & OUTDOORS',
+    alt: 'Placeholder for a photograph of sports or outdoor equipment production.',
+    role: /** @type {ImageRole} */ ('industry'),
+    placeholder: true,
+    artDirection:
+      'Assembly, stitching testing or packing of sports and outdoor equipment — gear, not lifestyle models.',
+  },
+  industryPetSupplies: {
+    file: 'industry-pet-supplies.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'PET SUPPLIES',
+    alt: 'Placeholder for a photograph of pet product manufacturing or packaging.',
+    role: /** @type {ImageRole} */ ('industry'),
+    placeholder: true,
+    artDirection:
+      'Moulding, assembly or retail packaging of pet products. No live animals or studio pet portraits.',
+  },
+  industryApparelFootwearBags: {
+    file: 'industry-apparel-footwear-bags.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'APPAREL, FOOTWEAR & BAGS',
+    alt: 'Placeholder for a photograph of apparel, footwear or bag production.',
+    role: /** @type {ImageRole} */ ('industry'),
+    placeholder: true,
+    artDirection:
+      'Cutting tables, stitching lines or finishing of apparel, footwear or bags. Flat-lay or production floor, not on-model studio shots.',
+  },
 
   /* --------------------------------------------------------- case studies -- */
   caseStudyChristmasTree: {

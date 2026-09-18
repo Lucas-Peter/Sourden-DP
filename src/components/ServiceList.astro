@@ -4,9 +4,12 @@
  * Full-width editorial rows, 105–115px, no cards, no shadows, no icons,
  * no gradient backgrounds.
  *
- * Desktop: the description is revealed on hover/focus and the arrow advances.
- * Mobile and every hoverless device: the description is always visible, so the
- * section never depends on hover (spec §21).
+ * Desktop: title on the left, its description on the right — BOTH visible on
+ * load. The description used to be a hover reveal; it is now always shown,
+ * because on a page whose job is to explain the service, the explanation is
+ * the content and must not be gated behind a gesture.
+ *
+ * Hover only adds movement: the arrow advances. Nothing is ever hidden.
  */
 import SectionHeader from './SectionHeader.astro';
 import { services, servicesIntro } from '../data/services.js';

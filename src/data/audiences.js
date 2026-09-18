@@ -52,6 +52,18 @@ export const audienceGroups = [
     description:
       'Ready to build a more reliable supply chain as your business grows.',
   },
+  {
+    number: '05',
+    title: 'Individual Consumers',
+    /**
+     * The one audience that is not a business. Keep the wording explicit — the
+     * whole point of listing it is that a private individual can be a Sourden
+     * customer, which is unusual for this category of service and is therefore
+     * worth stating rather than implying.
+     */
+    description:
+      'Want to source for personal use or a one-off project, without a company behind you.',
+  },
 ];
 
 /** §14 — distinct editorial block. Approved wording only. */

@@ -247,85 +247,7 @@
 }
 
 /* ===========================================================================
-   04 — WHAT WE DO  (spec §9)
-   =========================================================================== */
-
-.what-we-do {
-  background-color: var(--ivory);
-}
-
-@media (min-width: 1200px) {
-  .what-we-do__grid {
-    align-items: start;
-  }
-
-  .what-we-do__head {
-    grid-column: 1 / span 5;
-  }
-
-  .what-we-do__list-col {
-    grid-column: 7 / span 6;
-  }
-}
-
-.what-we-do__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.process-row {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: baseline;
-  gap: var(--sp-4);
-  min-height: 62px;
-  padding-block: var(--sp-3);
-  padding-inline: 0;
-}
-
-/* Subtle brass line that grows along the row's bottom edge on hover. */
-.process-row::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  bottom: -1px;
-  height: var(--rule);
-  background-color: var(--brass);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.process-row .num,
-.process-row__title {
-  transition: transform var(--dur) var(--ease-out);
-}
-
-/* Slight horizontal movement on hover (spec §9). Transform only — no reflow. */
-.process-row:hover .num,
-.process-row:hover .process-row__title {
-  transform: translateX(8px);
-}
-
-.process-row:hover::after {
-  transform: scaleX(1);
-}
-
-.process-row__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-list-title);
-  font-weight: var(--fw-medium);
-  line-height: 1.25;
-  letter-spacing: var(--ls-display);
-}
-
-/* Touch devices have no hover — nothing is hidden, so no rule is needed.
-   The list is fully readable at every breakpoint by design. */
-
-/* ===========================================================================
-   05 — SERVICES  (spec §10)
+   04 — SERVICES  (spec §10)
    Full-width editorial rows. No cards, no shadows, no icons, no gradients.
    =========================================================================== */
 
@@ -404,22 +326,19 @@
   transform: translateX(5px);
 }
 
-/* Description reveal.
-   Collapsed with `grid-template-rows: 0fr → 1fr`, which animates height
-   without a hard-coded max-height. The text stays in the accessibility tree
-   at all times; it is revealed on keyboard focus as well as hover, and is
-   always expanded on touch devices and mobile. */
+/* Description is ALWAYS visible — no hover, no click, no disclosure.
+   It used to be collapsed with `grid-template-rows: 0fr` and revealed on
+   hover/focus. That hid the only copy on the page that says what each service
+   actually covers, behind a gesture plenty of visitors never perform — and on
+   a page whose whole job is to explain the service, the explanation IS the
+   content. The row now reads as a two-column editorial split: title on the
+   left, its description on the right, both visible on load. */
 .service-row__desc {
   display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition:
-    grid-template-rows var(--dur) var(--ease-out),
-    opacity var(--dur) var(--ease-out);
+  grid-template-rows: 1fr;
 }
 
 .service-row__desc > p {
-  overflow: hidden;
   margin: 0;
   max-width: 52ch;
   color: var(--muted);
@@ -427,20 +346,10 @@
   line-height: 1.62;
 }
 
-.service-row__link:hover .service-row__desc,
-.service-row__link:focus-visible .service-row__desc {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-/* On mobile and any hoverless device the description is always visible
-   (spec §21: "No hover dependency"). */
-@media (max-width: 1199px), (hover: none) {
-  .service-row__desc {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-
+/* Below the desktop split the number and title collapse to one column and the
+   description moves underneath them (spec §21 — the section never depends on
+   hover, at any width). */
+@media (max-width: 1199px) {
   .service-row__link {
     grid-template-columns: auto minmax(0, 1fr);
     row-gap: var(--sp-3);
@@ -452,7 +361,7 @@
 }
 
 /* ===========================================================================
-   06 — HOW IT WORKS  (spec §11)
+   05 — HOW IT WORKS  (spec §11)
    Editorial timeline. Thin line, five dots, brass numbers — not SaaS cards.
    =========================================================================== */
 
@@ -616,7 +525,7 @@
 }
 
 /* ===========================================================================
-   07 — INDUSTRIES  (spec §12)
+   06 — INDUSTRIES  (spec §12)
    Asymmetrical editorial image grid — deliberately NOT six identical cards.
    Row 1 is taller than row 2, and column widths differ inside each row.
    =========================================================================== */
@@ -697,7 +606,8 @@
   }
 }
 
-/* Tablet — 8-column grid, three asymmetric rows. */
+/* Tablet — 8-column grid, five rows. Spans per row: 5+3, 4+4, 4+4, 4+4, 8.
+   Every row sums to 8, so no row is left with a hole in it. */
 @media (min-width: 768px) and (max-width: 1199px) {
   .industry-grid {
     grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -708,16 +618,30 @@
     grid-column: span 3;
   }
 
+  .industry[data-span-md='4'] {
+    grid-column: span 4;
+  }
+
   .industry[data-span-md='5'] {
     grid-column: span 5;
   }
+
+  /* The last category closes the grid full width, like a banner. */
+  .industry[data-span-md='8'] {
+    grid-column: span 8;
+  }
 }
 
-/* Desktop — 12-column grid, a tall row followed by a shorter one. */
+/* Desktop — 12-column grid, three rows: tall, short, medium. Spans per row
+   are 5+4+3, 3+4+5 and 5+3+4, so the composition never repeats itself and
+   every row is exactly 12 columns. */
 @media (min-width: 1200px) {
   .industry-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: clamp(380px, 29vw, 470px) clamp(270px, 21vw, 350px);
+    grid-template-rows:
+      clamp(380px, 29vw, 470px)
+      clamp(270px, 21vw, 350px)
+      clamp(310px, 24vw, 395px);
   }
 
   .industry[data-span-lg='3'] {
@@ -734,7 +658,7 @@
 }
 
 /* ===========================================================================
-   08 — SOURCING WITHOUT THE BARRIERS  (spec §13 + §14 + §15)
+   07 — SOURCING WITHOUT THE BARRIERS  (spec §13 + §14 + §15)
    The most important section on the page. Three distinct blocks:
      a) header + large statement + four audience rows
      b) no-fixed-MOQ editorial block
@@ -938,7 +862,7 @@
 }
 
 /* ===========================================================================
-   09 — WHY SOURDEN  (spec §16)
+   08 — WHY SOURDEN  (spec §16)
    =========================================================================== */
 
 .why {
@@ -1022,7 +946,7 @@
 }
 
 /* ===========================================================================
-   10 — CASE STUDIES  (spec §17)
+   09 — CASE STUDIES  (spec §17)
    A proof section — never a marketing-statistics section.
    =========================================================================== */
 
@@ -1163,7 +1087,7 @@
 }
 
 /* ===========================================================================
-   11 — INSIGHTS  (spec §18)
+   10 — INSIGHTS  (spec §18)
    =========================================================================== */
 
 .insights {
@@ -1257,7 +1181,7 @@
 }
 
 /* ===========================================================================
-   12 — FINAL CTA  (spec §19)
+   11 — FINAL CTA  (spec §19)
    Exactly one primary call to action. No competing buttons.
    =========================================================================== */
 

@@ -1,14 +1,18 @@
 /**
  * SOURDEN — PROCESS DATA
  * ---------------------------------------------------------------------------
- * Three distinct devices, three distinct label vocabularies. They must not be
+ * Two distinct devices, two distinct label vocabularies. They must not be
  * merged or auto-generated from one another: the spec deliberately uses
  * slightly different wording in each, and collapsing them would produce a
  * repetitive page.
  *
  *   capabilities  §8  Short nouns  — dark strip, 96px, no icons, no detail
- *   whatWeDo      §9  Editorial vertical list of the sourcing workflow
  *   howItWorks    §11 Customer-facing five-step timeline
+ *
+ * REMOVED: the §9 "What We Do" list (eyebrow "SOURCING, SIMPLIFIED"). Its five
+ * labels restated the Services section almost verbatim, and the capabilities
+ * strip above it already carries the same five nouns — three overlapping lists
+ * in the top half of one page. See the header comment in `src/pages/index.astro`.
  * ---------------------------------------------------------------------------
  */
 
@@ -19,22 +23,6 @@ export const capabilities = [
   { number: '03', label: 'Purchasing' },
   { number: '04', label: 'Quality Control' },
   { number: '05', label: 'Global Shipping' },
-];
-
-/** §9 — "What We Do" section copy + editorial process list. */
-export const whatWeDoIntro = {
-  eyebrow: 'SOURCING, SIMPLIFIED',
-  title: 'Sourcing is more than finding a supplier.',
-  supporting:
-    'Finding a supplier is only the beginning. We help you navigate the process from supplier research and quotation to purchasing, quality control and shipping.',
-};
-
-export const whatWeDoSteps = [
-  { number: '01', title: 'Supplier Research' },
-  { number: '02', title: 'Quotation' },
-  { number: '03', title: 'Purchasing' },
-  { number: '04', title: 'Quality Control' },
-  { number: '05', title: 'Shipping' },
 ];
 
 /** §11 — "How It Works" five-step timeline. */

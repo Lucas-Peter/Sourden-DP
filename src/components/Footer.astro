@@ -1,9 +1,14 @@
 ---
 /**
  * Footer — spec §20
- * Brand block, three navigation columns, footer CTA, contact email, legal row.
+ * Brand block, three navigation columns, footer CTA, contact channels, legal row.
  *
- * No social media links until real accounts exist (spec §20).
+ * CONTACT CHANNELS: email and WhatsApp. WhatsApp is a contact channel the
+ * business actually answers, not a social profile, so it is allowed under
+ * spec §20's "no social media links until real accounts exist" rule — that
+ * rule exists to stop the footer linking to empty accounts. When Instagram /
+ * Facebook / etc. go live they still must not be added until they are real.
+ *
  * The Services and Industries columns are derived from the shared data files,
  * so adding a service or category updates the section AND the footer at once.
  *
@@ -28,7 +33,18 @@ import { industries } from '../data/industries.js';
           <ArrowLink href={primaryCta.href} label={primaryCta.label} caps brass />
         </div>
 
-        <a class="footer-brand__email" href={`mailto:${site.email}`}>{site.email}</a>
+        <div class="footer-brand__contact">
+          <a class="footer-brand__email" href={`mailto:${site.email}`}>{site.email}</a>
+
+          <a
+            class="footer-brand__whatsapp"
+            href={site.whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp · {site.whatsapp.display}
+          </a>
+        </div>
       </div>
 
       <nav class="footer-col footer-col--services" aria-labelledby="footer-nav-services">
