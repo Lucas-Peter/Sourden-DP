@@ -343,6 +343,140 @@ if (outOfOrderPages.length > 0) {
   );
 }
 
+/* ------------------------------------------------- Cloudflare deploy config */
+
+/**
+ * The deploy configuration is part of the build contract, so it is asserted
+ * here rather than left to the first failed deploy in CI.
+ *
+ * The failure this guards against is specific and was observed for real:
+ * the project is a Cloudflare WORKER WITH STATIC ASSETS, but `wrangler.toml`
+ * was written for Pages (`pages_build_output_dir = "dist"`). Workers Builds
+ * runs `wrangler deploy`, which does not know that key — it finds neither a
+ * script entry point nor an assets directory and aborts the whole build with
+ * "If there is code to deploy, you can either: Specify an entry-point …".
+ * The local `npm run verify` passed the entire time, because nothing local
+ * reads this file.
+ */
+const WRANGLER = join(ROOT, 'wrangler.toml');
+
+/** Minimal TOML reader — enough for flat keys and single-level [tables]. */
+function parseWrangler(text) {
+  const top = {};
+  const tables = {};
+  let current = null;
+
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith('#')) continue;
+
+    const header = line.match(/^\[([^\]]+)\]$/);
+    if (header) {
+      current = header[1].trim();
+      tables[current] ??= {};
+      continue;
+    }
+
+    const pair = line.match(/^([A-Za-z0-9_.-]+)\s*=\s*(.+)$/);
+    if (!pair) continue;
+
+    const value = pair[2].trim().replace(/^["']|["']$/g, '');
+    if (current) tables[current][pair[1]] = value;
+    else top[pair[1]] = value;
+  }
+
+  return { top, tables };
+}
+
+let deployName = '—';
+let deployHandler = '—';
+
+if (!existsSync(WRANGLER)) {
+  fail('wrangler.toml', 'missing — Cloudflare has nothing to deploy');
+} else {
+  const raw = readFileSync(WRANGLER, 'utf8');
+  const { top, tables } = parseWrangler(raw);
+  const assets = tables.assets ?? {};
+
+  /**
+   * Key lookups go against the RAW text, not the parsed result.
+   *
+   * Reason: TOML scopes every key that follows a `[table]` header into that
+   * table, so a misplaced top-level key would land in `tables.assets` and a
+   * parsed-only check would miss it. (Found by fault injection — appending
+   * `pages_build_output_dir` to the end of the file slipped past the first
+   * version of this guard.) `^\s*key\s*=` cannot match a commented-out
+   * example, which is what the RESERVED blocks are made of.
+   */
+  const hasTopLevelKey = (key) => new RegExp(`^\\s*${key}\\s*=`, 'm').test(raw);
+
+  /* A Pages-only key silently disables the Workers deploy path. */
+  if (hasTopLevelKey('pages_build_output_dir')) {
+    fail(
+      'wrangler.toml',
+      'contains `pages_build_output_dir` — that is a Cloudflare PAGES key. Workers Builds runs ' +
+        '`wrangler deploy`, which ignores it and then fails with "no entry point, no assets". ' +
+        'Use `[assets] directory` instead (see the migration note in the file).'
+    );
+  }
+
+  if (!top.name) fail('wrangler.toml', 'missing `name` — must match the Cloudflare Worker project');
+  else deployName = top.name;
+
+  /* A `main` entry point that does not exist fails the deploy, not the build. */
+  if (hasTopLevelKey('main')) {
+    const entry = (raw.match(/^\s*main\s*=\s*["']([^"']+)["']/m) || [])[1];
+    if (entry && !existsSync(join(ROOT, entry.replace(/^\.\//, '')))) {
+      fail('wrangler.toml', `\`main\` points at "${entry}", which does not exist`);
+    }
+  }
+
+  if (!top.compatibility_date) {
+    warn('wrangler.toml', 'missing `compatibility_date` — Cloudflare requires it');
+  }
+
+  if (!assets.directory) {
+    fail(
+      'wrangler.toml',
+      'missing `[assets] directory` — without it Cloudflare has no build output to serve'
+    );
+  } else {
+    /* The directory is relative to the config file, so trailing slashes are ok. */
+    const assetsDir = join(ROOT, assets.directory.replace(/^\.\//, '').replace(/\/$/, ''));
+
+    if (!existsSync(assetsDir)) {
+      fail('wrangler.toml', `assets.directory "${assets.directory}" does not exist after the build`);
+    } else {
+      /* These three files are what the URL shape and the security headers
+         depend on. `_headers` and `_redirects` are copied out of public/ at
+         build time; if either is missing, Cloudflare serves the site with no
+         security headers and no redirects, silently. */
+      for (const required of ['index.html', '_headers', '_redirects']) {
+        if (!existsSync(join(assetsDir, required))) {
+          fail(
+            'wrangler.toml',
+            `assets.directory "${assets.directory}" does not contain ${required} — ` +
+              (required === 'index.html'
+                ? 'the build output looks wrong.'
+                : `it should be copied from public/${required}; without it Cloudflare drops ` +
+                  `its ${required === '_headers' ? 'security headers' : 'redirect rules'}.`)
+          );
+        }
+      }
+      deployHandler = assets.html_handling || 'auto-trailing-slash (default)';
+    }
+  }
+
+  /* `binding` is only legal next to a Worker script. */
+  if ((assets.binding || top.binding) && !hasTopLevelKey('main')) {
+    fail(
+      'wrangler.toml',
+      'sets `assets.binding` without `main` — the binding only exists to let a Worker script read ' +
+        'assets, so Cloudflare rejects it on an assets-only Worker.'
+    );
+  }
+}
+
 /* ------------------------------------------------------------------ summary */
 
 notes.push(`HTML pages:        ${htmlFiles.length}`);
@@ -353,6 +487,7 @@ notes.push(`css tokens:        ${definedTokens.size} defined · ${requiredTokens
 notes.push(`css breakpoints:   ${classicBreakpoints} classic min/max-width · range-syntax ${rangeSyntax.length} (must be 0)`);
 notes.push(`indexable pages:   ${sitemapPaths.length}`);
 notes.push(`sitemap entries:   ${sitemapPaths.map((p) => p).join(', ')}`);
+notes.push(`cloudflare:        worker "${deployName}" · html_handling ${deployHandler}`);
 
 console.log('\nSOURDEN — build audit\n');
 console.log(notes.join('\n'));

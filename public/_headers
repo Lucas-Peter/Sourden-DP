@@ -1,11 +1,13 @@
 # ---------------------------------------------------------------------------
-# SOURDEN — Cloudflare Pages response headers
+# SOURDEN — Cloudflare response headers
 # ---------------------------------------------------------------------------
-# Cloudflare Pages reads this file automatically at deploy time. Syntax:
+# Cloudflare reads this file automatically at deploy time, from the static
+# asset directory (`assets.directory` in wrangler.toml). Astro copies it from
+# public/ into dist/ during the build. Syntax:
 #   <url-pattern>
 #     <Header-Name>: <value>
 # The most specific matching pattern wins.
-# Reference: https://developers.cloudflare.com/pages/configuration/headers/
+# Reference: https://developers.cloudflare.com/workers/static-assets/headers/
 # ---------------------------------------------------------------------------
 
 /*
