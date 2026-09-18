@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------------------
+# SOURDEN — Git attributes
+# ---------------------------------------------------------------------------
+# The primary checkout is on Windows, but the site is BUILT on Linux
+# (Cloudflare Pages). Without this file Git converts LF to CRLF on Windows
+# checkout, so the committed content and the deployed content can disagree
+# while git reports a clean tree.
+#
+# `eol=lf` normalises every text file to LF in the repository and in the
+# working tree, which is what the build and every linter expect.
+# ---------------------------------------------------------------------------
+
+* text=auto eol=lf
+
+# Binary/raster assets — never rewritten.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico  binary
+*.woff binary
+*.woff2 binary
+
+# Generated placeholder artwork is plain text, so keep it diffable.
+*.svg text eol=lf
+
+# Lockfiles are generated; collapse them in diff views and language stats.
+package-lock.json -diff linguist-generated

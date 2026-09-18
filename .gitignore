@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------------------
+# SOURDEN — ignore rules
+# Never commit secrets. All runtime configuration lives in environment
+# variables (see .env.example) and is injected by Cloudflare at build time.
+# ---------------------------------------------------------------------------
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Astro / Vite build output
+dist/
+.astro/
+.output/
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# Local secrets & credentials
+*.pem
+*.key
+secrets.json
+.dev.vars.*
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# Logs / caches
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+.cache/
+
+# Generated placeholder art is committed on purpose (it is the V1 visual
+# baseline). Un-comment the next line only if you switch to build-time
+# generation. See IMAGES.md.
+# public/images/

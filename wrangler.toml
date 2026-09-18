@@ -1,0 +1,41 @@
+# ---------------------------------------------------------------------------
+# SOURDEN — Cloudflare configuration
+# ---------------------------------------------------------------------------
+# This file does two jobs:
+#
+# 1. It tells Cloudflare Pages where the static build output lives.
+# 2. It declares the bindings that the *reserved* API layer (spec §36) will
+#    need. Everything below the "RESERVED" marker is commented out on purpose:
+#    uncomment a block only after the matching Cloudflare resource exists,
+#    otherwise the Pages build fails on an unknown binding.
+#
+# Deployment: connect the GitHub repo to Cloudflare Pages and leave the
+# dashboard build settings at their defaults — Wrangler reads them here.
+# ---------------------------------------------------------------------------
+
+name = "sourden-website"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-01-01"
+
+# ---------------------------------------------------------------------------
+# RESERVED — future sourcing-request backend (spec §36)
+# ---------------------------------------------------------------------------
+# Prerequisites before uncommenting:
+#   npx wrangler d1 create sourden-db
+#   npx wrangler r2 bucket create sourden-uploads
+# then paste the IDs printed by those commands below.
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "sourden-db"
+# database_id = "<paste-id-from-wrangler-d1-create>"
+
+# [[r2_buckets]]
+# binding = "UPLOADS"
+# bucket_name = "sourden-uploads"
+
+# [vars]
+# Non-secret environment values shared by all Pages Functions.
+# Secrets (TURNSTILE_SECRET_KEY, INQUIRY_NOTIFY_TO) belong in the Pages
+# dashboard as encrypted variables, never in this file.
+# PUBLIC_CONTACT_EMAIL = "hello@sourden.com"
