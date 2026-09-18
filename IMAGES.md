@@ -81,7 +81,7 @@ target under 250 KB.
 
 ---
 
-### Industries — six slots
+### Industries — nine slots
 
 | File | Label | Source size | Ratio |
 | --- | --- | --- | --- |
@@ -91,9 +91,13 @@ target under 250 KB.
 | `industry-packaging.svg` | Packaging | **1200 × 900** | 4:3 |
 | `industry-electronics-accessories.svg` | Electronics & Accessories | **1200 × 900** | 4:3 |
 | `industry-industrial-products.svg` | Industrial Products | **1200 × 1500** | 4:5 portrait |
+| `industry-sports-outdoors.svg` | Sports & Outdoors | **1200 × 900** | 4:3 |
+| `industry-pet-supplies.svg` | Pet Supplies | **1200 × 900** | 4:3 |
+| `industry-apparel-footwear-bags.svg` | Apparel, Footwear & Bags | **1200 × 900** | 4:3 |
 
-Two of the six are portrait because the grid is deliberately asymmetric (spec
-§12) — keep those framings upright.
+Two of the nine are portrait because the grid is deliberately asymmetric (spec
+§12) — keep those framings upright. The last slot spans the full grid width on
+tablet, so keep its subject centred; the sides get cropped hardest there.
 
 - **Consumer Products** — finished consumer goods in a production or packing
   environment.
@@ -106,6 +110,12 @@ Two of the six are portrait because the grid is deliberately asymmetric (spec
   functional test jig.
 - **Industrial Products** — machinery, tooling, or metal / industrial component
   production. Portrait crop.
+- **Sports & Outdoors** — assembly, stitching or packing of sports and outdoor
+  equipment. Gear, not lifestyle models.
+- **Pet Supplies** — moulding, assembly or retail packaging of pet products.
+  No live animals and no studio pet portraits.
+- **Apparel, Footwear & Bags** — cutting tables, stitching lines or finishing.
+  Flat-lay or production floor, not on-model studio shots.
 
 Target under 120 KB each.
 

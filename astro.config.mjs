@@ -2,16 +2,19 @@
 /**
  * SOURDEN — Astro configuration
  * ---------------------------------------------------------------------------
- * Deployment target : Cloudflare Pages (static output) + GitHub
- * Build command     : npm run build
- * Output directory  : dist
+ * Deployment target : Cloudflare Workers, static-assets mode (no Worker script)
+ * Build command     : npm run build      ← Cloudflare runs this
+ * Deploy command    : npx wrangler deploy
+ * Output directory  : dist  — declared in wrangler.toml under `[assets] directory`,
+ *                     NOT in the Cloudflare dashboard. Edit it there.
  *
  * WHY `format: 'file'` + `trailingSlash: 'never'`
  * The site architecture (spec §33) lists clean, extension-less, slash-less
  * routes such as `/services/product-sourcing`. `format: 'file'` emits
- * `dist/services/product-sourcing.html`, which Cloudflare Pages serves at
- * exactly `/services/product-sourcing`. This keeps the production URL shape
- * identical to the documented route table, with no redirect hop.
+ * `dist/services/product-sourcing.html`, which the Worker's asset handler serves
+ * at exactly `/services/product-sourcing` (governed by `html_handling` in
+ * wrangler.toml). This keeps the production URL shape identical to the
+ * documented route table, with no redirect hop.
  */
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
@@ -23,8 +26,17 @@ import { noindexPaths } from './src/data/routes.js';
 
 /**
  * Canonical origin of the production site.
- * Set PUBLIC_SITE_URL in Cloudflare Pages → Settings → Environment variables.
- * Falls back to the brand domain so local builds stay valid.
+ *
+ * Set PUBLIC_SITE_URL in: Cloudflare dashboard → the Worker project (`sourden-dp`)
+ * → Settings → 构建 / Build → Variables and secrets.
+ *
+ * This is a BUILD-time value — Astro inlines it into the HTML during
+ * `npm run build`. Putting it under the Worker's *runtime* variables does
+ * nothing: a static-assets-only Worker has no runtime `env` at all, which is
+ * exactly why the dashboard greys that section out.
+ *
+ * Changing it only takes effect after a fresh deployment. Falls back to the
+ * brand domain so local builds stay valid.
  */
 const SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://sourden.com').replace(/\/$/, '');
 

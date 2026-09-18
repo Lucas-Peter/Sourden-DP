@@ -150,9 +150,9 @@ Astro 对同特异性的规则按引入顺序判定优先级，而它的构建�
 | `src/data/site.js` | 品牌常量、主 CTA 目标地址、头部/页脚导航、SEO 默认值 |
 | `src/data/home.js` | 首页 Hero 文案 |
 | `src/data/services.js` | 五项服务内容 |
-| `src/data/industries.js` | 六个品类（+ 各断点的栅格跨度） |
-| `src/data/process.js` | 能力条、"我们做什么"、"合作流程"时间轴 |
-| `src/data/audiences.js` | 客户类型列表（MOQ 措辞规则写在这里） |
+| `src/data/industries.js` | 九个品类（+ 各断点的栅格跨度） |
+| `src/data/process.js` | 能力条、"合作流程"时间轴 |
+| `src/data/audiences.js` | 客户类型列表（含个人消费者；MOQ 措辞规则写在这里） |
 | `src/data/whySourden.js` | 差异化优势 |
 | `src/data/caseStudies.js` | 客户案例（真实数据到位前字段为 `null`） |
 | `src/data/insights.js` | 精选文章 + 列表 + 计划选题 |
@@ -165,6 +165,29 @@ Astro 对同特异性的规则按引入顺序判定优先级，而它的构建�
 1. 在对应的 `src/data/*.js` 文件里改文案。
 2. 如果是结构性修改（新增条目、新增字段），同步更新 `src/components/` 里消费它的组件。
 3. 运行 `npm run verify`。
+
+### 首页版块顺序（与规范的一处有意偏差）
+
+首页顺序遵循规范 §42，**但删掉了 §9「What We Do」板块**（眉标 `SOURCING, SIMPLIFIED`）。
+它的五条列表（Supplier Research / Quotation / Purchasing / Quality Control / Shipping）
+与下面的 OUR SERVICES 几乎逐条重复，而它上面的深色能力条本身已经是同一组词的第三份拷贝 ——
+一页的上半部分出现三张重叠的列表，读起来像在凑篇幅。Services 板块保留了真正有差异的内容
+（每项服务一段独立描述），能力条保留了概览。
+
+**不要把它加回来。** 理由写在 `src/pages/index.astro` 的头部注释里，改动前请先读。
+
+当前顺序：Hero → Capabilities → Services → How It Works → Industries → Sourcing Without the Barriers → Why Sourden → Case Studies → Insights → Final CTA。
+底色节奏（象牙 → 深 → 白 → 象牙 → 白 → 象牙 → 深 → 白 → 象牙 → 深）由各组件自己的类承担，
+不在 `index.astro` 里控制；增删板块时留意相邻两个板块不要同色。
+
+### 两条交互约定（改动前请确认是有意为之）
+
+1. **OUR SERVICES 的服务描述默认全部可见。** 早期版本做成 hover / 焦点才展开，
+   结果是整页唯一解释「这项服务到底做什么」的文案被藏在了一个很多人根本不会做的手势后面。
+   在一个以解释服务为目的的板块里，解释本身就是内容。现在 hover 只负责箭头位移，不承担信息披露。
+2. **WHAT WE SOURCE 的品类不做成等高卡片。** 九个品类的栅格跨度是成组挑选的，
+   每个断点每一行都必须正好填满列数（桌面 12 栏、平板 8 栏）—— 落单的跨度会在栅格里留出空洞。
+   改跨度请连着算一遍每行的和，不要只改单个品类。
 
 ### 替换占位图
 
@@ -191,7 +214,7 @@ Astro 对同特异性的规则按引入顺序判定优先级，而它的构建�
 | --- | --- |
 | `/` | ✅ **已发布首页** —— 目前唯一可被索引的 URL |
 | `/services` 及 `/services/{product-sourcing, supplier-verification, purchasing-order-management, quality-control, shipping-from-china}` | 预留 |
-| `/industries` 及 `/industries/{6 个品类}` | 预留 |
+| `/industries` 及 `/industries/{9 个品类}` | 预留 |
 | `/how-it-works` | 预留 |
 | `/about` | 预留 |
 | `/insights` 及 `/insights/{3 篇文章}` | 预留 |
