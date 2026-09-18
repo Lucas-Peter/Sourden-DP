@@ -16,9 +16,9 @@ SOURDEN 的品牌官网。SOURDEN 是一家面向小批发商、独立零售商�
 | 样式 | **原生 CSS** + 自定义属性设计令牌 | 无需预处理器；设计令牌是唯一数据源 |
 | 字体 | **Fontsource 可变字体**，自托管 | 无第三方请求，无布局抖动，无隐私/GDPR 风险 |
 | 内容 | `src/data/` 下的 **JS 数据模块** | 文案即数据，不写死在标签里 —— 见[内容模型](#内容模型) |
-| 托管 | **Cloudflare Pages** | 全球边缘节点、免费 TLS、Brotli 压缩、每个 PR 独立预览环境 |
-| 源码 | **GitHub** | Cloudflare Pages 直接从仓库构建 |
-| 加速 | **Cloudflare CDN** | 静态产物自动走边缘缓存 |
+| 托管 | **Cloudflare Workers**（静态资源模式） | 全球边缘节点、免费 TLS、**静态资源请求免费且不限量**、每个分支独立预览 URL |
+| 源码 | **GitHub** | Cloudflare Workers Builds 直接从仓库构建，每次推送自动部署 |
+| 缓存 | Cloudflare 边缘缓存 | 静态资源自动缓存并逐层回源，命中不回源 |
 
 没有运行时框架、没有 CSS 框架、没有统计代码、没有第三方脚本。
 
@@ -58,6 +58,7 @@ npm run verify       # 构建 + 审计  ← 每次推送前都要跑
 8. 编译后的 CSS 中**没有 Media Queries Level 4 范围语法**（见 [浏览器兼容](#浏览器兼容) —— 这属于"静默布局塌陷"类缺陷，所以直接让构建失败，而不是留给人工复核）。
 9. **共享核心样式表排在每个页面样式表之前** —— 见[样式表架构](#样式表架构)。
 10. **页面样式表不得重定义共享核心中已有的选择器** —— 同一节解释了这条规则的由来。
+11. **`wrangler.toml` 必须是一份合法的 Workers 配置** —— `name` 存在、`[assets] directory` 存在且指向真实产物、`_headers` 与 `_redirects` 已被复制进产物、且没有残留的 Pages 专用键。见[部署](#部署)。
 
 ---
 
@@ -69,14 +70,14 @@ npm run verify       # 构建 + 审计  ← 每次推送前都要跑
 ├── IMAGES.md                 # 摄影成片清单与裁切规则
 ├── .gitattributes            # 行尾归一（Windows 检出 / Linux 构建）
 ├── astro.config.mjs          # 构建、sitemap、浏览器下限  ← 请阅读里面的注释
-├── wrangler.toml             # Cloudflare Pages 配置 + 预留绑定
+├── wrangler.toml             # Cloudflare 部署配置 + 预留绑定  ← 部署失败先看这个文件
 ├── public/
 │   ├── _headers              # Cloudflare 安全与缓存响应头
 │   ├── _redirects            # Cloudflare 重定向规则
 │   ├── favicon.svg
 │   └── images/               # 占位图（见下文）
 ├── functions/
-│   ├── README.md             # 预留的 Pages Functions（规范 §36）
+│   ├── README.md             # 预留后端接入说明（规范 §36）
 │   └── api/                  # /api/inquiry · /api/upload · /api/contact
 ├── scripts/
 │   ├── audit.mjs             # 构建后质量闸门
@@ -237,7 +238,81 @@ JavaScript 只用于渐进增强。展现动画会设置一个内联的 `js-reve
 预留（V1 未使用 —— 见[后续后端](#后续后端)）：
 `PUBLIC_TURNSTILE_SITE_KEY`、`TURNSTILE_SECRET_KEY`、`R2_UPLOAD_BUCKET`、`INQUIRY_NOTIFY_TO`。
 
-> 抛开 `NEXT_PUBLIC_` 那类前缀不谈，这里的规则是 Astro 的规则：只有 `PUBLIC_` 前缀的变量会进入浏览器。**绝不**把密钥放在 `PUBLIC_` 名字下。密钥属于 Cloudflare Pages 后台的加密变量，永远不进本仓库。
+> 抛开 `NEXT_PUBLIC_` 那类前缀不谈，这里的规则是 Astro 的规则：只有 `PUBLIC_` 前缀的变量会进入浏览器。**绝不**把密钥放在 `PUBLIC_` 名字下。密钥属于 Cloudflare 控制台的加密变量，永远不进本仓库。
+
+### 构建期变量 vs 运行时变量（最容易搞错的一处）
+
+Cloudflare 把这两套变量**分开存放**，而本站点目前只用到构建期那一套：
+
+| 类型 | 何时被读取 | 在哪配 | 本站点是否用到 |
+| --- | --- | --- | --- |
+| **构建期** | `npm run build` 时由 Astro 内联进 HTML | Worker 项目 → **Settings → Build → Variables and secrets** | ✅ `PUBLIC_SITE_URL`、`PUBLIC_CONTACT_EMAIL` |
+| **运行时**（Worker 的 `env`） | 请求到达时由 Worker 脚本读取 | Worker 项目 → **Settings → Variables and secrets**（运行时那组） | ❌ V1 没有任何脚本 |
+
+`src/data/site.js` 里用的是 `import.meta.env.PUBLIC_SITE_URL`，也就是说它在**构建时就被写死进 HTML** 了。所以 `PUBLIC_SITE_URL` 必须配在 **Build** 那一组里 —— 配到运行时那组不会生效，canonical 和 sitemap 会继续指向 `src/data/site.js` 里的兜底域名。
+
+---
+
+## Cloudflare 配置说明（`wrangler.toml`）
+
+部署出问题时，第一个要看的文件就是它。逐字段说明：
+
+| 字段 | 值 | 作用 / 改动风险 |
+| --- | --- | --- |
+| `name` | `sourden-dp` | **必须与 Cloudflare 上的 Worker 项目名一致**，否则部署会推到另一个 Worker |
+| `compatibility_date` | `2026-09-18` | Workers 运行时版本。新建项目按官方建议填当天日期；改动它会同时改变许多默认行为，非必要别动 |
+| `workers_dev` | `true` | 允许用 `*.workers.dev` 域名访问 |
+| `preview_urls` | `true` | 每个分支独立预览 URL（还需在 Build 设置里打开 non-production branch builds） |
+| `[assets] directory` | `./dist` | **等价于 Pages 的「构建输出目录」**。改这里等于改部署内容 |
+| `[assets] html_handling` | `auto-trailing-slash` | 决定 URL 形态，见下表。**不要**改成 `force-trailing-slash`，那样每个 URL 都会多一个斜杠，与规范 §33 的路由表冲突 |
+| `[assets] not_found_handling` | `404-page` | 未匹配路径返回 `dist/404.html`，状态码是真实的 404 |
+| `[assets] binding` | *（不存在，正确）* | 只有存在 `main`（Worker 脚本）时才合法。纯静态项目里加上它会让部署直接失败 |
+
+`html_handling = "auto-trailing-slash"` 与 Astro `build.format: 'file'` 配合后的实际 URL 行为：
+
+| 访问 | 结果 |
+| --- | --- |
+| `/` | 200 → `dist/index.html` |
+| `/services` | 200 → `dist/services.html` |
+| `/services/product-sourcing` | 200 → `dist/services/product-sourcing.html` |
+| `/services.html` | 307 → `/services` |
+| `/services/` | 307 → `/services` |
+| `/不存在的路径` | 404 → `dist/404.html` |
+
+即：**干净、无扩展名、无尾斜杠的 URL 是规范地址并直接返回 200**，其余写法一律 307 归一 —— 正是规范 §33 要求的路由表，而且顺带解决了重复内容问题。
+
+### 本地复现 Cloudflare 的真实行为（排错用）
+
+这一条很重要，因为**有些问题本地 `npm run verify` 根本看不到，只在 Cloudflare 构建时才会炸** ——
+这个项目已经踩过一次（`wrangler.toml` 写成了 Pages 格式，本地全绿，部署直接失败）。
+
+用 wrangler 在本地起一个和 Cloudflare 一模一样的环境：
+
+```bash
+npx wrangler@latest dev
+# → http://127.0.0.1:8787
+```
+
+它会真实加载 `wrangler.toml`、`_headers`、`_redirects`，可以据此确认：
+
+| 访问 | 期望 |
+| --- | --- |
+| `/` | 200 |
+| `/services` | 200（不是 307 → `/services/`） |
+| `/services.html`、`/services/` | 307 → `/services` |
+| `/不存在的路径` | 404，且是我们自己的 404 页面 |
+| `/images/*.svg` 的响应头 | `Cache-Control: public, max-age=604800, …` |
+
+只想校验配置、不启动服务器：
+
+```bash
+npx wrangler@latest deploy --dry-run
+```
+
+配置有问题时它会在这一步就报错（比如缺少 `[assets] directory`），而不会等到线上才发现。
+
+> wrangler **故意没有**写进 `package.json`：它自带约 80MB 的运行时，装进依赖会让 Cloudflare 每次构建都变慢。
+> 按需 `npx` 调用即可，用完即弃。
 
 ---
 
@@ -262,40 +337,80 @@ git status          # .env 不应出现（它已被 git 忽略）
 
 `node_modules/`、`dist/`、`.astro/` 和 `.env*` 都已经在忽略规则里。
 
-### 2. 连接 Cloudflare Pages
+### 2. 连接 Cloudflare（Worker + 静态资源）
 
-1. Cloudflare 控制台 → **Workers & Pages** → **Create** → **Pages** →
-   **Connect to Git**。
+本项目部署为 **Worker（静态资源模式）** —— 也就是 Cloudflare 现在连接 Git 仓库时创建的形态，
+功能上等同于以前的 Pages 项目。
+
+> **⚠ 最容易踩的坑（本项目实际踩过一次）**
+> Cloudflare 有 **Pages** 和 **Workers** 两套东西，它们的配置文件**不通用**。
+> Worker 用 `[assets] directory`；Pages 用 `pages_build_output_dir`。
+> Workers Builds 执行的是 `wrangler deploy`，它不认识 `pages_build_output_dir`，
+> 于是会报「找不到入口点、也找不到资源目录」并让整个构建失败：
+> `Failed: error occurred while running deploy command`。
+> **本项目用 Worker，`wrangler.toml` 里绝不能再出现 `pages_build_output_dir`。**
+> `npm run verify` 现在会检查这一点。
+
+连接步骤：
+
+1. Cloudflare 控制台 → **Workers & Pages** → **Create** → 选择 **Worker**（不是 Pages）→
+   **Connect to Git** / **Import a repository**。
 2. 授权 GitHub 并选择本仓库。
-3. 构建设置 —— `wrangler.toml` 已声明输出目录，所以默认值就是对的：
+3. 构建设置：
 
    | 设置项 | 值 |
    | --- | --- |
-   | Framework preset | Astro |
+   | Framework preset | Astro（或 None，不影响结果） |
    | Build command | `npm run build` |
-   | Build output directory | `dist` |
+   | Deploy command | `npx wrangler deploy`（默认值，不要改） |
    | Node version | `22`（与 `.nvmrc` 一致） |
 
-4. **Settings → Environment variables** —— 为 Production 和 Preview 都添加
-   `PUBLIC_SITE_URL`。要在首次生产构建**之前**就设成真实域名（结尾不带斜杠），
-   否则 canonical 和 sitemap 会指向 `astro.config.mjs` 里的兜底域名。
-5. 部署。之后每次推送到 `main` 都会重新部署生产环境；每个 Pull Request 都会得到独立的预览 URL。
+   输出目录**不需要**在控制台填 —— 它在 `wrangler.toml` 的 `[assets] directory` 里。
+4. **Worker 名称必须与 `wrangler.toml` 里的 `name` 一致**（当前是 `sourden-dp`）。
+   不一致时 `wrangler deploy` 会推到另一个 Worker 上，而不是你打开的这个项目。
+   改名的话两处一起改。
+5. **Settings → Build → Variables and secrets** —— 添加 `PUBLIC_SITE_URL`
+   （真实域名，结尾不带斜杠），并且**生产环境和非生产环境都要加**。
+   它必须在首次生产构建**之前**就存在，否则 canonical 和 sitemap 会指向
+   `src/data/site.js` 里的兜底域名。
+   注意这是 **Build** 那一组，不是运行时那组 —— 原因见[构建期变量 vs 运行时变量](#构建期变量-vs-运行时变量最容易搞错的一处)。
+6. 部署。之后每次推送到 `main` 都会重新部署；在 Build 设置里打开
+   non-production branch builds 后，每个分支都会有独立预览 URL
+   （`wrangler.toml` 里的 `preview_urls = true` 已就位）。
 
 ### 3. 绑定自定义域名
 
-Pages 项目 → **Custom domains** → 添加域名。如果 DNS 已经在 Cloudflare 上，CNAME 会自动创建；否则按 Cloudflare 提示添加 CNAME 记录。TLS 证书自动签发。HTTP 会重定向到 HTTPS，且 `public/_headers` 已经下发 HSTS。
+Worker 项目 → **Settings → Domains & Routes** → **Add** → **Custom domain**。
+如果域名的 DNS 已经在 Cloudflare 上，CNAME 会自动创建；否则按提示添加。
+TLS 证书自动签发，HTTP 自动重定向到 HTTPS，`public/_headers` 已经下发 HSTS。
+
+> 与 Pages 的一点差异：Workers 只支持 **DNS 托管在 Cloudflare 上**的域名。
+> 如果域名解析在别处，要么先把 NS 迁到 Cloudflare，要么改用 Pages。
 
 ### 4. 上线后检查
 
-- `https://<域名>/robots.txt` → 包含正确的绝对 sitemap 地址。
-- `https://<域名>/sitemap-index.xml` → **只**包含 `/`。
-- `https://<域名>/services` → 返回 200 且带有 `noindex`。
-- 首页：查看源代码，确认 canonical 和 `og:image` 使用的是真实域名。
+按顺序验这五条，`html_handling` 的 URL 行为就全部覆盖到了：
+
+| 检查 | 期望结果 |
+| --- | --- |
+| `/robots.txt` | 200，且 sitemap 地址是绝对路径的真实域名 |
+| `/sitemap-index.xml` | 只包含 `/` 一条 |
+| `/services` | **200**，页面里带 `noindex` |
+| `/services.html` | **307** 跳转到 `/services`（说明 `html_handling` 生效） |
+| `/this-does-not-exist` | **404**，且显示的是我们自己的 404 页面（说明 `not_found_handling` 生效） |
+
+再补两条：
+
+- 首页查看源代码，确认 canonical 与 `og:image` 用的是真实域名。
 - 移动端跑一次 Lighthouse —— 预期无布局偏移（所有图片都声明了尺寸）。
+- 响应头检查：访问 `/images/hero-sourcing.svg`，应能看到
+  `Cache-Control: public, max-age=604800, stale-while-revalidate=86400`
+  —— 出现即说明 `_headers` 已被 Cloudflare 读取。
 
 ### 回滚
 
-Cloudflare Pages 保留每一次部署。**Deployments → ⋯ → Rollback to this deployment** 可立即恢复到上一次构建，无需重新构建。
+Worker 项目 → **Deployments** → 选中历史版本 → **Rollback**。
+Cloudflare 保留每一次部署，回滚是即时的，不需要重新构建。
 
 ---
 
@@ -304,22 +419,24 @@ Cloudflare Pages 保留每一次部署。**Deployments → ⋯ → Rollback to t
 站点目前是刻意保持静态的。当采购需求表单需要真正接收提交时（规范 §36），预期的 Cloudflare 形态是：
 
 ```text
-Cloudflare
-├── Pages Functions   → functions/api/{inquiry,upload,contact}
-├── D1                → customers · inquiries · inquiry_files
-├── R2                → 上传的采购参考文件
-└── Turnstile         → 公开表单的防垃圾提交
+Cloudflare Worker "sourden-dp"
+├── [assets]      → dist/（静态站点，请求免费且不限量）
+├── main（待添加） → Worker 脚本，处理 /api/*
+├── D1            → customers · inquiries · inquiry_files
+├── R2            → 上传的采购参考文件
+└── Turnstile     → 公开表单的防垃圾提交
 ```
 
 已就位的基础工作：
 
-- `functions/` —— Cloudflare Pages Functions 目录。放在
-  `functions/api/inquiry.js` 的文件会自动成为路由 `/api/inquiry`。
+- `functions/` —— 预留目录，**但 Workers 不会像 Pages 那样自动路由它**。
+  实现时的两条可选路线（以及推荐做法）写在 `functions/README.md` 里。
 - `wrangler.toml` —— D1 和 R2 绑定已注释掉，并写好了创建它们所需的
-  `wrangler` 命令。只有在资源真实存在之后才取消注释，否则 Pages 构建会因未知绑定而失败。
+  `wrangler` 命令。只有在资源真实存在之后才取消注释，否则构建会因未知绑定而失败。
+  加绑定时必须同时添加 `main`，因为绑定需要有脚本去消费它。
 - `.env.example` —— 预留的变量名，仅服务端使用的已标注。
 
-要记住的一个前提：Turnstile 校验**必须**在 Function 里做服务端校验，因为站点是静态的，任何客户端校验都可以被绕过。
+要记住的一个前提：Turnstile 校验**必须**在服务端做，因为站点是静态的，任何客户端校验都可以被绕过。
 
 `/sourcing-request` 表单预期的字段是：Name、Email、Country、Product、Description。
 

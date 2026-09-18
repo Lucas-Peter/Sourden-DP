@@ -1,29 +1,85 @@
 # ---------------------------------------------------------------------------
 # SOURDEN — Cloudflare configuration
 # ---------------------------------------------------------------------------
-# This file does two jobs:
+# The site deploys as a Cloudflare WORKER WITH STATIC ASSETS. That is the
+# current equivalent of what a Pages project used to do, and it is what the
+# Cloudflare dashboard creates when you connect a Git repository today.
 #
-# 1. It tells Cloudflare Pages where the static build output lives.
-# 2. It declares the bindings that the *reserved* API layer (spec §36) will
-#    need. Everything below the "RESERVED" marker is commented out on purpose:
-#    uncomment a block only after the matching Cloudflare resource exists,
-#    otherwise the Pages build fails on an unknown binding.
+# The three fields Cloudflare actually needs:
+#   name                → must match the Worker project connected to this repo
+#   compatibility_date  → Workers runtime version
+#   assets.directory    → what used to be `pages_build_output_dir` for Pages
 #
-# Deployment: connect the GitHub repo to Cloudflare Pages and leave the
-# dashboard build settings at their defaults — Wrangler reads them here.
+# IMPORTANT — do NOT reintroduce `pages_build_output_dir`.
+# Workers Builds runs `wrangler deploy`, which does not understand that key:
+# it finds no entry point and no assets directory and fails the whole build
+# with "If there is code to deploy, you can either: Specify an entry-point …".
 # ---------------------------------------------------------------------------
 
-name = "sourden-website"
-pages_build_output_dir = "dist"
-compatibility_date = "2025-01-01"
+name = "sourden-dp"
+compatibility_date = "2026-09-18"
+
+# Serve the Worker on its *.workers.dev URL as well as any custom domain.
+workers_dev = true
+
+# Give every non-production branch its own preview URL.
+# Must also be enabled under the Worker's Build settings.
+preview_urls = true
+
+# ---------------------------------------------------------------------------
+# Static assets
+# ---------------------------------------------------------------------------
+# Everything in `assets.directory` is uploaded and served from Cloudflare's
+# edge. Requests that match an asset are FREE and UNLIMITED — they do not
+# invoke (or bill) a Worker script. There is no script in V1 at all.
+
+[assets]
+directory = "./dist"
+
+# HTML URL handling. With Astro `build.format: 'file'` (see astro.config.mjs)
+# every page is emitted as `<route>.html`, and this setting produces exactly
+# the clean, slash-less URLs documented in the spec (§33):
+#
+#   /services                        → 200  dist/services.html
+#   /services/product-sourcing       → 200  dist/services/product-sourcing.html
+#   /services.html, /services/       → 307  to /services   (canonicalised)
+#
+# Do not switch to `force-trailing-slash`: it would put a slash on every URL
+# and contradict the route table.
+html_handling = "auto-trailing-slash"
+
+# Unmatched paths serve dist/404.html with a real 404 status, instead of
+# Cloudflare's generic error page.
+not_found_handling = "404-page"
+
+# NOTE on `binding = "ASSETS"` — deliberately absent. The assets binding only
+# exists to let a Worker SCRIPT read assets, and is only valid alongside a
+# `main` entry point. Adding it while there is no script is a config error.
+
+# `_headers` and `_redirects` are supported natively for Workers with static
+# assets, exactly as they were on Pages. Both files live in public/ and are
+# copied into dist/ by the build — see public/_headers and public/_redirects.
 
 # ---------------------------------------------------------------------------
 # RESERVED — future sourcing-request backend (spec §36)
 # ---------------------------------------------------------------------------
-# Prerequisites before uncommenting:
+# Everything below is commented out on purpose: uncomment a block only after
+# the matching resource exists, otherwise the deploy fails on an unknown
+# binding.
+#
+# Two things must happen BEFORE any binding is useful here:
+#
+#   1. Add a Worker script and point `main` at it, e.g.
+#        main = "./worker/index.ts"
+#      A binding with no script to consume it is meaningless, and
+#      `assets.binding = "ASSETS"` only becomes valid once `main` exists.
+#
+#   2. Note that Workers does NOT auto-route a `functions/` folder the way
+#      Pages did. See functions/README.md for the two supported options.
+#
+# Prerequisites:
 #   npx wrangler d1 create sourden-db
 #   npx wrangler r2 bucket create sourden-uploads
-# then paste the IDs printed by those commands below.
 
 # [[d1_databases]]
 # binding = "DB"
@@ -35,7 +91,9 @@ compatibility_date = "2025-01-01"
 # bucket_name = "sourden-uploads"
 
 # [vars]
-# Non-secret environment values shared by all Pages Functions.
-# Secrets (TURNSTILE_SECRET_KEY, INQUIRY_NOTIFY_TO) belong in the Pages
-# dashboard as encrypted variables, never in this file.
+# Non-secret environment values shared by the Worker script.
+# Secrets (TURNSTILE_SECRET_KEY, INQUIRY_NOTIFY_TO) belong in the Cloudflare
+# dashboard as encrypted values, never in this file.
+# NOTE: build-time variables are separate — PUBLIC_SITE_URL must be set in the
+# Worker's BUILD variables, because `import.meta.env` is inlined at build time.
 # PUBLIC_CONTACT_EMAIL = "hello@sourden.com"
