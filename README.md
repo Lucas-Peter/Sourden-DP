@@ -69,6 +69,7 @@ npm run verify       # 构建 + 审计  ← 每次推送前都要跑
 ├── README.md                 # 本文件
 ├── IMAGES.md                 # 摄影成片清单与裁切规则
 ├── .gitattributes            # 行尾归一（Windows 检出 / Linux 构建）
+├── .nojekyll                 # 空的保险文件，禁用 GitHub Pages 的 Jekyll 构建
 ├── astro.config.mjs          # 构建、sitemap、浏览器下限  ← 请阅读里面的注释
 ├── wrangler.toml             # Cloudflare 部署配置 + 预留绑定  ← 部署失败先看这个文件
 ├── public/
@@ -337,6 +338,44 @@ git status          # .env 不应出现（它已被 git 忽略）
 
 `node_modules/`、`dist/`、`.astro/` 和 `.env*` 都已经在忽略规则里。
 
+#### 排错：推送后 GitHub 报 “Build with Jekyll” 失败
+
+现象：推送之后 Actions 里冒出一个 **Build with Jekyll** 工作流，日志报：
+
+```text
+YAML Exception reading /github/workspace/src/layouts/BaseLayout.astro: mapping values are not allowed in this context
+ERROR: YOUR SITE COULD NOT BE BUILT:
+  Invalid YAML front matter in /github/workspace/src/pages/services/index.astro
+```
+
+这**不是代码缺陷**，是仓库设置问题。GitHub Pages 被打开了，而它的默认构建器是 Jekyll。
+Astro 页面文件以 `---` 开头，Jekyll 会把它当成 YAML front matter 去解析，
+而 `.astro` 里写的是 `const x: string = …` 这类 TypeScript 语法，自然解析不了，于是整个构建中止。
+（那些 “Invalid YAML front matter” 的报错信息具有误导性 —— 真正的 `.astro` 文件语法完全正确。）
+
+本项目的托管在 Cloudflare，GitHub 只是源码仓库，所以**正解是把 GitHub Pages 关掉**：
+
+1. 仓库主页右侧 **GitHub Pages** 卡片 → 点 `⋯` → **Unpublish site**；
+   或者 **Settings → Pages → Build and deployment** → Source 选 **Deploy from a branch**
+   → 把**分支下拉框选成 `None`** → **Save**。
+2. 回到 **Actions**，那条失败记录直接忽略或删掉即可。此后推送不会再触发它。
+
+关掉之后，Cloudflare 的部署完全不受影响 —— 两套系统互不相干，这个红色 ✗ 只是噪音。
+
+仓库根目录已放了一个**空的 `.nojekyll`** 作为保险：万一以后又把 Pages 打开，
+它会跳过 Jekyll 处理，不会再吐上面那串看不懂的报错（`npm run verify` 会检查它是否存在）。
+但要说清楚：**`.nojekyll` 是防呆，不是修复**。只要 Pages 是开着的，
+GitHub 就会去发布仓库根目录，而根目录没有 `index.html`，那并不是一个可用的站点。
+
+#### GitHub 与 Cloudflare 的分工
+
+| 平台 | 角色 | 会不会构建这个站点 |
+| --- | --- | --- |
+| GitHub | 源码仓库 | **不会**（关掉 Pages 之后） |
+| Cloudflare | 托管 | 会。每次推送 `main` 自动 `npm run build` + `wrangler deploy` |
+
+所以 GitHub 上出现红色 ✗ 不等于站点有问题 —— 看 Cloudflare 的 **Deployments** 才准。
+
 ### 2. 连接 Cloudflare（Worker + 静态资源）
 
 本项目部署为 **Worker（静态资源模式）** —— 也就是 Cloudflare 现在连接 Git 仓库时创建的形态，
@@ -454,3 +493,4 @@ Cloudflare Worker "sourden-dp"
 - [ ] 无编造的数据、客户或证言
 - [ ] 品牌字标使用 `SOURDEN`，正文行文中使用 `Sourden`
 - [ ] 预留页仍然带有 `noindex`
+- [ ] GitHub Pages 保持关闭状态（GitHub 只做源码仓库，构建交给 Cloudflare）
