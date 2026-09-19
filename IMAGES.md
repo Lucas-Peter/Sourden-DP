@@ -199,8 +199,8 @@ is gone.
   finished circuit board on a bench", not "Electronics sourcing".
 - **Width and height are always emitted**, which reserves the space before the
   file loads and keeps Cumulative Layout Shift at zero. Never remove them.
-- Everything below the fold loads `lazy` with `decoding="async"`. Only the hero
-  is eager.
+- Everything below the fold loads `lazy` with `decoding="async"`. Only the two
+  above-the-fold hero images (homepage and `/sourcing-request`) load eagerly.
 - Hover scale is 1.03 over the standard duration, and is suppressed entirely
   under `prefers-reduced-motion`.
 

@@ -96,4 +96,4 @@ not_found_handling = "404-page"
 # dashboard as encrypted values, never in this file.
 # NOTE: build-time variables are separate — PUBLIC_SITE_URL must be set in the
 # Worker's BUILD variables, because `import.meta.env` is inlined at build time.
-# PUBLIC_CONTACT_EMAIL = "hello@sourden.com"
+# PUBLIC_CONTACT_EMAIL = "service@sourden.com"
