@@ -103,3 +103,67 @@ Hono 之类的框架来做路由，而不是依赖这个兼容命令。
 因为站点是静态的，组件令牌虽然由浏览器校验，但可以被伪造。**务必在脚本内对
 `https://challenges.cloudflare.com/turnstile/v0/siteverify` 做一次服务端重新校验。**
 仅做客户端校验等于完全没有防护。
+
+---
+
+## 前端已经等着这两个接口了 —— 请照着实现
+
+`src/pages/sourcing-request.astro` 的 `/sourcing-request` 页面已经上线，表单会真的
+向下面两个地址发请求。**接口还不存在时，表单会落到"发送失败"状态并给出邮件兜底**，
+不会假装成功 —— 这是有意设计（规范 §23：只有 2xx 才算成功）。
+
+当前线上行为：Worker 只有静态资源，`not_found_handling = "404-page"`，
+所以 `POST /api/inquiry` 今天返回 404，前端据此显示错误状态。**不会出现假成功。**
+
+### `POST /api/upload` —— 单文件，逐个上传
+
+`multipart/form-data`，两个字段：
+
+| 字段 | 内容 |
+| --- | --- |
+| `file` | 文件本体，filename 为原始文件名 |
+| `name` | 原始文件名（字符串，冗余但便于日志） |
+
+**必须**返回 2xx 且响应体是 JSON `{ "key": "<存储键>" }`。
+前端按顺序一个文件一个请求地传；只要有一个失败，**整个提交就会中止**，
+不会把缺文件的请求发出去。2xx 但没有 `key` 也会被当成失败。
+
+限制在 `src/lib/inquiry.ts` 的 `FILE_RULES` 里，**服务端要独立再校验一遍**：
+`.jpg/.jpeg/.png/.webp/.pdf`、最多 10 个、单个最大 10 MB。
+
+### `POST /api/inquiry` —— JSON
+
+只有 **4 个必填项**：`product.name`、`destination.country`、`contact.name`、
+`contact.email`。**空的可选项会被整个省略** —— 所以不要假设某个键一定存在。
+
+```json
+{
+  "product": {
+    "name": "custom packaging boxes",
+    "specifications": "…",
+    "customization": "…",
+    "targetPrice": { "amount": 1.2, "currency": "USD" }
+  },
+  "files": [{ "name": "ref.png", "size": 4096, "type": "image/png", "key": "…" }],
+  "order":      { "quantity": "…", "frequency": "…", "stage": "…" },
+  "destination":{ "country": "United States", "city": "…" },
+  "business":   { "type": "…", "website": "…" },
+  "contact":    { "name": "…", "email": "…", "whatsapp": "…", "preferredMethod": "email" },
+  "additionalInformation": "…",
+  "turnstileToken": "…"
+}
+```
+
+- `targetPrice.amount` 只有填了数字才有；`currency` 单独填了也会有。
+- `files[].key` 是上一步 `/api/upload` 返回的键；没上传文件时 `files` 是 `[]`。
+- `turnstileToken` 在未配置 `PUBLIC_TURNSTILE_SITE_KEY` 时是 `""`。
+- **2xx = 成功，其余一律失败**。请返回 JSON，前端不解析成功响应体。
+
+### 数据流向
+
+```
+浏览器 ──(每个文件一次)──> POST /api/upload ──> R2 ──> { key }
+   │
+   └──(全部成功后一次)──> POST /api/inquiry ──> D1 + 通知邮件 ──> 2xx
+```
+
