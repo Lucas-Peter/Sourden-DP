@@ -1,0 +1,51 @@
+---
+/**
+ * WhatHappensNext — spec §25
+ * ---------------------------------------------------------------------------
+ * Four steps, read left to right on desktop and top to bottom on mobile.
+ *
+ * WHY THIS IS NOT <ProcessTimeline>
+ *   The homepage timeline is a five-step horizontal rail with a connecting
+ *   line — the full Find → Verify → Purchase → Inspect → Ship journey. This
+ *   page needs a different thing: what happens to THIS request, in four steps,
+ *   as reassurance placed after the form. Reusing the rail would imply the
+ *   request has already started a full sourcing engagement.
+ *
+ * HOW IT AVOIDS BECOMING A CARD WALL
+ *   No boxes, no borders around each step, no backgrounds. A hairline above
+ *   each step and a brass number carry the structure — the same treatment the
+ *   homepage uses for its reasons and audience rows.
+ *
+ * The footnote is required by spec §25: a request is not an order.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from './SectionHeader.astro';
+import { whatHappensNext } from '../data/sourcing-request.js';
+---
+
+<section class="section sr-next" aria-labelledby="sr-next-title">
+  <div class="container">
+    <SectionHeader
+      id="sr-next-title"
+      eyebrow={whatHappensNext.eyebrow}
+      title={whatHappensNext.title}
+      class="sr-next__head"
+    />
+
+    <ol class="sr-steps" data-reveal-group>
+      {
+        whatHappensNext.steps.map((step) => (
+          <li class="sr-step">
+            <span class="num sr-step__num" aria-hidden="true">
+              {step.number}
+            </span>
+            <h3 class="sr-step__title">{step.title}</h3>
+            <p class="sr-step__desc">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="sr-next__footnote">{whatHappensNext.footnote}</p>
+  </div>
+</section>

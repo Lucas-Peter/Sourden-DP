@@ -1,0 +1,44 @@
+---
+/**
+ * BusinessFields — section 05 (spec §15)
+ * Kept deliberately light: two optional fields, no company registration
+ * number, no revenue, no employee count (spec §24).
+ *
+ * `website` uses type="text" with inputmode="url" rather than type="url":
+ * visitors paste "instagram.com/shop" without a scheme, and a native type="url"
+ * field would refuse to submit rather than let us accept it.
+ */
+import FormField from './FormField.astro';
+import FormSection from './FormSection.astro';
+import { businessTypeOptions, fields, formSectionsById } from '../../data/sourcing-request.js';
+
+const section = formSectionsById.business;
+const website = fields.website;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-business-type" label={fields.businessType.label}>
+    <select
+      class="sr-select"
+      id="sr-business-type"
+      name="businessType"
+      aria-describedby="sr-business-type-error"
+    >
+      <option value="">{fields.selectPlaceholder}</option>
+      {businessTypeOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+    </select>
+  </FormField>
+
+  <FormField id="sr-website" label={website.label} hint={website.hint}>
+    <input
+      class="sr-input"
+      id="sr-website"
+      name="website"
+      type="text"
+      inputmode="url"
+      autocomplete="url"
+      placeholder={website.placeholder}
+      aria-describedby="sr-website-hint sr-website-error"
+    />
+  </FormField>
+</FormSection>

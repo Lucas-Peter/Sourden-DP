@@ -1,0 +1,80 @@
+---
+/**
+ * FileUploadField — spec §11, §22
+ * ---------------------------------------------------------------------------
+ * A native file input, styled. Deliberately NOT a drag-and-drop dropzone:
+ * spec §29 requires this to work on mobile, and drop zones do not exist on a
+ * phone. Tapping the button opens the OS picker, which is the one upload
+ * affordance every visitor already knows.
+ *
+ * ACCESSIBILITY
+ *   The real <input type="file"> stays in the DOM and keeps focus and keyboard
+ *   behaviour; it is visually hidden and driven by a <label for> that looks
+ *   like a button. The focus ring is then drawn on that label via
+ *   `input:focus-visible + label`, so a keyboard user always sees where they
+ *   are. A `display:none` input would remove the field from the tab order
+ *   entirely — hence visually-hidden rather than hidden.
+ *
+ *   The visible text above the control is a <span>, not a <label>: the <label>
+ *   is busy opening the picker, so the input is named by the span through
+ *   `aria-labelledby` instead.
+ *
+ * V1 SCOPE — spec §22
+ *   Files are held in memory and listed; nothing is uploaded from this
+ *   component. The upload itself lives in `uploadFiles()` in src/lib/inquiry.ts
+ *   and is called once, on submit, so R2 can be wired in without touching this
+ *   markup. No base64, no localStorage, no optimistic "uploaded!" state.
+ * ---------------------------------------------------------------------------
+ */
+import { acceptAttribute, FILE_RULES, formatFileSize } from '../../lib/inquiry';
+import { fields } from '../../data/sourcing-request.js';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const copy = fields.files;
+
+const limitsText = copy.limits
+  .replace('{files}', String(FILE_RULES.maxFiles))
+  .replace('{size}', formatFileSize(FILE_RULES.maxBytes));
+---
+
+<div class="sr-field sr-filefield" data-file-field>
+  <span class="sr-field__label" id={`${id}-label`}>
+    <span>{copy.label}</span>
+  </span>
+
+  <p class="sr-field__hint">{copy.hint}</p>
+
+  <div class="sr-filefield__control">
+    <input
+      class="visually-hidden"
+      id={id}
+      name="files"
+      type="file"
+      multiple
+      accept={acceptAttribute}
+      aria-labelledby={`${id}-label`}
+      aria-describedby={`${id}-error`}
+      data-file-input
+    />
+    <label class="sr-filefield__picker" for={id} data-file-picker>{copy.choose}</label>
+    <p class="sr-filefield__limits">{limitsText}</p>
+  </div>
+
+  <p class="sr-filefield__empty" data-file-empty>{copy.empty}</p>
+
+  <ul
+    class="sr-filelist"
+    aria-label={copy.listLabel}
+    data-file-list
+    hidden
+  >
+  </ul>
+
+  <p class="sr-filefield__count" data-file-count hidden></p>
+
+  <p class="sr-field__error" id={`${id}-error`} hidden></p>
+</div>

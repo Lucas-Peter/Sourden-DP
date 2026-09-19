@@ -1,0 +1,588 @@
+---
+/**
+ * SourcingRequestForm — the page's reason to exist (spec §9–§23, §34, §46)
+ * ---------------------------------------------------------------------------
+ * Owns three things:
+ *   1. The form's markup: an introduction, seven numbered blocks, a submission
+ *      area, and the two terminal views (success, submission error).
+ *   2. The four submission states — default, submitting, success, error.
+ *   3. The bridge between the DOM and src/lib/inquiry.ts.
+ *
+ * WHY THE LOGIC IS NOT IN THIS FILE
+ *   Everything substantive — validation, the payload shape, the submit call,
+ *   the upload call, analytics — lives in src/lib/inquiry.ts as pure functions
+ *   with no DOM access. That is what lets the same rules run again on the
+ *   server, which spec §36 requires and which a handler wired to `document`
+ *   could never do.
+ *
+ * STATE HANDLING
+ *   · A validation failure lists the problems and links each to its field,
+ *     and NEVER clears what was typed (spec §23).
+ *   · A submission failure keeps every value and every selected file, names
+ *     the direct contact routes, and offers the whole brief as a mail draft so
+ *     a failed submission is not a dead end.
+ *   · Success is only shown when the request actually returned 2xx.
+ * ---------------------------------------------------------------------------
+ */
+import ArrowLink from './ArrowLink.astro';
+import Button from './Button.astro';
+import TurnstileWidget from './TurnstileWidget.astro';
+import AdditionalInformationFields from './form/AdditionalInformationFields.astro';
+import BusinessFields from './form/BusinessFields.astro';
+import ContactFields from './form/ContactFields.astro';
+import DestinationFields from './form/DestinationFields.astro';
+import OrderFields from './form/OrderFields.astro';
+import ProductFields from './form/ProductFields.astro';
+import RequirementFields from './form/RequirementFields.astro';
+
+import { site } from '../data/site.js';
+import { formIntro, states, submitSection } from '../data/sourcing-request.js';
+---
+
+<section class="section section--white sr-brief" aria-labelledby="sr-brief-title">
+  <div class="container sr-brief__inner">
+    <div class="sr-intro">
+      <p class="eyebrow">{formIntro.eyebrow}</p>
+      <h2 class="sr-intro__title" id="sr-brief-title">{formIntro.title}</h2>
+      <p class="sr-intro__lead">{formIntro.supporting}</p>
+      <p class="sr-intro__note">{formIntro.requiredNote}</p>
+    </div>
+
+    {/* Validation summary — hidden until a submit attempt fails validation.
+        tabindex="-1" so the script can move focus here. */}
+    <div class="sr-alert sr-alert--warning" data-validation-summary role="alert" tabindex="-1" hidden>
+      <p class="sr-alert__title" data-validation-title></p>
+      <ul class="sr-alert__list" data-validation-list></ul>
+    </div>
+
+    {/* Submission failure — spec §23. Keeps the visitor out of a dead end. */}
+    <div class="sr-alert sr-alert--error" data-submit-error role="alert" tabindex="-1" hidden>
+      <p class="eyebrow">{states.error.eyebrow}</p>
+      <h2 class="sr-alert__title">{states.error.title}</h2>
+      <p class="sr-alert__body" data-submit-error-body>{states.error.body}</p>
+
+      <p class="sr-alert__direct">{states.error.directTitle}</p>
+      <ul class="sr-alert__contacts">
+        <li>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        <li>
+          <a href={site.whatsapp.href} target="_blank" rel="noopener noreferrer">
+            WhatsApp
+          </a>
+        </li>
+      </ul>
+
+      <p class="sr-alert__fallback">
+        <a data-mailto-link href={`mailto:${site.email}`}>Send this request by email instead →</a>
+      </p>
+    </div>
+
+    <form
+      class="sr-form"
+      data-inquiry-form
+      data-contact-email={site.email}
+      method="post"
+      action="/api/inquiry"
+      enctype="multipart/form-data"
+      novalidate
+    >
+      <ProductFields />
+      <RequirementFields />
+      <OrderFields />
+      <DestinationFields />
+      <BusinessFields />
+      <ContactFields />
+      <AdditionalInformationFields />
+
+      <div class="sr-submit" id="sr-submit">
+        <div class="sr-submit__head">
+          <p class="eyebrow">{submitSection.eyebrow}</p>
+          <h2 class="sr-submit__title">{submitSection.title}</h2>
+          <p class="sr-submit__lead">{submitSection.supporting}</p>
+        </div>
+
+        <TurnstileWidget />
+
+        <div class="sr-submit__actions">
+          <button class="btn sr-submit__button" type="submit" data-submit-button>
+            <span data-submit-label>{submitSection.button}</span>
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        {/* aria-live so the submitting state is announced, not just drawn. */}
+        <p class="sr-submit__status" data-submit-status aria-live="polite"></p>
+
+        <p class="sr-submit__fineprint">
+          We use what you send us to reply to this request. Nothing else, and never sold on.
+        </p>
+      </div>
+    </form>
+
+    {/* Success — replaces the form. Never rendered visible on first paint. */}
+    <div class="sr-success" data-success-view tabindex="-1" hidden>
+      <p class="eyebrow">{states.success.eyebrow}</p>
+      <h2 class="sr-success__title">{states.success.title}</h2>
+      <p class="sr-success__body">{states.success.body}</p>
+      <p class="sr-success__secondary">{states.success.secondary}</p>
+
+      <div class="sr-success__actions">
+        <Button href="/" label={states.success.home} arrow />
+        <ArrowLink href="/services" label={states.success.services} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import {
+    FILE_RULES,
+    buildPayload,
+    buildRequestSummary,
+    formatFileSize,
+    submitInquiry,
+    track,
+    uploadFiles,
+    validate,
+  } from '../lib/inquiry';
+  import type { FieldErrors, InquiryValues, SelectedFile } from '../lib/inquiry';
+  import {
+    businessTypeOptions,
+    fields,
+    orderFrequencyOptions,
+    preferredMethodOptions,
+    stageOptions,
+    states,
+    submitSection,
+    validationMessages,
+  } from '../data/sourcing-request.js';
+
+  const form = document.querySelector<HTMLFormElement>('[data-inquiry-form]');
+
+  if (form) {
+    /* ------------------------------------------------------------ elements */
+    const fileInput = form.querySelector<HTMLInputElement>('[data-file-input]');
+    const fileList = form.querySelector<HTMLElement>('[data-file-list]');
+    const fileEmpty = form.querySelector<HTMLElement>('[data-file-empty]');
+    const fileCount = form.querySelector<HTMLElement>('[data-file-count]');
+    const filePicker = form.querySelector<HTMLElement>('[data-file-picker]');
+    const fileError = document.getElementById('sr-files-error');
+
+    const submitButton = form.querySelector<HTMLButtonElement>('[data-submit-button]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
+    const submitStatus = form.querySelector<HTMLElement>('[data-submit-status]');
+
+    const summaryBox = document.querySelector<HTMLElement>('[data-validation-summary]');
+    const summaryTitle = document.querySelector<HTMLElement>('[data-validation-title]');
+    const summaryList = document.querySelector<HTMLElement>('[data-validation-list]');
+
+    const errorBox = document.querySelector<HTMLElement>('[data-submit-error]');
+    const errorBody = document.querySelector<HTMLElement>('[data-submit-error-body]');
+    const mailtoLink = document.querySelector<HTMLAnchorElement>('[data-mailto-link]');
+    const successView = document.querySelector<HTMLElement>('[data-success-view]');
+
+    const turnstile = document.querySelector<HTMLElement>('[data-turnstile]');
+
+    /* --------------------------------------------------------------- state */
+    let selected: SelectedFile[] = [];
+    let submitting = false;
+    let started = false;
+    const openedAt = Date.now();
+
+    /** value → label, for the plain-text fallback summary. */
+    const labelMap: Record<string, string> = {};
+    for (const option of [
+      ...orderFrequencyOptions,
+      ...stageOptions,
+      ...businessTypeOptions,
+      ...preferredMethodOptions,
+    ]) {
+      labelMap[option.value] = option.label;
+    }
+
+    /** Fill `{placeholder}` tokens in a copy string. */
+    const message = (template: string, values: Record<string, string>): string =>
+      Object.entries(values).reduce(
+        (text, [key, value]) => text.replace(`{${key}}`, value),
+        template
+      );
+
+    track('view_sourcing_request');
+
+    /* --------------------------------------------------------------- files */
+    function renderFiles(): void {
+      const hasFiles = selected.length > 0;
+
+      if (fileList) {
+        fileList.textContent = '';
+        for (const item of selected) {
+          const li = document.createElement('li');
+          li.className = 'sr-filelist__item';
+
+          const name = document.createElement('span');
+          name.className = 'sr-filelist__name';
+          name.textContent = item.name;
+
+          const size = document.createElement('span');
+          size.className = 'sr-filelist__size';
+          size.textContent = formatFileSize(item.size);
+
+          const remove = document.createElement('button');
+          remove.type = 'button';
+          remove.className = 'sr-filelist__remove';
+          remove.setAttribute('aria-label', message(fields.files.remove, { name: item.name }));
+          remove.textContent = '×';
+          remove.addEventListener('click', () => {
+            selected = selected.filter((entry) => entry.id !== item.id);
+            clearFieldError('sr-files');
+            renderFiles();
+          });
+
+          li.append(name, size, remove);
+          fileList.append(li);
+        }
+        fileList.hidden = !hasFiles;
+      }
+
+      if (fileEmpty) fileEmpty.hidden = hasFiles;
+
+      if (fileCount) {
+        fileCount.hidden = !hasFiles;
+        fileCount.textContent = message(fields.files.listCount, {
+          count: String(selected.length),
+          max: String(FILE_RULES.maxFiles),
+        });
+      }
+
+      if (filePicker) {
+        filePicker.textContent = hasFiles ? fields.files.addMore : fields.files.choose;
+      }
+    }
+
+    function addFiles(incoming: File[]): void {
+      const problems: string[] = [];
+      let added = 0;
+
+      for (const file of incoming) {
+        if (selected.length >= FILE_RULES.maxFiles) {
+          problems.push(message(validationMessages.fileCount, { max: String(FILE_RULES.maxFiles) }));
+          break;
+        }
+        if (file.size > FILE_RULES.maxBytes) {
+          problems.push(
+            message(validationMessages.fileSize, {
+              name: file.name,
+              max: String(Math.round(FILE_RULES.maxBytes / (1024 * 1024))),
+            })
+          );
+          continue;
+        }
+        if (!isAllowedType(file)) {
+          problems.push(message(validationMessages.fileType, { name: file.name }));
+          continue;
+        }
+        // Adding the same file twice would upload it twice.
+        if (selected.some((entry) => entry.name === file.name && entry.size === file.size)) {
+          continue;
+        }
+
+        selected.push({
+          id: `${file.name}-${file.size}-${selected.length}-${openedAt}`,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          file,
+        });
+        added += 1;
+      }
+
+      renderFiles();
+
+      if (problems.length > 0 && fileError) {
+        fileError.textContent = problems.join(' ');
+        fileError.hidden = false;
+        fileInput?.setAttribute('aria-invalid', 'true');
+      } else {
+        clearFieldError('sr-files');
+      }
+
+      if (added > 0) {
+        track('upload_sourcing_file', {
+          fileCount: selected.length,
+          hasFiles: true,
+        });
+      }
+    }
+
+    function isAllowedType(file: File): boolean {
+      const extension = `.${file.name.split('.').pop()?.toLowerCase() ?? ''}`;
+      return (FILE_RULES.extensions as readonly string[]).includes(extension);
+    }
+
+    fileInput?.addEventListener('change', () => {
+      addFiles(Array.from(fileInput.files ?? []));
+      // Reset so picking the same file again still fires `change`.
+      fileInput.value = '';
+      markStarted();
+    });
+
+    /* ------------------------------------------------------------- reading */
+    function readValues(): InquiryValues {
+      const valueOf = (name: string): string => {
+        const control = form!.elements.namedItem(name);
+        if (
+          control instanceof HTMLInputElement ||
+          control instanceof HTMLTextAreaElement ||
+          control instanceof HTMLSelectElement
+        ) {
+          return control.value;
+        }
+        return '';
+      };
+
+      const chosen = form!.querySelector<HTMLInputElement>(
+        'input[name="preferredMethod"]:checked'
+      );
+
+      return {
+        productName: valueOf('productName'),
+        specifications: valueOf('specifications'),
+        customization: valueOf('customization'),
+        currency: valueOf('currency'),
+        targetPrice: valueOf('targetPrice'),
+        quantity: valueOf('quantity'),
+        frequency: valueOf('frequency'),
+        stage: valueOf('stage'),
+        country: valueOf('country'),
+        cityPostcode: valueOf('cityPostcode'),
+        businessType: valueOf('businessType'),
+        website: valueOf('website'),
+        name: valueOf('name'),
+        email: valueOf('email'),
+        whatsapp: valueOf('whatsapp'),
+        preferredMethod: chosen?.value ?? '',
+        additionalInformation: valueOf('additionalInformation'),
+      };
+    }
+
+    /* -------------------------------------------------------------- errors */
+    function clearFieldError(controlId: string): void {
+      const error = document.getElementById(`${controlId}-error`);
+      const control = document.getElementById(controlId);
+      if (error) {
+        error.textContent = '';
+        error.hidden = true;
+      }
+      control?.removeAttribute('aria-invalid');
+    }
+
+    function applyErrors(errors: FieldErrors): number {
+      form!.querySelectorAll<HTMLElement>('.sr-field__error').forEach((node) => {
+        node.textContent = '';
+        node.hidden = true;
+      });
+      form!.querySelectorAll<HTMLElement>('[aria-invalid="true"]').forEach((node) => {
+        node.removeAttribute('aria-invalid');
+      });
+
+      const entries = Object.entries(errors) as Array<[keyof InquiryValues, string]>;
+      if (entries.length === 0) {
+        if (summaryBox) summaryBox.hidden = true;
+        return 0;
+      }
+
+      if (summaryList) summaryList.textContent = '';
+      if (summaryTitle) summaryTitle.textContent = validationMessages.summaryTitle;
+
+      for (const [field, text] of entries) {
+        const control = form!.querySelector<HTMLElement>(`[name="${field}"]`);
+        if (!control) continue;
+
+        control.setAttribute('aria-invalid', 'true');
+
+        // Every control's error line is `<control id>-error` — the convention
+        // established by FormField and FileUploadField, so no lookup table is
+        // needed here.
+        const error = document.getElementById(`${control.id}-error`);
+        if (error) {
+          error.textContent = text;
+          error.hidden = false;
+        }
+
+        if (summaryList) {
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = `#${control.id}`;
+          link.textContent = text;
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            control.focus();
+          });
+          li.append(link);
+          summaryList.append(li);
+        }
+      }
+
+      if (summaryBox) {
+        summaryBox.hidden = false;
+        summaryBox.focus();
+      }
+
+      return entries.length;
+    }
+
+    /* ------------------------------------------------------------- states */
+    function setSubmitting(state: boolean): void {
+      submitting = state;
+      form!.setAttribute('aria-busy', state ? 'true' : 'false');
+
+      // Every control is locked while the request is in flight, so the payload
+      // cannot change underneath it and a double submit is impossible (§23).
+      form!.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        'input, select, textarea'
+      ).forEach((control) => {
+        control.disabled = state;
+      });
+
+      if (submitButton) submitButton.disabled = state;
+      if (submitLabel) {
+        submitLabel.textContent = state ? submitSection.submitting : submitSection.button;
+      }
+      if (submitStatus) submitStatus.textContent = state ? submitSection.submitting : '';
+    }
+
+    function showSubmissionError(
+      values: InquiryValues | null,
+      files: SelectedFile[] = selected
+    ): void {
+      if (!errorBox) return;
+
+      if (values && mailtoLink) {
+        const summary = buildRequestSummary(values, files, labelMap);
+        // mailto URLs are length-limited by the OS handler; keep well clear.
+        const clipped = summary.length > 1600 ? `${summary.slice(0, 1600)}\n…` : summary;
+        const subject = `Sourcing request — ${values.productName.trim() || 'New enquiry'}`;
+        // The address is NOT percent-encoded: an encoded "@" is rejected by
+        // some desktop mail handlers.
+        mailtoLink.href =
+          `mailto:${form!.dataset.contactEmail ?? ''}` +
+          `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(clipped)}`;
+      }
+
+      errorBox.hidden = false;
+      errorBox.focus();
+    }
+
+    function showSuccess(): void {
+      form!.hidden = true;
+      if (summaryBox) summaryBox.hidden = true;
+      if (errorBox) errorBox.hidden = true;
+
+      if (successView) {
+        successView.hidden = false;
+        // Focus moves into the confirmation so a screen reader announces it
+        // rather than silently removing the form (§23, §31).
+        successView.focus();
+      }
+    }
+
+    /* ------------------------------------------------------------- submit */
+    function markStarted(): void {
+      if (started) return;
+      started = true;
+      track('start_sourcing_request');
+    }
+
+    form.addEventListener('input', markStarted, { once: true });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submitting) return;
+
+      // Each attempt starts from the default failure copy.
+      if (errorBody) errorBody.textContent = states.error.body;
+
+      // A configured Turnstile must be solved before anything is sent (§46).
+      const tokenControl = form.querySelector<HTMLInputElement>(
+        'input[name="cf-turnstile-response"]'
+      );
+      if (turnstile && !tokenControl?.value) {
+        if (errorBody) errorBody.textContent = validationMessages.turnstileRequired;
+        showSubmissionError(null);
+        return;
+      }
+
+      const values = readValues();
+      const errors = validate(values, validationMessages);
+      const errorCount = applyErrors(errors);
+
+      if (errorCount > 0) {
+        track('sourcing_request_error', {
+          reason: 'validation',
+          errorFields: Object.keys(errors).join(','),
+        });
+        return;
+      }
+
+      // Snapshot the files: the list stays interactive while the request is in
+      // flight, so the upload must send exactly what was submitted.
+      const filesAtSubmit = [...selected];
+      setSubmitting(true);
+
+      try {
+        let files = filesAtSubmit;
+
+        if (filesAtSubmit.length > 0) {
+          const upload = await uploadFiles(filesAtSubmit);
+          if (!upload.ok) {
+            // Spec §22: never pretend a file was received. The submission stops
+            // and the visitor chooses: drop the files, or email them instead.
+            if (fileError) {
+              fileError.textContent = `${fields.files.uploadFailed} (${upload.fileName})`;
+              fileError.hidden = false;
+            }
+            if (errorBody) errorBody.textContent = fields.files.uploadFailed;
+            showSubmissionError(values, filesAtSubmit);
+            track('sourcing_request_error', {
+              reason: 'upload',
+              fileCount: filesAtSubmit.length,
+            });
+            return;
+          }
+          files = filesAtSubmit.map((entry, index) => ({ ...entry, key: upload.keys[index] }));
+        }
+
+        const payload = buildPayload(values, files, tokenControl?.value ?? '');
+        track('submit_sourcing_request', {
+          fileCount: files.length,
+          hasFiles: files.length > 0,
+        });
+
+        const outcome = await submitInquiry(payload);
+
+        if (outcome.ok) {
+          track('sourcing_request_success', { durationMs: Date.now() - openedAt });
+          showSuccess();
+          return;
+        }
+
+        if (errorBody) errorBody.textContent = states.error.body;
+        showSubmissionError(values);
+        track('sourcing_request_error', {
+          reason: outcome.reason,
+          status: outcome.status ?? 0,
+        });
+      } catch {
+        // Anything unexpected lands here rather than leaving the button stuck.
+        if (errorBody) errorBody.textContent = states.error.body;
+        showSubmissionError(values);
+        track('sourcing_request_error', { reason: 'unexpected' });
+      } finally {
+        setSubmitting(false);
+      }
+    });
+
+    renderFiles();
+  }
+</script>

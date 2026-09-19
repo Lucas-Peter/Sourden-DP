@@ -1,0 +1,26 @@
+---
+/**
+ * AdditionalInformationFields — section 07 (spec §17)
+ * One open textarea. This is where a visitor says the thing the brief did not
+ * ask for, so it is the widest field on the page and the last one before the
+ * submission area.
+ */
+import FormField from './FormField.astro';
+import FormSection from './FormSection.astro';
+import { fields, formSectionsById } from '../../data/sourcing-request.js';
+
+const section = formSectionsById.additional;
+const copy = fields.additionalInformation;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-additional" label={copy.label} class="sr-field--wide">
+    <textarea
+      class="sr-textarea"
+      id="sr-additional"
+      name="additionalInformation"
+      rows="5"
+      placeholder={copy.placeholder}
+      aria-describedby="sr-additional-error"></textarea>
+  </FormField>
+</FormSection>

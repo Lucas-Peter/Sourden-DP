@@ -1,25 +1,83 @@
 ---
 /**
- * RESERVATION PAGE — /sourcing-request
+ * /sourcing-request — the primary conversion destination (spec §5, §6, §34)
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * This route used to render a reservation page. It is now the real thing: the
+ * sourcing brief every "Start a Sourcing Request" CTA on the site points at.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/sourcing-request` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ * STRUCTURE (spec §6 — the form is the focus, so nothing is allowed to push it
+ * down the page)
+ *   Hero          — eyebrow, H1, supporting copy, one documentary image
+ *   Brief         — seven numbered blocks + submission area + success/error
+ *   What happens  — four steps, after the form rather than before it
+ *   Statement     — one closing editorial line on ink
+ *   Outro         — two navigation links. Not a second marketing block (§27).
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * WHERE THE COPY LIVES
+ *   `src/data/sourcing-request.js` — every word, label and option set.
+ *   `src/lib/inquiry.ts`           — the types, validation and submit/upload
+ *                                    calls, deliberately free of DOM access so
+ *                                    the same rules can run server-side (§36).
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   The layout (and therefore the shared core stylesheet) must be imported
+ *   before the page stylesheet, or page rules silently lose same-specificity
+ *   conflicts. `npm run audit` fails the build if this regresses.
+ *
+ * NOT INDEXED BY DEFAULT? — no. This page is real, so it is indexable and it
+ *   appears in sitemap.xml. Its entry in `reservedTopLevel`
+ *   (src/data/routes.js) was removed in the same change; that list is what
+ *   drives the noindex/sitemap split.
  * ---------------------------------------------------------------------------
  */
-import ReservationPage from '../components/ReservationPage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/sourcing-request.css';
 
-import { reservationFor } from '../data/routes.js';
+import ArrowLink from '../components/ArrowLink.astro';
+import SourcingRequestForm from '../components/SourcingRequestForm.astro';
+import SourcingRequestHero from '../components/SourcingRequestHero.astro';
+import SupportingStatement from '../components/SupportingStatement.astro';
+import WhatHappensNext from '../components/WhatHappensNext.astro';
 
-const page = reservationFor('/sourcing-request');
+import { breadcrumbs, finalNav, sourcingRequestMeta } from '../data/sourcing-request.js';
+import { breadcrumbSchema, webPageSchema } from '../data/schema.js';
+
+const path = '/sourcing-request';
+
+/* `breadcrumbs` is written in the display shape the visible trail needs
+   ({ label }); the schema builder wants { name }. Mapped here rather than
+   restated, so the two can never disagree. */
+const schema = [
+  webPageSchema({
+    title: sourcingRequestMeta.title,
+    description: sourcingRequestMeta.description,
+    path,
+  }),
+  breadcrumbSchema(breadcrumbs.map((crumb) => ({ name: crumb.label, href: crumb.href }))),
+];
 ---
 
-<ReservationPage {...page} />
+<BaseLayout
+  title={sourcingRequestMeta.title}
+  description={sourcingRequestMeta.description}
+  path={path}
+  schema={schema}
+  hideStickyCta
+>
+  <SourcingRequestHero />
+
+  <SourcingRequestForm />
+
+  <WhatHappensNext />
+
+  <SupportingStatement />
+
+  {/* Spec §27 — navigation only. The page has already asked for the request;
+      a second hard sell underneath it would undercut the one above. */}
+  <nav class="section section--dark sr-outro" aria-label="Continue exploring Sourden">
+    <div class="container sr-outro__inner">
+      <ArrowLink href={finalNav.services.href} label={finalNav.services.label} />
+      <ArrowLink href={finalNav.howItWorks.href} label={finalNav.howItWorks.label} />
+    </div>
+  </nav>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+/**
+ * TurnstileWidget — spec §20
+ * ---------------------------------------------------------------------------
+ * Cloudflare Turnstile, wired but inert until a site key exists.
+ *
+ * THE RULE THIS COMPONENT EXISTS TO KEEP
+ *   With no key configured, it renders NOTHING — no empty box, no failed
+ *   widget, no console error. A form that shows a broken CAPTCHA is worse than
+ *   one with no CAPTCHA. The integration can therefore be switched on in
+ *   production by adding one build-time variable, with no change to the form.
+ *
+ * KEY HANDLING
+ *   `PUBLIC_TURNSTILE_SITE_KEY` is a PUBLIC build-time variable — the site key
+ *   is designed to be visible in the page. The SECRET key is never referenced
+ *   in this file or anywhere else in src/: verification happens server-side
+ *   (spec §36). Do not add a secret here.
+ *
+ * HOW THE TOKEN IS READ
+ *   Turnstile injects its response into a hidden input named
+ *   `cf-turnstile-response` inside this container. The form reads that input at
+ *   submit time rather than relying on `data-callback`: the callback is a global
+ *   name the third-party script must find already defined, and a challenge can
+ *   complete before a bundled module has run. Reading the input has no such
+ *   race, and it also means the field is submitted normally if JavaScript is
+ *   unavailable.
+ * ---------------------------------------------------------------------------
+ */
+const siteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '').trim();
+const enabled = siteKey.length > 0;
+---
+
+{
+  enabled && (
+    <div class="sr-turnstile" data-turnstile>
+      <div
+        class="cf-turnstile"
+        data-sitekey={siteKey}
+        data-theme="light"
+        data-size="flexible"
+        data-appearance="always"
+      />
+      {/* Loaded only when a key exists, so an unconfigured site makes no
+          third-party request at all. */}
+      <script
+        is:inline
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      />
+    </div>
+  )
+}

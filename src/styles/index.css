@@ -23,12 +23,18 @@
    a future page never ships the homepage's CSS:
 
      src/pages/index.astro          →  import '../styles/home.css'
+     src/pages/sourcing-request.astro
+                                    →  import '../styles/sourcing-request.css'
      src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
 
    ADDING A NEW PAGE
      1. Create `src/styles/<page>.css`.
-     2. `import '../styles/<page>.css'` in the page's frontmatter.
-     3. Reuse the component classes from components.css before inventing new
+     2. `import '../styles/<page>.css'` in the page's frontmatter — AFTER the
+        layout import, or the page sheet silently loses its conflicts.
+     3. Add the file name to `PAGE_SHEETS` in `scripts/audit.mjs`, which is
+        what enforces the next rule.
+     4. Namespace every selector in it (`.sr-` for the sourcing page) and
+        reuse the component classes from components.css before inventing new
         ones — that is what keeps the site visually coherent.
    =========================================================================== */
 

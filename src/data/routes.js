@@ -16,6 +16,9 @@
  *   from `src/pages/`). It then drops out of `noindexPaths` automatically and
  *   reappears in the sitemap. Nothing else needs editing.
  *
+ *   Done so far: /sourcing-request. Its copy now lives in
+ *   `src/data/sourcing-request.js`, and the route is indexable.
+ *
  * This module is intentionally free of any import that depends on Vite, so
  * `astro.config.mjs` can import it at build time.
  * ---------------------------------------------------------------------------
@@ -180,23 +183,6 @@ export const reservedTopLevel = [
       'Pricing, quotations and what is included',
       'Supplier verification and quality control',
       'Shipping options, timelines and destination markets',
-    ],
-  },
-  {
-    path: '/sourcing-request',
-    label: 'Start a Sourcing Request',
-    seoTitle: 'Start a Sourcing Request | Sourden',
-    seoDescription:
-      'Tell Sourden what you are looking to source from China — product, specifications, quantity, target price and destination.',
-    eyebrow: 'START WITH A REQUEST',
-    h1: 'Start a sourcing request.',
-    summary:
-      'Tell us what you are looking for and we will take it from there. A sourcing request takes a few minutes and there is no obligation.',
-    planned: [
-      'Your details: name, company, email, WhatsApp and country',
-      'Your request: product, description, quantity and target price',
-      'Destination market and reference URLs',
-      'Optional reference files, such as drawings, photos or existing product links',
     ],
   },
   {

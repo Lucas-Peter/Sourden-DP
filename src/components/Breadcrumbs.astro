@@ -1,0 +1,45 @@
+---
+/**
+ * Breadcrumbs — the trail shown at the top of every inner page.
+ *
+ * "Home" is always prepended, so a page passes only the part below it. Styles
+ * come from `.breadcrumb` in the shared core (components.css), which is what
+ * keeps this identical on every page.
+ *
+ * `aria-current="page"` marks the final crumb, and the separators are hidden
+ * from assistive technology — a screen reader should hear "Home, Services",
+ * not "Home, slash, Services".
+ */
+interface Props {
+  /** Trail excluding "Home". Omit `href` on the last item. */
+  items: Array<{ label: string; href?: string }>;
+  class?: string;
+}
+
+const { items, class: className = '' } = Astro.props;
+const trail = [{ label: 'Home', href: '/' }, ...items];
+---
+
+<nav class={className || undefined} aria-label="Breadcrumb">
+  <ol class="breadcrumb">
+    {
+      trail.map((crumb, index) => (
+        <li>
+          {crumb.href ? (
+            <a href={crumb.href}>
+              <span class="breadcrumb__label">{crumb.label}</span>
+            </a>
+          ) : (
+            <span aria-current="page">{crumb.label}</span>
+          )}
+
+          {index < trail.length - 1 && (
+            <span class="breadcrumb__sep" aria-hidden="true">
+              /
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

@@ -44,6 +44,20 @@ interface Props {
   noindex?: boolean;
   /** Extra JSON-LD nodes appended to the site graph. */
   schema?: Array<Record<string, unknown>>;
+  /**
+   * Suppress the sticky mobile CTA.
+   *
+   * Set this on any page that IS the primary CTA's destination — currently
+   * only /sourcing-request. The bar exists to carry "Start a Sourcing Request"
+   * to a visitor who has stopped scrolling; a page whose entire purpose is
+   * that form would be showing a button that links to itself.
+   *
+   * It also cannot rely on the usual behaviour of withdrawing when a
+   * `.final-cta` comes into view: that page has no `.final-cta`, so the
+   * observer would find nothing to watch and the bar would stay up for the
+   * whole scroll.
+   */
+  hideStickyCta?: boolean;
   bodyClass?: string;
 }
 
@@ -55,6 +69,7 @@ const {
   ogImage = `${IMAGE_DIR}/${images.ogDefault.file}`,
   noindex = false,
   schema = [],
+  hideStickyCta = false,
   bodyClass = '',
 } = Astro.props;
 
@@ -143,7 +158,7 @@ const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
     </main>
 
     <Footer />
-    <StickyMobileCTA />
+    {!hideStickyCta && <StickyMobileCTA />}
 
     <script>
       /* ---------------------------------------------------------------------

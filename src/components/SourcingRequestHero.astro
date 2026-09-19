@@ -1,0 +1,42 @@
+---
+/**
+ * SourcingRequestHero — spec §8, §43, §48
+ * ---------------------------------------------------------------------------
+ * Restrained editorial hero: eyebrow, H1, supporting copy, one optional
+ * secondary line, and a documentary image on the right.
+ *
+ * The H1 on this page is "Tell us what you're looking for." — the form itself
+ * is the call to action, so the hero carries no button (spec §8).
+ *
+ * IMAGE TREATMENT
+ *   The image is deliberately first in the DOM only on desktop, where it fills
+ *   the right column. On mobile it drops BELOW the text and is height-capped,
+ *   because spec §48 requires the visitor to reach the form quickly on a phone
+ *   — a full-height photograph above the fold would push the first field an
+ *   extra screen down.
+ * ---------------------------------------------------------------------------
+ */
+import Breadcrumbs from './Breadcrumbs.astro';
+import Media from './Media.astro';
+import { breadcrumbs, hero } from '../data/sourcing-request.js';
+---
+
+<section class="sr-hero">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} class="sr-hero__breadcrumbs" />
+
+    <div class="sr-hero__grid">
+      <div class="sr-hero__text">
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1 class="sr-hero__title">{hero.title}</h1>
+        <p class="sr-hero__lead">{hero.supporting}</p>
+        <p class="sr-hero__secondary">{hero.secondary}</p>
+      </div>
+
+      <div class="sr-hero__media">
+        <Media imageKey="sourcingRequestHero" ratio="4x3" priority />
+        <p class="media-caption sr-hero__caption">{hero.imageCaption}</p>
+      </div>
+    </div>
+  </div>
+</section>

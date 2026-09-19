@@ -1,0 +1,81 @@
+---
+/**
+ * ContactFields — section 06 (spec §16)
+ * Name and email are required; WhatsApp is not, and is not turned into a
+ * WhatsApp button — spec §16 forbids creating one unless a real business
+ * number is configured globally, and the number belongs in the footer, not
+ * mid-form where it would pull the visitor out of the brief.
+ *
+ * The preferred-contact group is a real <fieldset>: three controls share one
+ * label, and `name` on the radios makes them a single radio group for both the
+ * browser and a screen reader. Email is the default (spec §16), which also
+ * means the field is never left unanswered.
+ */
+import FormField from './FormField.astro';
+import FormSection from './FormSection.astro';
+import { fields, formSectionsById, preferredMethodOptions } from '../../data/sourcing-request.js';
+
+const section = formSectionsById.contact;
+const name = fields.name;
+const email = fields.email;
+const whatsapp = fields.whatsapp;
+const method = fields.preferredMethod;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-name" label={name.label} required>
+    <input
+      class="sr-input"
+      id="sr-name"
+      name="name"
+      type="text"
+      autocomplete="name"
+      aria-describedby="sr-name-error"
+    />
+  </FormField>
+
+  <FormField id="sr-email" label={email.label} required>
+    <input
+      class="sr-input"
+      id="sr-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      placeholder={email.placeholder}
+      aria-describedby="sr-email-error"
+    />
+  </FormField>
+
+  <FormField id="sr-whatsapp" label={whatsapp.label}>
+    <input
+      class="sr-input"
+      id="sr-whatsapp"
+      name="whatsapp"
+      type="tel"
+      autocomplete="tel"
+      placeholder={whatsapp.placeholder}
+      aria-describedby="sr-whatsapp-error"
+    />
+  </FormField>
+
+  <fieldset class="sr-field sr-field--group">
+    <legend class="sr-field__label">{method.label}</legend>
+
+    <div class="sr-radiogroup">
+      {
+        preferredMethodOptions.map((option) => (
+          <label class="sr-radio">
+            <input
+              class="sr-radio__input"
+              type="radio"
+              name="preferredMethod"
+              value={option.value}
+              checked={option.value === 'email'}
+            />
+            <span class="sr-radio__label">{option.label}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+</FormSection>

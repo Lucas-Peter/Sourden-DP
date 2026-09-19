@@ -54,6 +54,22 @@ export const images = {
       'Shown in a 5-column frame with a fixed 520px height, so the sides are cropped — keep the subject in the middle ~70% and the outer 15% each side clear of anything that matters. The 4:3 source ratio is required, not optional.',
   },
 
+  /* --------------------------------------------------- sourcing request -- */
+  sourcingRequestHero: {
+    file: 'sourcing-request-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'SOURCING BRIEF',
+    alt: 'Placeholder for a documentary photograph of product samples and reference materials being reviewed before sourcing.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'A workbench or table with product samples, reference drawings, measuring tools or packaging being handled and compared. It must read as evidence of the sourcing process — not an office scene, not a handshake, not smiling people in suits, and none of the China clichés (Great Wall / flag / panda / container port / globe).',
+    cropNote:
+      'Displayed 4:3 in a single column up to ~46% of the container on desktop, and height-capped at 240px on mobile (spec §48) — so the mobile frame crops the bottom and top of the source. Keep the subject inside the middle ~70%, horizontally and vertically.',
+  },
+
   /* ---------------------------------------------------------- industries -- */
   industryConsumerProducts: {
     file: 'industry-consumer-products.svg',

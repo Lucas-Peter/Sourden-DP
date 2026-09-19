@@ -1,0 +1,54 @@
+---
+/**
+ * FormField — label + control + helper text + error line (spec §30, §31)
+ * ---------------------------------------------------------------------------
+ * One field, one column. The control itself is supplied by the caller through
+ * the default slot, because the shape of the control is the only thing that
+ * varies between fields and hiding it behind a prop would mean re-inventing
+ * <select>, <textarea> and <input list> behind a type switch.
+ *
+ * ACCESSIBILITY CONTRACT
+ *   · The <label> is always visible and always tied to the control by `for`.
+ *     Placeholders are never used as labels (spec §30).
+ *   · Helper text gets an id so the control can name it in aria-describedby.
+ *   · The error line ALWAYS exists in the DOM, empty and `hidden`. The page
+ *     script fills it and flips `hidden`, which keeps the accessible
+ *     description stable instead of mounting and unmounting nodes while a
+ *     screen reader is reading.
+ *   · Required fields carry a visible "Required" flag. Optional fields carry
+ *     nothing: marking ten fields "Optional" would turn a short brief into a
+ *     wall of labels. The count is stated once in the form introduction.
+ * ---------------------------------------------------------------------------
+ */
+interface Props {
+  id: string;
+  label: string;
+  hint?: string;
+  required?: boolean;
+  class?: string;
+}
+
+const { id, label, hint, required = false, class: className = '' } = Astro.props;
+
+const classes = ['sr-field', className].filter(Boolean).join(' ');
+const hintId = hint ? `${id}-hint` : undefined;
+---
+
+<div class={classes}>
+  <label class="sr-field__label" for={id}>
+    <span>{label}</span>
+    {required && <span class="sr-field__required">Required</span>}
+  </label>
+
+  <slot />
+
+  {
+    hint && (
+      <p class="sr-field__hint" id={hintId}>
+        {hint}
+      </p>
+    )
+  }
+
+  <p class="sr-field__error" id={`${id}-error`} hidden />
+</div>

@@ -1,0 +1,49 @@
+---
+/**
+ * FormSection — a numbered block of the sourcing brief (spec §10, §32)
+ * ---------------------------------------------------------------------------
+ * Header reads "01 — PRODUCT" in brass uppercase, then the H2 the spec names
+ * for that section, then a hairline divider and the fields.
+ *
+ * WHY <section> AND NOT <fieldset>
+ *   The spec wants an H2 per block, and the whole block is one grid. A
+ *   <fieldset> cannot reliably act as a grid container, and a <legend> would
+ *   have to wrap a heading to keep the outline correct. `<section>` with
+ *   `aria-labelledby` gives the same grouping semantics with none of the traps.
+ *   A real <fieldset> IS used where it matters — the radio group in section 06,
+ *   which needs one label for several controls.
+ *
+ * The numbered eyebrow reuses the core `.eyebrow` and `.num` classes so it is
+ * typographically identical to the homepage's section labels.
+ * ---------------------------------------------------------------------------
+ */
+interface Props {
+  id: string;
+  /** Two-digit section number, e.g. "01". */
+  number: string;
+  /** Uppercase block name, e.g. "PRODUCT". */
+  label: string;
+  title: string;
+  class?: string;
+}
+
+const { id, number, label, title, class: className = '' } = Astro.props;
+
+const classes = ['sr-section', className].filter(Boolean).join(' ');
+---
+
+<section class={classes} aria-labelledby={`${id}-title`}>
+  <div class="sr-section__head">
+    <p class="eyebrow sr-section__eyebrow">
+      <span class="sr-section__num">{number}</span>
+      <span class="sr-section__dash" aria-hidden="true">—</span>
+      <span>{label}</span>
+    </p>
+
+    <h2 class="sr-section__title" id={`${id}-title`}>{title}</h2>
+  </div>
+
+  <div class="sr-section__fields">
+    <slot />
+  </div>
+</section>

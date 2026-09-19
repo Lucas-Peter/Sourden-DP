@@ -1,0 +1,48 @@
+---
+/**
+ * OrderFields — section 03 (spec §13)
+ * Quantity, order frequency, and where the visitor is in the process.
+ *
+ * `stage` exists to help Sourden read the lead, not to qualify it (spec §13) —
+ * which is why "Just exploring" is offered first rather than last.
+ */
+import FormField from './FormField.astro';
+import FormSection from './FormSection.astro';
+import {
+  fields,
+  formSectionsById,
+  orderFrequencyOptions,
+  stageOptions,
+} from '../../data/sourcing-request.js';
+
+const section = formSectionsById.order;
+const quantity = fields.quantity;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-quantity" label={quantity.label} hint={quantity.hint}>
+    <input
+      class="sr-input"
+      id="sr-quantity"
+      name="quantity"
+      type="text"
+      inputmode="numeric"
+      placeholder={quantity.placeholder}
+      aria-describedby="sr-quantity-hint sr-quantity-error"
+    />
+  </FormField>
+
+  <FormField id="sr-frequency" label={fields.orderFrequency.label}>
+    <select class="sr-select" id="sr-frequency" name="frequency" aria-describedby="sr-frequency-error">
+      <option value="">{fields.selectPlaceholder}</option>
+      {orderFrequencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+    </select>
+  </FormField>
+
+  <FormField id="sr-stage" label={fields.stage.label} class="sr-field--wide">
+    <select class="sr-select" id="sr-stage" name="stage" aria-describedby="sr-stage-error">
+      <option value="">{fields.selectPlaceholder}</option>
+      {stageOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+    </select>
+  </FormField>
+</FormSection>

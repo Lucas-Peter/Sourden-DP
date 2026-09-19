@@ -52,6 +52,15 @@
   --border-input: #8E8B84;
   --border-strong: #C9C6BE;
 
+  /* Error state — used by the sourcing-request form.
+     Accessibility note: spec §31 forbids signalling an error with colour
+     alone, so the meaning is carried by the message text, a leading marker
+     and `aria-invalid` on the control. This colour only reinforces it.
+     Measured: 6.59:1 on Ivory, 7.18:1 on White — WCAG AA for body text, and
+     comfortably past the 3:1 non-text rule when used as a border. */
+  --danger: #A32B21;
+  --danger-soft: rgba(163, 43, 33, 0.06);
+
   /* Dividers */
   --divider-light: var(--stone);
   --divider-dark: rgba(231, 229, 223, 0.16);
@@ -202,5 +211,9 @@
     --stone: CanvasText;
     --divider-dark: CanvasText;
     --divider-light: CanvasText;
+    /* Errors must survive forced colours too: the message text and the marker
+       on the error line still identify the field without any colour. */
+    --danger: CanvasText;
+    --danger-soft: Canvas;
   }
 }

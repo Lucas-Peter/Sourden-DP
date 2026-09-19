@@ -1,0 +1,41 @@
+---
+/**
+ * DestinationFields — section 04 (spec §14)
+ * Destination country (required) + city / postal code.
+ *
+ * The country field is a native <select> over `countries.js`. Spec §14 allows a
+ * searchable selector "if the existing project has a suitable component" and
+ * warns against adding a large dependency for one field; the project has none,
+ * and a native select is already type-to-jump on desktop and a searchable wheel
+ * on mobile. See the header of countries.js.
+ */
+import FormField from './FormField.astro';
+import FormSection from './FormSection.astro';
+import { OTHER_COUNTRY, countries } from '../../data/countries.js';
+import { fields, formSectionsById } from '../../data/sourcing-request.js';
+
+const section = formSectionsById.destination;
+const country = fields.country;
+const city = fields.cityPostcode;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-country" label={country.label} required>
+    <select class="sr-select" id="sr-country" name="country" aria-describedby="sr-country-error">
+      <option value="">{country.placeholder}</option>
+      {countries.map((name) => <option value={name}>{name}</option>)}
+      <option value={OTHER_COUNTRY}>{OTHER_COUNTRY}</option>
+    </select>
+  </FormField>
+
+  <FormField id="sr-city" label={city.label} hint={city.hint}>
+    <input
+      class="sr-input"
+      id="sr-city"
+      name="cityPostcode"
+      type="text"
+      placeholder={city.placeholder}
+      aria-describedby="sr-city-hint sr-city-error"
+    />
+  </FormField>
+</FormSection>

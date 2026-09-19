@@ -1,0 +1,28 @@
+---
+/**
+ * SupportingStatement — spec §26
+ * ---------------------------------------------------------------------------
+ * One restrained editorial statement, on ink, immediately before the closing
+ * navigation links. It is the last thing read before the footer, so it carries
+ * the brand's relationship philosophy rather than another explanation of the
+ * service.
+ *
+ * WHY INK
+ *   The page has been ivory and white since the header. A single dark band at
+ *   the end gives the closing statement weight without adding another
+ *   marketing block — which spec §27 explicitly forbids on a conversion page.
+ *
+ * The copy is deliberately not repeated anywhere else on the page (§26: "without
+ * repeating the homepage excessively").
+ * ---------------------------------------------------------------------------
+ */
+import { supportingStatement } from '../data/sourcing-request.js';
+---
+
+<section class="section section--dark sr-statement" aria-labelledby="sr-statement-title">
+  <div class="container sr-statement__inner">
+    <p class="eyebrow">{supportingStatement.eyebrow}</p>
+    <h2 class="sr-statement__title" id="sr-statement-title">{supportingStatement.title}</h2>
+    <p class="sr-statement__body">{supportingStatement.body}</p>
+  </div>
+</section>

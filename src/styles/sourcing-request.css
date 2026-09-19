@@ -1,0 +1,833 @@
+/* ===========================================================================
+   SOURDEN — /sourcing-request
+   ---------------------------------------------------------------------------
+   Page stylesheet for the sourcing brief (spec §6–§29, §43).
+
+   LOAD ORDER AND SCOPE — read before adding a rule
+   -------------------------------------------------
+   · This sheet is imported by `src/pages/sourcing-request.astro` AFTER the
+     layout, so `index.css` (the shared core) always wins on equal specificity.
+   · Every selector here is namespaced `.sr-`. The core stylesheet defines no
+     `.sr-` selector, so nothing in this file can shadow a shared component.
+     `npm run audit` enforces that rule rather than trusting it.
+   · Anything shared — buttons, eyebrows, numbers, media, breadcrumbs — is
+     used as-is from the core. This file only describes what is unique to
+     this page.
+   · Where a core element needs a different measure on this page the override
+     is scoped (` .sr-hero > .container `), never a redefinition.
+
+   WHY THE FORM IS 1040px
+   -------------------------------------------------
+   Spec §29 caps the form at ~960–1080px so it does not span the full 1280px
+   viewport. Everything else on the page keeps the standard container, so the
+   page still aligns with the header and footer.
+   =========================================================================== */
+
+/* ===========================================================================
+   HERO — spec §8, §43, §48
+   =========================================================================== */
+
+.sr-hero {
+  /* The header is in normal flow, so the hero only owes itself headroom. */
+  padding-block: clamp(40px, 5vw, 72px) var(--section-y-tight);
+}
+
+.sr-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-8));
+  align-items: center;
+}
+
+.sr-hero__text {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  min-width: 0;
+}
+
+.sr-hero__title {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+  max-width: 20ch;
+}
+
+.sr-hero__lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  max-width: 48ch;
+}
+
+/* The secondary line is an aside, not a second paragraph: a brass hairline
+   sets it apart using the accent the design system already allows. */
+.sr-hero__secondary {
+  padding-inline-start: var(--sp-4);
+  border-inline-start: 2px solid var(--brass);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  max-width: 46ch;
+}
+
+.sr-hero__media {
+  display: grid;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+/* Spec §48: on a phone the form must come quickly, so the hero image is
+   height-capped rather than allowed to run to its full 4:3 height. The
+   `object-fit: cover` inside .media crops it cleanly. */
+.sr-hero__media .media {
+  max-height: 240px;
+}
+
+@media (min-width: 768px) {
+  .sr-hero__grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .sr-hero__media .media {
+    max-height: none;
+  }
+}
+
+/* ===========================================================================
+   FORM INTRODUCTION + ALERTS — spec §9, §19, §23
+   =========================================================================== */
+
+/* The brief sits on a white sheet: it is the one part of the page the visitor
+   is meant to write on, and the change of surface says so without a heading. */
+.sr-brief {
+  background-color: var(--white);
+}
+
+/* Spec §29 — the form never spans the full 1280px viewport. */
+.sr-brief__inner {
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.sr-intro {
+  display: grid;
+  gap: var(--sp-4);
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.sr-intro__title {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  max-width: 24ch;
+}
+
+.sr-intro__lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* Stated once, next to nothing else, so it reads as a reassurance rather than
+   a warning. Marking ten fields "Optional" would do the opposite (§24, §38). */
+.sr-intro__note {
+  justify-self: start;
+  padding: var(--sp-2) var(--sp-4);
+  border: var(--rule) solid var(--stone);
+  border-radius: var(--radius);
+  background-color: var(--ivory);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+}
+
+/* Both alerts are the same treatment: a validation summary and a failed
+   submission are different messages, not different severities. The modifier
+   classes stay in the markup as semantic hooks. */
+.sr-alert {
+  display: grid;
+  gap: var(--sp-3);
+  margin-block-end: var(--sp-6);
+  padding: var(--sp-5) var(--sp-6);
+  border: var(--rule) solid var(--danger);
+  border-inline-start-width: 3px;
+  border-radius: var(--radius);
+  background-color: var(--danger-soft);
+  scroll-margin-top: calc(var(--header-h) + var(--sp-5));
+}
+
+/* Programmatic focus lands here so a screen reader reads the message. These
+   are announcement targets, not controls, so the ring is suppressed. */
+.sr-alert:focus,
+.sr-success:focus {
+  outline: none;
+}
+
+.sr-alert__title {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--danger);
+}
+
+.sr-alert__body {
+  max-width: 62ch;
+}
+
+.sr-alert__list {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-body-sm);
+}
+
+/* The validation summary links each problem to its field — an anchor that
+   looks like text but moves focus, which is why it is styled as a link. */
+.sr-alert__list a {
+  color: var(--danger);
+  font-weight: var(--fw-medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sr-alert--error .eyebrow {
+  color: var(--danger);
+}
+
+.sr-alert--error .sr-alert__title {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+}
+
+.sr-alert__direct {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+}
+
+.sr-alert__contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-body-sm);
+}
+
+.sr-alert__contacts a {
+  font-weight: var(--fw-medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Spec §46 — a failed submission is never a dead end: the whole brief can be
+   handed to the visitor's own mail client instead. */
+.sr-alert__fallback {
+  font-size: var(--fs-body-sm);
+}
+
+.sr-alert__fallback a {
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ===========================================================================
+   FORM SECTIONS — spec §10, §29, §32
+   =========================================================================== */
+
+.sr-form {
+  display: block;
+}
+
+/* Hairline dividers between blocks, never above the first (spec §10). */
+.sr-section {
+  padding-block: clamp(var(--sp-6), 4vw, var(--sp-8));
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.sr-section:first-of-type {
+  padding-block-start: 0;
+  border-top: 0;
+}
+
+.sr-section__head {
+  display: grid;
+  gap: var(--sp-3);
+  margin-block-end: clamp(var(--sp-5), 3vw, var(--sp-6));
+}
+
+/* "01 — PRODUCT". Reuses the core `.eyebrow` type and `.num` number styling;
+   only the arrangement is local. */
+.sr-section__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.sr-section__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-section__dash {
+  opacity: 0.55;
+}
+
+.sr-section__title {
+  font-size: var(--fs-list-title);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-display);
+}
+
+.sr-section__fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-5) var(--sp-6);
+}
+
+/* ===========================================================================
+   FIELDS — spec §30, §31
+   =========================================================================== */
+
+.sr-field {
+  display: grid;
+  gap: var(--sp-2);
+  /* Fieldsets default to `min-inline-size: min-content`, which lets a long
+     option string push the grid track wider than its share. */
+  min-width: 0;
+}
+
+.sr-field--wide,
+.sr-filefield {
+  grid-column: 1 / -1;
+}
+
+/* A <fieldset> used purely as a grouping box; the visual container is the
+   form's own rhythm, so the default border and padding are removed. */
+.sr-field--group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sr-field__label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-2);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+}
+
+/* Spec §30 — the required indicator is a word, not an asterisk, so it is
+   readable aloud and unambiguous. Optional fields carry nothing. */
+.sr-field__required {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+.sr-field__hint {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+  max-width: 68ch;
+}
+
+/* Spec §12 — the target price must never read as a quotation. */
+.sr-field__note {
+  color: var(--brass-ink);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+}
+
+/* The error line is always in the DOM (FormField/FileUploadField mount it
+   empty and hidden) so the accessible description never shifts underneath a
+   screen reader mid-sentence. */
+.sr-field__error {
+  display: flex;
+  gap: var(--sp-2);
+  color: var(--danger);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+}
+
+/* Spec §31 — colour is reinforcement, never the signal. The marker, the
+   message text and aria-invalid all carry the meaning independently. */
+.sr-field__error:not(:empty)::before {
+  content: '!';
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-block-start: 2px;
+  border: var(--rule) solid currentColor;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+}
+
+.sr-field__pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-4) var(--sp-5);
+}
+
+.sr-field__sub {
+  display: grid;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.sr-field__sublabel {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+/* ===========================================================================
+   CONTROLS
+   =========================================================================== */
+
+.sr-input,
+.sr-select,
+.sr-textarea {
+  width: 100%;
+  min-height: var(--btn-h); /* 52px on mobile — spec §29 */
+  padding: var(--sp-3) var(--sp-4);
+  border: var(--rule) solid var(--border-input);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  color: var(--ink);
+  /* 1rem, not --fs-body-sm: anything under 16px makes iOS Safari zoom the
+     whole page when the field receives focus. */
+  font-size: 1rem;
+  line-height: 1.45;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.sr-textarea {
+  min-height: calc(var(--btn-h) * 1.6);
+  resize: vertical;
+}
+
+.sr-input:focus-visible,
+.sr-select:focus-visible,
+.sr-textarea:focus-visible {
+  border-color: var(--ink);
+}
+
+.sr-input::placeholder,
+.sr-textarea::placeholder {
+  color: var(--muted);
+  opacity: 1; /* Firefox dims placeholders by default */
+}
+
+/* An invalid field keeps its layout: only colour and fill change, so nothing
+   reflows under the visitor's cursor while they are correcting it. */
+.sr-input[aria-invalid='true'],
+.sr-select[aria-invalid='true'],
+.sr-textarea[aria-invalid='true'] {
+  border-color: var(--danger);
+  background-color: var(--danger-soft);
+}
+
+/* ===========================================================================
+   PREFERRED CONTACT METHOD — spec §16
+   =========================================================================== */
+
+/* Native radios, enlarged, on 52px targets. No custom control is drawn: the
+   browser's own indicator is unambiguous, works in forced-colours mode and
+   needs no hidden-input workaround to stay keyboard operable. */
+.sr-radiogroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-6);
+}
+
+.sr-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--btn-h);
+  cursor: pointer;
+}
+
+.sr-radio__input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+.sr-radio__label {
+  font-size: var(--fs-body-sm);
+}
+
+/* ===========================================================================
+   FILE UPLOAD — spec §11, §22, §29, §46
+   =========================================================================== */
+
+.sr-filefield__control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-4);
+}
+
+/* A <label> for the visually-hidden input, so the whole affordance is
+   clickable and opens the OS picker — the one upload gesture every phone
+   already understands. */
+.sr-filefield__picker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--btn-h);
+  padding-inline: var(--sp-5);
+  border: var(--rule) solid var(--ink);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.sr-filefield__picker:hover {
+  background-color: var(--ink);
+  color: var(--white);
+}
+
+/* The real input keeps focus; the ring is drawn on the label the visitor can
+   actually see. `display: none` would remove the field from the tab order. */
+.sr-filefield__control .visually-hidden:focus-visible + .sr-filefield__picker {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.sr-filefield__limits,
+.sr-filefield__empty {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+}
+
+.sr-filefield__count {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+.sr-filefield__control input[aria-invalid='true'] + .sr-filefield__picker {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.sr-filelist {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sr-filelist__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);
+  border: var(--rule) solid var(--stone);
+  border-radius: var(--radius);
+  background-color: var(--ivory);
+  font-size: var(--fs-body-sm);
+}
+
+.sr-filelist__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sr-filelist__size {
+  flex: none;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 44px, not the 52px used by full-width controls: this sits inside a row and
+   a 52px target would make every listed file twice as tall. */
+.sr-filelist__remove {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.sr-filelist__remove:hover {
+  color: var(--ink);
+}
+
+/* ===========================================================================
+   SUBMISSION AREA — spec §18, §23
+   =========================================================================== */
+
+.sr-submit {
+  display: grid;
+  gap: var(--sp-5);
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+  padding-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.sr-submit__head {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.sr-submit__title {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+}
+
+.sr-submit__lead {
+  color: var(--muted);
+  max-width: 56ch;
+}
+
+.sr-submit__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+/* Full width on a phone, deliberate width on desktop — spec §29. */
+.sr-submit__button {
+  width: 100%;
+}
+
+.sr-submit__button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* Reserves its own line so the submitting state does not shift the layout —
+   and carries `aria-live` so it is announced, not merely drawn (§23, §31). */
+.sr-submit__status {
+  min-height: 1.5em;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+}
+
+.sr-submit__fineprint {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: var(--lh-snug);
+  max-width: 62ch;
+}
+
+/* Rendered only when PUBLIC_TURNSTILE_SITE_KEY is set, so an unconfigured
+   build makes no third-party request and shows no broken widget (§20). */
+.sr-turnstile {
+  padding-block: var(--sp-2);
+}
+
+/* ===========================================================================
+   SUCCESS — spec §23
+   =========================================================================== */
+
+.sr-success {
+  display: grid;
+  gap: var(--sp-4);
+  padding: clamp(var(--sp-6), 4vw, var(--sp-8));
+  border: var(--rule) solid var(--divider-light);
+  border-top: 3px solid var(--brass);
+  border-radius: var(--radius);
+  background-color: var(--ivory);
+}
+
+.sr-success__title {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  max-width: 24ch;
+}
+
+.sr-success__body {
+  max-width: 58ch;
+}
+
+.sr-success__secondary {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+  max-width: 58ch;
+}
+
+.sr-success__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-6);
+  margin-block-start: var(--sp-3);
+}
+
+/* ===========================================================================
+   WHAT HAPPENS NEXT — spec §25
+   =========================================================================== */
+
+.sr-next__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-8));
+}
+
+.sr-steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* No boxes: a hairline above each step carries the structure, the way the
+   homepage's reason and audience rows do. Spec §2 forbids card walls. */
+.sr-step {
+  display: grid;
+  gap: var(--sp-2);
+  align-content: start;
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.sr-step__title {
+  font-size: var(--fs-list-title);
+  line-height: var(--lh-snug);
+}
+
+.sr-step__desc {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+  max-width: 42ch;
+}
+
+.sr-next__footnote {
+  max-width: 68ch;
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  padding-inline-start: var(--sp-4);
+  border-inline-start: 2px solid var(--brass);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+}
+
+@media (min-width: 768px) {
+  .sr-section__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The currency select stays narrow; the amount takes the rest. */
+  .sr-field__pair--price {
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 1fr);
+  }
+
+  .sr-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sr-submit__button {
+    width: auto;
+    min-width: 260px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .sr-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ===========================================================================
+   CLOSING STATEMENT + NAVIGATION — spec §26, §27
+   ---------------------------------------------------------------------------
+   Both sections are ink, and they are adjacent on purpose: they read as one
+   closing band, the statement first and two quiet links underneath a hairline.
+   The bottom padding belongs to the footer, which is also ink, so the band
+   runs unbroken from the statement into the footer.
+   =========================================================================== */
+
+.sr-statement {
+  padding-block-end: clamp(var(--sp-6), 4vw, var(--sp-8));
+}
+
+.sr-statement__inner {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.sr-statement__title {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  max-width: 26ch;
+}
+
+.sr-statement__body {
+  color: var(--muted-dark);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  max-width: 62ch;
+}
+
+.sr-outro {
+  padding-block: 0;
+}
+
+.sr-outro__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-7);
+  padding-block-start: var(--sp-6);
+  border-top: var(--rule) solid var(--divider-dark);
+}
+
+/* ===========================================================================
+   PRINT
+   =========================================================================== */
+
+@media print {
+  /* A printed brief is the visitor's own copy: the submission area, the
+     anti-spam widget and the closing navigation are noise on paper. */
+  .sr-submit,
+  .sr-turnstile,
+  .sr-outro,
+  .sr-statement {
+    display: none;
+  }
+}

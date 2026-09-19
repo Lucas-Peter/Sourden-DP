@@ -1,0 +1,29 @@
+---
+/**
+ * ProductFields — section 01 (spec §11)
+ * Product name (the one required field in this block) + reference files.
+ */
+import FormSection from './FormSection.astro';
+import FormField from './FormField.astro';
+import FileUploadField from './FileUploadField.astro';
+import { fields, formSectionsById } from '../../data/sourcing-request.js';
+
+const section = formSectionsById.product;
+const name = fields.productName;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-product-name" label={name.label} required class="sr-field--wide">
+    <input
+      class="sr-input"
+      id="sr-product-name"
+      name="productName"
+      type="text"
+      placeholder={name.placeholder}
+      autocomplete="off"
+      aria-describedby="sr-product-name-error"
+    />
+  </FormField>
+
+  <FileUploadField id="sr-files" />
+</FormSection>

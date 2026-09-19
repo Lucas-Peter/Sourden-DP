@@ -62,6 +62,13 @@ const {
 } = Astro.props;
 
 const trail = [{ label: 'Home', href: '/' }, ...breadcrumbs];
+
+/* `trail` is in the display shape the visible breadcrumb needs ({ label });
+   `breadcrumbSchema` wants { name }. Without this mapping every ListItem in
+   the emitted BreadcrumbList had `name: undefined`, which JSON.stringify then
+   DROPS — leaving items with a position and an item but no label, which Google
+   rejects as an invalid breadcrumb. */
+const trailSchema = trail.map((crumb) => ({ name: crumb.label, href: crumb.href }));
 ---
 
 <BaseLayout
@@ -71,7 +78,7 @@ const trail = [{ label: 'Home', href: '/' }, ...breadcrumbs];
   noindex
   schema={[
     webPageSchema({ title: seoTitle, description: seoDescription, path }),
-    breadcrumbSchema(trail),
+    breadcrumbSchema(trailSchema),
   ]}
 >
   <section class="reserved-hero">

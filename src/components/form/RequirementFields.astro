@@ -1,0 +1,82 @@
+---
+/**
+ * RequirementFields — section 02 (spec §12)
+ * Specifications, customization, and the two-part target price.
+ *
+ * The target price is a <fieldset>, not a FormField: spec §12 asks for a
+ * currency selector AND an amount input under one label, and a single <label>
+ * can only name one control. A fieldset+legend names the group, and each
+ * control then carries its own small label.
+ *
+ * `specificationMicrocopy` appears here and nowhere else (spec §42).
+ */
+import FormField from './FormField.astro';
+import FormSection from './FormSection.astro';
+import {
+  fields,
+  currencies,
+  formSectionsById,
+  specificationMicrocopy,
+} from '../../data/sourcing-request.js';
+
+const section = formSectionsById.requirements;
+const specs = fields.specifications;
+const custom = fields.customization;
+const price = fields.targetPrice;
+---
+
+<FormSection id={section.id} number={section.number} label={section.label} title={section.title}>
+  <FormField id="sr-specifications" label={specs.label} hint={specificationMicrocopy}>
+    <textarea
+      class="sr-textarea"
+      id="sr-specifications"
+      name="specifications"
+      rows="4"
+      placeholder={specs.placeholder}
+      aria-describedby="sr-specifications-hint sr-specifications-error"
+    ></textarea>
+  </FormField>
+
+  <FormField id="sr-customization" label={custom.label}>
+    <textarea
+      class="sr-textarea"
+      id="sr-customization"
+      name="customization"
+      rows="3"
+      placeholder={custom.placeholder}
+      aria-describedby="sr-customization-error"
+    ></textarea>
+  </FormField>
+
+  <fieldset class="sr-field sr-field--group sr-field--wide">
+    <legend class="sr-field__label">{price.label}</legend>
+
+    <div class="sr-field__pair sr-field__pair--price">
+      <div class="sr-field__sub">
+        <label class="sr-field__sublabel" for="sr-currency">{price.currencyLabel}</label>
+        <select class="sr-select" id="sr-currency" name="currency">
+          <option value="">{fields.selectPlaceholder}</option>
+          {currencies.map((option) => <option value={option.value}>{option.label}</option>)}
+        </select>
+      </div>
+
+      <div class="sr-field__sub">
+        <label class="sr-field__sublabel" for="sr-target-price">{price.amountLabel}</label>
+        <input
+          class="sr-input"
+          id="sr-target-price"
+          name="targetPrice"
+          type="text"
+          inputmode="decimal"
+          placeholder={price.amountPlaceholder}
+          aria-describedby="sr-target-price-hint sr-target-price-error"
+        />
+      </div>
+    </div>
+
+    <p class="sr-field__hint" id="sr-target-price-hint">{price.hint}</p>
+    <p class="sr-field__note">{price.caution}</p>
+
+    <p class="sr-field__error" id="sr-target-price-error" hidden></p>
+  </fieldset>
+</FormSection>
