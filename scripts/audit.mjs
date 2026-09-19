@@ -266,7 +266,7 @@ const classicBreakpoints = (allCss.match(/@media[^{]*(?:min|max)-width\s*:/g) ||
  */
 const STYLE_DIR = join(ROOT, 'src', 'styles');
 const CORE_SHEETS = ['base.css', 'layout.css', 'components.css'];
-const PAGE_SHEETS = ['home.css', 'inner-pages.css'];
+const PAGE_SHEETS = ['home.css', 'inner-pages.css', 'sourcing-request.css'];
 
 /** Rough selector extraction — comments stripped, at-rules skipped, lists split. */
 function extractSelectors(css) {
