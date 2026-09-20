@@ -40,20 +40,20 @@ import SupportingStatement from '../components/SupportingStatement.astro';
 import WhatHappensNext from '../components/WhatHappensNext.astro';
 
 import { breadcrumbs, finalNav, sourcingRequestMeta } from '../data/sourcing-request.js';
-import { breadcrumbSchema, webPageSchema } from '../data/schema.js';
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../data/schema.js';
 
 const path = '/sourcing-request';
 
-/* `breadcrumbs` is written in the display shape the visible trail needs
-   ({ label }); the schema builder wants { name }. Mapped here rather than
-   restated, so the two can never disagree. */
+/* The breadcrumb schema is built from the SAME array the visible trail is given,
+   so the two cannot disagree — they previously did, in opposite directions: the
+   trail duplicated "Home" and the schema omitted it. See `breadcrumbItems()`. */
 const schema = [
   webPageSchema({
     title: sourcingRequestMeta.title,
     description: sourcingRequestMeta.description,
     path,
   }),
-  breadcrumbSchema(breadcrumbs.map((crumb) => ({ name: crumb.label, href: crumb.href }))),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
 ];
 ---
 

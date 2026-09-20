@@ -54,7 +54,7 @@ import CaseStudies from '../components/CaseStudies.astro';
 import Insights from '../components/Insights.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 
-import { homeMeta } from '../data/home.js';
+import { finalCta, homeMeta } from '../data/home.js';
 import { webPageSchema } from '../data/schema.js';
 ---
 
@@ -79,5 +79,10 @@ import { webPageSchema } from '../data/schema.js';
   <WhySourdenList />
   <CaseStudies />
   <Insights />
-  <FinalCTA />
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
 </BaseLayout>
