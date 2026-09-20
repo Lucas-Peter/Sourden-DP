@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="QUALITY CONTROL placeholder">
+  <title>QUALITY CONTROL — placeholder</title>
+  <defs>
+    <pattern id="sd-hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#E2DFD8" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="900" fill="#EFEDE8" />
+  <rect width="1200" height="900" fill="url(#sd-hatch)" />
+  <rect x="0.5" y="0.5" width="1199" height="899" fill="none" stroke="#D5D2C9" stroke-width="1" />
+
+  <text x="600" y="418.6" text-anchor="middle" font-family="'Inter Variable', Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="0.200em" fill="#8E8B84" opacity="0.75">PLACEHOLDER</text>
+  <text x="600" y="465.8" text-anchor="middle" font-family="'Inter Variable', Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="40" font-weight="600" letter-spacing="0.170em" fill="#8E8B84">[ QUALITY CONTROL ]</text>
+  <text x="600" y="494.4" text-anchor="middle" font-family="'Inter Variable', Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="23" font-weight="400" letter-spacing="0.120em" fill="#8E8B84" opacity="0.8">1200 × 900 · 4:3</text>
+</svg>
