@@ -1,0 +1,48 @@
+---
+/**
+ * ServicesExpectations — services brief §15
+ * ---------------------------------------------------------------------------
+ * Five statements about how Sourden works, as an editorial list.
+ *
+ * WHAT THESE ARE NOT
+ *   They are not benefits, savings or outcomes — the brief forbids all three.
+ *   Each one describes a way of working, which is a promise the business can
+ *   actually keep on every project. If anyone later wants to add "20% lower
+ *   costs" or "98% on-time delivery" here, the answer is no: neither is
+ *   evidenced anywhere.
+ *
+ * Titles are set uppercase, which is what separates this list from the
+ * sentence-case audience rows above it — two row lists of five in a row would
+ * otherwise read as the same device used twice.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+import { expectations, expectationsIntro } from '../../data/services-page.js';
+---
+
+<section class="section sv-expect" aria-labelledby="sv-expect-title">
+  <div class="container">
+    <SectionHeader
+      id="sv-expect-title"
+      eyebrow={expectationsIntro.eyebrow}
+      title={expectationsIntro.title}
+      class="sv-expect__head"
+    />
+
+    <ul class="rows sv-expect__list" data-reveal-group>
+      {
+        expectations.map((item) => (
+          <li class="sv-expect-row">
+            <h3 class="sv-expect-row__title">{item.title}</h3>
+            <p class="sv-expect-row__desc">{item.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="section-foot sv-expect__foot">
+      <ArrowLink href={expectationsIntro.foot.href} label={expectationsIntro.foot.label} />
+    </div>
+  </div>
+</section>

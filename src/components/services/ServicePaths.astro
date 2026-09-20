@@ -1,0 +1,70 @@
+---
+/**
+ * ServicePaths — services brief §12
+ * ---------------------------------------------------------------------------
+ * Two ways to work with Sourden, side by side.
+ *
+ * THE BALANCE PROBLEM, AND HOW IT IS HANDLED
+ *   Path 01 is two stages, path 02 is five. Left as plain columns the short one
+ *   reads as the lesser option — which the brief forbids. Two things prevent
+ *   that:
+ *     1. Path 01 ends on a real conclusion ("You decide how to proceed.") set
+ *        in brass, so it terminates rather than trailing off.
+ *     2. Both paths use identical treatment — same rule, same label weight,
+ *        same type scale. The only difference between them is length, which is
+ *        the actual difference between them.
+ *   Neither is labelled "basic", "full" or "recommended".
+ *
+ * The flow is a vertical chain on every breakpoint, because the arrows carry
+ * real meaning here (this stage follows that one) and a wrapped two-column
+ * layout would break the reading of the sequence.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import { paths, pathsIntro } from '../../data/services-page.js';
+---
+
+<section class="section sv-paths" aria-labelledby="sv-paths-title">
+  <div class="container">
+    <SectionHeader
+      id="sv-paths-title"
+      eyebrow={pathsIntro.eyebrow}
+      title={pathsIntro.title}
+      lead={pathsIntro.description}
+      class="sv-paths__head"
+    />
+
+    <div class="sv-path-grid">
+      {
+        paths.map((path) => (
+          <article class="sv-path" aria-labelledby={`sv-path-${path.number}`} data-reveal>
+            <p class="num sv-path__num">{path.number}</p>
+
+            <h3 class="sv-path__label" id={`sv-path-${path.number}`}>
+              {path.label}
+            </h3>
+
+            {/* The closing line is the last item in the chain, not a separate
+                paragraph — the brief writes it as the end of the same flow
+                ("Supplier Verification ↓ You decide how to proceed."), and
+                styling it as a terminating step keeps the two paths comparable
+                in structure as well as in weight. */}
+            <ol class="sv-path__flow">
+              {path.flow.map((stage) => (
+                <li class="sv-path__step">{stage}</li>
+              ))}
+
+              {
+                path.closing && (
+                  <li class="sv-path__step sv-path__step--closing">{path.closing}</li>
+                )
+              }
+            </ol>
+
+            <p class="sv-path__desc">{path.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+---
+/**
+ * ServicesApproach — services brief §16
+ * ---------------------------------------------------------------------------
+ * The dark editorial band: what Sourden actually thinks about sourcing.
+ *
+ * THE HEADING IS ONE ELEMENT, NOT TWO
+ *   §16 gives the heading as two lines that are one sentence pair — the second
+ *   line is the answer to the first. Splitting them into an <h2> and a <p>
+ *   would leave the actual point of the section outside the document outline,
+ *   so they are a single <h2> with the second line in a block-level span. The
+ *   colour difference (ivory → brass) is presentation; the meaning is one
+ *   statement in both the outline and a screen reader's heading list.
+ *
+ * NO CLAIMS
+ *   Nothing here asserts a saving, a rate or an outcome. It argues a position —
+ *   the lowest quotation is not the lowest total cost — which is a judgement
+ *   about how sourcing works, not a performance promise. Keep it that way: it
+ *   is the one place on the page where a statistic would be tempting and wrong.
+ * ---------------------------------------------------------------------------
+ */
+import ArrowLink from '../ArrowLink.astro';
+import { approach } from '../../data/services-page.js';
+---
+
+<section class="section section--dark sv-approach" aria-labelledby="sv-approach-title">
+  <div class="container">
+    <div class="sv-approach__grid">
+      <div class="sv-approach__head">
+        <p class="eyebrow">{approach.eyebrow}</p>
+
+        <h2 class="sv-approach__title" id="sv-approach-title">
+          {approach.title}
+          <span class="sv-approach__emphasis">{approach.emphasis}</span>
+        </h2>
+      </div>
+
+      <p class="sv-approach__desc">{approach.description}</p>
+    </div>
+
+    <div class="section-foot sv-approach__foot">
+      <ArrowLink href={approach.foot.href} label={approach.foot.label} />
+    </div>
+  </div>
+</section>

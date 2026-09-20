@@ -1,0 +1,52 @@
+---
+/**
+ * ServicesHero — services brief §4
+ * ---------------------------------------------------------------------------
+ * Eyebrow, H1, supporting paragraph, one primary and one secondary action, and
+ * a documentary image on the right.
+ *
+ * UNLIKE THE HOMEPAGE HERO
+ *   The homepage H1 is three stanzas with mandated line breaks. This one is a
+ *   single sentence that is free to wrap, so nothing here fixes a break — if it
+ *   ever needs one, do it with `text-wrap: pretty` in the stylesheet, not with
+ *   <br /> in the markup.
+ *
+ * WHY THE IMAGE IS SECOND IN THE DOM
+ *   Mobile order is eyebrow → heading → copy → actions → image, which is the
+ *   source order, so no CSS reordering is needed and the reading order stays
+ *   correct for keyboard and screen-reader users. Desktop moves the image into
+ *   the right-hand column with grid placement only.
+ * ---------------------------------------------------------------------------
+ */
+import Breadcrumbs from '../Breadcrumbs.astro';
+import Button from '../Button.astro';
+import ArrowLink from '../ArrowLink.astro';
+import Media from '../Media.astro';
+import { breadcrumbs, hero } from '../../data/services-page.js';
+---
+
+<section class="sv-hero" aria-labelledby="services-hero-title">
+  <div class="container">
+    <Breadcrumbs items={breadcrumbs} class="sv-hero__breadcrumbs" />
+
+    <div class="sv-hero__grid">
+      <div class="sv-hero__text">
+        <p class="eyebrow">{hero.eyebrow}</p>
+
+        <h1 class="sv-hero__title" id="services-hero-title">{hero.title}</h1>
+
+        <p class="sv-hero__lead">{hero.description}</p>
+
+        <div class="sv-hero__actions">
+          <Button href={hero.primaryCta.href} label={hero.primaryCta.label} />
+          <ArrowLink href={hero.secondaryCta.href} label={hero.secondaryCta.label} />
+        </div>
+      </div>
+
+      <figure class="sv-hero__figure">
+        <Media imageKey={hero.image.key} ratio="4x3" priority class="sv-hero__media" />
+        <figcaption class="media-caption">{hero.image.caption}</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

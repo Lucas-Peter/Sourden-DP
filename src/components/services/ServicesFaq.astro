@@ -1,0 +1,66 @@
+---
+/**
+ * ServicesFaq — services brief §17
+ * ---------------------------------------------------------------------------
+ * Eight questions as a disclosure group, plus the conversion link.
+ *
+ * WHY <details> AND NOT A SCRIPTED ACCORDION
+ *   The brief says to use the existing accordion component "if available" — the
+ *   site has none, and it should not gain one. Native <details>/<summary> is
+ *   keyboard-operable, announces its expanded state, is reachable by in-page
+ *   search (Ctrl+F finds answers inside a closed <details> in every current
+ *   browser) and works with JavaScript disabled or broken. A scripted accordion
+ *   would be strictly worse on all four counts. There is deliberately no
+ *   <script> block in this component and no `open` state managed in JS.
+ *
+ * WHY THE FIRST ITEM IS OPEN
+ *   A column of eight closed rows gives a visitor nothing to read and makes the
+ *   section look like a form. The MOQ question is open by default because it is
+ *   the first thing a small buyer asks.
+ *
+ * WHY items ARE NOT GROUPED EXCLUSIVELY
+ *   The HTML `name` attribute would make them behave as a radio group (only one
+ *   open at a time). That is worse for an FAQ: it hides answers the reader has
+ *   already opened, and it is ignored by the browsers at this project's support
+ *   floor anyway (Chrome 87 / Safari 14), so the experience would differ by
+ *   browser for no benefit.
+ *
+ * The questions are <summary> text, not headings — eight h3s would flood the
+ * document outline with entries that are questions, not sections.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+import { faqIntro, faqItems } from '../../data/services-page.js';
+---
+
+<section class="section sv-faq" aria-labelledby="sv-faq-title">
+  <div class="container">
+    <div class="sv-faq__grid">
+      <div class="sv-faq__head">
+        <SectionHeader id="sv-faq-title" eyebrow={faqIntro.eyebrow} title={faqIntro.title} />
+      </div>
+
+      <div class="sv-faq__list">
+        {
+          faqItems.map((item, index) => (
+            <details class="sv-faq__item" open={index === 0}>
+              <summary class="sv-faq__question">
+                <span class="sv-faq__question-text">{item.question}</span>
+                <span class="sv-faq__mark" aria-hidden="true" />
+              </summary>
+
+              <div class="sv-faq__answer">
+                <p>{item.answer}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="section-foot sv-faq__foot">
+      <ArrowLink href={faqIntro.cta.href} label={faqIntro.cta.label} brass />
+    </div>
+  </div>
+</section>

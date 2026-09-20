@@ -1,0 +1,83 @@
+---
+/**
+ * ServicesOverview — services brief §6 to §11
+ * ---------------------------------------------------------------------------
+ * The hub body: five service sections, alternating image ↔ text.
+ *
+ * WHY FIVE SECTIONS RATHER THAN FIVE CARDS
+ *   Each service needs a heading, a paragraph and eight concrete key areas.
+ *   Cards would force that into a grid of equal boxes and cap the amount each
+ *   one can say — the brief explicitly forbids it. Alternating full-width rows
+ *   give every service the same weight and as much room as it needs.
+ *
+ * WHY THE EIGHT KEY AREAS ARE A LIST AND NOT PROSE
+ *   They answer "what actually happens in this service?" in the form a
+ *   purchasing manager scans rather than reads. They are also the only place on
+ *   the page that names the specific activities, which is what makes the
+ *   section substantive instead of promotional.
+ *
+ * HEADING LEVELS
+ *   h2 (section) → h3 (service) → h4 (Key areas) — no level is skipped, and the
+ *   h4 keeps each list attached to its service in the document outline.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+import Media from '../Media.astro';
+import { overviewIntro, overviewSections } from '../../data/services-page.js';
+---
+
+<section class="section sv-overview" aria-labelledby="sv-overview-title">
+  <div class="container">
+    <SectionHeader
+      id="sv-overview-title"
+      eyebrow={overviewIntro.eyebrow}
+      title={overviewIntro.title}
+      lead={overviewIntro.description}
+      class="sv-overview__head"
+    />
+
+    <div class="sv-services">
+      {
+        overviewSections.map((section) => (
+          <article
+            class={`sv-service${section.mediaLeft ? ' sv-service--media-left' : ''}`}
+            aria-labelledby={`sv-service-${section.slug}`}
+            data-reveal
+          >
+            <div class="sv-service__body">
+              <p class="eyebrow">{section.eyebrow}</p>
+
+              <h3 class="sv-service__title" id={`sv-service-${section.slug}`}>
+                {section.heading}
+              </h3>
+
+              <p class="sv-service__desc">{section.description}</p>
+
+              <h4 class="sv-service__label">Key areas</h4>
+
+              <ul class="sv-service__areas">
+                {section.keyAreas.map((area) => (
+                  <li class="sv-service__area">{area}</li>
+                ))}
+              </ul>
+
+              <div class="sv-service__cta">
+                <ArrowLink href={section.href} label={section.cta} brass />
+              </div>
+            </div>
+
+            <figure class="sv-service__figure">
+              <Media imageKey={section.imageKey} ratio="4x3" zoom />
+              <figcaption class="media-caption">{section.imageCaption}</figcaption>
+            </figure>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="section-foot sv-overview__foot">
+      <ArrowLink href={overviewIntro.foot.href} label={overviewIntro.foot.label} />
+    </div>
+  </div>
+</section>

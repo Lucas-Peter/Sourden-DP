@@ -1,0 +1,65 @@
+---
+/**
+ * ServicesAudience — services brief §13 + §14
+ * ---------------------------------------------------------------------------
+ * WHO WE WORK WITH (five groups) and SOURCE AT YOUR SCALE, in one section.
+ *
+ * WHY THEY SHARE A SECTION
+ *   §14 answers the question §13 raises: the moment a visitor reads "you don't
+ *   need huge order volumes", the next thing they want to know is what that
+ *   actually means. Keeping them together makes the answer part of the same
+ *   thought instead of a separate claim further down the page.
+ *
+ * ── MOQ WORDING IS LOAD-BEARING ────────────────────────────────────────────
+ * §14 says Sourden does not impose its OWN minimum order quantity. It must
+ * never become "no MOQ from Chinese factories", "MOQ: 0" or anything implying
+ * every factory accepts small orders. Supplier MOQs are real and still apply.
+ * The copy lives in `services-page.js`; this note exists so nobody "improves"
+ * it later without seeing the constraint.
+ *
+ * The fifth audience is a consumer, and the note beside the heading says the
+ * business focus stays on trade — without it, the section would read as a
+ * consumer shopping service.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import { audienceGroups, audienceIntro, scale } from '../../data/services-page.js';
+---
+
+<section class="section sv-audience" aria-labelledby="sv-audience-title">
+  <div class="container">
+    <div class="sv-audience__grid">
+      <div class="sv-audience__head">
+        <SectionHeader
+          id="sv-audience-title"
+          eyebrow={audienceIntro.eyebrow}
+          title={audienceIntro.title}
+          lead={audienceIntro.description}
+        />
+      </div>
+
+      <p class="sv-audience__note">{audienceIntro.note}</p>
+    </div>
+
+    <ol class="rows sv-audience__list" data-reveal-group>
+      {
+        audienceGroups.map((group) => (
+          <li class="sv-audience-row">
+            <span class="num sv-audience-row__num">{group.number}</span>
+            <h3 class="sv-audience-row__title">{group.title}</h3>
+            <p class="sv-audience-row__desc">{group.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="sv-scale">
+      <p class="eyebrow sv-scale__eyebrow">{scale.eyebrow}</p>
+
+      <div class="sv-scale__body">
+        <h3 class="sv-scale__title">{scale.title}</h3>
+        <p class="sv-scale__desc">{scale.description}</p>
+      </div>
+    </div>
+  </div>
+</section>

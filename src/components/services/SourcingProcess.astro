@@ -1,0 +1,75 @@
+---
+/**
+ * SourcingProcess — services brief §5
+ * ---------------------------------------------------------------------------
+ * Five connected stages: FIND → VERIFY → PURCHASE → INSPECT → SHIP.
+ *
+ * WHY THE VERB IS THE LOUDEST ELEMENT IN EACH STAGE
+ *   The section's whole job is to show that the five services are one process
+ *   rather than a menu. The service name alone cannot do that — the reader
+ *   already met those five names on the homepage. The verb is what sequences
+ *   them, so it is set as a brass label above the title, and a hairline rail
+ *   with a dot per stage makes the connection literal.
+ *
+ * WHY NOT <ProcessTimeline>
+ *   The homepage timeline walks a *visitor* through the buying journey (Tell Us
+ *   What You Need → … → Inspect & Ship). These five stages are the *services*,
+ *   they carry different copy, and each one links to its own page. Reusing the
+ *   component would have meant overriding its model in three places.
+ *
+ * Each stage is a single link, so the whole row is one large, unambiguous
+ * target — a heading-only link would leave the other three quarters of the row
+ * inert to the mouse.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+import { processIntro, processStages } from '../../data/services-page.js';
+---
+
+<section class="section sv-process" aria-labelledby="sv-process-title">
+  <div class="container">
+    <SectionHeader
+      id="sv-process-title"
+      eyebrow={processIntro.eyebrow}
+      title={processIntro.title}
+      lead={processIntro.description}
+      class="sv-process__head"
+    />
+
+    <ol class="sv-stages" data-reveal-group>
+      {
+        processStages.map((stage) => (
+          <li class="sv-stage">
+            <a class="sv-stage__link" href={stage.href}>
+              <span class="sv-stage__marker" aria-hidden="true" />
+
+              {/* Number and verb share one line — the verb is what sequences the
+                  five stages, so it belongs beside the number, not under it. */}
+              <span class="sv-stage__rail">
+                <span class="num sv-stage__num">{stage.number}</span>
+                <span class="sv-stage__dash" aria-hidden="true">
+                  —
+                </span>
+                <span class="sv-stage__verb">{stage.verb}</span>
+              </span>
+
+              <h3 class="sv-stage__title">
+                <span>{stage.title}</span>
+                <span class="sv-stage__arrow" aria-hidden="true">
+                  →
+                </span>
+              </h3>
+
+              <p class="sv-stage__desc">{stage.description}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="section-foot sv-process__foot">
+      <ArrowLink href="/how-it-works" label="See how the whole process works" />
+    </div>
+  </div>
+</section>
