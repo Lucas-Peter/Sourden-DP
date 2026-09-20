@@ -47,6 +47,8 @@ interface Props {
   };
   /** Breadcrumb trail excluding "Home", which is added automatically. */
   breadcrumbs?: Array<{ label: string; href?: string }>;
+  /** This page's own short name, used as the final crumb when `breadcrumbs` is empty. */
+  label?: string;
 }
 
 const {
@@ -59,9 +61,18 @@ const {
   planned = [],
   linkList,
   breadcrumbs = [],
+  label,
 } = Astro.props;
 
-const trail = [{ label: 'Home', href: '/' }, ...breadcrumbs];
+/* A top-level reservation page used to render a trail of exactly one crumb —
+   "Home" — and then mark it `aria-current="page"`. That told both a screen
+   reader and Google that `/industries` *is* the homepage. Detail routes already
+   pass a two-level trail; top-level ones now fall back to their own `label`, so
+   the trail always ends on the page the visitor is actually on. */
+const trail = [
+  { label: 'Home', href: '/' },
+  ...(breadcrumbs.length > 0 ? breadcrumbs : label ? [{ label }] : []),
+];
 
 /* `trail` is in the display shape the visible breadcrumb needs ({ label });
    `breadcrumbSchema` wants { name }. Without this mapping every ListItem in

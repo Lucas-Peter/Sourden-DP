@@ -3,26 +3,56 @@
  * FinalCTA — spec §19
  * Ink background, 400–480px tall, exactly ONE primary call to action.
  *
+ * SHARED BY MORE THAN ONE PAGE
+ *   The homepage was the only consumer until `/services` needed a closing band
+ *   of its own. The visual treatment therefore lives in the shared core
+ *   (`components.css`) rather than in `home.css` — see the note there. Only the
+ *   copy differs per page, so the copy is what this component now accepts.
+ *
  * Deliberately absent (spec §19) as competing buttons:
  *   Book a Call · WhatsApp · Get a Free Quote · Contact Sales
  */
 import Button from './Button.astro';
-import { primaryCta } from '../data/site.js';
+
+/**
+ * All copy is REQUIRED. That is deliberate: while these had defaults, a page
+ * could render the band and silently inherit the homepage's wording. Supply
+ * the values from a `src/data/*.js` file, as the homepage and `/services` do.
+ */
+interface Props {
+  eyebrow: string;
+  title: string;
+  /** "\n" forces an editorial line break, as in SectionHeader. */
+  description: string;
+  cta: { label: string; href: string };
+  /** Override only if a page somehow renders two of these. */
+  id?: string;
+}
+
+const { eyebrow, title, description, cta, id = 'final-cta-title' } = Astro.props;
+
+const lines = description.split('\n');
 ---
 
-<section class="section--dark final-cta" aria-labelledby="final-cta-title">
+<section class="section--dark final-cta" aria-labelledby={id}>
   <div class="container final-cta__inner">
-    <p class="eyebrow">START WITH A REQUEST</p>
+    <p class="eyebrow">{eyebrow}</p>
 
-    <h2 class="final-cta__title" id="final-cta-title">Ready to source from China?</h2>
+    <h2 class="final-cta__title" id={id}>{title}</h2>
 
     <p class="final-cta__description">
-      Tell us what you’re looking for.<br />
-      We’ll take it from there.
+      {
+        lines.map((line, index) => (
+          <>
+            {line}
+            {index < lines.length - 1 && <br />}
+          </>
+        ))
+      }
     </p>
 
     <div class="final-cta__actions">
-      <Button href={primaryCta.href} label={primaryCta.label} variant="inverse" arrow />
+      <Button href={cta.href} label={cta.label} variant="inverse" arrow />
     </div>
   </div>
 </section>
