@@ -81,6 +81,48 @@ target under 250 KB.
 
 ---
 
+### Services page — six slots
+
+| File | Label | Source size | Ratio |
+| --- | --- | --- | --- |
+| `services-hero.svg` | Sourcing Services | **1600 × 1200** | 4:3 |
+| `service-product-sourcing.svg` | Product Sourcing | **1200 × 900** | 4:3 |
+| `service-supplier-verification.svg` | Supplier Verification | **1200 × 900** | 4:3 |
+| `service-purchasing-management.svg` | Purchasing Management | **1200 × 900** | 4:3 |
+| `service-quality-control.svg` | Quality Control | **1200 × 900** | 4:3 |
+| `service-shipping-from-china.svg` | Shipping from China | **1200 × 900** | 4:3 |
+
+All six are 4:3 on purpose. The five service images are shown as **one
+alternating text ↔ image sequence**, so a mixed set of ratios would make the
+column widths jump from row to row. Keep the hero framing calm — it sits beside
+the H1.
+
+- **Sourcing Services** (hero) — documentary sourcing: product sample review,
+  supplier/product inspection, packaging review, a manufacturing process,
+  warehouse preparation or material inspection. It has to read as a working
+  scene.
+- **Product Sourcing** — product samples or a supplier sample being examined:
+  hands, samples and reference material on a work surface. Not a catalogue
+  flat-lay, not a studio product shot.
+- **Supplier Verification** — a factory walk-through, production capability
+  check, material/component review, or documentation being worked through on
+  site. **No certificate, accreditation mark or laboratory report** — Sourden
+  issues none.
+- **Purchasing Management** — order and specification documents beside the goods
+  they describe, product preparation, production follow-up, or packing in
+  progress. Keep paperwork generic and unreadable; do not photograph invented
+  figures.
+- **Quality Control** — measuring, counting quantities, appearance checks,
+  packaging inspection or QC notes being recorded. Hands and product, **not a
+  laboratory**, and nothing that implies accredited third-party testing.
+- **Shipping from China** — packaging, warehouse dispatch, cartons being
+  labelled and staged, or pallet preparation. Realistic logistics, not a
+  container-port sunset with a giant ship or a globe.
+
+Target under 120 KB each; the hero under 250 KB.
+
+---
+
 ### Industries — nine slots
 
 | File | Label | Source size | Ratio |
@@ -199,8 +241,9 @@ is gone.
   finished circuit board on a bench", not "Electronics sourcing".
 - **Width and height are always emitted**, which reserves the space before the
   file loads and keeps Cumulative Layout Shift at zero. Never remove them.
-- Everything below the fold loads `lazy` with `decoding="async"`. Only the two
-  above-the-fold hero images (homepage and `/sourcing-request`) load eagerly.
+- Everything below the fold loads `lazy` with `decoding="async"`. Only the
+  three above-the-fold hero images (homepage, `/sourcing-request` and
+  `/services`) load eagerly.
 - Hover scale is 1.03 over the standard duration, and is suppressed entirely
   under `prefers-reduced-motion`.
 
