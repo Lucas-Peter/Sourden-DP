@@ -1,25 +1,122 @@
 ---
 /**
- * RESERVATION PAGE — /services
+ * /services — the Services Overview page  (services brief §1–§24)
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * This route used to render a reservation page. It is now the hub the brief
+ * describes: what Sourden can actually help with, presented as one connected
+ * process (Find → Verify → Purchase → Inspect → Ship) rather than a menu.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/services` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ * STRUCTURE (services brief)
+ *   01 Hero                    §4   eyebrow, H1, copy, two actions, image
+ *   02 The sourcing process    §5   five connected stages, each linking out
+ *   03 Services overview       §6–11 five alternating service sections
+ *   04 One service or all five §12  two paths, neither favoured
+ *   05 Who we work with        §13  five groups
+ *      Source at your scale    §14  Sourden's own MOQ position
+ *   06 What you can expect     §15  five ways of working
+ *   07 The Sourden approach    §16  dark editorial band
+ *   08 FAQ                     §17  eight questions, native disclosures
+ *   09 Final CTA               §18  one primary action
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * WHAT THIS PAGE DELIBERATELY DOES NOT DO
+ *   · It does not build the five individual service pages. They stay reserved
+ *     routes that resolve but are `noindex` — services brief §23 is explicit
+ *     that this task covers `/services` only. Every link to them is live, so
+ *     nothing has to be rewritten when they are written.
+ *   · It does not redesign anything. Header, footer, buttons, rows, media and
+ *     the reveal device are all the existing ones; only the composition on this
+ *     page is new (§1 "Do not create a new visual language").
+ *   · It adds no claim the business cannot evidence — no customer counts, no
+ *     savings, no success rates, no certifications (services brief §20).
+ *
+ * INDEXABILITY
+ *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
+ *   in `reservedTopLevel` (src/data/routes.js) was removed in the same change —
+ *   that list is what drives the noindex/sitemap split, so forgetting it would
+ *   have left a finished, content-rich page excluded from search.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then the page stylesheet — otherwise this page's rules lose
+ *   every same-specificity conflict against the shared core. `npm run audit`
+ *   fails the build if that regresses.
  * ---------------------------------------------------------------------------
  */
-import ReservationPage from '../../components/ReservationPage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services.css';
 
-import { reservationFor } from '../../data/routes.js';
+import FinalCTA from '../../components/FinalCTA.astro';
+import ServicesApproach from '../../components/services/ServicesApproach.astro';
+import ServicesAudience from '../../components/services/ServicesAudience.astro';
+import ServicesExpectations from '../../components/services/ServicesExpectations.astro';
+import ServicesFaq from '../../components/services/ServicesFaq.astro';
+import ServicesHero from '../../components/services/ServicesHero.astro';
+import ServicesOverview from '../../components/services/ServicesOverview.astro';
+import ServicePaths from '../../components/services/ServicePaths.astro';
+import SourcingProcess from '../../components/services/SourcingProcess.astro';
 
-const page = reservationFor('/services');
+import {
+  breadcrumbs,
+  finalCta,
+  overviewSections,
+  servicesPageMeta,
+} from '../../data/services-page.js';
+import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+
+const path = '/services';
+
+/**
+ * One graph for the page: the page itself, its breadcrumb, and a Service node
+ * per service.
+ *
+ * The Service nodes are built from the same merged records the page renders,
+ * so a structured-data claim can never describe a service the page does not
+ * show. `serviceSchema` is the site's existing builder — nothing new is
+ * declared here, and it emits no price, rating or availability, because none of
+ * those can be evidenced.
+ *
+ * The breadcrumb is built by `breadcrumbItems()` from the same `breadcrumbs`
+ * array <Breadcrumbs> renders, so the visible trail and the structured data
+ * cannot drift apart. They already had, elsewhere: see the note on that helper.
+ */
+const schema = [
+  webPageSchema({
+    title: servicesPageMeta.title,
+    description: servicesPageMeta.description,
+    path,
+  }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  ...overviewSections.map((section) =>
+    serviceSchema({ name: section.title, description: section.description, href: section.href })
+  ),
+];
 ---
 
-<ReservationPage {...page} />
+<BaseLayout
+  title={servicesPageMeta.title}
+  description={servicesPageMeta.description}
+  path={path}
+  schema={schema}
+>
+  <ServicesHero />
+
+  <SourcingProcess />
+
+  <ServicesOverview />
+
+  <ServicePaths />
+
+  <ServicesAudience />
+
+  <ServicesExpectations />
+
+  <ServicesApproach />
+
+  <ServicesFaq />
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>
