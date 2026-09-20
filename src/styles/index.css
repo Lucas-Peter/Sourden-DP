@@ -25,6 +25,7 @@
      src/pages/index.astro          →  import '../styles/home.css'
      src/pages/sourcing-request.astro
                                     →  import '../styles/sourcing-request.css'
+     src/pages/services/index.astro →  import '../styles/services.css'
      src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
 
    ADDING A NEW PAGE
@@ -33,9 +34,10 @@
         layout import, or the page sheet silently loses its conflicts.
      3. Add the file name to `PAGE_SHEETS` in `scripts/audit.mjs`, which is
         what enforces the next rule.
-     4. Namespace every selector in it (`.sr-` for the sourcing page) and
-        reuse the component classes from components.css before inventing new
-        ones — that is what keeps the site visually coherent.
+     4. Namespace every selector in it (`.sr-` for the sourcing page, `.sv-`
+        for the services page) and reuse the component classes from
+        components.css before inventing new ones — that is what keeps the site
+        visually coherent.
    =========================================================================== */
 
 /* Manrope (headings) — variable, weights 200–800 */

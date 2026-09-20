@@ -423,6 +423,57 @@
 }
 
 /* ===========================================================================
+   FINAL CTA — spec §19
+   ---------------------------------------------------------------------------
+   The closing band: ink ground, one centred statement, exactly one primary
+   action. (The component deliberately offers no other control.)
+
+   WHY THIS LIVES HERE AND NOT IN home.css
+   It shipped in `home.css` while the homepage was its only consumer. `/services`
+   now needs the identical band with different copy, and `home.css` is never
+   loaded off the homepage — so leaving it there would have meant either a
+   second, silently diverging copy of these rules in `services.css`, or a
+   services page whose closing band rendered completely unstyled.
+
+   The shared core is the documented home for a rule two pages genuinely share,
+   and it is the only option that keeps one definition. The cost is ~0.7 KB of
+   CSS on every route, which is the price of not having two of these drift apart.
+   =========================================================================== */
+
+.final-cta {
+  display: grid;
+  place-items: center;
+  min-height: 440px;
+  padding-block: var(--section-y);
+  text-align: center;
+}
+
+.final-cta__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-5);
+}
+
+.final-cta__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.final-cta__description {
+  color: var(--muted-dark);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
+
+.final-cta__actions {
+  margin-block-start: var(--sp-4);
+}
+
+/* ===========================================================================
    TAG LIST — case-study scope tags
    =========================================================================== */
 

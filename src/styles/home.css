@@ -1182,40 +1182,9 @@
 
 /* ===========================================================================
    11 — FINAL CTA  (spec §19)
-   Exactly one primary call to action. No competing buttons.
+   ---------------------------------------------------------------------------
+   The rules for this band now live in `components.css`, because `/services`
+   renders the same band with different copy and `home.css` is only ever loaded
+   on the homepage. See the banner comment there. The component itself
+   (`FinalCTA.astro`) takes the copy as props and defaults to the homepage's.
    =========================================================================== */
-
-.final-cta {
-  display: grid;
-  place-items: center;
-  min-height: 440px;
-  padding-block: var(--section-y);
-  background-color: var(--ink);
-  color: var(--text-on-dark);
-  text-align: center;
-}
-
-.final-cta__inner {
-  display: grid;
-  justify-items: center;
-  gap: var(--sp-5);
-}
-
-.final-cta__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-h2);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-display);
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-}
-
-.final-cta__description {
-  color: var(--muted-dark);
-  font-size: var(--fs-body);
-  line-height: 1.55;
-}
-
-.final-cta__actions {
-  margin-block-start: var(--sp-4);
-}
