@@ -325,5 +325,13 @@ export const finalNav = {
   howItWorks: { label: 'Explore How It Works', href: '/how-it-works' },
 };
 
-/** Breadcrumb trail (matches the other inner pages). */
-export const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Start a Sourcing Request' }];
+/**
+ * Breadcrumb trail BELOW Home — `Breadcrumbs.astro` prepends Home itself.
+ *
+ * This array used to declare Home as well, so the page rendered
+ * "Home / Home / Start a Sourcing Request" while the BreadcrumbList in the
+ * JSON-LD (which read this array directly) had the correct two levels. The
+ * visible trail and the structured data are now derived from the same source —
+ * see `breadcrumbItems()` in `src/data/schema.js`.
+ */
+export const breadcrumbs = [{ label: 'Start a Sourcing Request' }];

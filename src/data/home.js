@@ -53,3 +53,20 @@ export const hero = {
     caption: 'Sourcing in China',
   },
 };
+
+/**
+ * §19 — the closing band.
+ *
+ * This copy used to be hard-coded inside `FinalCTA.astro`, which is the one
+ * place in the project where editable text lived in markup. It moved here when
+ * `/services` started rendering the same band with its own wording: the
+ * component now takes the copy as props, so both pages read theirs from data
+ * and neither can silently inherit the other's.
+ */
+export const finalCta = {
+  eyebrow: 'START WITH A REQUEST',
+  title: 'Ready to source from China?',
+  /** "\n" is a deliberate line break (see SectionHeader for the convention). */
+  description: 'Tell us what you’re looking for.\nWe’ll take it from there.',
+  cta: { ...primaryCta },
+};

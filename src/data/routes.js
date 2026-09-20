@@ -16,8 +16,14 @@
  *   from `src/pages/`). It then drops out of `noindexPaths` automatically and
  *   reappears in the sitemap. Nothing else needs editing.
  *
- *   Done so far: /sourcing-request. Its copy now lives in
- *   `src/data/sourcing-request.js`, and the route is indexable.
+ *   Done so far: /sourcing-request and /services. Their copy now lives in
+ *   `src/data/sourcing-request.js` and `src/data/services-page.js` respectively,
+ *   and both routes are indexable.
+ *
+ *   NOTE the five `/services/<slug>` detail pages are still reserved on purpose
+ *   — the services brief (§23) scopes that build to the overview page only. They
+ *   resolve, every link to them is already live, and they leave `noindex` one at
+ *   a time as each is written.
  *
  * This module is intentionally free of any import that depends on Vite, so
  * `astro.config.mjs` can import it at build time.
@@ -50,27 +56,6 @@ export const reservationNotice = {
 
 /** @type {ReservationPage[]} */
 export const reservedTopLevel = [
-  {
-    path: '/services',
-    label: 'Services',
-    seoTitle: 'Sourcing Services | Sourden',
-    seoDescription:
-      'Product sourcing, supplier verification, purchasing and order management, quality control and shipping from China.',
-    eyebrow: 'OUR SERVICES',
-    h1: 'Services',
-    summary:
-      'One partner across the sourcing process — from researching suppliers to coordinating the final shipment.',
-    planned: [
-      'What each service covers, and where it starts and stops',
-      'What we need from you at each stage',
-      'How supplier verification and quality control are actually carried out',
-      'How shipping from China connects to the rest of the process',
-    ],
-    linkList: {
-      title: 'Service pages',
-      items: services.map((service) => ({ label: service.title, href: service.href })),
-    },
-  },
   {
     path: '/industries',
     label: 'Industries',

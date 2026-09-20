@@ -35,7 +35,7 @@
 
 export const IMAGE_DIR = '/images';
 
-/** @typedef {'hero'|'industry'|'case-study'|'insight'|'social'} ImageRole */
+/** @typedef {'hero'|'service'|'industry'|'case-study'|'insight'|'social'} ImageRole */
 
 export const images = {
   /* ---------------------------------------------------------------- hero -- */
@@ -68,6 +68,94 @@ export const images = {
       'A workbench or table with product samples, reference drawings, measuring tools or packaging being handled and compared. It must read as evidence of the sourcing process — not an office scene, not a handshake, not smiling people in suits, and none of the China clichés (Great Wall / flag / panda / container port / globe).',
     cropNote:
       'Displayed 4:3 in a single column up to ~46% of the container on desktop, and height-capped at 240px on mobile (spec §48) — so the mobile frame crops the bottom and top of the source. Keep the subject inside the middle ~70%, horizontally and vertically.',
+  },
+
+  /* ------------------------------------------------------- services page -- */
+  /*
+   * Six slots for `/services`: one hero plus one per service section.
+   *
+   * All five service slots are 4:3 and share a single treatment, because they
+   * are presented as one alternating sequence — mixing ratios inside that
+   * sequence would make the column widths jump from row to row. The hero is
+   * 4:3 as well, matching the homepage and sourcing-request heroes.
+   *
+   * Spec §21 bans the usual China shorthand here (Great Wall, flag, panda,
+   * generic handshake, staged corporate meeting, giant globe, AI-perfect
+   * factory). Every slot must show the work the section is describing.
+   */
+  servicesHero: {
+    file: 'services-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'SOURCING SERVICES',
+    alt: 'Placeholder for a documentary photograph of product samples and supplier documentation being reviewed.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'Documentary sourcing imagery: product sample review, supplier or product inspection, packaging review, a manufacturing process, warehouse preparation or material inspection. It has to read as a working scene. Avoid every China cliché (Great Wall / flag / panda / globe / container-port sunsets), generic handshakes, staged corporate meetings and artificially perfect AI factory floors.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (5 of 12 on desktop), height-capped and placed below the text on mobile. Keep the subject inside the middle 70% horizontally and vertically — `object-fit: cover` crops symmetrically from the centre.',
+  },
+  serviceProductSourcing: {
+    file: 'service-product-sourcing.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'PRODUCT SOURCING',
+    alt: 'Placeholder for a photograph of product samples under review during supplier research.',
+    role: /** @type {ImageRole} */ ('service'),
+    placeholder: true,
+    artDirection:
+      'Product samples, sourcing research or a supplier sample being examined — hands, samples and reference material on a work surface. Not a catalogue flat-lay, not a studio product shot.',
+  },
+  serviceSupplierVerification: {
+    file: 'service-supplier-verification.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'SUPPLIER VERIFICATION',
+    alt: 'Placeholder for a photograph of a supplier assessment or factory capability review.',
+    role: /** @type {ImageRole} */ ('service'),
+    placeholder: true,
+    artDirection:
+      'A factory walk-through, production capability check, material or component review, or documentation being worked through on site. Nothing that implies a certificate, accreditation mark or laboratory report — Sourden issues none.',
+  },
+  servicePurchasingManagement: {
+    file: 'service-purchasing-management.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'PURCHASING MANAGEMENT',
+    alt: 'Placeholder for a photograph of order documents, product preparation or packaging coordination.',
+    role: /** @type {ImageRole} */ ('service'),
+    placeholder: true,
+    artDirection:
+      'Order and specification documents beside the goods they describe, product preparation, production follow-up or packing work in progress. Paperwork should be generic and unreadable rather than filled with invented figures.',
+  },
+  serviceQualityControl: {
+    file: 'service-quality-control.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'QUALITY CONTROL',
+    alt: 'Placeholder for a photograph of a pre-shipment product inspection and quantity check.',
+    role: /** @type {ImageRole} */ ('service'),
+    placeholder: true,
+    artDirection:
+      'Real product inspection: measuring, checking quantities against a count, appearance checks, packaging inspection or QC notes being recorded. Hands and product, not a laboratory. Avoid any imagery that falsely suggests third-party certification or accredited testing.',
+  },
+  serviceShippingFromChina: {
+    file: 'service-shipping-from-china.svg',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'SHIPPING FROM CHINA',
+    alt: 'Placeholder for a photograph of cartons being packed and prepared for shipment.',
+    role: /** @type {ImageRole} */ ('service'),
+    placeholder: true,
+    artDirection:
+      'Packaging, warehouse dispatch, cartons being labelled and staged, or pallet preparation. Realistic logistics, not a container-port stock shot with a sunset, a giant ship or a globe.',
   },
 
   /* ---------------------------------------------------------- industries -- */

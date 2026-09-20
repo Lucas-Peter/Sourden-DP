@@ -101,6 +101,36 @@ export function breadcrumbSchema(items) {
 }
 
 /**
+ * The first crumb, prepended to every trail.
+ * `Breadcrumbs.astro` adds it to what it renders; this is the one other place
+ * that has to know about it.
+ */
+export const HOME_CRUMB = { label: 'Home', href: '/' };
+
+/**
+ * Schema items for a page's breadcrumb, from the SAME array the visible
+ * <Breadcrumbs> component is given — pass `items`, not a hand-built trail, and
+ * the two can never disagree.
+ *
+ * WHY THIS EXISTS
+ *   It replaces `breadcrumbs.map((c) => ({ name: c.label, href: c.href }))`
+ *   written at each call site, which silently omitted "Home" while the visible
+ *   trail showed it. That is not a cosmetic mismatch: a BreadcrumbList whose
+ *   first item is the current page tells Google the page sits at the site root,
+ *   and it was found live on `/sourcing-request`.
+ *
+ *   The opposite mistake existed too — a data file that declared "Home" itself,
+ *   so the visible trail rendered "Home / Home / …". One helper, one rule:
+ *   data files describe the trail BELOW Home and never include it.
+ *
+ * @param {Array<{ label: string, href?: string }>} items
+ * @returns {Array<{ name: string, href?: string }>}
+ */
+export function breadcrumbItems(items) {
+  return [HOME_CRUMB, ...items].map((crumb) => ({ name: crumb.label, href: crumb.href }));
+}
+
+/**
  * A service offering (spec §32 / §33 service detail pages).
  * @param {{ name: string, description: string, href: string }} service
  * @returns {Record<string, unknown>}
