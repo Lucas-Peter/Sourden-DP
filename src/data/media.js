@@ -123,6 +123,62 @@ export const images = {
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
+  serviceSupplierVerificationHero: {
+    file: 'service-supplier-verification-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'SUPPLIER VERIFICATION',
+    alt: 'Placeholder for a documentary photograph of a supplier facility walk-through or production capability review.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'A factory or supplier facility actually being looked at: a production floor during a walk-through, a worker inspecting output, materials or components being reviewed, or specification documents worked through on site next to the goods they describe. Must read as someone assessing the supplier, not a tour. No certificate, accreditation mark or laboratory report — Sourden issues none. No handshake, no meeting room, no China clichés, no AI-perfect factory floor.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
+  servicePurchasingManagementHero: {
+    file: 'service-purchasing-management-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'PURCHASING MANAGEMENT',
+    alt: 'Placeholder for a documentary photograph of order documents beside goods in production or preparation for shipment.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'An order in progress: goods being prepared or packed, production follow-up on the floor, a warehouse with staged cartons, or order and specification documents lying beside the goods they describe. Paperwork must be generic and unreadable — never photograph invented figures, invoices or order numbers. No handshake, no meeting room, no China clichés, no AI-perfect factory floor.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
+  serviceQualityControlHero: {
+    file: 'service-quality-control-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'QUALITY CONTROL',
+    alt: 'Placeholder for a documentary photograph of products being measured, counted or packed during a pre-shipment inspection.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'A pre-shipment check in progress: calipers, a tape or scale against a product, goods being counted or laid out in rows, cartons being opened and checked, or an inspection record being filled in beside the goods. The brief bans staged laboratory imagery unless genuinely relevant — this is a warehouse and a workbench, not a clean room. No handshake, no meeting room, no China clichés.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
+  serviceShippingFromChinaHero: {
+    file: 'service-shipping-from-china-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'SHIPPING FROM CHINA',
+    alt: 'Placeholder for a documentary photograph of packed cartons and palletized goods being prepared for freight.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'Freight preparation rather than freight romance: packed cartons stacked and labelled, goods palletized and wrapped, a loading bay during loading, or a warehouse aisle of staged shipments. The brief bans cliché cargo-container hero shots (container stacks at sunset, a lone container against a sky) — keep it inside the warehouse where the work is visible. No China clichés.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
   serviceProductSourcing: {
     file: 'service-product-sourcing.svg',
     width: 1200,

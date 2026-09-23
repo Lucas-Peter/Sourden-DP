@@ -2,14 +2,15 @@
  * SOURDEN — SERVICE DETAIL PAGES: SHARED ARCHITECTURE
  * ---------------------------------------------------------------------------
  * The five `/services/<slug>` pages are one page architecture with five sets of
- * copy. This file owns everything they have in common; each page's words live
- * in its own `service-<slug>.js` file.
+ * copy. This file owns which pages exist; each page's words live in its own
+ * `service-<slug>.js` file, and everything derived from the service registry
+ * lives in `service-links.js`.
  *
  * WHY ONE ARCHITECTURE
  *   The brief for these pages is explicit: they must feel like one website, not
  *   five independently designed landing pages. So the section vocabulary below
- *   is fixed, and a page is a list of sections in order. Adding page 2 is a data
- *   file plus one line in `detailPages` — no new markup, no new CSS.
+ *   is fixed, and a page is a list of sections in order. Adding a page was a
+ *   data file plus one line in `detailPages` — no new markup, no new CSS.
  *
  * ── THE SECTION VOCABULARY ─────────────────────────────────────────────────
  *   hero        eyebrow, H1, lead, two actions, one documentary image
@@ -32,14 +33,16 @@
  * rhythm is visible in the data rather than buried in a stylesheet.
  *
  * ── WHAT A PAGE FILE MUST NOT DECLARE ─────────────────────────────────────
- *   · Service names, numbers or URLs — read from `services.js` below.
+ *   · Service names, numbers or URLs — read from `services.js`.
  *   · The primary CTA. Every page's primary action is `primaryCta` from
  *     `site.js` (cross-page requirement §2: "Start a Sourcing Request →" is the
  *     one primary CTA site-wide). Declaring it per page is how five pages end
  *     up with four different labels.
  *   · The secondary CTA ("View All Services →" → `/services`) — same for all
- *     five, so it is declared once here.
- *   · The process chain's labels — declared once in `CHAIN_LABELS` below.
+ *     five, so it is declared once in `service-links.js`.
+ *   · The process chain's labels — declared once in `service-links.js`.
+ *   · A hand-typed label for a NEIGHBOURING service — ask
+ *     `serviceLink(slug)` / `chainLabel(slug)` instead.
  *
  * ── CLAIMS RULE (cross-page requirement §4) ────────────────────────────────
  * Nothing in a page file may assert a client count, a supplier count, years in
@@ -50,60 +53,54 @@
  * defect-free products. The tone is experienced, practical, calm, direct.
  *
  * ── WHERE A SLUG IS NOT FOUND ──────────────────────────────────────────────
- * A slug with no page file still renders its reservation page — the route was
- * published before the content existed and every link to it is already live. A
+ * A slug with no page file would still render its reservation page — the routes
+ * were published before the content existed and every link to them is live. A
  * slug *typo* inside a page file throws at build time instead of rendering a
- * section with `undefined` in it.
+ * section with `undefined` in it. As of the five-page brief all five slugs have
+ * a page file, so this now only guards a future sixth service.
  * ---------------------------------------------------------------------------
  */
 
-import { primaryCta } from './site.js';
-import { services } from './services.js';
-
 import { productSourcing } from './service-product-sourcing.js';
+import { supplierVerification } from './service-supplier-verification.js';
+import { purchasingOrderManagement } from './service-purchasing-order-management.js';
+import { qualityControl } from './service-quality-control.js';
+import { shippingFromChina } from './service-shipping-from-china.js';
 
 /* ===========================================================================
-   FIXED ACROSS ALL FIVE PAGES
+   RE-EXPORTED so a page shell has one import.
+   Defined in `service-links.js` because page files need them too, and a page
+   file importing them from here would close an import cycle — see the header
+   of that file for what that costs.
    =========================================================================== */
 
-/**
- * Cross-page requirement §2 — the secondary action in every hero.
- * Declared once so the five pages cannot disagree about it.
- */
-export const secondaryCta = { label: 'View All Services', href: '/services' };
-
-/**
- * The process chain's vocabulary.
- *
- * This is a THIRD naming of the same five services, and it needs its own
- * declaration for a reason: the brief writes the chain as the short process
- * words (PRODUCT SOURCING → SUPPLIER VERIFICATION → PURCHASING → QUALITY
- * CONTROL → SHIPPING), which are neither the display titles in `services.js`
- * ("Purchasing Management") nor the footer's `shortTitle`. Left to each page,
- * page 1 would say SHIPPING and page 5 could say FREIGHT, in a section whose
- * entire job is to show that these five are one sequence.
- *
- * Keyed by slug, so a service that is renamed in `services.js` keeps its chain
- * label and a renamed slug fails the build rather than silently dropping out of
- * the chain.
- */
-const CHAIN_LABELS = {
-  'product-sourcing': 'Product Sourcing',
-  'supplier-verification': 'Supplier Verification',
-  'purchasing-order-management': 'Purchasing',
-  'quality-control': 'Quality Control',
-  'shipping-from-china': 'Shipping',
-};
+export {
+  chainFor,
+  chainLabel,
+  detailBreadcrumbs,
+  primaryCta,
+  secondaryCta,
+  serviceChain,
+  serviceForSlug,
+  serviceLink,
+  requireService,
+} from './service-links.js';
 
 /* ===========================================================================
    THE REGISTRY
    ---------------------------------------------------------------------------
-   One line per built page. A slug absent from here renders its reservation
-   page (see `src/pages/services/[slug].astro`).
+   One line per built page, in process order. Every slug here is subtracted
+   from the noindex list by `src/data/routes.js`, which is what moves its route
+   into sitemap.xml — publishing a page is adding a line, not editing two
+   files.
    =========================================================================== */
 
 export const detailPages = {
   'product-sourcing': productSourcing,
+  'supplier-verification': supplierVerification,
+  'purchasing-order-management': purchasingOrderManagement,
+  'quality-control': qualityControl,
+  'shipping-from-china': shippingFromChina,
 };
 
 /** @param {string} slug */
@@ -120,81 +117,3 @@ export const builtDetailSlugs = Object.keys(detailPages);
  * moves them into sitemap.xml.
  */
 export const builtDetailPaths = builtDetailSlugs.map((slug) => `/services/${slug}`);
-
-/* ===========================================================================
-   DERIVED FROM THE SERVICE REGISTRY
-   =========================================================================== */
-
-/**
- * Look up a service, or fail the build.
- * @param {string} slug
- */
-function requireService(slug) {
-  const service = services.find((entry) => entry.slug === slug);
-  if (!service) {
-    throw new Error(
-      `[service-detail.js] No service registered with slug "${slug}". ` +
-        `Add it to services.js — a detail page never declares a service name of its own.`
-    );
-  }
-  return service;
-}
-
-/**
- * The registry record for a slug: number, title, canonical href and the
- * description the homepage and footer already use.
- *
- * Exported so a page shell can build its `Service` JSON-LD node from the same
- * record the page renders — a structured-data claim can then never describe a
- * service the page does not show.
- *
- * @param {string} slug
- */
-export function serviceForSlug(slug) {
-  return requireService(slug);
-}
-
-/**
- * The five services in process order.
- *
- * The order is not re-declared: `services.js` already lists them 01–05 in the
- * order the process runs (Find → Verify → Purchase → Inspect → Ship), and that
- * order is what the homepage, the footer column and `/services` all render. A
- * second ordering here is exactly how two lists drift.
- */
-export const serviceChain = services.map((service) => ({
-  number: service.number,
-  label: CHAIN_LABELS[service.slug] ?? service.title,
-  href: service.href,
-}));
-
-/**
- * The chain with one stage marked as the page the visitor is on.
- *
- * The current stage is not a link to itself. It keeps `aria-current="page"` so
- * assistive technology announces "current page" rather than reading it as
- * another destination.
- *
- * @param {string} currentSlug
- */
-export function chainFor(currentSlug) {
-  requireService(currentSlug);
-  return serviceChain.map((stage) => ({
-    ...stage,
-    current: stage.href === `/services/${currentSlug}`,
-  }));
-}
-
-/**
- * Breadcrumb trail for a detail page, excluding "Home" (prepended by
- * `<Breadcrumbs>` and by `breadcrumbItems()`), so the visible trail and the
- * JSON-LD BreadcrumbList come from this one array.
- *
- * @param {string} slug
- */
-export function detailBreadcrumbs(slug) {
-  const service = requireService(slug);
-  return [{ label: 'Services', href: '/services' }, { label: service.title }];
-}
-
-export { primaryCta };
