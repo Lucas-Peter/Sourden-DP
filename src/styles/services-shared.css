@@ -1,0 +1,483 @@
+/* ===========================================================================
+   SOURDEN — 07a SERVICES — SHARED SECTIONS
+   ---------------------------------------------------------------------------
+   The section devices that `/services` AND the five `/services/<slug>` detail
+   pages both render. Imported by `src/pages/services/index.astro` and by
+   `src/components/services/ServiceDetailPage.astro` (the detail pages' shell).
+
+   NOTE ON WHAT THE SPLIT DOES AND DOES NOT BUY
+   Vite emits ONE CSS chunk per page containing everything that page imports, so
+   this file does not become a separately-cached artefact shared between the six
+   pages — `/services` still ships a single 11.8 KB chunk, exactly as it did
+   before the split. What the split buys is that no page has to import another
+   page's stylesheet: a detail page links `services-shared.css` plus
+   `service-detail.css` and skips the ~6.6 KB of overview-only rules
+   (`.sv-overview`, `.sv-path`, `.sv-audience`, `.sv-scale`, `.sv-expect`,
+   `.sv-approach`) that it would otherwise download and never apply.
+
+   WHY THIS FILE EXISTS SEPARATELY
+   These three sections used to live in `services.css`, which only `/services`
+   imported. The detail pages need exactly the same hero, the same five-stage
+   rail and the same FAQ, so leaving them there would have forced every detail
+   page to import the whole overview sheet. They are NOT in `components.css`
+   either, because nothing outside the services area uses them and the shared
+   core loads on every page on the site — moving them there would tax the
+   homepage to serve six pages.
+
+   WHAT BELONGS HERE
+   A section belongs in this file when `/services` and at least one detail page
+   render the SAME device with the same class names. A device used by only one
+   side of that split belongs in `services.css` (overview-only) or
+   `service-detail.css` (detail-only).
+
+   HOUSE RULES THIS FILE FOLLOWS
+   ───────────────────────────────────────────────────────────────────────────
+   · Every selector is prefixed `.sv-`. Nothing here redefines a shared-core
+     class — the site's audit fails the build if a page stylesheet collides
+     with `base.css` / `layout.css` / `components.css`, because the winning
+     rule would otherwise depend on CSS chunk order, which Astro does not
+     guarantee.
+   · Where a core element needs a different measure in these sections, the
+     override is SCOPED (`.sv-hero > .container`), never a redefinition.
+   · Values come from `tokens.css`. No hex literals, no raw px font sizes.
+   · IMPORT ORDER IS LOAD-BEARING: the shared core is linked first, then this
+     file, then the page sheet. A page must `import` its layout before any
+     stylesheet, or every same-specificity conflict here loses silently.
+
+   SECTION INDEX
+     01 Hero                 (services brief §4 — detail pages §01)
+     02 The five-stage rail  (services brief §5 — detail pages "process")
+     03 FAQ                  (services brief §17 — detail pages FAQ)
+   =========================================================================== */
+
+
+/* ===========================================================================
+   01 — HERO
+   ---------------------------------------------------------------------------
+   Text then image in the DOM at every width; desktop moves the figure into
+   the right-hand column with grid placement only, so the mobile reading order
+   is correct for keyboard and screen-reader users without any reordering.
+   =========================================================================== */
+
+.sv-hero {
+  background-color: var(--ivory);
+  padding-block: clamp(32px, 4vw, 56px) clamp(48px, 5.5vw, 88px);
+}
+
+.sv-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 768px) {
+  .sv-hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+    gap: var(--grid-gap);
+    align-items: center;
+  }
+}
+
+.sv-hero__text {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  min-width: 0;
+}
+
+.sv-hero__title {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+  max-width: 22ch;
+}
+
+.sv-hero__lead {
+  max-width: 50ch;
+  color: var(--muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+}
+
+.sv-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-6);
+  margin-block-start: var(--sp-3);
+}
+
+.sv-hero__figure {
+  display: grid;
+  gap: var(--sp-3);
+  align-content: start;
+  min-width: 0;
+}
+
+
+/* ===========================================================================
+   02 — THE FIVE-STAGE RAIL
+   ---------------------------------------------------------------------------
+   Five stages on a hairline rail. Mobile: a vertical rail down the left with
+   the number and verb beside each dot. Desktop: a horizontal rail across five
+   columns, dots sitting on it.
+
+   The rail is what turns five rows into one sequence, so it is drawn even
+   though it is invisible to assistive technology — the <ol> already carries
+   the ordering for anything that cannot see it.
+
+   TWO CONSUMERS, TWO SHAPES
+     · `/services`  — each stage is a LINK to that service, and the service
+       name is an <h3> under the rail (`01 — FIND` / "Product Sourcing").
+     · detail pages — the stage IS the process step, so the label in the rail
+       (`01 — UNDERSTAND`) is the whole heading, there is no separate <h3> and
+       nothing to link to.
+   `.sv-stage__link` is therefore only present on the overview page; a detail
+   page uses `.sv-stage__body` instead (see `service-detail.css`). Everything
+   else — the dot, the rail, the number, the verb, the description — is
+   identical, which is why this file owns the device and not the pages.
+   =========================================================================== */
+
+.sv-process {
+  background-color: var(--white);
+}
+
+.sv-process__head {
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+.sv-stages {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sv-stage {
+  position: relative;
+}
+
+/* `.sv-stage__body` is the non-link twin of `.sv-stage__link`: the detail pages'
+   process stages have nowhere to link to, so they use a <div> with the identical
+   grid geometry. Both selectors are listed on every layout rule below so the two
+   consumers cannot drift apart — a stage's dot, number, verb and description sit
+   in the same places on `/services` and on a detail page. */
+.sv-stage__body,
+.sv-stage__link {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-2);
+  padding-block: var(--sp-5);
+}
+
+/* The dot. Sits in row 1 beside the number, so the rail runs through it. */
+.sv-stage__marker {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  width: 11px;
+  height: 11px;
+  margin-block-start: 5px;
+  background-color: var(--brass);
+  border-radius: 50%;
+}
+
+/* Vertical connector between stages — mobile and tablet only. */
+.sv-stage:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 24px;
+  bottom: 0;
+  width: var(--rule);
+  background-color: var(--stone);
+}
+
+.sv-stage__rail {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  align-items: baseline;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.sv-stage__num {
+  margin-block-start: 1px;
+}
+
+.sv-stage__dash {
+  color: var(--brass-ink);
+  font-size: var(--fs-num);
+}
+
+/* The verb is the connective tissue — the reason these five are a process and
+   not a menu — so it is set as a labels-weight accent rather than as body. */
+.sv-stage__verb {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* The five titles are of different lengths in fixed 224px columns, so three of
+   them wrap to two lines. Left to itself the arrow would trail the text — flush
+   right where a title wraps, and stopping short where it does not, putting the
+   five arrows on five different x positions and making the rail look like it
+   had come apart. Below 1200px the rail is a vertical list and a trailing arrow
+   is right, so `space-between` is applied only in the horizontal layout (see
+   the desktop block), where it pins every arrow to the column's right edge and
+   the five read as one row of links. */
+.sv-stage__title {
+  display: flex;
+  grid-column: 2;
+  grid-row: 2;
+  align-items: baseline;
+  gap: 0.5em;
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-medium);
+  line-height: 1.22;
+  letter-spacing: var(--ls-display);
+}
+
+.sv-stage__arrow {
+  color: var(--brass-ink);
+  font-size: 0.8em;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.sv-stage__link:hover .sv-stage__arrow,
+.sv-stage__link:focus-visible .sv-stage__arrow {
+  transform: translateX(5px);
+}
+
+.sv-stage__desc {
+  grid-column: 2;
+  grid-row: 3;
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+/* Desktop — the rail goes horizontal and each stage becomes a column. */
+@media (min-width: 1200px) {
+  .sv-stages {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  .sv-stages::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    height: var(--rule);
+    background-color: var(--stone);
+  }
+
+  .sv-stage__body,
+  .sv-stage__link {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    column-gap: 0;
+    row-gap: var(--sp-3);
+    padding-block: 0;
+  }
+
+  .sv-stage:not(:last-child)::after {
+    content: none;
+  }
+
+  /* The dot punches through the rail so the line does not show inside it. */
+  .sv-stage__marker {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    z-index: var(--z-base);
+    background-color: var(--white);
+    border: var(--rule) solid var(--brass);
+  }
+
+  .sv-stage__rail {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .sv-stage__num {
+    margin-block-start: 0;
+  }
+
+  .sv-stage__title {
+    /* Reserve two lines. At 1200–1440 the column is 208–224px wide, which fits
+       "Product Sourcing" and "Quality Control" on one line and wraps the other
+       three onto two. Without a floor, the descriptions would then start 29px
+       apart in a row that reads as five columns of one table — the dots and the
+       rail promise alignment the copy would break. Two lines is the maximum any
+       of the five reaches at this width. */
+    min-height: 2.44em; /* 2 lines × the 1.22 line-height below */
+    justify-content: space-between;
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .sv-stage__desc {
+    grid-column: 1;
+    grid-row: 4;
+    max-width: 30ch;
+  }
+}
+
+.sv-process__foot {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+
+/* ===========================================================================
+   03 — FAQ
+   ---------------------------------------------------------------------------
+   Native <details>/<summary>, so there is no script here at all. The default
+   disclosure triangle is suppressed in both engines (::marker for Gecko,
+   ::-webkit-details-marker for WebKit/Blink) and replaced with a drawn + / −
+   that needs no glyph font and cannot shift the baseline.
+   =========================================================================== */
+
+.sv-faq {
+  background-color: var(--ivory);
+}
+
+.sv-faq__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .sv-faq__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .sv-faq__head {
+    grid-column: 1 / span 5;
+  }
+
+  .sv-faq__list {
+    grid-column: 7 / span 6;
+  }
+}
+
+.sv-faq__list {
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.sv-faq__item {
+  border-bottom: var(--rule) solid var(--divider-light);
+}
+
+.sv-faq__question {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  padding-block: var(--sp-5);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-medium);
+  line-height: 1.28;
+  letter-spacing: var(--ls-display);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.sv-faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.sv-faq__question::marker {
+  content: '';
+}
+
+.sv-faq__question:hover {
+  color: var(--brass-ink);
+}
+
+.sv-faq__question-text {
+  min-width: 0;
+}
+
+/* A drawn indicator: the horizontal bar is the minus, the vertical bar the
+   plus. Opening rotates the vertical bar onto the horizontal one. */
+.sv-faq__mark {
+  position: relative;
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin-block-start: 0.42em;
+  color: var(--brass-ink);
+}
+
+.sv-faq__mark::before,
+.sv-faq__mark::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--rule);
+  background-color: currentColor;
+}
+
+.sv-faq__mark::after {
+  transform: rotate(90deg);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.sv-faq__item[open] .sv-faq__mark::after {
+  transform: rotate(0deg);
+}
+
+.sv-faq__answer {
+  padding-block-end: var(--sp-5);
+}
+
+.sv-faq__answer > p {
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.68;
+}
+
+.sv-faq__foot {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+
+/* ===========================================================================
+   PRINT
+   ---------------------------------------------------------------------------
+   The + / − indicator is a screen affordance. Anything the reader has opened
+   should print as ordinary text.
+   =========================================================================== */
+
+@media print {
+  .sv-faq__mark {
+    display: none;
+  }
+
+  .sv-stage,
+  .sv-faq__item {
+    break-inside: avoid;
+  }
+}

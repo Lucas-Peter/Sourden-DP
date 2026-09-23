@@ -1,0 +1,526 @@
+/* ===========================================================================
+   SOURDEN — 07c SERVICE DETAIL PAGES
+   ---------------------------------------------------------------------------
+   The sections that ONLY the five `/services/<slug>` detail pages render. This
+   file is imported by `src/components/services/ServiceDetailPage.astro`, the
+   shell every one of them renders through.
+
+   WHAT IS NOT IN THIS FILE
+   · `.sv-hero*`, `.sv-stages` / `.sv-stage*` and `.sv-faq*` — shared with
+     `/services`, so they live in `services-shared.css`. Both sheets are
+     imported by the shell, in that order: shared first, then this one, so a
+     rule here wins a same-specificity tie.
+   · The page rhythm (`.section`, `.section--ivory`, `.section--white`,
+     `.section--dark`, `.container`, `.section-head`, `.section-foot`) — shared
+     core from `layout.css` / `components.css`, which every page on the site
+     loads. Nothing here redefines any of it: the audit fails the build if a
+     page stylesheet collides with the core, because the winning rule would then
+     depend on CSS chunk order, which Astro does not guarantee.
+   · Any colour, size or spacing literal. Values come from `tokens.css`.
+
+   PREFIX
+   Every selector is `.sd-` (service detail). The two namespaces mean something:
+   `.sv-` is the services-area vocabulary shared by the overview page and the
+   detail pages, `.sd-` is what only a detail page renders. A rule in the wrong
+   file is the first thing a reader would notice.
+
+   SECTION INDEX
+     01 Shared note line            05 Split (two columns)
+     02 Prose                       06 Chain (the five services)
+     03 Review grid                 07 Dark-ground corrections
+     04 Check list                  08 Print
+   =========================================================================== */
+
+
+/* ===========================================================================
+   01 — SHARED NOTE LINE
+   ---------------------------------------------------------------------------
+   The brief's closing sentences — "Looking for something specific? Tell us what
+   you need.", "Don't have all the information yet? That's okay." — and its
+   caveats. They belong to their section but must not read as one more list item
+   or one more paragraph, so they are separated by a hairline and set quieter.
+   =========================================================================== */
+
+.sd-note {
+  max-width: 62ch;
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.68;
+}
+
+
+/* ===========================================================================
+   02 — PROSE
+   ---------------------------------------------------------------------------
+   Heading left in 5 columns, copy right in 6 — the same editorial split the
+   services-area FAQ uses, so a reader moving through a detail page meets one
+   grid rather than a new one per section.
+   =========================================================================== */
+
+.sd-prose__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .sd-prose__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .sd-prose__head {
+    grid-column: 1 / span 5;
+  }
+
+  .sd-prose__body {
+    grid-column: 7 / span 6;
+  }
+}
+
+.sd-prose__body {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  min-width: 0;
+}
+
+.sd-prose__para {
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* A closing statement that belongs to the section but is not body copy — the
+   brief's "Important:" lines. Brass marks it as the section's own conclusion. */
+.sd-prose__emphasis {
+  max-width: 52ch;
+  color: var(--brass-ink);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+}
+
+.sd-prose__foot {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+
+/* ===========================================================================
+   03 — REVIEW GRID
+   ---------------------------------------------------------------------------
+   Two columns of titled factors. Two, not three: with 4–8 items a third column
+   would leave a one-item row on some pages, and it would narrow the sentences
+   enough that several of them would run to four lines.
+
+   The hairline above each item is what makes the two columns read as one ruled
+   table rather than two loose lists. Both columns of a row share a grid row
+   height, so the rules line up horizontally across the full width.
+   =========================================================================== */
+
+.sd-review__head {
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+.sd-review__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .sd-review__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-6) var(--grid-gap);
+  }
+}
+
+.sd-review__item {
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+  min-width: 0;
+}
+
+.sd-review__title {
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-medium);
+  line-height: 1.22;
+  letter-spacing: var(--ls-display);
+}
+
+.sd-review__desc {
+  max-width: 46ch;
+  margin-block-start: var(--sp-2);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+
+/* ===========================================================================
+   04 — CHECK LIST
+   ---------------------------------------------------------------------------
+   The dense list of short fragments. The marker is a brass hairline rather than
+   a bullet glyph or an icon — the same device `/services` uses for its key
+   areas, so the two pages' lists are recognisably the same list.
+   =========================================================================== */
+
+.sd-checklist__head {
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+.sd-checklist__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .sd-checklist__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-3) var(--sp-5);
+  }
+}
+
+.sd-checklist__item {
+  position: relative;
+  padding-inline-start: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+.sd-checklist__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 6px;
+  height: var(--rule);
+  background-color: var(--brass);
+}
+
+
+/* ===========================================================================
+   05 — SPLIT (two columns)
+   ---------------------------------------------------------------------------
+   A comparison or a can / cannot pair. The columns are deliberately identical
+   in weight: same label treatment, same rule, no accent colour on either. One
+   column must never look like the recommendation — the honest half of a
+   "cannot guarantee" pair is not the negative option.
+
+   Below 768px the divider is dropped and the columns stack, because a vertical
+   rule between two stacked blocks separates nothing.
+   =========================================================================== */
+
+.sd-split__head {
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+.sd-split__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 768px) {
+  .sd-split__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .sd-split__col + .sd-split__col {
+    padding-inline-start: var(--sp-6);
+    border-inline-start: var(--rule) solid var(--divider-light);
+  }
+}
+
+.sd-split__col {
+  min-width: 0;
+}
+
+.sd-split__label {
+  color: var(--ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.sd-split__note {
+  margin-block-start: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.sd-split__text {
+  margin-block-start: var(--sp-2);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.sd-split__list {
+  display: grid;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-split__item {
+  position: relative;
+  padding-inline-start: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+.sd-split__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 6px;
+  height: var(--rule);
+  background-color: var(--brass);
+}
+
+.sd-split__note-line {
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.sd-split__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-6);
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+
+/* ===========================================================================
+   06 — CHAIN (the five services as one process)
+   ---------------------------------------------------------------------------
+   Vertical below 768px — stacked stages with the arrow turned a quarter turn so
+   it points at the next stage — and one row above it.
+
+   The arrow lives INSIDE each item, not between them, so that when the row
+   wraps the arrow travels with the stage it follows instead of being left
+   stranded at the end of a line on its own.
+
+   Every stage is a ≥44px target, including on the stacked layout, because these
+   are the page's hand-off links.
+   =========================================================================== */
+
+.sd-chain__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.sd-chain__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .sd-chain__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--sp-3);
+    row-gap: var(--sp-2);
+  }
+}
+
+.sd-chain__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.sd-chain__stage {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  color: var(--ink);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+a.sd-chain__stage:hover,
+a.sd-chain__stage:focus-visible {
+  color: var(--brass-ink);
+}
+
+/* The stage being read. Not a link — a link back to this page would look like
+   another destination — but it keeps `aria-current="page"` so it is announced
+   as the current page rather than read as one more place to go. */
+.sd-chain__stage--current {
+  color: var(--brass-ink);
+}
+
+.sd-chain__label {
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.3;
+}
+
+/* `display: inline-block` is required for the rotation to apply to an inline
+   element; the arrow is a text glyph, not an icon font or an SVG. */
+.sd-chain__arrow {
+  display: inline-block;
+  flex: none;
+  color: var(--brass);
+  font-size: var(--fs-body-sm);
+  transform: rotate(90deg);
+}
+
+@media (min-width: 768px) {
+  .sd-chain__arrow {
+    transform: none;
+  }
+}
+
+
+/* ===========================================================================
+   07 — DARK-GROUND CORRECTIONS
+   ---------------------------------------------------------------------------
+   `.section--dark` already flips `.section-head__lead`, `.eyebrow` and the
+   arrow links. What it cannot know about is this file's own children, so each
+   one that carries a light-ground colour gets its dark counterpart here.
+
+   Scoped to `.section--dark` rather than to a specific section type: any detail
+   section may be given `tone: 'ink'` in its data file, and a section that
+   silently kept its light-ground text on an ink band would be unreadable.
+
+   The five-stage rail needs more than a colour swap on the dark band: its dot
+   is filled with the section's own background so it punches a hole in the rail,
+   and `--brass-ink` (the brass for text on ivory) fails contrast on ink — the
+   lighter `--brass` is the token for that ground.
+   =========================================================================== */
+
+.section--dark .sd-review__item {
+  border-top-color: var(--divider-dark);
+}
+
+.section--dark .sd-split__col + .sd-split__col {
+  border-inline-start-color: var(--divider-dark);
+}
+
+.section--dark .sd-review__title,
+.section--dark .sd-split__label,
+.section--dark .sd-split__text,
+.section--dark .sd-chain__stage {
+  color: var(--text-on-dark);
+}
+
+.section--dark .sd-review__desc,
+.section--dark .sd-checklist__item,
+.section--dark .sd-split__item,
+.section--dark .sd-prose__para,
+.section--dark .sd-split__note {
+  color: var(--muted-dark);
+}
+
+.section--dark .sd-prose__emphasis,
+.section--dark a.sd-chain__stage:hover,
+.section--dark a.sd-chain__stage:focus-visible,
+.section--dark .sd-chain__stage--current {
+  color: var(--brass);
+}
+
+.section--dark .sd-note {
+  border-top-color: var(--divider-dark);
+  color: var(--muted-dark);
+}
+
+/* The detail pages' process band. */
+.sd-process .sv-stages::before,
+.sd-process .sv-stage:not(:last-child)::after {
+  background-color: var(--divider-dark);
+}
+
+.sd-process .sv-stage__marker {
+  background-color: var(--ink);
+  border-color: var(--brass);
+}
+
+/* The step heading IS the rail ("01 — UNDERSTAND"), so it sits in the row the
+   rail occupies on `/services` and the description moves up one. */
+.sd-process .sv-stage__rail {
+  grid-row: 2;
+  margin: 0;
+  font-size: var(--fs-label);
+}
+
+.sd-process .sv-stage__num {
+  color: var(--brass);
+}
+
+.sd-process .sv-stage__desc {
+  color: var(--muted-dark);
+}
+
+.sd-process__note {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+  border-top-color: var(--divider-dark);
+  color: var(--muted-dark);
+}
+
+@media (min-width: 1200px) {
+  /* Three rows, not the link variant's four — there is no separate title row
+     here, and an unoccupied row would add its gap as dead space. */
+  .sd-process .sv-stage__body {
+    grid-template-rows: auto auto auto;
+  }
+
+  .sd-process .sv-stage__rail {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .sd-process .sv-stage__desc {
+    grid-column: 1;
+    grid-row: 3;
+    max-width: 30ch;
+  }
+}
+
+
+/* ===========================================================================
+   08 — PRINT
+   =========================================================================== */
+
+@media print {
+  .sd-review__item,
+  .sd-checklist__item,
+  .sd-split__col,
+  .sd-chain__item {
+    break-inside: avoid;
+  }
+
+  .sd-chain__arrow {
+    transform: none;
+  }
+}
