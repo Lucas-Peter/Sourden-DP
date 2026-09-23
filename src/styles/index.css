@@ -35,9 +35,24 @@
      3. Add the file name to `PAGE_SHEETS` in `scripts/audit.mjs`, which is
         what enforces the next rule.
      4. Namespace every selector in it (`.sr-` for the sourcing page, `.sv-`
-        for the services page) and reuse the component classes from
+        for the services area) and reuse the component classes from
         components.css before inventing new ones — that is what keeps the site
         visually coherent.
+
+   SHARING A DEVICE BETWEEN TWO PAGES
+     A page sheet is per page, so two pages that need the same device would
+     otherwise each carry a copy of it. That is what `services-shared.css` is
+     for: `.sv-hero*`, the five-stage rail and the FAQ are used by `/services`
+     AND by every `/services/<slug>` detail page, so they live in one file both
+     import. Add to it only when a second page genuinely needs the device —
+     and note that this buys a single source of truth, NOT a shared download:
+     Vite emits one CSS chunk per page containing everything that page
+     imports, so a "shared" sheet is not a separately cached file. The win is
+     that pages which do not need the rules do not ship them.
+     `service-detail.css` is the opposite case: rules only the detail pages
+     need, prefixed `.sd-` so they cannot collide with `.sv-`.
+     Every sheet in the chain — core, shared and page — needs its own line in
+     `PAGE_SHEETS`, including the shared ones.
    =========================================================================== */
 
 /* Manrope (headings) — variable, weights 200–800 */
