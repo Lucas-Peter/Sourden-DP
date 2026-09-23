@@ -81,21 +81,41 @@ target under 250 KB.
 
 ---
 
-### Services page — six slots
+### Services area — eleven slots
 
-| File | Label | Source size | Ratio |
-| --- | --- | --- | --- |
-| `services-hero.svg` | Sourcing Services | **1600 × 1200** | 4:3 |
-| `service-product-sourcing.svg` | Product Sourcing | **1200 × 900** | 4:3 |
-| `service-supplier-verification.svg` | Supplier Verification | **1200 × 900** | 4:3 |
-| `service-purchasing-management.svg` | Purchasing Management | **1200 × 900** | 4:3 |
-| `service-quality-control.svg` | Quality Control | **1200 × 900** | 4:3 |
-| `service-shipping-from-china.svg` | Shipping from China | **1200 × 900** | 4:3 |
+Six for the `/services` overview and five for the detail pages (one 1600-wide
+hero each).
 
-All six are 4:3 on purpose. The five service images are shown as **one
-alternating text ↔ image sequence**, so a mixed set of ratios would make the
-column widths jump from row to row. Keep the hero framing calm — it sits beside
-the H1.
+| File | Label | Source size | Ratio | Used by |
+| --- | --- | --- | --- | --- |
+| `services-hero.svg` | Sourcing Services | **1600 × 1200** | 4:3 | `/services` hero |
+| `service-product-sourcing.svg` | Product Sourcing | **1200 × 900** | 4:3 | `/services` row |
+| `service-supplier-verification.svg` | Supplier Verification | **1200 × 900** | 4:3 | `/services` row |
+| `service-purchasing-management.svg` | Purchasing Management | **1200 × 900** | 4:3 | `/services` row |
+| `service-quality-control.svg` | Quality Control | **1200 × 900** | 4:3 | `/services` row |
+| `service-shipping-from-china.svg` | Shipping from China | **1200 × 900** | 4:3 | `/services` row |
+| `service-product-sourcing-hero.svg` | Product Sourcing | **1600 × 1200** | 4:3 | detail hero |
+| `service-supplier-verification-hero.svg` | Supplier Verification | **1600 × 1200** | 4:3 | detail hero |
+| `service-purchasing-management-hero.svg` | Purchasing Management | **1600 × 1200** | 4:3 | detail hero |
+| `service-quality-control-hero.svg` | Quality Control | **1600 × 1200** | 4:3 | detail hero |
+| `service-shipping-from-china-hero.svg` | Shipping from China | **1600 × 1200** | 4:3 | detail hero |
+
+All eleven are 4:3 on purpose. The five row images are shown as **one
+alternating text ↔ image sequence** on `/services`, so a mixed set of ratios
+would make the column widths jump from row to row. Keep the hero framing calm —
+it sits beside the H1.
+
+**Loads eagerly** — the six hero slots (`services-hero` and the five
+`*-hero`) sit beside an H1 with `priority`, so export them WebP at ~75% quality,
+target under 250 KB each. The five `1200 × 900` row images load lazily.
+
+**Why every detail page has its own hero slot rather than reusing the row
+image:** they appear at different sizes. A row image is a 520px-tall
+half-column on `/services`; a hero is full-width in a 6-column frame beside the
+H1. One file cannot serve both without either a mushy crop of the larger frame
+or an upscaled smaller one. It also avoids showing the visitor the same
+photograph twice in a row — once on the row they clicked and again on the page
+it opened. Eleven slots cost nothing and keep every frame crisp.
 
 - **Sourcing Services** (hero) — documentary sourcing: product sample review,
   supplier/product inspection, packaging review, a manufacturing process,
@@ -242,8 +262,10 @@ is gone.
 - **Width and height are always emitted**, which reserves the space before the
   file loads and keeps Cumulative Layout Shift at zero. Never remove them.
 - Everything below the fold loads `lazy` with `decoding="async"`. Only the
-  three above-the-fold hero images (homepage, `/sourcing-request` and
-  `/services`) load eagerly.
+  above-the-fold hero images load eagerly, one per page that has one:
+  `heroSourcing` (home), `sourcingRequestHero`, `servicesHero`, and one per
+  `/services/<slug>` detail page — eight slots today, and it grows by one per
+  detail page that ships.
 - Hover scale is 1.03 over the standard duration, and is suppressed entirely
   under `prefers-reduced-motion`.
 
