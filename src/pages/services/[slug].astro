@@ -1,31 +1,80 @@
 ---
 /**
- * RESERVED DETAIL ROUTE — /services/[slug]
+ * DETAIL ROUTE — /services/[slug]
  * ---------------------------------------------------------------------------
- * Generated from the shared data files, so adding a service, category, article
- * or case study creates its route automatically — no new page file needed.
+ * Generated from the shared data files, so adding a service creates its route
+ * automatically — no new page file needed.
  *
- * One page file therefore covers every child route in this group, and they all
- * render the same reservation shell until real content is written.
+ * TWO KINDS OF PAGE, ONE ROUTE
+ *   A slug with a written page renders it (`ServiceDetailPage`); a slug without
+ *   one renders the reservation shell (`ReservationPage`). The branch is driven
+ *   by `detailPageFor()`, so building a page for real is: write its data file,
+ *   add it to `detailPages` in `src/data/service-detail.js`, and remove its path
+ *   from `builtDetailPaths`' siblings in `src/data/routes.js` — the reservation
+ *   `planned` copy for a built slug is never rendered, so a stale reservation
+ *   entry is inert rather than misleading.
  *
- * TO BUILD A DETAIL PAGE FOR REAL
- * Replace <ReservationPage /> with the real sections and remove the
- * corresponding entries from `detailRoutePaths` in `src/data/routes.js`
- * so the URLs re-enter sitemap.xml.
+ * WHY NOT ONE FILE PER SERVICE
+ *   A static `src/pages/services/<slug>.astro` would also work, but then the
+ *   route list lives in two places (the file system and the data registry) and
+ *   the reservation fallback has to be duplicated for every service still to be
+ *   written. One route, two branches, one registry.
+ *
+ * THE COST OF ONE ROUTE FOR TWO BRANCHES — a stated trade-off, not an oversight
+ *   Because both shells are imported statically, Astro links BOTH branches'
+ *   stylesheets on EVERY `/services/<slug>` page. Measured in the build:
+ *
+ *     /services/product-sourcing   24.1 core + 3.5 inner-pages + 4.9 shared + 6.1 detail
+ *     /services/quality-control    24.1 core + 3.5 inner-pages + 4.9 shared + 6.1 detail
+ *
+ *   So a built page ships `inner-pages.css` (the reservation shell's sheet)
+ *   without using it, and a reservation page ships the two detail sheets without
+ *   using them. The alternative — a second route file per branch — would put the
+ *   same path in two route tables, and Astro's static-over-dynamic precedence
+ *   would then decide which one wins silently. One deterministic route is worth
+ *   ~1 KB of gzipped CSS that is already cached site-wide: `inner-pages.css` is
+ *   also the sheet for `/industries`, `/insights` and `/case-studies`, so a
+ *   visitor who reaches a service page has almost certainly downloaded it
+ *   already. The reservation-page half of the leak disappears as pages 2–5 are
+ *   written, and those pages are `noindex` meanwhile.
+ *
+ *   If this ever stops being acceptable, the fix is to move the two stylesheet
+ *   imports out of the shells and into per-branch page files — not to inline
+ *   rules or to merge the sheets.
+ *
+ * INDEXABILITY
+ *   The reservation branch is `noindex` and absent from sitemap.xml. A built
+ *   page is indexable — its path is subtracted from `detailRoutePaths` in
+ *   `src/data/routes.js`, which is what drives both the `<meta name="robots">`
+ *   split and the sitemap filter. Forgetting that subtraction leaves a finished,
+ *   content-rich page excluded from search; `npm run check` cross-checks the two
+ *   signals and fails the build if a page is noindex but listed, or indexable
+ *   but absent.
  * ---------------------------------------------------------------------------
  */
 import ReservationPage from '../../components/ReservationPage.astro';
+import ServiceDetailPage from '../../components/services/ServiceDetailPage.astro';
 
+import { detailPageFor } from '../../data/service-detail.js';
 import { detailRouteGroups, reservationForDetail } from '../../data/routes.js';
 
 export function getStaticPaths() {
-  return detailRouteGroups['services'].map((entry) => ({
-    params: { slug: entry.slug },
-    props: { page: reservationForDetail(entry.kind, entry.item, entry.parent) },
-  }));
+  return detailRouteGroups['services'].map((entry) => {
+    const detail = detailPageFor(entry.slug);
+
+    return {
+      params: { slug: entry.slug },
+      props: detail
+        ? { detail }
+        : {
+            detail: null,
+            page: reservationForDetail(entry.kind, entry.item, entry.parent),
+          },
+    };
+  });
 }
 
-const { page } = Astro.props;
+const { detail, page } = Astro.props;
 ---
 
-<ReservationPage {...page} />
+{detail ? <ServiceDetailPage page={detail} /> : <ReservationPage {...page} />}
