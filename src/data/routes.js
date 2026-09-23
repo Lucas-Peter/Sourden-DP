@@ -20,10 +20,12 @@
  *   `src/data/sourcing-request.js` and `src/data/services-page.js` respectively,
  *   and both routes are indexable.
  *
- *   NOTE the five `/services/<slug>` detail pages are still reserved on purpose
- *   — the services brief (§23) scopes that build to the overview page only. They
- *   resolve, every link to them is already live, and they leave `noindex` one at
- *   a time as each is written.
+ *   The five `/services/<slug>` detail pages are being written one at a time.
+ *   Each one moves out of `detailRoutePaths` by being added to `detailPages` in
+ *   `service-detail.js` — the route registry reads `builtDetailPaths` from
+ *   there rather than keeping a second list. A slug that is not in that registry
+ *   still resolves, still has every link to it live, and still carries `noindex`
+ *   until its copy exists.
  *
  * This module is intentionally free of any import that depends on Vite, so
  * `astro.config.mjs` can import it at build time.
@@ -34,6 +36,7 @@ import { services } from './services.js';
 import { industries } from './industries.js';
 import { allCaseStudies } from './caseStudies.js';
 import { allArticles } from './insights.js';
+import { builtDetailPaths } from './service-detail.js';
 
 /** Page copy shared by every reservation page. */
 export const reservationNotice = {
@@ -217,7 +220,18 @@ export const detailRoutePaths = [
   ...allCaseStudies
     .filter((item) => item.slug)
     .map((item) => `/case-studies/${item.slug}`),
-];
+  /**
+   * A detail page that has actually been written is a real, indexable page, so
+   * it is subtracted here and re-enters sitemap.xml. `builtDetailPaths` is
+   * derived from the page registry in `service-detail.js` — the same registry
+   * `src/pages/services/[slug].astro` uses to decide whether to render the real
+   * page or the reservation shell — so the two can never disagree.
+   *
+   * This is the subtraction that is easy to forget, and forgetting it fails
+   * quietly: the page renders, every internal link to it works, and it is simply
+   * absent from search.
+   */
+].filter((path) => !builtDetailPaths.includes(path));
 
 export const noindexPaths = [
   '/404',
