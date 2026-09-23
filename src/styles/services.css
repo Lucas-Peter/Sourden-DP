@@ -1,8 +1,15 @@
 /* ===========================================================================
-   SOURDEN — 07 SERVICES PAGE
+   SOURDEN — 07b SERVICES OVERVIEW PAGE
    ---------------------------------------------------------------------------
-   Section styles for `/services` only (services brief §4–§18). Imported by
-   `src/pages/services/index.astro`, so no other route ships this file.
+   The sections that ONLY `/services` renders (services brief §6–§16). Imported
+   by `src/pages/services/index.astro`, so no other route ships this file.
+
+   NOT IN THIS FILE
+   The hero, the five-stage rail and the FAQ used to live here. The five
+   `/services/<slug>` detail pages render the same three devices, so they moved
+   to `services-shared.css`, which both sides import — leaving them here would
+   have made every detail page download the whole overview sheet as dead
+   weight. See the header of that file for the rule about what goes where.
 
    HOUSE RULES THIS FILE FOLLOWS
    ───────────────────────────────────────────────────────────────────────────
@@ -12,294 +19,21 @@
      rule would otherwise depend on CSS chunk order, which Astro does not
      guarantee.
    · Where a core element needs a different measure on this page, the override
-     is SCOPED (`.sv-hero > .container`), never a redefinition.
+     is SCOPED, never a redefinition.
    · Values come from `tokens.css`. No hex literals, no raw px font sizes.
    · Section backgrounds alternate ivory → white → … → ink. That rhythm is
      deliberate (spec §25 of the site brief) and must not be flattened.
 
    SECTION INDEX
-     01 Hero                    05 Who we work with + Source at your scale
-     02 The sourcing process    06 What you can expect
-     03 Services overview       07 The Sourden approach (dark)
-     04 One service or all five 08 FAQ
+     01 Services overview       04 What you can expect
+     02 One service or all five  05 The Sourden approach (dark)
+     03 Who we work with +
+        Source at your scale
    =========================================================================== */
 
 
 /* ===========================================================================
-   01 — HERO  (services brief §4)
-   ---------------------------------------------------------------------------
-   Text then image in the DOM at every width; desktop moves the figure into
-   the right-hand column with grid placement only, so the mobile reading order
-   is correct for keyboard and screen-reader users without any reordering.
-   =========================================================================== */
-
-.sv-hero {
-  background-color: var(--ivory);
-  padding-block: clamp(32px, 4vw, 56px) clamp(48px, 5.5vw, 88px);
-}
-
-.sv-hero__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
-}
-
-@media (min-width: 768px) {
-  .sv-hero__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
-    gap: var(--grid-gap);
-    align-items: center;
-  }
-}
-
-.sv-hero__text {
-  display: grid;
-  gap: var(--sp-4);
-  align-content: start;
-  min-width: 0;
-}
-
-.sv-hero__title {
-  font-size: var(--fs-h1);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-display);
-  letter-spacing: var(--ls-tight);
-  max-width: 22ch;
-}
-
-.sv-hero__lead {
-  max-width: 50ch;
-  color: var(--muted);
-  font-size: var(--fs-lead);
-  line-height: var(--lh-snug);
-}
-
-.sv-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-4) var(--sp-6);
-  margin-block-start: var(--sp-3);
-}
-
-.sv-hero__figure {
-  display: grid;
-  gap: var(--sp-3);
-  align-content: start;
-  min-width: 0;
-}
-
-
-/* ===========================================================================
-   02 — THE SOURCING PROCESS  (services brief §5)
-   ---------------------------------------------------------------------------
-   Five stages on a hairline rail. Mobile: a vertical rail down the left with
-   the number and verb beside each dot. Desktop: a horizontal rail across five
-   columns, dots sitting on it.
-
-   The rail is what turns five links into one sequence, so it is drawn even
-   though it is invisible to assistive technology — the <ol> already carries
-   the ordering for anything that cannot see it.
-   =========================================================================== */
-
-.sv-process {
-  background-color: var(--white);
-}
-
-.sv-process__head {
-  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
-}
-
-.sv-stages {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sv-stage {
-  position: relative;
-}
-
-.sv-stage__link {
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  grid-template-rows: auto auto auto;
-  column-gap: var(--sp-4);
-  row-gap: var(--sp-2);
-  padding-block: var(--sp-5);
-}
-
-/* The dot. Sits in row 1 beside the number, so the rail runs through it. */
-.sv-stage__marker {
-  grid-column: 1;
-  grid-row: 1;
-  align-self: start;
-  width: 11px;
-  height: 11px;
-  margin-block-start: 5px;
-  background-color: var(--brass);
-  border-radius: 50%;
-}
-
-/* Vertical connector between stages — mobile and tablet only. */
-.sv-stage:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 24px;
-  bottom: 0;
-  width: var(--rule);
-  background-color: var(--stone);
-}
-
-.sv-stage__rail {
-  display: flex;
-  grid-column: 2;
-  grid-row: 1;
-  align-items: baseline;
-  gap: var(--sp-2);
-  min-width: 0;
-}
-
-.sv-stage__num {
-  margin-block-start: 1px;
-}
-
-.sv-stage__dash {
-  color: var(--brass-ink);
-  font-size: var(--fs-num);
-}
-
-/* The verb is the connective tissue — the reason these five are a process and
-   not a menu — so it is set as a labels-weight accent rather than as body. */
-.sv-stage__verb {
-  color: var(--brass-ink);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-caps-wide);
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-/* The five titles are of different lengths in fixed 224px columns, so three of
-   them wrap to two lines. Left to itself the arrow would trail the text — flush
-   right where a title wraps, and stopping short where it does not, putting the
-   five arrows on five different x positions and making the rail look like it
-   had come apart. Below 1200px the rail is a vertical list and a trailing arrow
-   is right, so `space-between` is applied only in the horizontal layout (see
-   the desktop block), where it pins every arrow to the column's right edge and
-   the five read as one row of links. */
-.sv-stage__title {
-  display: flex;
-  grid-column: 2;
-  grid-row: 2;
-  align-items: baseline;
-  gap: 0.5em;
-  font-size: var(--fs-list-title);
-  font-weight: var(--fw-medium);
-  line-height: 1.22;
-  letter-spacing: var(--ls-display);
-}
-
-.sv-stage__arrow {
-  color: var(--brass-ink);
-  font-size: 0.8em;
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.sv-stage__link:hover .sv-stage__arrow,
-.sv-stage__link:focus-visible .sv-stage__arrow {
-  transform: translateX(5px);
-}
-
-.sv-stage__desc {
-  grid-column: 2;
-  grid-row: 3;
-  max-width: 46ch;
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.62;
-}
-
-/* Desktop — the rail goes horizontal and each stage becomes a column. */
-@media (min-width: 1200px) {
-  .sv-stages {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: var(--grid-gap);
-  }
-
-  .sv-stages::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 10px;
-    height: var(--rule);
-    background-color: var(--stone);
-  }
-
-  .sv-stage__link {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
-    column-gap: 0;
-    row-gap: var(--sp-3);
-    padding-block: 0;
-  }
-
-  .sv-stage:not(:last-child)::after {
-    content: none;
-  }
-
-  /* The dot punches through the rail so the line does not show inside it. */
-  .sv-stage__marker {
-    grid-column: 1;
-    grid-row: 1;
-    position: relative;
-    z-index: var(--z-base);
-    background-color: var(--white);
-    border: var(--rule) solid var(--brass);
-  }
-
-  .sv-stage__rail {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .sv-stage__num {
-    margin-block-start: 0;
-  }
-
-  .sv-stage__title {
-    /* Reserve two lines. At 1200–1440 the column is 208–224px wide, which fits
-       "Product Sourcing" and "Quality Control" on one line and wraps the other
-       three onto two. Without a floor, the descriptions would then start 29px
-       apart in a row that reads as five columns of one table — the dots and the
-       rail promise alignment the copy would break. Two lines is the maximum any
-       of the five reaches at this width. */
-    min-height: 2.44em; /* 2 lines × the 1.22 line-height below */
-    justify-content: space-between;
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .sv-stage__desc {
-    grid-column: 1;
-    grid-row: 4;
-    max-width: 30ch;
-  }
-}
-
-.sv-process__foot {
-  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
-}
-
-
-/* ===========================================================================
-   03 — SERVICES OVERVIEW  (services brief §6–§11)
+   01 — SERVICES OVERVIEW  (services brief §6–§11)
    ---------------------------------------------------------------------------
    Five alternating rows. Desktop splits each row 7 / 5 and mirrors the split
    every other row; the markup order (text → image) never changes, so mobile
@@ -469,7 +203,7 @@
 
 
 /* ===========================================================================
-   04 — ONE SERVICE OR ALL FIVE  (services brief §12)
+   02 — ONE SERVICE OR ALL FIVE  (services brief §12)
    ---------------------------------------------------------------------------
    Both paths get identical treatment: same brass rule, same label weight, same
    type scale. The only visible difference is the length of the chain, which is
@@ -562,7 +296,7 @@
 
 
 /* ===========================================================================
-   05 — WHO WE WORK WITH + SOURCE AT YOUR SCALE  (services brief §13 + §14)
+   03 — WHO WE WORK WITH + SOURCE AT YOUR SCALE  (services brief §13 + §14)
    =========================================================================== */
 
 .sv-audience {
@@ -717,7 +451,7 @@
 
 
 /* ===========================================================================
-   06 — WHAT YOU CAN EXPECT  (services brief §15)
+   04 — WHAT YOU CAN EXPECT  (services brief §15)
    ---------------------------------------------------------------------------
    Titles are uppercase here, which is what keeps this list visually distinct
    from the sentence-case audience rows directly above it — two five-item row
@@ -778,7 +512,7 @@
 
 
 /* ===========================================================================
-   07 — THE SOURDEN APPROACH  (services brief §16, dark)
+   05 — THE SOURDEN APPROACH  (services brief §16, dark)
    =========================================================================== */
 
 .sv-approach__grid {
@@ -838,144 +572,16 @@
 
 
 /* ===========================================================================
-   08 — FAQ  (services brief §17)
-   ---------------------------------------------------------------------------
-   Native <details>/<summary>, so there is no script here at all. The default
-   disclosure triangle is suppressed in both engines (::marker for Gecko,
-   ::-webkit-details-marker for WebKit/Blink) and replaced with a drawn + / −
-   that needs no glyph font and cannot shift the baseline.
-   =========================================================================== */
-
-.sv-faq {
-  background-color: var(--ivory);
-}
-
-.sv-faq__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
-}
-
-@media (min-width: 1200px) {
-  .sv-faq__grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--grid-gap);
-    align-items: start;
-  }
-
-  .sv-faq__head {
-    grid-column: 1 / span 5;
-  }
-
-  .sv-faq__list {
-    grid-column: 7 / span 6;
-  }
-}
-
-.sv-faq__list {
-  border-top: var(--rule) solid var(--divider-light);
-}
-
-.sv-faq__item {
-  border-bottom: var(--rule) solid var(--divider-light);
-}
-
-.sv-faq__question {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: var(--sp-5);
-  padding-block: var(--sp-5);
-  cursor: pointer;
-  list-style: none;
-  font-family: var(--font-display);
-  font-size: var(--fs-list-title);
-  font-weight: var(--fw-medium);
-  line-height: 1.28;
-  letter-spacing: var(--ls-display);
-  transition: color var(--dur-fast) var(--ease-out);
-}
-
-.sv-faq__question::-webkit-details-marker {
-  display: none;
-}
-
-.sv-faq__question::marker {
-  content: '';
-}
-
-.sv-faq__question:hover {
-  color: var(--brass-ink);
-}
-
-.sv-faq__question-text {
-  min-width: 0;
-}
-
-/* A drawn indicator: the horizontal bar is the minus, the vertical bar the
-   plus. Opening rotates the vertical bar onto the horizontal one. */
-.sv-faq__mark {
-  position: relative;
-  flex: none;
-  width: 13px;
-  height: 13px;
-  margin-block-start: 0.42em;
-  color: var(--brass-ink);
-}
-
-.sv-faq__mark::before,
-.sv-faq__mark::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: var(--rule);
-  background-color: currentColor;
-}
-
-.sv-faq__mark::after {
-  transform: rotate(90deg);
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.sv-faq__item[open] .sv-faq__mark::after {
-  transform: rotate(0deg);
-}
-
-.sv-faq__answer {
-  padding-block-end: var(--sp-5);
-}
-
-.sv-faq__answer > p {
-  max-width: 68ch;
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.68;
-}
-
-.sv-faq__foot {
-  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
-}
-
-
-/* ===========================================================================
    PRINT
    ---------------------------------------------------------------------------
-   The + / − indicator is a screen affordance. Anything the reader has opened
-   should print as ordinary text.
+   The device sections' print rules live in `services-shared.css`; this is only
+   what is left for the overview-only rows.
    =========================================================================== */
 
 @media print {
-  .sv-faq__mark {
-    display: none;
-  }
-
-  .sv-stage,
   .sv-path,
   .sv-audience-row,
-  .sv-expect-row,
-  .sv-faq__item {
+  .sv-expect-row {
     break-inside: avoid;
   }
 }
