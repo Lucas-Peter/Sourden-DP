@@ -36,12 +36,20 @@
  *   have left a finished, content-rich page excluded from search.
  *
  * IMPORT ORDER IS LOAD-BEARING
- *   Layout first, then the page stylesheet — otherwise this page's rules lose
- *   every same-specificity conflict against the shared core. `npm run audit`
- *   fails the build if that regresses.
+ *   Layout first, then the shared services sections, then this page's own sheet
+ *   — otherwise these rules lose every same-specificity conflict against the
+ *   shared core. `npm run audit` fails the build if that regresses.
+ *
+ *   `services-shared.css` carries the hero, the five-stage rail and the FAQ,
+ *   which the five `/services/<slug>` detail pages also render. Splitting them
+ *   out keeps the overview-only rules out of those pages — see the header of
+ *   that file for why the split is about avoiding cross-page imports rather
+ *   than about a separately-cached artefact (Vite merges a page's CSS into one
+ *   chunk either way, so this page's chunk is the same size as before).
  * ---------------------------------------------------------------------------
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
 import '../../styles/services.css';
 
 import FinalCTA from '../../components/FinalCTA.astro';
@@ -56,7 +64,10 @@ import SourcingProcess from '../../components/services/SourcingProcess.astro';
 
 import {
   breadcrumbs,
+  faqIntro,
+  faqItems,
   finalCta,
+  hero,
   overviewSections,
   servicesPageMeta,
 } from '../../data/services-page.js';
@@ -97,7 +108,17 @@ const schema = [
   path={path}
   schema={schema}
 >
-  <ServicesHero />
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    description={hero.description}
+    primaryCta={hero.primaryCta}
+    secondaryCta={hero.secondaryCta}
+    imageKey={hero.image.key}
+    imageCaption={hero.image.caption}
+    titleId="sv-hero-title"
+  />
 
   <SourcingProcess />
 
@@ -111,7 +132,13 @@ const schema = [
 
   <ServicesApproach />
 
-  <ServicesFaq />
+  <ServicesFaq
+    eyebrow={faqIntro.eyebrow}
+    title={faqIntro.title}
+    items={faqItems}
+    foot={faqIntro.cta}
+    titleId="sv-faq-title"
+  />
 
   <FinalCTA
     eyebrow={finalCta.eyebrow}
