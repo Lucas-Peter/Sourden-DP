@@ -1,0 +1,56 @@
+---
+/**
+ * ServiceReviewGrid — N named factors, each with one sentence
+ * ---------------------------------------------------------------------------
+ * The "the supplier factors we look at" / "what can be checked" device: a short
+ * title per item and a sentence explaining it. Used by every detail page for the
+ * section that says what the service actually examines.
+ *
+ * WHY TITLES ARE <h3> AND NOT BOLD TEXT
+ *   Each named factor is a real topic of the section, and the page is otherwise
+ *   a long run of prose. Making them headings puts the factors in the document
+ *   outline, which is what lets a screen reader or an AI assistant enumerate
+ *   "what does Sourden look at" without parsing sentences. Level order is
+ *   h2 (section) → h3 (factor); nothing is skipped.
+ *
+ * NOT A CARD GRID
+ *   The brief forbids turning these into equal boxes: the factors carry
+ *   different amounts of text and a card would cap the longest one. Two columns
+ *   of a plain editorial list, separated by a hairline rule, keeps every item on
+ *   an equal footing without inventing a component the site does not have.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  items: Array<{ title: string; description: string }>;
+  /** Optional closing line — a caveat about the section, not another item. */
+  note?: string;
+  tone: 'ivory' | 'white' | 'ink';
+  titleId: string;
+}
+
+const { eyebrow, title, description, items, note, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} sd-review`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-review__head" />
+
+    <ul class="sd-review__list" data-reveal-group>
+      {
+        items.map((item) => (
+          <li class="sd-review__item">
+            <h3 class="sd-review__title">{item.title}</h3>
+            <p class="sd-review__desc">{item.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    {note && <p class="sd-note sd-review__note">{note}</p>}
+  </div>
+</section>

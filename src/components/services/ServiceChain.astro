@@ -1,0 +1,77 @@
+---
+/**
+ * ServiceChain — the five services as one process, this page's stage marked
+ * ---------------------------------------------------------------------------
+ * "PRODUCT SOURCING → SUPPLIER VERIFICATION → PURCHASING → QUALITY CONTROL →
+ * SHIPPING", with the stage the visitor is currently reading marked and the
+ * other four linked. Used at the end of a detail page to hand the visitor on to
+ * the next stage.
+ *
+ * WHY THE CURRENT STAGE IS NOT A LINK
+ *   A link back to the page being read is a dead end that looks like a
+ *   destination. It keeps `aria-current="page"` instead, so it is announced as
+ *   "current page" rather than read as one more place to go.
+ *
+ * WHY THE CHAIN IS NOT A REQUIRED SEQUENCE
+ *   Cross-page requirement §1 is explicit that clients may start at any stage.
+ *   So every page shows the full chain with all four other stages as equal
+ *   links — nothing is greyed out, nothing is labelled "previous step" or "next
+ *   step", and the copy around it does not tell the reader they must begin at
+ *   the first one.
+ *
+ * Labels come from `CHAIN_LABELS` in `service-detail.js` and the order from
+ * `services.js` — this component never names a service.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  stages: Array<{ number: string; label: string; href: string; current: boolean }>;
+  /** Optional closing sentence. */
+  note?: string;
+  tone: 'ivory' | 'white' | 'ink';
+  titleId: string;
+}
+
+const { eyebrow, title, description, stages, note, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} sd-chain`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-chain__head" />
+
+    <ol class="sd-chain__list" data-reveal-group>
+      {
+        stages.map((stage, index) => (
+          <li class="sd-chain__item">
+            {stage.current ? (
+              <span class="sd-chain__stage sd-chain__stage--current" aria-current="page">
+                <span class="num sd-chain__num">{stage.number}</span>
+                <span class="sd-chain__label">{stage.label}</span>
+              </span>
+            ) : (
+              <a class="sd-chain__stage" href={stage.href}>
+                <span class="num sd-chain__num">{stage.number}</span>
+                <span class="sd-chain__label">{stage.label}</span>
+              </a>
+            )}
+
+            {/* The arrow belongs to the gap BETWEEN two stages, so it is
+                rendered after every item except the last — never before the
+                first. */}
+            {index < stages.length - 1 && (
+              <span class="sd-chain__arrow" aria-hidden="true">
+                →
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+
+    {note && <p class="sd-note sd-chain__note">{note}</p>}
+  </div>
+</section>

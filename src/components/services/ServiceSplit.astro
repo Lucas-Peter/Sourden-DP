@@ -1,0 +1,90 @@
+---
+/**
+ * ServiceSplit — two labelled columns, for a comparison or a can / cannot pair
+ * ---------------------------------------------------------------------------
+ * Two columns with equal weight and identical treatment. Three consumers across
+ * the five pages:
+ *   · "Verification vs. product sourcing" — a label, a "Focus:" line and a
+ *     sentence per column, then two links below (PAGE 2 §06)
+ *   · "Quality control can help / cannot guarantee" — a label and a bullet list
+ *     per column (PAGE 4 §05)
+ *
+ * WHY ONE COMPONENT AND NOT TWO
+ *   Both are the same visual device: two columns, each with a label and content,
+ *   read against each other. The only difference is whether the content is a
+ *   sentence or a list, which is a data shape, not a layout. Two components
+ *   would have been two copies of one grid.
+ *
+ * THE COLUMNS MUST STAY SYMMETRICAL
+ *   Nothing here may make one column look like the recommended choice — the
+ *   brief asks for a factual comparison, and the "cannot guarantee" column is
+ *   the honest half of the pair, not the negative one. So: same label weight,
+ *   same rule, same body size, no accent colour on either.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  columns: Array<{
+    label: string;
+    /** Small qualifier above the sentence — the brief's "Focus:". */
+    note?: string;
+    text?: string;
+    items?: string[];
+  }>;
+  /** Closing links (e.g. the two neighbouring services). */
+  links?: Array<{ label: string; href: string }>;
+  /** Closing sentence rendered after the columns. */
+  note?: string;
+  tone: 'ivory' | 'white' | 'ink';
+  titleId: string;
+}
+
+const { eyebrow, title, description, columns, links, note, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} sd-split`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-split__head" />
+
+    <div class="sd-split__grid">
+      {
+        columns.map((column) => (
+          <div class="sd-split__col" data-reveal>
+            <h3 class="sd-split__label">{column.label}</h3>
+
+            {column.note && <p class="sd-split__note">{column.note}</p>}
+
+            {column.text && <p class="sd-split__text">{column.text}</p>}
+
+            {
+              column.items && (
+                <ul class="sd-split__list">
+                  {column.items.map((item) => (
+                    <li class="sd-split__item">{item}</li>
+                  ))}
+                </ul>
+              )
+            }
+          </div>
+        ))
+      }
+    </div>
+
+    {note && <p class="sd-note sd-split__note-line">{note}</p>}
+
+    {
+      links && (
+        <div class="sd-split__links">
+          {links.map((link) => (
+            <ArrowLink href={link.href} label={link.label} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,62 @@
+---
+/**
+ * ServiceProse — a heading and one or two paragraphs
+ * ---------------------------------------------------------------------------
+ * The detail pages' opening "what this actually means" section, and any later
+ * section whose content is genuinely prose rather than a list (the MOQ position,
+ * shipping-and-customs, one point of contact).
+ *
+ * WHY A 5 / 6 SPLIT RATHER THAN A CENTRED BLOCK
+ *   This is the same editorial grid the services-area FAQ uses — heading on the
+ *   left, content on the right — so a reader moving through the page meets two
+ *   devices, not five. It also keeps the heading and the paragraph it introduces
+ *   horizontally adjacent at desktop, which is what makes a single short
+ *   paragraph look deliberate instead of sparse.
+ *
+ * `emphasis` is an optional closing line set in brass. It exists for the
+ * "Important:" statements the brief writes under a process or a check — they
+ * belong to the section but must not read as a third paragraph.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  paragraphs: string[];
+  /** Optional closing line, set in brass — a caveat, not body copy. */
+  emphasis?: string;
+  /** Section ground. `'ink'` inverts the text treatment. */
+  tone: 'ivory' | 'white' | 'ink';
+  foot?: { label: string; href: string };
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId: string;
+}
+
+const { eyebrow, title, paragraphs, emphasis, tone, foot, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} sd-prose`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="sd-prose__grid">
+      <div class="sd-prose__head">
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} />
+      </div>
+
+      <div class="sd-prose__body">
+        {paragraphs.map((paragraph) => <p class="sd-prose__para">{paragraph}</p>)}
+
+        {emphasis && <p class="sd-prose__emphasis">{emphasis}</p>}
+      </div>
+    </div>
+
+    {
+      foot && (
+        <div class="section-foot sd-prose__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>

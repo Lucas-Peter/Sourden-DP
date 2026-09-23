@@ -1,9 +1,20 @@
 ---
 /**
- * ServicesHero — services brief §4
+ * ServicesHero — the services-area page hero
  * ---------------------------------------------------------------------------
  * Eyebrow, H1, supporting paragraph, one primary and one secondary action, and
- * a documentary image on the right.
+ * a documentary image in the right-hand column. Used by `/services` and by
+ * every `/services/<slug>` detail page — it is the same device, so it is the
+ * same component.
+ *
+ * WHY ALL COPY IS REQUIRED
+ *   This component used to read `services-page.js` directly. When the detail
+ *   pages needed the same hero the choice was to duplicate the markup or to
+ *   pass the copy in, and this follows the `FinalCTA` precedent: while copy had
+ *   defaults, a page could render the hero and silently inherit another page's
+ *   wording. Nothing here is optional — including the breadcrumb trail — so a
+ *   page cannot ship the wrong hero by forgetting to pass something. Supply the
+ *   values from a `src/data/*.js` file.
  *
  * UNLIKE THE HOMEPAGE HERO
  *   The homepage H1 is three stanzas with mandated line breaks. This one is a
@@ -16,36 +27,67 @@
  *   source order, so no CSS reordering is needed and the reading order stays
  *   correct for keyboard and screen-reader users. Desktop moves the image into
  *   the right-hand column with grid placement only.
+ *
+ * Styles live in `services-shared.css` (`.sv-hero*`) — see its header for why
+ * that file is separate from the overview page's sheet.
  * ---------------------------------------------------------------------------
  */
 import Breadcrumbs from '../Breadcrumbs.astro';
 import Button from '../Button.astro';
 import ArrowLink from '../ArrowLink.astro';
 import Media from '../Media.astro';
-import { breadcrumbs, hero } from '../../data/services-page.js';
+
+interface Props {
+  /** Trail BELOW "Home" — <Breadcrumbs> prepends it. Always end with the
+      current page and leave `href` off that last item. */
+  breadcrumbs: Array<{ label: string; href?: string }>;
+  eyebrow: string;
+  /** The page's single H1. */
+  title: string;
+  description: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  /** Key from the image manifest in src/data/media.js — unknown keys throw. */
+  imageKey: string;
+  imageCaption: string;
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId?: string;
+}
+
+const {
+  breadcrumbs,
+  eyebrow,
+  title,
+  description,
+  primaryCta,
+  secondaryCta,
+  imageKey,
+  imageCaption,
+  titleId = 'sv-hero-title',
+} = Astro.props;
 ---
 
-<section class="sv-hero" aria-labelledby="services-hero-title">
+<section class="sv-hero" aria-labelledby={titleId}>
   <div class="container">
     <Breadcrumbs items={breadcrumbs} class="sv-hero__breadcrumbs" />
 
     <div class="sv-hero__grid">
       <div class="sv-hero__text">
-        <p class="eyebrow">{hero.eyebrow}</p>
+        <p class="eyebrow">{eyebrow}</p>
 
-        <h1 class="sv-hero__title" id="services-hero-title">{hero.title}</h1>
+        <h1 class="sv-hero__title" id={titleId}>{title}</h1>
 
-        <p class="sv-hero__lead">{hero.description}</p>
+        <p class="sv-hero__lead">{description}</p>
 
         <div class="sv-hero__actions">
-          <Button href={hero.primaryCta.href} label={hero.primaryCta.label} />
-          <ArrowLink href={hero.secondaryCta.href} label={hero.secondaryCta.label} />
+          <Button href={primaryCta.href} label={primaryCta.label} />
+          <ArrowLink href={secondaryCta.href} label={secondaryCta.label} />
         </div>
       </div>
 
       <figure class="sv-hero__figure">
-        <Media imageKey={hero.image.key} ratio="4x3" priority class="sv-hero__media" />
-        <figcaption class="media-caption">{hero.image.caption}</figcaption>
+        <Media imageKey={imageKey} ratio="4x3" priority class="sv-hero__media" />
+        <figcaption class="media-caption">{imageCaption}</figcaption>
       </figure>
     </div>
   </div>

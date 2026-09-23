@@ -1,0 +1,61 @@
+---
+/**
+ * ServiceCheckList — N short items, no descriptions
+ * ---------------------------------------------------------------------------
+ * The dense-list device: product categories, what to include in a request,
+ * shipping cost factors, when a service is worth considering. Used wherever the
+ * brief gives a bare list of short phrases.
+ *
+ * WHY THIS IS NOT THE SAME COMPONENT AS ServiceReviewGrid
+ *   They answer different questions and are scanned differently. A review grid
+ *   item is a topic with an explanation ("MOQ — what does the supplier require,
+ *   and does it fit your stage?"); a check-list item is a fragment the reader is
+ *   either ticking off mentally or not ("Estimated quantity"). Rendering the
+ *   second shape through the first would either invent a sentence per item or
+ *   leave a heading with nothing under it. Two shapes, two components, one CSS
+ *   family.
+ *
+ * `note` is a closing sentence the brief adds after the list — "Don't have all
+ * the information yet? That's okay." It sits outside the list because it is not
+ * one of the items.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  items: string[];
+  /** Closing sentence, rendered after the list. */
+  note?: string;
+  tone: 'ivory' | 'white' | 'ink';
+  foot?: { label: string; href: string };
+  titleId: string;
+}
+
+const { eyebrow, title, description, items, note, tone, foot, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} sd-checklist`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-checklist__head" />
+
+    {/* Items carry no headings: they are fragments, and a list of nine <h3>s
+        for "Estimated quantity" would tell a screen reader nothing. */}
+    <ul class="sd-checklist__list" data-reveal-group>
+      {items.map((item) => <li class="sd-checklist__item">{item}</li>)}
+    </ul>
+
+    {note && <p class="sd-note sd-checklist__note">{note}</p>}
+
+    {
+      foot && (
+        <div class="section-foot sd-checklist__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>

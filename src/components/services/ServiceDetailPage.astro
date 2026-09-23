@@ -1,0 +1,231 @@
+---
+/**
+ * ServiceDetailPage — the shell for every `/services/<slug>` detail page
+ * ---------------------------------------------------------------------------
+ * One shell, five pages. It owns the document, the stylesheets, the structured
+ * data and the section order; the page's words come in as `page`, a data object
+ * from `src/data/service-<slug>.js`, and the architecture of that object is
+ * documented in `src/data/service-detail.js`.
+ *
+ * WHY THE SHELL OWNS THE STYLESHEETS
+ *   Same reason `ReservationPage` does: a page that renders this shell cannot
+ *   forget to import its CSS, and the import order (layout → shared sections →
+ *   detail-only sections) is stated in exactly one place. Getting that order
+ *   wrong makes these rules lose every same-specificity conflict against the
+ *   shared core, silently — `npm run audit` fails the build if it regresses.
+ *
+ * WHY A SECTION DISPATCHER
+ *   The five pages have the same section vocabulary in a different order with
+ *   different content. A dispatcher means page 2 is a data file and one line in
+ *   `detailPages` — no new markup, no new CSS, and no chance that page 3 quietly
+ *   sizes its h2 differently from page 1.
+ *
+ * WHAT THIS SHELL DOES NOT DO
+ *   · It does not add a claim. Every string it renders comes from the page data
+ *     file, which is under the claims rule in `service-detail.js`.
+ *   · It does not emit a `Service` node for any service other than this page's
+ *     own, and it never emits a price, rating or availability — none of those
+ *     can be evidenced.
+ *   · It does not touch the header, the footer or any shared device. A detail
+ *     page is an extension of `/services`, not a new design.
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
+import '../../styles/service-detail.css';
+
+import FinalCTA from '../FinalCTA.astro';
+import ServicesFaq from './ServicesFaq.astro';
+import ServicesHero from './ServicesHero.astro';
+import ServiceChain from './ServiceChain.astro';
+import ServiceCheckList from './ServiceCheckList.astro';
+import ServiceProcess from './ServiceProcess.astro';
+import ServiceProse from './ServiceProse.astro';
+import ServiceReviewGrid from './ServiceReviewGrid.astro';
+import ServiceSplit from './ServiceSplit.astro';
+
+import {
+  chainFor,
+  detailBreadcrumbs,
+  primaryCta,
+  secondaryCta,
+  serviceForSlug,
+} from '../../data/service-detail.js';
+import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+
+interface Props {
+  /** The whole page, from `src/data/service-<slug>.js`. */
+  page: {
+    slug: string;
+    meta: { title: string; description: string };
+    hero: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      image: { key: string; caption: string };
+    };
+    sections: Array<Record<string, any>>;
+    finalCta: { eyebrow: string; title: string; description: string };
+  };
+}
+
+const { page } = Astro.props;
+
+const path = `/services/${page.slug}`;
+const service = serviceForSlug(page.slug);
+
+/**
+ * The breadcrumb trail is built once and used twice — by the visible
+ * <Breadcrumbs> inside <ServicesHero> and by `breadcrumbItems()` for the
+ * BreadcrumbList node — so the trail a visitor sees and the trail Google reads
+ * cannot disagree. See the note on `breadcrumbItems()`.
+ */
+const breadcrumbs = detailBreadcrumbs(page.slug);
+
+const schema = [
+  webPageSchema({ title: page.meta.title, description: page.meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  serviceSchema({ name: service.title, description: service.description, href: path }),
+];
+
+/**
+ * Every section needs a unique id for `aria-labelledby`. Derived from the index
+ * rather than written by hand, so inserting a section in the middle of a page
+ * cannot produce a duplicate id.
+ */
+const sectionId = (index) => `sd-${page.slug}-${String(index + 1).padStart(2, '0')}`;
+---
+
+<BaseLayout
+  title={page.meta.title}
+  description={page.meta.description}
+  path={path}
+  schema={schema}
+>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={page.hero.eyebrow}
+    title={page.hero.title}
+    description={page.hero.description}
+    primaryCta={primaryCta}
+    secondaryCta={secondaryCta}
+    imageKey={page.hero.image.key}
+    imageCaption={page.hero.image.caption}
+    titleId={`sd-${page.slug}-hero`}
+  />
+
+  {
+    page.sections.map((section, index) => {
+      const titleId = sectionId(index);
+
+      switch (section.type) {
+        case 'prose':
+          return (
+            <ServiceProse
+              eyebrow={section.eyebrow}
+              title={section.title}
+              paragraphs={section.paragraphs}
+              emphasis={section.emphasis}
+              tone={section.tone}
+              foot={section.foot}
+              titleId={titleId}
+            />
+          );
+
+        case 'reviewGrid':
+          return (
+            <ServiceReviewGrid
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'checkList':
+          return (
+            <ServiceCheckList
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              tone={section.tone}
+              foot={section.foot}
+              titleId={titleId}
+            />
+          );
+
+        case 'process':
+          return (
+            <ServiceProcess
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              steps={section.steps}
+              note={section.note}
+              titleId={titleId}
+            />
+          );
+
+        case 'split':
+          return (
+            <ServiceSplit
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              columns={section.columns}
+              links={section.links}
+              note={section.note}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'chain':
+          /* The chain is never written into a page file: the stages, their
+             order and their labels come from the service registry, and the
+             current stage is derived from this page's own slug. */
+          return (
+            <ServiceChain
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              stages={chainFor(page.slug)}
+              note={section.note}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'faq':
+          return (
+            <ServicesFaq
+              eyebrow={section.eyebrow}
+              title={section.title}
+              items={section.items}
+              titleId={titleId}
+            />
+          );
+
+        default:
+          /* A typo in a `type` string must not render nothing and pass the
+             build — the section would simply vanish from the page. */
+          throw new Error(
+            `[ServiceDetailPage] Unknown section type "${section.type}" at index ${index} ` +
+              `of ${page.slug}. See the section vocabulary in src/data/service-detail.js.`
+          );
+      }
+    })
+  }
+
+  <FinalCTA
+    eyebrow={page.finalCta.eyebrow}
+    title={page.finalCta.title}
+    description={page.finalCta.description}
+    cta={primaryCta}
+  />
+</BaseLayout>

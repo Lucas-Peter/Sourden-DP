@@ -1,0 +1,74 @@
+---
+/**
+ * ServiceProcess — the five numbered stages of one service
+ * ---------------------------------------------------------------------------
+ * The detail pages' process section. Same rail device as `/services`, but the
+ * stage label IS the heading here rather than a rail label above a service
+ * name: on `/services` the row reads "01 — FIND" / *Product Sourcing* / …,
+ * because there the stage points at a service. On a detail page the stage is a
+ * step of that service, so "01 — UNDERSTAND" is the whole heading and there is
+ * nothing to link to.
+ *
+ * WHY THE STAGE IS NOT A LINK
+ *   There is no page to link to — `page.sections` is one service's own process.
+ *   `/services` wraps each stage in an <a> so the whole row is one large target;
+ *   here a link would be a dead end or a link to the page you are already on.
+ *
+ * WHY THE RAIL IS ALWAYS THE DARK BAND
+ *   Each detail page uses exactly one dark band, and this is it: the process is
+ *   the spine of a service page, the same role "The Sourden approach" plays on
+ *   /services. It also solves the page's colour rhythm — the hero and the FAQ
+ *   are both ivory, so without a dark band here the alternation would have to
+ *   break somewhere else.
+ *
+ * NUMBERS ARE DERIVED FROM THE ARRAY ORDER. A step cannot be mis-numbered or
+ * duplicated, and re-ordering the copy renumbers the page.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  steps: Array<{ label: string; description: string }>;
+  /** Optional closing line — the caveat that qualifies the whole process. */
+  note?: string;
+  titleId: string;
+}
+
+const { eyebrow, title, description, steps, note, titleId } = Astro.props;
+---
+
+<section class="section section--dark sd-process" aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-process__head" />
+
+    <ol class="sv-stages" data-reveal-group>
+      {
+        steps.map((step, index) => (
+          <li class="sv-stage">
+            {/* `.sv-stage__body` is the non-link twin of `.sv-stage__link` in
+                services-shared.css — it carries the identical grid geometry
+                without the anchor semantics or the hover arrow. */}
+            <div class="sv-stage__body">
+              <span class="sv-stage__marker" aria-hidden="true" />
+
+              <h3 class="sv-stage__rail sd-process__step">
+                <span class="num sv-stage__num">{String(index + 1).padStart(2, '0')}</span>
+                <span class="sv-stage__dash" aria-hidden="true">
+                  —
+                </span>
+                <span class="sv-stage__verb">{step.label}</span>
+              </h3>
+
+              <p class="sv-stage__desc">{step.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    {note && <p class="sd-note sd-process__note">{note}</p>}
+  </div>
+</section>
