@@ -97,6 +97,32 @@ export const images = {
     cropNote:
       'Shown 4:3 in the right-hand column (5 of 12 on desktop), height-capped and placed below the text on mobile. Keep the subject inside the middle 70% horizontally and vertically — `object-fit: cover` crops symmetrically from the centre.',
   },
+  /* Service DETAIL page heroes — one per `/services/<slug>` page.
+   *
+   * Separate slots from the `service*` images above on purpose: those illustrate
+   * a section of the overview page, and reusing one as the destination page's
+   * hero would show the visitor the same photograph twice in a row — once on the
+   * card they clicked and again on the page it opened. Hero grade (1600 wide,
+   * eager-loaded) and the same 4:3 ratio as every other hero on the site.
+   *
+   * Spec §21 and the five-page brief's §3 both ban the China shorthand here:
+   * Great Wall, national flag, panda, generic handshake, staged corporate
+   * meeting, artificial map graphics, AI-perfect factory floors. Each slot must
+   * show the work its own service describes. */
+  serviceProductSourcingHero: {
+    file: 'service-product-sourcing-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'PRODUCT SOURCING',
+    alt: 'Placeholder for a documentary photograph of product samples and reference materials being compared during supplier research.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'Product sourcing in progress: samples laid out against reference material, specifications or drawings, several candidate products being compared, or hands examining a sample on a real work surface. Must read as evidence of the research, not a catalogue flat-lay or a studio product shot. No handshake, no meeting room, no China clichés.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
   serviceProductSourcing: {
     file: 'service-product-sourcing.svg',
     width: 1200,
