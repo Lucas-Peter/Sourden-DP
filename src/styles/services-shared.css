@@ -459,6 +459,15 @@
   line-height: 1.68;
 }
 
+/* An answer's own link, where the brief attaches one to a single question
+   (`/industries` §12 attaches three). It sits under the answer it belongs to
+   rather than in the section's closing row, so the link cannot be read as
+   answering a different question. */
+.sv-faq__answer-link {
+  margin-block-start: var(--sp-3);
+  font-size: var(--fs-body-sm);
+}
+
 .sv-faq__foot {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
 }

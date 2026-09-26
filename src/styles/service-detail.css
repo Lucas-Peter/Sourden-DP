@@ -106,7 +106,13 @@
   line-height: var(--lh-body);
 }
 
+/* A wrapping row rather than a plain block, because `/industries` §09 passes
+   two links here. One link renders exactly as it did as a block child; two
+   would otherwise run together as a single six-word link. */
 .sd-prose__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-6);
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 

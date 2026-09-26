@@ -26,6 +26,10 @@
      src/pages/sourcing-request.astro
                                     →  import '../styles/sourcing-request.css'
      src/pages/services/index.astro →  import '../styles/services.css'
+                                      (+ services-shared.css)
+     src/pages/industries/index.astro
+                                    →  import '../styles/industries.css'
+                                      (+ services-shared.css, service-detail.css)
      src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
 
    ADDING A NEW PAGE
@@ -35,9 +39,9 @@
      3. Add the file name to `PAGE_SHEETS` in `scripts/audit.mjs`, which is
         what enforces the next rule.
      4. Namespace every selector in it (`.sr-` for the sourcing page, `.sv-`
-        for the services area) and reuse the component classes from
-        components.css before inventing new ones — that is what keeps the site
-        visually coherent.
+        for the services area, `.sd-` for service detail, `.ind-` for
+        industries) and reuse the component classes from components.css before
+        inventing new ones — that is what keeps the site visually coherent.
 
    SHARING A DEVICE BETWEEN TWO PAGES
      A page sheet is per page, so two pages that need the same device would
@@ -53,6 +57,18 @@
      need, prefixed `.sd-` so they cannot collide with `.sv-`.
      Every sheet in the chain — core, shared and page — needs its own line in
      `PAGE_SHEETS`, including the shared ones.
+
+     ONE MORE CONSISTENCY CHECK
+     `/industries` imports `services-shared.css` and `service-detail.css`. Those
+     file names say "services" because the services pages were the hero, the
+     prose split, the review grid, the rail and the FAQ's FIRST consumer — the
+     devices themselves are generic editorial sections, and the brief for this
+     page asks explicitly for reuse rather than a second visual language. When
+     a third non-services page needs them, the honest move is to rename both
+     sheets and the `.sv-` / `.sd-` prefixes to a neutral `.sec-`; doing it for
+     the second consumer would have churned five freshly verified pages for a
+     naming reason. Recorded here so the next reader knows it is a known
+     trade-off and not an oversight.
    =========================================================================== */
 
 /* Manrope (headings) — variable, weights 200–800 */

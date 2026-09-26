@@ -1,0 +1,617 @@
+/* ===========================================================================
+   SOURDEN — 07d INDUSTRIES OVERVIEW PAGE
+   ---------------------------------------------------------------------------
+   The sections that ONLY `/industries` renders. Imported by
+   `src/pages/industries/index.astro`, so no other route ships this file.
+
+   WHAT IS NOT IN THIS FILE
+   · `.sv-hero*`, `.sv-stages` / `.sv-stage*` and `.sv-faq*` — the hero, the
+     five-stage rail and the FAQ. This page renders all three with the same
+     components `/services` and the five detail pages use, so the rules stay in
+     `services-shared.css` and are imported, not copied. See `index.css` →
+     "SHARING A DEVICE BETWEEN TWO PAGES" for why a shared sheet is the right
+     home even though the file name says "services": the components are generic
+     editorial devices whose first consumer happened to be the services pages.
+   · `.sd-prose*`, `.sd-review*`, `.sd-checklist*`, `.sd-split*`, `.sd-chain*`
+     and the dark-ground corrections — imported from `service-detail.css` for
+     the same reason. This page renders §02/§04/§09 as prose, §05 as a review
+     grid and §10 as the rail; all four are the detail pages' components with
+     this page's copy.
+     The one thing this page adds on top of them is `.ind-process` below.
+   · The page rhythm (`.section`, `.section--ivory`, `.section--white`,
+     `.section--dark`, `.container`, `.section-head`, `.section-foot`, `.rows`)
+     — shared core, loaded by every route. Nothing here redefines any of it:
+     the audit fails the build if a page stylesheet collides with the core,
+     because the winning rule would then depend on CSS chunk order, which Astro
+     does not guarantee.
+   · Any colour, size or spacing literal. Values come from `tokens.css`.
+
+   PREFIX
+   Every selector is `.ind-` (industries). The prefixes mean something on this
+   site: `.sv-` is the services-area vocabulary, `.sd-` what a service detail
+   page renders, `.sr-` the sourcing request, `.ind-` here. A rule in the wrong
+   file is the first thing a reader would notice.
+
+   SECTION INDEX
+     01 Category directory       04 Scale + growth path
+     02 Sequence                 05 The rail on this page
+     03 Rows                     06 Print
+   =========================================================================== */
+
+
+/* ===========================================================================
+   01 — CATEGORY DIRECTORY  (brief §03)
+   ---------------------------------------------------------------------------
+   Nine ruled entries. Each entry is a three-column row at desktop —
+   number | category name | everything that describes it — and a single stack
+   below that.
+
+   WHY IT IS TOP-ALIGNED RATHER THAN CENTRED
+   `.sv-audience-row` on `/services` centres its two columns against a fixed
+   132px row, because each of its rows holds one sentence. A directory entry
+   holds a description plus up to eight product types, so its right-hand column
+   is several times the height of its left-hand one; centring the name against
+   that would float it into the middle of the entry with the number beside it,
+   and the nine numbers would stop forming a readable column. Top-aligned, the
+   nine entries read as a table of contents, which is what they are.
+   =========================================================================== */
+
+.ind-directory {
+  background-color: var(--ivory);
+}
+
+.ind-directory__head {
+  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+/* One rule above the first entry and one below each entry, rather than a box
+   per entry — the same device the rest of the site uses for editorial rows. */
+.ind-directory__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.ind-directory__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-4);
+  padding-block: clamp(var(--sp-6), 3.5vw, var(--sp-7));
+  border-bottom: var(--rule) solid var(--divider-light);
+}
+
+.ind-directory__num {
+  margin: 0;
+}
+
+.ind-directory__title {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-display);
+  max-width: 26ch;
+}
+
+.ind-directory__desc {
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.ind-directory__label {
+  margin-block-start: var(--sp-5);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.ind-directory__types {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-2) var(--sp-5);
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .ind-directory__types {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ind-directory__type {
+  position: relative;
+  padding-inline-start: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+}
+
+/* A brass hairline rather than a bullet — the marker the whole site uses for
+   list structure. */
+.ind-directory__type::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 6px;
+  height: var(--rule);
+  background-color: var(--brass);
+}
+
+/* The one category the brief equips with a caveat (Electronics & Accessories).
+   Set apart by a hairline so it cannot be read as another product type. */
+.ind-directory__note {
+  max-width: 56ch;
+  margin-block-start: var(--sp-5);
+  padding-block-start: var(--sp-3);
+  border-top: var(--rule) solid var(--divider-light);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.ind-directory__cta {
+  margin-block-start: var(--sp-5);
+}
+
+@media (min-width: 1200px) {
+  .ind-directory__item {
+    grid-template-columns: 72px minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto;
+    gap: var(--sp-6);
+    align-items: start;
+  }
+
+  .ind-directory__num {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .ind-directory__title {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ind-directory__detail {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  /* The type list keeps two columns — eight items in one column would make
+     every entry tall enough to break the directory's scan. */
+  .ind-directory__types {
+    gap: var(--sp-2) var(--sp-6);
+  }
+}
+
+
+/* ===========================================================================
+   02 — SEQUENCE  (brief §06)
+   ---------------------------------------------------------------------------
+   Five stages read top to bottom, each with a `↓` in the gap above it.
+   Heading left in 5 columns, flow right in 6 — the same editorial split §02,
+   §04 and §09 use, so the page keeps one grid rather than inventing a second.
+   =========================================================================== */
+
+.ind-sequence__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .ind-sequence__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .ind-sequence__head {
+    grid-column: 1 / span 5;
+  }
+
+  .ind-sequence__list {
+    grid-column: 7 / span 6;
+  }
+}
+
+.ind-sequence__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Deliberately NO row-gap: the arrow occupies the item's first grid row, and
+   an item without one must collapse to a zero-height row rather than being
+   pushed down by the gap. The arrow carries its own bottom margin instead, so
+   the five labels stay on the same rhythm as each other. */
+.ind-sequence__item {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--sp-4);
+  padding-block: var(--sp-4);
+}
+
+.ind-sequence__arrow {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  margin-block-end: var(--sp-2);
+  color: var(--brass);
+  font-size: var(--fs-body-sm);
+  line-height: 1;
+}
+
+.ind-sequence__label {
+  grid-column: 1;
+  grid-row: 2;
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.ind-sequence__desc {
+  grid-column: 2;
+  grid-row: 2;
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+/* The label column is a fixed 168px so the five sentences start on one edge.
+   Below 768px that column would leave the sentences unreadably narrow, so the
+   pair stacks — label above sentence, which is how the rest of the site
+   handles a label and its copy on a phone. */
+@media (max-width: 767px) {
+  .ind-sequence__item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ind-sequence__label,
+  .ind-sequence__desc {
+    grid-column: 1;
+  }
+
+  .ind-sequence__label {
+    grid-row: 2;
+  }
+
+  .ind-sequence__desc {
+    grid-row: 3;
+    margin-block-start: var(--sp-2);
+  }
+
+  .ind-sequence__item {
+    grid-template-rows: auto auto auto;
+  }
+}
+
+.ind-sequence__foot {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+
+/* ===========================================================================
+   03 — ROWS  (brief §07 and §11)
+   ---------------------------------------------------------------------------
+   One device, two sections: "Who we source for" (five audiences, no numbers,
+   not links) and "Related services" (five services, numbered, the whole row a
+   link). Both are ruled rows of a title and a sentence.
+
+   `--numbered` adds the number column and nothing else — the two lists must
+   look like the same device, because they are.
+   =========================================================================== */
+
+.ind-rows__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.ind-rows__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.ind-rows__row {
+  border-bottom: var(--rule) solid var(--divider-light);
+}
+
+.ind-rows__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-3);
+  padding-block: var(--sp-6);
+  min-width: 0;
+}
+
+/* Numbered rows hold the number beside the title at every width — a number on
+   its own line above a title reads as a list position rather than as an index. */
+.ind-rows--numbered .ind-rows__body {
+  grid-template-columns: auto minmax(0, 1fr);
+  row-gap: var(--sp-3);
+}
+
+.ind-rows--numbered .ind-rows__num {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.ind-rows--numbered .ind-rows__title {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.ind-rows--numbered .ind-rows__desc {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.ind-rows__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  min-width: 0;
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-display);
+}
+
+/* Only present when the row is a destination. */
+.ind-rows__arrow {
+  flex: none;
+  color: var(--brass-ink);
+  font-size: 0.8em;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+a.ind-rows__body:hover .ind-rows__arrow,
+a.ind-rows__body:focus-visible .ind-rows__arrow {
+  transform: translateX(5px);
+}
+
+.ind-rows__desc {
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+@media (min-width: 1200px) {
+  .ind-rows__body {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto;
+    gap: var(--sp-6);
+    align-items: center;
+    min-height: 132px;
+    padding-block: 0;
+  }
+
+  .ind-rows__title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .ind-rows__desc {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ind-rows--numbered .ind-rows__body {
+    grid-template-columns: 68px minmax(0, 5fr) minmax(0, 6fr);
+  }
+
+  .ind-rows--numbered .ind-rows__num {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .ind-rows--numbered .ind-rows__title {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ind-rows--numbered .ind-rows__desc {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+.ind-rows__foot {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+
+/* ===========================================================================
+   04 — SCALE + GROWTH PATH  (brief §08)
+   ---------------------------------------------------------------------------
+   A brass rule, not a box — the same treatment `/services` gives its own MOQ
+   statement, because it is the same statement: Sourden imposes no fixed MOQ.
+   The block that says so has to read as a principle the business holds, not as
+   a promotional badge.
+
+   Heading left in 5 columns, body right in 7 — wider than the 5/6 used by the
+   prose sections because this section carries one paragraph, not three.
+   =========================================================================== */
+
+.ind-scale__block {
+  padding-block-start: clamp(var(--sp-5), 3vw, var(--sp-6));
+  border-top: var(--rule) solid var(--brass);
+}
+
+.ind-scale__eyebrow {
+  margin-block-end: var(--sp-5);
+}
+
+.ind-scale__title {
+  max-width: 24ch;
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+}
+
+.ind-scale__para {
+  max-width: 58ch;
+  margin-block-start: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* The qualifier. Brass, because it is the section's own conclusion rather than
+   a third paragraph — see the component for why it carries the section's
+   honesty. */
+.ind-scale__emphasis {
+  max-width: 54ch;
+  margin-block-start: var(--sp-5);
+  color: var(--brass-ink);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+}
+
+@media (min-width: 1200px) {
+  .ind-scale__block {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .ind-scale__eyebrow {
+    grid-column: 1;
+    margin-block-end: 0;
+  }
+
+  .ind-scale__body {
+    grid-column: 2;
+  }
+
+  .ind-scale__title {
+    margin-block-start: 0;
+  }
+}
+
+/* --- the growth path ------------------------------------------------------ */
+
+.ind-scale__path {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin: clamp(var(--sp-7), 5vw, var(--sp-8)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ind-scale__stage {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+/* Uppercase in CSS, not in the data — the same call the rail's verbs make. */
+.ind-scale__stage-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* `display: inline-block` is required for the rotation to apply; the arrow is a
+   text glyph, not an icon font or an SVG. */
+.ind-scale__arrow {
+  display: inline-block;
+  flex: none;
+  color: var(--brass);
+  font-size: var(--fs-body-sm);
+  transform: rotate(90deg);
+}
+
+@media (min-width: 768px) {
+  .ind-scale__path {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--sp-3);
+    row-gap: var(--sp-2);
+  }
+
+  .ind-scale__arrow {
+    transform: none;
+  }
+}
+
+.ind-scale__note {
+  max-width: 62ch;
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.68;
+}
+
+
+/* ===========================================================================
+   05 — THE RAIL ON THIS PAGE  (brief §10)
+   ---------------------------------------------------------------------------
+   §10 renders the same five-stage rail as `/services` and the five detail
+   pages, so its rules live in `services-shared.css` (geometry) and
+   `service-detail.css` (the ink-band corrections). The one thing this page has
+   to add is the height of the rail's labels.
+
+   WHY
+   The detail pages name their steps in one word each (UNDERSTAND, RESEARCH),
+   so every label fits on one line and the five descriptions start at the same
+   height. This page's brief names the same five steps as phrases — "Tell Us
+   What You Need", "Verify & Compare" — and at 1200px a rail column is ~224px
+   wide, which fits "Verify & Compare" and wraps "Tell Us What You Need" onto a
+   second line. Without a floor, that one wrapped label pushes its description
+   ~17px below the other four, and a rail whose dots promise a shared row but
+   whose copy does not sit on one has come apart at exactly the point it is
+   meant to prove.
+
+   Reserving two lines for all five is the same fix `.sv-stage__title` already
+   applies on `/services` for the same reason, and it is scoped to `.ind-`
+   because a page whose labels are single words should not pay for the space.
+   =========================================================================== */
+
+.ind-process .sv-stage__verb {
+  min-height: 2.6em; /* 2 lines × the 1.3 line-height on `.sv-stage__verb` */
+}
+
+
+/* ===========================================================================
+   06 — PRINT
+   =========================================================================== */
+
+@media print {
+  .ind-directory__item,
+  .ind-sequence__item,
+  .ind-rows__row,
+  .ind-scale__stage {
+    break-inside: avoid;
+  }
+
+  .ind-scale__arrow {
+    transform: none;
+  }
+}
