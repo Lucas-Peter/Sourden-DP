@@ -183,6 +183,38 @@ Target under 120 KB each.
 
 ---
 
+### Industries overview page — one slot
+
+| File | Label | Source size | Ratio | Used by |
+| --- | --- | --- | --- | --- |
+| `industries-hero.svg` | WHAT WE SOURCE | **1600 × 1200** | 4:3 | `/industries` hero |
+
+**This page deliberately has exactly one image.** The nine-entry category
+directory is copy-led — a number, a name, a description, the example product
+types and one action per entry — and it carries no photographs on purpose. Nine
+category photographs in a nine-cell layout is a product grid whatever the
+surrounding copy says, and the brief asks for "an editorial sourcing directory,
+not an ecommerce category page". The nine `industry-*.svg` slots above are the
+homepage grid's, not this page's; do not reuse them here.
+
+**Loads eagerly** — it sits beside an H1 with `priority`. WebP at ~75% quality,
+under 250 KB.
+
+- **Industries hero** — documentary evidence of *breadth*: several different
+  kinds of product being handled together in one real working context. Samples
+  on a bench, goods from more than one category staged for inspection, or a
+  production or packing area where two product lines are both visible. Mixed
+  materials and unfinished packs read better than polished hero products.
+  **Avoid** — an artificial collage, a neat grid of unrelated products on white,
+  a world map, the Great Wall, a flag, a panda, a generic handshake, a staged
+  meeting room, or an artificially perfect AI factory floor.
+
+Crop safety is tighter here than elsewhere: `object-fit: cover` crops
+symmetrically from the centre, so keep the subject inside the **middle 70%**
+both ways and leave the outer 15% on each side clear of anything that matters.
+
+---
+
 ### Case studies — two slots
 
 | File | Source size | Ratio |
