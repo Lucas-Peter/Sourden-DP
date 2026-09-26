@@ -215,6 +215,42 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 
 ---
 
+### How It Works page — one slot
+
+| File | Label | Source size | Ratio | Used by |
+| --- | --- | --- | --- | --- |
+| `how-it-works-hero.svg` | HOW IT WORKS | **1600 × 1200** | 4:3 | `/how-it-works` hero |
+
+**This page deliberately has exactly one image too.** Every one of its sixteen
+sections is a process description — the five-stage rail, what to include in a
+request, the comparison factors, what the customer provides against what Sourden
+coordinates, the growth path, the worked example and nine FAQ answers. A
+photograph beside any of those would be decoration standing in for content the
+brief supplies in words, and the brief forbids presenting a hypothetical as a
+real project. The §13 example is a **framed text panel**, not a photo slot, on
+purpose — see `HiExample.astro`.
+
+**Loads eagerly** — it sits beside an H1 with `priority`. WebP at ~75% quality,
+under 250 KB.
+
+- **How It Works hero** — the process made visible *as work*: an order being
+  coordinated rather than a product being admired. Good subjects are a packing
+  bench with goods checked against a printed sheet, samples laid out for a
+  pre-shipment inspection, or two people at a workstation reviewing a quotation
+  or a specification alongside the actual item. Paperwork, cartons and
+  unfinished goods read better than finished product on a clean surface — the
+  page is about the process, not the merchandise.
+  **Avoid** — a neat grid of unrelated products on white, a staged boardroom
+  meeting, a generic handshake, a stock "logistics" shot of a container port or
+  a cargo plane, a world map, the Great Wall, a flag, a panda, and an
+  artificially perfect AI factory floor.
+
+Crop safety is the same rule as everywhere else: `object-fit: cover` crops
+symmetrically from the centre, so keep the subject inside the **middle 70%**
+both ways and leave the outer 15% on each side clear of anything that matters.
+
+---
+
 ### Case studies — two slots
 
 | File | Source size | Ratio |
@@ -295,9 +331,10 @@ is gone.
   file loads and keeps Cumulative Layout Shift at zero. Never remove them.
 - Everything below the fold loads `lazy` with `decoding="async"`. Only the
   above-the-fold hero images load eagerly, one per page that has one:
-  `heroSourcing` (home), `sourcingRequestHero`, `servicesHero`, and one per
-  `/services/<slug>` detail page — eight slots today, and it grows by one per
-  detail page that ships.
+  `heroSourcing` (home), `sourcingRequestHero`, `servicesHero`,
+  `industriesHero`, `howItWorksHero`, and one per `/services/<slug>` detail
+  page — **ten slots today** (five of the ten are the detail pages), and it
+  grows by one per page that ships with a hero.
 - Hover scale is 1.03 over the standard duration, and is suppressed entirely
   under `prefers-reduced-motion`.
 
