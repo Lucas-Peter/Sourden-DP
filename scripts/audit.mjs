@@ -273,6 +273,7 @@ const PAGE_SHEETS = [
   'services-shared.css',
   'services.css',
   'service-detail.css',
+  'industries.css',
 ];
 
 /** Rough selector extraction — comments stripped, at-rules skipped, lists split. */
