@@ -32,7 +32,15 @@ interface Props {
   eyebrow?: string;
   title: string;
   description?: string;
-  steps: Array<{ label: string; description: string }>;
+  /**
+   * `links` is optional on every step. `/services`' rail wraps the whole row in
+   * one anchor because each stage points at exactly one service; that shape
+   * cannot express a stage with two destinations, which is what
+   * `/how-it-works` §02's fourth stage needs (purchasing AND quality control).
+   * So a step may instead carry its destinations as a row of links under its
+   * description.
+   */
+  steps: Array<{ label: string; description: string; links?: Array<{ label: string; href: string }> }>;
   /** Optional closing line — the caveat that qualifies the whole process. */
   note?: string;
   /**
@@ -87,6 +95,20 @@ const {
               </h3>
 
               <p class="sv-stage__desc">{step.description}</p>
+
+              {/* Only rendered when a step actually has destinations, so the
+                  four existing consumers — whose steps carry none — produce
+                  byte-identical markup and an unchanged grid. The row is
+                  placed in the grid's NEXT row; because that row is implicit
+                  (`auto`), no `grid-template-rows` declaration had to change,
+                  which is what keeps this additive rather than a re-layout. */}
+              {step.links && step.links.length > 0 && (
+                <div class="sv-stage__links">
+                  {step.links.map((link) => (
+                    <ArrowLink href={link.href} label={link.label} brass />
+                  ))}
+                </div>
+              )}
             </div>
           </li>
         ))
