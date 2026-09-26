@@ -1,25 +1,285 @@
 ---
 /**
- * RESERVATION PAGE — /industries
+ * /industries — Industries & Product Categories  (Industries brief §01–§13)
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * This route used to render a reservation page. It is now a hub: the range of
+ * products Sourden sources, presented as an editorial directory of nine
+ * categories rather than as a menu.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/industries` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ * STRUCTURE (brief)
+ *   01 Hero                          §01  eyebrow, H1, copy, two actions, image
+ *   02 Introduction                  §02  why the category changes the approach
+ *   03 Industry / category directory §03  nine entries, each linking onward
+ *   04 Not sure which category?      §04  the "tell us anyway" exit
+ *   05 Category ≠ process            §05  four sourcing strategies
+ *   06 From category to supplier     §06  five-stage flow
+ *   07 Who we source for             §07  five buyer types
+ *   08 Source at your scale          §08  the MOQ position + growth path
+ *   09 Why source from China?        §09  the ecosystem, and the process behind
+ *   10 How sourcing works            §10  the five-stage rail (ink band)
+ *   11 Related services              §11  the five services
+ *   12 FAQ                           §12  eight questions, native disclosures
+ *   13 Final CTA                     §13  one primary action
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * WHAT THIS PAGE DELIBERATELY DOES NOT DO
+ *   · It does not duplicate the homepage's `WHAT WE SOURCE`. The homepage shows
+ *     nine image tiles so a visitor can recognise a category; this page shows
+ *     nine ruled text entries with descriptions and real product types so a
+ *     visitor can tell whether their product is in scope (brief §"Page
+ *     Purpose" is explicit that the two must differ).
+ *   · It does not build the nine `/industries/<slug>` category pages. They stay
+ *     reserved routes that resolve, render the reservation shell and carry
+ *     `noindex` — the brief says to "create the route/link structure without
+ *     attempting to build the pages in this task", and every one of the nine
+ *     links is live so nothing has to be rewritten when they are written.
+ *   · It does not redesign anything. Header, footer, buttons, rows, media, the
+ *     reveal device, the hero, the prose device, the review grid, the rail and
+ *     the FAQ are all the existing site's; only the composition on this page is
+ *     new (brief §"Implementation notes": "Do not create a second visual
+ *     language for this page").
+ *   · It adds no claim the business cannot evidence. See the claims rule in
+ *     `src/data/industries-page.js`, which also records how each of the brief's
+ *     four per-category writing constraints is met.
+ *
+ * INDEXABILITY
+ *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
+ *   in `reservedTopLevel` (src/data/routes.js) was removed in the same change —
+ *   that list is what drives the noindex/sitemap split, so forgetting it would
+ *   have left a finished, content-rich page excluded from search.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then the shared sections, then the detail-page sections, then
+ *   this page's own sheet — otherwise these rules lose every same-specificity
+ *   conflict against the shared core. `npm run audit` fails the build if that
+ *   regresses.
+ *
+ *   This page imports `services-shared.css` and `service-detail.css` rather
+ *   than carrying its own copies of the hero, the prose split, the review grid,
+ *   the rail and the FAQ. The file names say "services" because the services
+ *   pages were those devices' first consumer; the devices themselves are
+ *   generic editorial sections, and the brief asks for exactly this — reuse,
+ *   and no second visual language. See `src/styles/index.css` →
+ *   "SHARING A DEVICE BETWEEN TWO PAGES".
+ *
+ * WHY A SECTION DISPATCHER
+ *   The brief numbers thirteen sections and gives each one's copy verbatim. A
+ *   dispatcher means the page's order, tones and content live in the data file
+ *   and nothing about the composition is buried in markup — the same
+ *   architecture the five service-detail pages use, so a section can be
+ *   reordered or inserted without touching a template.
  * ---------------------------------------------------------------------------
  */
-import ReservationPage from '../../components/ReservationPage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
+import '../../styles/service-detail.css';
+import '../../styles/industries.css';
 
-import { reservationFor } from '../../data/routes.js';
+import FinalCTA from '../../components/FinalCTA.astro';
+import IndustryDirectory from '../../components/industries/IndustryDirectory.astro';
+import IndustryRows from '../../components/industries/IndustryRows.astro';
+import IndustryScale from '../../components/industries/IndustryScale.astro';
+import IndustrySequence from '../../components/industries/IndustrySequence.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import ServiceProse from '../../components/services/ServiceProse.astro';
+import ServiceReviewGrid from '../../components/services/ServiceReviewGrid.astro';
+import ServicesFaq from '../../components/services/ServicesFaq.astro';
+import ServicesHero from '../../components/services/ServicesHero.astro';
 
-const page = reservationFor('/industries');
+import {
+  breadcrumbs,
+  faqIntro,
+  faqItems,
+  finalCta,
+  hero,
+  meta,
+  relatedServices,
+  sections,
+} from '../../data/industries-page.js';
+import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+
+const path = '/industries';
+
+/**
+ * One graph for the page: the page itself, its breadcrumb, and a Service node
+ * for each of the five services §11 links to.
+ *
+ * The Service nodes are built from the same merged records §11 renders, so a
+ * structured-data claim can never describe a service the page does not show.
+ * `serviceSchema` is the site's existing builder and emits no price, rating or
+ * availability — none of those can be evidenced. `/services` declares the same
+ * five nodes the same way.
+ */
+const schema = [
+  webPageSchema({ title: meta.title, description: meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  ...relatedServices.map((service) =>
+    serviceSchema({ name: service.title, description: service.description, href: service.href })
+  ),
+];
+
+/**
+ * Every section needs a unique id for `aria-labelledby`.
+ *
+ * Derived from the index rather than written by hand, so inserting a section
+ * cannot produce a duplicate id. Numbered from `index + 2` because the array
+ * starts at the brief's §02 — §01 is the hero, which owns its own id — so the
+ * ids line up with the brief's numbering and a reader can go straight from
+ * "§07" in the brief to `id="ind-07"` in the build.
+ */
+const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
 ---
 
-<ReservationPage {...page} />
+<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    description={hero.description}
+    primaryCta={hero.primaryCta}
+    secondaryCta={hero.secondaryCta}
+    imageKey={hero.image.key}
+    imageCaption={hero.image.caption}
+    titleId="ind-01"
+  />
+
+  {
+    sections.map((section, index) => {
+      const titleId = sectionId(index);
+
+      switch (section.type) {
+        case 'prose':
+          return (
+            <ServiceProse
+              eyebrow={section.eyebrow}
+              title={section.title}
+              paragraphs={section.paragraphs}
+              emphasis={section.emphasis}
+              tone={section.tone}
+              foot={section.foot}
+              links={section.links}
+              titleId={titleId}
+            />
+          );
+
+        case 'directory':
+          /* The page's centrepiece. Its nine entries are merged from
+             `industries.js` in the data file — nothing about a category name,
+             number or route is typed into this template. */
+          return (
+            <IndustryDirectory
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'reviewGrid':
+          return (
+            <ServiceReviewGrid
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'sequence':
+          return (
+            <IndustrySequence
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              steps={section.steps}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'people':
+          return (
+            <IndustryRows
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'scale':
+          return (
+            <IndustryScale
+              eyebrow={section.eyebrow}
+              title={section.title}
+              paragraphs={section.paragraphs}
+              emphasis={section.emphasis}
+              progression={section.progression}
+              note={section.note}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'process':
+          /* The rail always owns the ink band, and `.ind-process` is the one
+             hook this page adds to it — see `industries.css` §05 for why this
+             page's longer stage labels need a two-line floor. */
+          return (
+            <ServiceProcess
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              steps={section.steps}
+              note={section.note}
+              foot={section.foot}
+              class="ind-process"
+              titleId={titleId}
+            />
+          );
+
+        case 'services':
+          /* The same rows device §07 uses, with `numbered` — the difference
+             between the two lists is a data shape, not a layout. */
+          return (
+            <IndustryRows
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              numbered
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        default:
+          /* A typo in a `type` string must not render nothing and pass the
+             build — the section would simply vanish from the page. */
+          throw new Error(
+            `[/industries] Unknown section type "${section.type}" at index ${index}. ` +
+              `See the section vocabulary in src/data/industries-page.js.`
+          );
+      }
+    })
+  }
+
+  <ServicesFaq eyebrow={faqIntro.eyebrow} title={faqIntro.title} items={faqItems} titleId="ind-12" />
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>
