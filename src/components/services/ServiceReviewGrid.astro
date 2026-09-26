@@ -21,6 +21,7 @@
  * ---------------------------------------------------------------------------
  */
 import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
 
 interface Props {
   eyebrow?: string;
@@ -29,11 +30,19 @@ interface Props {
   items: Array<{ title: string; description: string }>;
   /** Optional closing line — a caveat about the section, not another item. */
   note?: string;
+  /**
+   * Optional closing link. The other editorial devices (`ServiceProse`,
+   * `ServiceCheckList`, `ServiceSplit`, `ServiceChain`) all carry one; this was
+   * the only one without, and `/industries` §05 needs it — the section ends by
+   * handing the reader to the Product Sourcing page. No detail page passes one,
+   * so nothing there changes.
+   */
+  foot?: { label: string; href: string };
   tone: 'ivory' | 'white' | 'ink';
   titleId: string;
 }
 
-const { eyebrow, title, description, items, note, tone, titleId } = Astro.props;
+const { eyebrow, title, description, items, note, foot, tone, titleId } = Astro.props;
 ---
 
 <section class={`section section--${tone} sd-review`} aria-labelledby={titleId}>
@@ -52,5 +61,13 @@ const { eyebrow, title, description, items, note, tone, titleId } = Astro.props;
     </ul>
 
     {note && <p class="sd-note sd-review__note">{note}</p>}
+
+    {
+      foot && (
+        <div class="section-foot sd-review__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
   </div>
 </section>

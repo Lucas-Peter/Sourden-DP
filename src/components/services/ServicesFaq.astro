@@ -46,7 +46,25 @@ import ArrowLink from '../ArrowLink.astro';
 interface Props {
   eyebrow: string;
   title: string;
-  items: Array<{ question: string; answer: string }>;
+  items: Array<{
+    question: string;
+    answer: string;
+    /**
+     * Optional link attached to ONE answer.
+     *
+     * Added for `/industries`, whose brief names a destination under three of
+     * its eight answers ("Can you verify the supplier?" → the Supplier
+     * Verification page, and so on). Those are the three questions where the
+     * honest answer is "yes, and here is the service that does it", and a
+     * reader who has just asked that question is the reader most likely to
+     * want it — so the link belongs to the answer, not to the section.
+     *
+     * It is a link rather than a sentence inside `answer` because copy may not
+     * carry markup, and it is per-item rather than a section-level `foot`
+     * because these three answers point at three different pages.
+     */
+    link?: { label: string; href: string };
+  }>;
   /** Optional closing link. Omitted where the section is followed by a CTA. */
   foot?: { label: string; href: string };
   /** Unique per page: the <section> is labelled by this id. */
@@ -74,6 +92,12 @@ const { eyebrow, title, items, foot, titleId = 'sv-faq-title' } = Astro.props;
 
               <div class="sv-faq__answer">
                 <p>{item.answer}</p>
+
+                {item.link && (
+                  <p class="sv-faq__answer-link">
+                    <ArrowLink href={item.link.href} label={item.link.label} brass />
+                  </p>
+                )}
               </div>
             </details>
           ))

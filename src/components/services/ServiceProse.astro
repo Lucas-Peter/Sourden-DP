@@ -29,12 +29,28 @@ interface Props {
   emphasis?: string;
   /** Section ground. `'ink'` inverts the text treatment. */
   tone: 'ivory' | 'white' | 'ink';
+  /** One closing link. */
   foot?: { label: string; href: string };
+  /**
+   * Two or more closing links.
+   *
+   * Added when `/industries` §09 needed to hand off to both `/about` and
+   * `/services` — the five detail pages never need more than one, so `foot`
+   * stays exactly as it was and this is the wider case. Supply one or the
+   * other, not both; `foot` wins if a page somehow passes both.
+   *
+   * The visual treatment is `.sd-split__links`' arrangement (a wrapping row
+   * with real gaps between the links), because two inline arrow-links with no
+   * gap read as one six-word link.
+   */
+  links?: Array<{ label: string; href: string }>;
   /** Unique per page: the <section> is labelled by this id. */
   titleId: string;
 }
 
-const { eyebrow, title, paragraphs, emphasis, tone, foot, titleId } = Astro.props;
+const { eyebrow, title, paragraphs, emphasis, tone, foot, links, titleId } = Astro.props;
+
+const footLinks = foot ? [foot] : (links ?? []);
 ---
 
 <section class={`section section--${tone} sd-prose`} aria-labelledby={titleId}>
@@ -52,9 +68,11 @@ const { eyebrow, title, paragraphs, emphasis, tone, foot, titleId } = Astro.prop
     </div>
 
     {
-      foot && (
+      footLinks.length > 0 && (
         <div class="section-foot sd-prose__foot">
-          <ArrowLink href={foot.href} label={foot.label} brass />
+          {footLinks.map((link) => (
+            <ArrowLink href={link.href} label={link.label} brass />
+          ))}
         </div>
       )
     }

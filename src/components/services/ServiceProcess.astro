@@ -26,6 +26,7 @@
  * ---------------------------------------------------------------------------
  */
 import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
 
 interface Props {
   eyebrow?: string;
@@ -34,13 +35,36 @@ interface Props {
   steps: Array<{ label: string; description: string }>;
   /** Optional closing line — the caveat that qualifies the whole process. */
   note?: string;
+  /**
+   * Optional closing link. Added for `/industries` §10, whose brief gives the
+   * band a "Start a Sourcing Request →" action; the five detail pages end their
+   * rail without one (the page's own closing band follows), so this is
+   * optional and absent there.
+   */
+  foot?: { label: string; href: string };
+  /**
+   * Extra class on the <section>. Every other shared component already accepts
+   * one; the rail needed it when `/industries` had to reserve a second line for
+   * a longer stage label — see `.ind-process .sv-stage__verb` in
+   * `industries.css` for why that has to be scoped to the page.
+   */
+  class?: string;
   titleId: string;
 }
 
-const { eyebrow, title, description, steps, note, titleId } = Astro.props;
+const {
+  eyebrow,
+  title,
+  description,
+  steps,
+  note,
+  foot,
+  class: className = '',
+  titleId,
+} = Astro.props;
 ---
 
-<section class="section section--dark sd-process" aria-labelledby={titleId}>
+<section class={`section section--dark sd-process ${className}`.trim()} aria-labelledby={titleId}>
   <div class="container">
     <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-process__head" />
 
@@ -70,5 +94,13 @@ const { eyebrow, title, description, steps, note, titleId } = Astro.props;
     </ol>
 
     {note && <p class="sd-note sd-process__note">{note}</p>}
+
+    {
+      foot && (
+        <div class="section-foot sd-process__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
   </div>
 </section>
