@@ -1,25 +1,300 @@
 ---
 /**
- * RESERVATION PAGE — /how-it-works
+ * /how-it-works — How China Sourcing Works  (How It Works brief §01–§16)
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * This route used to render a reservation page. It is now the real thing: the
+ * deep version of the process the homepage introduces in five lines and
+ * `/services` summarises in one rail. It answers what happens after a request,
+ * what Sourden needs, how suppliers are researched and compared, when quality
+ * control happens and how shipping connects — plus what the CUSTOMER has to do
+ * at each stage, which is the question none of the other pages answers.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/how-it-works` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ * STRUCTURE (brief)
+ *   01 Hero                      §01  eyebrow, H1, copy, two actions, image
+ *   02 The big picture           §02  the five-stage rail, each stage a link
+ *   03 Step 01 Tell us           §03  what to include in a request
+ *   04 Step 02 Find              §04  what the research is based on
+ *   05 Step 03 Verify & compare  §05  six comparison factors + the limit
+ *   06 Step 04 Choose & purchase §06  four stages of order coordination
+ *   07 Step 05 Quality control   §07  what can be checked + the limit
+ *   08 Step 06 Shipping          §08  methods against deciding factors
+ *   09 What you need to do       §09  you provide / Sourden coordinates
+ *   10 You don't have to use     §10  three entry points into the process
+ *      every service
+ *   11 What happens next?        §11  four stages after a request
+ *   12 How sourcing changes      §12  the growth path + the MOQ position
+ *      as you grow
+ *   13 A practical example       §13  one hypothetical project, framed
+ *   14 Our services              §14  the five services
+ *   15 FAQ                       §15  nine questions, native disclosures
+ *   16 Final CTA                 §16  one primary action
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * WHAT THIS PAGE DELIBERATELY DOES NOT DO
+ *   · It does not re-tell the homepage's process or `/services`' rail. The
+ *     homepage says there are five steps; this page says what happens inside
+ *     each one and who does it. §09 exists for no other reason.
+ *   · It does not present Sourden as a marketplace or an automated platform.
+ *     The brief lists what must not appear — supplier database, search engine,
+ *     product catalogue, cart, checkout, account, automated supplier matching,
+ *     fake real-time supplier data — and none of it is here. Everything on the
+ *     page is coordination by people, described in order.
+ *   · It does not publish the §13 example as a case study. The panel is
+ *     labelled `EXAMPLE WORKFLOW` and written in the second person, so it
+ *     describes the reader's own project rather than reporting someone's
+ *     outcome. There is no client, no figure and no result anywhere on it.
+ *   · It does not invent a service level. The brief forbids promising a
+ *     response time unless the business has established one; it has not, so
+ *     §11 carries the honest note instead.
+ *   · It does not redesign anything. Header, footer, buttons, rows, media, the
+ *     reveal device, the hero, the check-list, the review grid, the two-column
+ *     split, the rail and the FAQ are all the existing site's; only the
+ *     composition on this page is new (brief: "Do NOT redesign … Existing
+ *     components").
+ *
+ * INDEXABILITY
+ *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
+ *   in `reservedTopLevel` (src/data/routes.js) was removed in the same change —
+ *   that list is what drives the noindex/sitemap split, so forgetting it would
+ *   have left a finished, content-rich page excluded from search.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then the shared sections, then the detail-page sections, then
+ *   this page's own sheet — otherwise these rules lose every same-specificity
+ *   conflict against the shared core. `npm run audit` fails the build if that
+ *   regresses.
+ *
+ *   This page imports `services-shared.css` and `service-detail.css` rather
+ *   than carrying its own copies of the hero, the rail, the check-list, the
+ *   review grid, the two-column split and the FAQ. The file names say
+ *   "services" because the services pages were those devices' first consumer;
+ *   the devices themselves are generic editorial sections, and the brief asks
+ *   for exactly this — reuse, and no second visual language. See
+ *   `src/styles/index.css` → "SHARING A DEVICE BETWEEN TWO PAGES".
+ *
+ * WHY A SECTION DISPATCHER
+ *   The brief numbers sixteen sections and gives each one's copy verbatim. A
+ *   dispatcher means the page's order, tones and content live in the data file
+ *   and nothing about the composition is buried in markup — the same
+ *   architecture `/services`, the five detail pages and `/industries` use, so a
+ *   section can be reordered or inserted without touching a template.
  * ---------------------------------------------------------------------------
  */
-import ReservationPage from '../components/ReservationPage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/services-shared.css';
+import '../styles/service-detail.css';
+import '../styles/how-it-works.css';
 
-import { reservationFor } from '../data/routes.js';
+import FinalCTA from '../components/FinalCTA.astro';
+import HiExample from '../components/how-it-works/HiExample.astro';
+import HiGrowth from '../components/how-it-works/HiGrowth.astro';
+import HiLinkRows from '../components/how-it-works/HiLinkRows.astro';
+import HiStages from '../components/how-it-works/HiStages.astro';
+import ServiceCheckList from '../components/services/ServiceCheckList.astro';
+import ServiceProcess from '../components/services/ServiceProcess.astro';
+import ServiceReviewGrid from '../components/services/ServiceReviewGrid.astro';
+import ServiceSplit from '../components/services/ServiceSplit.astro';
+import ServicesFaq from '../components/services/ServicesFaq.astro';
+import ServicesHero from '../components/services/ServicesHero.astro';
 
-const page = reservationFor('/how-it-works');
+import {
+  breadcrumbs,
+  faqIntro,
+  faqItems,
+  finalCta,
+  hero,
+  meta,
+  relatedServices,
+  sections,
+} from '../data/how-it-works-page.js';
+import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../data/schema.js';
+
+const path = '/how-it-works';
+
+/**
+ * One graph for the page: the page itself, its breadcrumb, and a Service node
+ * for each of the five services §14 lists.
+ *
+ * The Service nodes are built from the same records §14 renders, so a
+ * structured-data claim can never describe a service the page does not show.
+ * `serviceSchema` is the site's existing builder and emits no price, rating or
+ * availability — none of those can be evidenced. `/services` and `/industries`
+ * declare the same five nodes the same way.
+ */
+const schema = [
+  webPageSchema({ title: meta.title, description: meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  ...relatedServices.map((service) =>
+    serviceSchema({ name: service.title, description: service.description, href: service.href })
+  ),
+];
+
+/**
+ * Every section needs a unique id for `aria-labelledby`.
+ *
+ * Derived from the index rather than written by hand, so inserting a section
+ * cannot produce a duplicate id. Numbered from `index + 2` because the array
+ * starts at the brief's §02 — §01 is the hero, which owns its own id — so the
+ * ids line up with the brief's numbering and a reader can go straight from
+ * "§07" in the brief to `id="hi-07"` in the build.
+ */
+const sectionId = (index) => `hi-${String(index + 2).padStart(2, '0')}`;
 ---
 
-<ReservationPage {...page} />
+<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    description={hero.description}
+    primaryCta={hero.primaryCta}
+    secondaryCta={hero.secondaryCta}
+    imageKey={hero.image.key}
+    imageCaption={hero.image.caption}
+    titleId="hi-01"
+  />
+
+  {
+    sections.map((section, index) => {
+      const titleId = sectionId(index);
+
+      switch (section.type) {
+        case 'process':
+          /* §02. The rail always owns the ink band. `hi-process` is the one
+             hook this page adds to it — see `how-it-works.css` §01 for why
+             this page's longer stage labels need a two-line floor, and the
+             component for why a stage carries a `links` list rather than being
+             a single wrapping link. */
+          return (
+            <ServiceProcess
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              steps={section.steps}
+              class="hi-process"
+              titleId={titleId}
+            />
+          );
+
+        case 'checkList':
+          return (
+            <ServiceCheckList
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'reviewGrid':
+          return (
+            <ServiceReviewGrid
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'split':
+          return (
+            <ServiceSplit
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              columns={section.columns}
+              note={section.note}
+              links={section.links}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'stages':
+          return (
+            <HiStages
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              numbered={section.numbered}
+              note={section.note}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'linkRows':
+          /* The same device §10 and §14 use. §10's rows carry named links
+             (`links`); §14's are one destination each (`href`), so the row
+             itself is the target and the service's name is the link. The
+             component refuses a row that carries both. */
+          return (
+            <HiLinkRows
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              numbered={section.numbered}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'growth':
+          return (
+            <HiGrowth
+              eyebrow={section.eyebrow}
+              title={section.title}
+              paragraphs={section.paragraphs}
+              progression={section.progression}
+              emphasis={section.emphasis}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'example':
+          return (
+            <HiExample
+              eyebrow={section.eyebrow}
+              title={section.title}
+              marker={section.marker}
+              scenario={section.scenario}
+              steps={section.steps}
+              note={section.note}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        default:
+          /* A typo in a `type` string must not render nothing and pass the
+             build — the section would simply vanish from the page. */
+          throw new Error(
+            `[/how-it-works] Unknown section type "${section.type}" at index ${index}. ` +
+              `See the section vocabulary in src/data/how-it-works-page.js.`
+          );
+      }
+    })
+  }
+
+  <ServicesFaq eyebrow={faqIntro.eyebrow} title={faqIntro.title} items={faqItems} titleId="hi-15" />
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>
