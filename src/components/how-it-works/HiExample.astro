@@ -1,0 +1,82 @@
+---
+/**
+ * HiExample — one hypothetical project, in a framed panel
+ * ---------------------------------------------------------------------------
+ * §13 "A practical example": a labelled panel holding a scenario, the six
+ * stages that scenario would pass through, and a closing note.
+ *
+ * ── THE BRIEF'S HARDEST CONSTRAINT LIVES HERE ────────────────────────────
+ * "Do NOT use a fake customer case study… present this explicitly as a
+ * hypothetical process example." That is a constraint on the COPY, but the
+ * component is what makes it structurally true, because two things have to be
+ * visible before a reader believes it:
+ *
+ *   · the panel is FRAMED and separately LABELLED (`EXAMPLE WORKFLOW`), so it
+ *     reads as an illustration inside the page rather than as a published
+ *     project;
+ *   · the scenario is written in the SECOND PERSON ("You are a small
+ *     retailer…"), so it describes the reader's own project. Nobody mistakes
+ *     their own situation for someone else's case study.
+ *
+ * The alternative — the same six stages as an ordinary list — would have
+ * produced exactly the artefact the brief bans: something that looks like a
+ * real project that happened to somebody.
+ *
+ * ── WHY THIS IS NOT `HiStages` ───────────────────────────────────────────
+ * It shares the label-plus-sentence shape, and that is all it shares. There is
+ * one of these on the page, it is the only framed block on it, and its job is
+ * to be the page's one worked illustration — the thing a reader remembers.
+ * Rendering it through the ordinary stage list would have made it one more
+ * list among the page's several, and the framing is precisely what makes the
+ * hypothetical status legible.
+ *
+ * The steps are an `<ol>` because the six are a sequence, and the labels are
+ * `<h3>` so the worked example appears in the document outline as six named
+ * stages rather than as six sentences. Level order stays h2 → h3.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** The panel's own label, e.g. `EXAMPLE WORKFLOW`. */
+  marker: string;
+  /** The hypothetical scenario, written in the second person. */
+  scenario: string;
+  steps: Array<{ label: string; description: string }>;
+  /** Closing line — the brief's "the exact process will vary". */
+  note?: string;
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, marker, scenario, steps, note, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} hi-example`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} class="hi-example__head" />
+
+    <div class="hi-example__panel">
+      <p class="eyebrow hi-example__marker">{marker}</p>
+
+      {/* The scenario is set larger than body copy: it is the premise the six
+          stages below depend on, not a line of introduction. */}
+      <p class="hi-example__scenario">{scenario}</p>
+
+      <ol class="hi-example__steps">
+        {
+          steps.map((step) => (
+            <li class="hi-example__step">
+              <h3 class="hi-example__step-label">{step.label}</h3>
+              <p class="hi-example__step-desc">{step.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    {note && <p class="sd-note hi-example__note">{note}</p>}
+  </div>
+</section>

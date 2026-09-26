@@ -1,0 +1,114 @@
+---
+/**
+ * HiGrowth — the sourcing-scale section: copy, the growth path, the qualifier
+ * ---------------------------------------------------------------------------
+ * §12 "How sourcing changes as you grow": one paragraph, the FIRST ORDER →
+ * TEST → REPEAT → GROW → SCALE path, the MOQ statement, and a link onward to
+ * what Sourden sources.
+ *
+ * ── WHY THIS IS NOT `IndustryScale` ──────────────────────────────────────
+ * `/industries` §08 renders a very similar section, and the two were built
+ * separately on purpose — not because the layout differs, but because the
+ * BRIEFS order the same parts differently:
+ *
+ *   /industries §08   paragraph → the qualifier → the path → a closing note
+ *   /how-it-works §12 paragraph → the path → the qualifier → a link
+ *
+ * The qualifier's position is not cosmetic. Here it is the brief's "Add:"
+ * — it comes AFTER the five words, so it reads as the limit of the path the
+ * reader has just walked. There it comes before, as a limitation attached to
+ * the paragraph. Collapsing the two into one device would have forced one
+ * page's sentence to sit where its brief does not put it, so this page has its
+ * own device. The brass treatment is the only thing the two share — on
+ * purpose, because it marks the same kind of sentence on both pages.
+ *
+ * ── WHY THE QUALIFIER IS LOAD-BEARING ────────────────────────────────────
+ * "Sourden does not impose its own fixed minimum order quantity" is a claim
+ * about Sourden, and on its own it is the sentence this site must never let
+ * stand unqualified: a reader hears "small orders are fine". The second
+ * sentence ("The practical MOQ depends on the product and supplier") is what
+ * keeps it true. The same distinction is drawn on the homepage, in
+ * `/services`, in `/industries` and in this page's own FAQ, so it is a
+ * principle rather than a disclaimer — which is why it is the section's
+ * conclusion and not small print.
+ *
+ * ── WHY THE PATH IS NOT THE FIVE-STAGE RAIL ──────────────────────────────
+ * The page already carries the rail in §02. Five stages with arrows between
+ * them would be the same device twice, so: the rail is numbered, dotted and on
+ * an ink band because it is an ordered procedure; this path is five bare words
+ * on the section's own ground, with no numbers and no descriptions, because it
+ * is a sequence of business stages a visitor moves through over months. The
+ * uppercase belongs to the stylesheet, not the data — the rail's verbs work
+ * the same way.
+ * ---------------------------------------------------------------------------
+ */
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  paragraphs: string[];
+  /** The growth path, in order. Rendered uppercase by the stylesheet. */
+  progression: string[];
+  /** The qualifier that belongs to the section but is not body copy. */
+  emphasis?: string;
+  /** Closing link. */
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, paragraphs, progression, emphasis, foot, tone, titleId } = Astro.props;
+
+const lastIndex = progression.length - 1;
+---
+
+<section class={`section section--${tone} hi-growth`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="hi-growth__block">
+      <p class="eyebrow hi-growth__eyebrow">{eyebrow}</p>
+
+      {/* The eyebrow and the heading sit in different columns of the same
+          grid, so the heading is written here rather than through
+          `<SectionHeader>` — which is exactly what `/industries` does for its
+          equivalent section. The id still belongs to the <h2>, so the section
+          keeps its place in the heading outline. */}
+      <div class="hi-growth__body">
+        <h2 class="hi-growth__title" id={titleId}>{title}</h2>
+
+        {paragraphs.map((paragraph) => <p class="hi-growth__para">{paragraph}</p>)}
+      </div>
+    </div>
+
+    {/* An <ol>: the five stages are read in order even though they are not
+        numbered on screen — the progression is the content. */}
+    <ol class="hi-growth__path">
+      {
+        progression.map((stage, index) => (
+          <li class="hi-growth__stage">
+            <span class="hi-growth__stage-label">{stage}</span>
+
+            {/* The arrow belongs to the gap between two stages, so it is drawn
+                after every stage except the last. It turns a quarter turn on
+                the stacked layout — see the stylesheet. */}
+            {index < lastIndex && (
+              <span class="hi-growth__arrow" aria-hidden="true">
+                →
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+
+    {emphasis && <p class="hi-growth__emphasis">{emphasis}</p>}
+
+    {
+      foot && (
+        <div class="section-foot hi-growth__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>

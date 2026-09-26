@@ -1,0 +1,97 @@
+---
+/**
+ * HiStages — a short procedure as ruled rows beside its heading
+ * ---------------------------------------------------------------------------
+ * Two consumers on this page:
+ *   §06 STEP 04: PURCHASING — Confirm / Purchase / Follow Up / Prepare
+ *   §11 AFTER YOU SUBMIT  — 01 Request Review … 04 Next Steps
+ *
+ * ── WHY ONE COMPONENT AND NOT TWO ─────────────────────────────────────────
+ * Both are the same device: a heading in the left column, a ruled list of
+ * labelled stages in the right, each stage one sentence. The only difference is
+ * whether a stage carries a number, which is a data shape rather than a
+ * layout — the same call `<IndustryRows>` makes, and for the same reason:
+ * `numbered` is a LIST-level flag, so the grid template never depends on which
+ * items happen to have numbers.
+ *
+ * There is a second difference worth naming, because it is why neither list is
+ * the other's opposite: §11 IS a sequence with a first step (the brief numbers
+ * it), while §06's four are concurrent parts of one stage — a division of
+ * labour, which is why the brief writes them as bare verbs and why they are
+ * rendered unnumbered.
+ *
+ * ── WHY THE HEADING IS BESIDE THE LIST, NOT ABOVE IT ──────────────────────
+ * The page already puts a full-width heading above a list three times (§03,
+ * §04, §07 use `ServiceCheckList`, §05 uses `ServiceReviewGrid`). A fourth
+ * would make a sixteen-section page read as one list after another. The 5/6
+ * split is the services-area FAQ's own arrangement, so it is the site's
+ * editorial grid rather than a new one — and it is the reason the two devices
+ * are recognisably different sections even though both are lists of stages.
+ *
+ * ── WHY THE LABELS ARE <h3> ───────────────────────────────────────────────
+ * Each label is a real topic in the document outline ("Confirm", "Request
+ * Review"), so a reader — or an assistant — can enumerate the stages without
+ * parsing sentences. Level order stays h2 (section) → h3 (stage); nothing is
+ * skipped, and the numbers are `aria-hidden` because the `<ol>` already
+ * carries the ordering.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  items: Array<{ label: string; description: string }>;
+  /** Render the number column. Numbers derive from array order, never typed. */
+  numbered?: boolean;
+  /** Optional closing caveat — set on the hairline, quieter than body copy. */
+  note?: string;
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, description, items, numbered = false, note, foot, tone, titleId } =
+  Astro.props;
+
+const classes = `section section--${tone} hi-stages ${numbered ? 'hi-stages--numbered' : ''}`.trim();
+---
+
+<section class={classes} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="hi-stages__grid">
+      <div class="hi-stages__head">
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} />
+      </div>
+
+      <ol class="hi-stages__list">
+        {
+          items.map((item, index) => (
+            <li class="hi-stages__item">
+              {numbered && (
+                <span class="num hi-stages__num" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              )}
+
+              <h3 class="hi-stages__label">{item.label}</h3>
+              <p class="hi-stages__desc">{item.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    {note && <p class="sd-note hi-stages__note">{note}</p>}
+
+    {
+      foot && (
+        <div class="section-foot hi-stages__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>

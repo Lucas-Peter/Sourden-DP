@@ -1,0 +1,144 @@
+---
+/**
+ * HiLinkRows — ruled rows, each with one or more destinations
+ * ---------------------------------------------------------------------------
+ * Two consumers on this page:
+ *   §10 FLEXIBLE SUPPORT — three reader situations, each leading to one, two
+ *       or three services
+ *   §14 OUR SERVICES     — the five services, numbered, one row per service
+ *
+ * ── WHY ONE COMPONENT AND NOT TWO ─────────────────────────────────────────
+ * Both are a ruled row with a title and a sentence. What differs is a data
+ * shape: whether the row carries a number, and whether the destination is the
+ * whole row or a set of links under the sentence. `<IndustryRows>` reasons the
+ * same way about the same split; this is the wider case of it, and it exists
+ * because of §10.
+ *
+ * ── WHY `href` AND `links` ARE MUTUALLY EXCLUSIVE ─────────────────────────
+ * `href` turns the whole row into an `<a>`. If `links` were also rendered, the
+ * page would nest anchors — invalid HTML, and the inner ones behave
+ * unpredictably. The two shapes are therefore alternatives, and the component
+ * THROWS at build time if a row carries both rather than shipping markup that
+ * silently nests interactive elements.
+ *
+ * Why both shapes exist at all: §14's rows are the services themselves, so the
+ * service's NAME is the link and a link labelled with the same name underneath
+ * would be a duplicate. §10's second row can lead to two different services,
+ * so it needs two named links and cannot be one wrapping anchor. (The same
+ * asymmetry `/services`' rail has: five stages, one destination each.)
+ *
+ * ── WHY THE NUMBER IS ON THE LIST, NOT ON THE ITEM ────────────────────────
+ * `numbered` is a list-level flag, so the grid template is written once per
+ * variant instead of depending on which items happen to carry a number —
+ * otherwise the title column would shift in rows that lack one.
+ *
+ * The number is `aria-hidden`: it is a registry string rendered as content
+ * ("01"…"05"), not a list position, which is also why the list is a `<ul>`.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  items: Array<{
+    /** Registry number, e.g. `01`. Omit for an unnumbered list. */
+    number?: string;
+    title: string;
+    description: string;
+    /** Makes the whole row one link. Mutually exclusive with `links`. */
+    href?: string;
+    /** Named destinations under the sentence. Mutually exclusive with `href`. */
+    links?: Array<{ label: string; href: string }>;
+  }>;
+  /** Render the number column. */
+  numbered?: boolean;
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, description, items, numbered = false, foot, tone, titleId } = Astro.props;
+
+/* Fail the build rather than emit nested anchors. */
+items.forEach((item, index) => {
+  if (item.href && item.links?.length) {
+    throw new Error(
+      `[HiLinkRows] Item ${index} ("${item.title}") has both \`href\` and \`links\`. ` +
+        `A row is either one destination or a set of them — rendering both would nest ` +
+        `<a> inside <a>.`
+    );
+  }
+});
+
+const classes = `section section--${tone} hi-rows ${numbered ? 'hi-rows--numbered' : ''}`.trim();
+---
+
+<section class={classes} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader
+      id={titleId}
+      eyebrow={eyebrow}
+      title={title}
+      lead={description}
+      class="hi-rows__head"
+    />
+
+    <ul class="hi-rows__list" data-reveal-group>
+      {
+        items.map((item) => {
+          const Body = item.href ? 'a' : 'div';
+
+          return (
+            <li class="hi-rows__row">
+              {/* The href is spread conditionally so the `<div>` variant never
+                  carries an `href` attribute at all. */}
+              <Body class="hi-rows__body" {...(item.href ? { href: item.href } : {})}>
+                {item.number && (
+                  <span class="num hi-rows__num" aria-hidden="true">
+                    {item.number}
+                  </span>
+                )}
+
+                <h3 class="hi-rows__title">
+                  <span>{item.title}</span>
+                  {/* The arrow only exists where the row itself is the
+                      destination — it is the site's "this goes somewhere"
+                      mark, so it must never appear on §10's rows, whose links
+                      live below the sentence instead. */}
+                  {item.href && (
+                    <span class="hi-rows__arrow" aria-hidden="true">
+                      →
+                    </span>
+                  )}
+                </h3>
+
+                <div class="hi-rows__detail">
+                  <p class="hi-rows__desc">{item.description}</p>
+
+                  {item.links && (
+                    <div class="hi-rows__links">
+                      {item.links.map((link) => (
+                        <ArrowLink href={link.href} label={link.label} brass />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </Body>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    {
+      foot && (
+        <div class="section-foot hi-rows__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>
