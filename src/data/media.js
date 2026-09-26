@@ -240,6 +240,38 @@ export const images = {
       'Packaging, warehouse dispatch, cartons being labelled and staged, or pallet preparation. Realistic logistics, not a container-port stock shot with a sunset, a giant ship or a globe.',
   },
 
+  /* ------------------------------------------------------- how it works -- */
+  /* `/how-it-works` hero — the page's only image.
+   *
+   * The page is sixteen sections of process and coordination, and it carries
+   * exactly one photograph because the brief is specific about the image and
+   * explicit about everything else being text: it asks for "one strong image",
+   * not a set. Illustrating the individual stages would have produced six
+   * photographs of six different activities, which is the generic collage the
+   * same sentence rules out.
+   *
+   * So this slot has to stand for the whole journey at once. What makes that
+   * honest rather than vague is a single frame in which the WORK is visible —
+   * someone handling goods, checking them or preparing them, in a real space.
+   * Any of the brief's seven suggested subjects would do; what is banned is
+   * the corporate shorthand (handshakes, meeting rooms, boardroom thumbnails)
+   * and the China shorthand (Great Wall, flag, panda, container-port sunsets),
+   * plus artificially perfect AI factory floors. */
+  howItWorksHero: {
+    file: 'how-it-works-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'HOW IT WORKS',
+    alt: 'Placeholder for a documentary photograph of products being checked and prepared during a sourcing project.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'One documentary frame of sourcing work in progress: product samples being reviewed and compared, a pre-shipment inspection, goods being packed or palletized, or supplier documentation worked through beside the goods it describes. The brief lists those seven subjects (samples, factory production, inspection, packaging, warehouse preparation, supplier communication, shipment preparation) and asks for ONE strong image rather than a collage. Favour working hands and real materials over polished products and finished rooms. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
+
   /* ---------------------------------------------------------- industries -- */
   /* `/industries` hero — the one image on the Industries overview page.
    *
