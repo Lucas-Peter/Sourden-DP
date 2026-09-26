@@ -241,6 +241,35 @@ export const images = {
   },
 
   /* ---------------------------------------------------------- industries -- */
+  /* `/industries` hero — the one image on the Industries overview page.
+   *
+   * The page's centrepiece is the nine-entry category directory, and that
+   * directory carries NO images on purpose: the brief asks for "an editorial
+   * sourcing directory, not an ecommerce category page", and nine category
+   * photographs would read as a product grid. So the page has exactly one
+   * slot — this one — and the nine `industry*` slots below stay where they
+   * belong, on the homepage grid.
+   *
+   * What the image has to do is different from the other heroes too. The
+   * homepage grid shows one category at a time; this page is about the RANGE,
+   * so the brief asks for "a variety of real products, product samples, factory
+   * production or product inspection" that communicates breadth. Breadth is
+   * still not a collage — the brief bans artificial product collages, generic
+   * world maps, landmarks, flags, handshakes and AI-looking factory imagery. */
+  industriesHero: {
+    file: 'industries-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'WHAT WE SOURCE',
+    alt: 'Placeholder for a documentary photograph of product samples from several different categories being reviewed together on a work surface.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'Breadth shown honestly: several DIFFERENT kinds of product being handled together in a real working context — samples on a bench, goods from different categories staged for inspection, or a production or packing area where more than one product line is visible. Mixed materials and unfinished packs are better than polished hero products. Banned: artificial collages, a neat grid of unrelated products on white, generic world maps, the Great Wall, a flag, a panda, handshakes, staged meeting rooms and artificially perfect AI factory floors.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
   industryConsumerProducts: {
     file: 'industry-consumer-products.svg',
     width: 1200,

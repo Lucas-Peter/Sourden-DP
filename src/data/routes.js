@@ -16,16 +16,21 @@
  *   from `src/pages/`). It then drops out of `noindexPaths` automatically and
  *   reappears in the sitemap. Nothing else needs editing.
  *
- *   Done so far: /sourcing-request and /services. Their copy now lives in
- *   `src/data/sourcing-request.js` and `src/data/services-page.js` respectively,
- *   and both routes are indexable.
+ *   Done so far: /sourcing-request, /services, the five `/services/<slug>`
+ *   detail pages and /industries. Their copy lives in
+ *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js` and
+ *   `industries-page.js` respectively, and all of those routes are indexable.
  *
- *   The five `/services/<slug>` detail pages are being written one at a time.
- *   Each one moves out of `detailRoutePaths` by being added to `detailPages` in
- *   `service-detail.js` — the route registry reads `builtDetailPaths` from
- *   there rather than keeping a second list. A slug that is not in that registry
- *   still resolves, still has every link to it live, and still carries `noindex`
- *   until its copy exists.
+ *   The five `/services/<slug>` detail pages moved out of `detailRoutePaths` by
+ *   being added to `detailPages` in `service-detail.js` — the route registry
+ *   reads `builtDetailPaths` from there rather than keeping a second list, so
+ *   publishing a page is one line, not two edits. The same subtraction is
+ *   available to the nine `/industries/<slug>` category pages when they are
+ *   written: they currently render the reservation shell and carry `noindex`,
+ *   which is correct while they have nothing substantial to offer.
+ *
+ *   A slug that is in no registry still resolves, still has every link to it
+ *   live, and still carries `noindex` until its copy exists.
  *
  * This module is intentionally free of any import that depends on Vite, so
  * `astro.config.mjs` can import it at build time.
@@ -59,27 +64,6 @@ export const reservationNotice = {
 
 /** @type {ReservationPage[]} */
 export const reservedTopLevel = [
-  {
-    path: '/industries',
-    label: 'Industries',
-    seoTitle: 'What We Source | Sourden',
-    seoDescription:
-      'Product categories Sourden sources from China, from consumer products and packaging to electronics and industrial products.',
-    eyebrow: 'WHAT WE SOURCE',
-    h1: 'Industries',
-    summary:
-      'Sourden works across a range of product categories, sourcing according to your specifications, target market and business needs.',
-    planned: [
-      'What we typically look for in each category',
-      'Common specifications, materials and packaging considerations',
-      'Typical sourcing questions in each category',
-      'How to request a category that is not listed here',
-    ],
-    linkList: {
-      title: 'Category pages',
-      items: industries.map((industry) => ({ label: industry.title, href: industry.href })),
-    },
-  },
   {
     path: '/how-it-works',
     label: 'How It Works',
