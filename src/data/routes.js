@@ -17,9 +17,10 @@
  *   reappears in the sitemap. Nothing else needs editing.
  *
  *   Done so far: /sourcing-request, /services, the five `/services/<slug>`
- *   detail pages and /industries. Their copy lives in
- *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js` and
- *   `industries-page.js` respectively, and all of those routes are indexable.
+ *   detail pages, /industries and /how-it-works. Their copy lives in
+ *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js`,
+ *   `industries-page.js` and `how-it-works-page.js` respectively, and all of
+ *   those routes are indexable.
  *
  *   The five `/services/<slug>` detail pages moved out of `detailRoutePaths` by
  *   being added to `detailPages` in `service-detail.js` — the route registry
@@ -64,23 +65,6 @@ export const reservationNotice = {
 
 /** @type {ReservationPage[]} */
 export const reservedTopLevel = [
-  {
-    path: '/how-it-works',
-    label: 'How It Works',
-    seoTitle: 'How It Works | Sourden',
-    seoDescription:
-      'A straightforward sourcing process, from your first request through supplier research, verification, order management, inspection and shipping.',
-    eyebrow: 'HOW IT WORKS',
-    h1: 'From need to done.',
-    summary:
-      'A straightforward sourcing process, from your first request to final shipment.',
-    planned: [
-      'Each step in detail, including what you receive and what happens next',
-      'Typical information we ask for before starting a search',
-      'How quotations and supplier comparisons are presented',
-      'Where quality control and shipping sit in the timeline',
-    ],
-  },
   {
     path: '/about',
     label: 'About',
