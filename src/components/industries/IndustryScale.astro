@@ -1,0 +1,91 @@
+---
+/**
+ * IndustryScale — the MOQ position and the growth path  (brief §08)
+ * ---------------------------------------------------------------------------
+ * "You don't need to start big." — one paragraph, the clarification that keeps
+ * it honest, the FIRST ORDER → TEST → REPEAT → GROW → SCALE path, and a closing
+ * sentence about the path changing as the business does.
+ *
+ * ── THE LOAD-BEARING SENTENCE ─────────────────────────────────────────────
+ * `emphasis` is not a second paragraph. It is the qualifier without which the
+ * paragraph above becomes the claim this site must never make: Sourden imposes
+ * no fixed MOQ of its own, and that is NOT the same as "every supplier accepts
+ * small orders". The same distinction is drawn on the homepage, in `/services`
+ * and in this page's FAQ, and the brief restates it here as an explicit
+ * "Important clarification". Setting it in brass, as the section's own
+ * conclusion, is what stops it reading as small print under a promise.
+ *
+ * ── WHY THE GROWTH PATH IS NOT THE FIVE-STAGE RAIL ────────────────────────
+ * Five stages with arrows between them, on a page that already has a
+ * five-stage rail (§10) — so the two had to be built differently. The rail is
+ * numbered, dotted and pinned to an ink band because it is an ordered
+ * procedure. This path is five bare words on the section's own ground, with no
+ * numbers and no descriptions, because it is not a procedure: it is a sequence
+ * of business stages the visitor moves through over months, and next to the
+ * rail it should read as a smaller, quieter thing.
+ *
+ * ── WHY THE STAGES ARE UPPERCASE IN CSS, NOT IN THE DATA ──────────────────
+ * The data holds them as words ("First Order"), the stylesheet uppercases them.
+ * The rail's verbs work the same way. It keeps one typographic decision in the
+ * stylesheet rather than spelling it out five times in the copy.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  paragraphs: string[];
+  /** The qualifier that belongs to the section but is not body copy. */
+  emphasis?: string;
+  /** The growth path, in order. Rendered uppercase. */
+  progression: string[];
+  /** Closing sentence, rendered after the path. */
+  note?: string;
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, paragraphs, emphasis, progression, note, tone, titleId } = Astro.props;
+
+const lastIndex = progression.length - 1;
+---
+
+<section class={`section section--${tone} ind-scale`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="ind-scale__block">
+      <p class="eyebrow ind-scale__eyebrow">{eyebrow}</p>
+
+      <div class="ind-scale__body">
+        <h2 class="ind-scale__title" id={titleId}>{title}</h2>
+
+        {paragraphs.map((paragraph) => <p class="ind-scale__para">{paragraph}</p>)}
+
+        {emphasis && <p class="ind-scale__emphasis">{emphasis}</p>}
+      </div>
+    </div>
+
+    {/* An <ol>: the five stages are read in order even though they are not
+        numbered on screen — the progression is the content. */}
+    <ol class="ind-scale__path">
+      {
+        progression.map((stage, index) => (
+          <li class="ind-scale__stage">
+            <span class="ind-scale__stage-label">{stage}</span>
+
+            {/* The arrow belongs to the gap between two stages, so it is
+                rendered after every stage except the last. It turns a quarter
+                turn on the stacked layout — see the stylesheet. */}
+            {index < lastIndex && (
+              <span class="ind-scale__arrow" aria-hidden="true">
+                →
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+
+    {note && <p class="ind-scale__note">{note}</p>}
+  </div>
+</section>

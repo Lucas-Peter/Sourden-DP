@@ -1,0 +1,117 @@
+---
+/**
+ * IndustryRows — titled rows, optionally numbered, optionally links
+ * ---------------------------------------------------------------------------
+ * One device, two consumers on this page:
+ *   §07 "Who we source for"   five audiences, title + sentence, not links
+ *   §11 "Related services"    five services, numbered, the whole row a link
+ *
+ * ── WHY ONE COMPONENT AND NOT TWO ─────────────────────────────────────────
+ * Both are the same visual device: a ruled row, a title, a sentence, with the
+ * two columns read against each other. What differs is a data shape, not a
+ * layout — whether the row carries a number, and whether the row is a
+ * destination. That is the same split `<ServiceSplit>` reasons about in its own
+ * header, and the same call: two components would have been two copies of one
+ * grid, and the second copy is where the two would start to drift.
+ *
+ * `numbered` is a LIST-level flag rather than a per-item one on purpose. In
+ * §11 every entry has a registry number and in §07 none does, so mixing them
+ * within one list is not a case that exists — and a per-item flag would make
+ * the grid template depend on which items happened to have numbers.
+ *
+ * ── WHY THE LINK WRAPS THE ROW ────────────────────────────────────────────
+ * On §11 the whole row is the target: a 132px band a visitor can click anywhere
+ * in, which is a far better target than the service's name alone. The markup is
+ * `<a>` around the `<h3>`, which is valid — `<a>` has a transparent content
+ * model — and the homepage's service list already does exactly this, so the two
+ * behave identically. `<h3>` inside `<a>` also means the heading still appears
+ * in the outline with its text intact.
+ *
+ * The row's element is chosen at render time (`<a>` or `<div>`) so that the
+ * grid lives on ONE class, `.ind-rows__body`, and the numbered/unlinked
+ * variants cannot end up with two slightly different grids.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  items: Array<{
+    /** Registry number, e.g. `01`. Omit for an unnumbered list. */
+    number?: string;
+    title: string;
+    description: string;
+    /** Present when the row is a destination. */
+    href?: string;
+  }>;
+  /** Render the number column. */
+  numbered?: boolean;
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, description, items, numbered = false, foot, tone, titleId } =
+  Astro.props;
+---
+
+<section
+  class={`section section--${tone} ind-rows ${numbered ? 'ind-rows--numbered' : ''}`.trim()}
+  aria-labelledby={titleId}
+>
+  <div class="container">
+    <SectionHeader
+      id={titleId}
+      eyebrow={eyebrow}
+      title={title}
+      lead={description}
+      class="ind-rows__head"
+    />
+
+    {/* A <ul> in both cases: the numbers are registry strings rendered as
+        content, not list positions, so the list itself is unordered. The
+        homepage's service list makes the same call. */}
+    <ul class="ind-rows__list" data-reveal-group>
+      {
+        items.map((item) => {
+          const Body = item.href ? 'a' : 'div';
+
+          return (
+            <li class="ind-rows__row">
+              {/* The href is spread conditionally so the `<div>` variant never
+                  carries an `href` attribute at all. */}
+              <Body class="ind-rows__body" {...(item.href ? { href: item.href } : {})}>
+                {item.number && <span class="num ind-rows__num">{item.number}</span>}
+
+                <h3 class="ind-rows__title">
+                  <span>{item.title}</span>
+                  {/* The arrow only exists where the row is a destination —
+                      it is the site's "this goes somewhere" mark, so it must
+                      never appear on §07's static rows. */}
+                  {item.href && (
+                    <span class="ind-rows__arrow" aria-hidden="true">
+                      →
+                    </span>
+                  )}
+                </h3>
+
+                <p class="ind-rows__desc">{item.description}</p>
+              </Body>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    {
+      foot && (
+        <div class="section-foot ind-rows__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>

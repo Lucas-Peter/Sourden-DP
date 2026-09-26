@@ -1,0 +1,91 @@
+---
+/**
+ * IndustrySequence — the five-stage flow  (brief §06, "From category to supplier")
+ * ---------------------------------------------------------------------------
+ * PRODUCT → REQUIREMENTS → SUPPLIERS → COMPARISON → NEXT STEP, each stage with
+ * the question it answers.
+ *
+ * ── WHY THIS IS NOT THE FIVE-STAGE RAIL ───────────────────────────────────
+ * The page already carries the rail in §10 (`<ServiceProcess>`), and the two
+ * look similar enough that they needed a deliberate difference. They are not
+ * the same thing:
+ *
+ *   §10 rail   five STEPS of what Sourden does, numbered 01–05, on an ink band,
+ *              each on a dot on a horizontal rail — an ordered procedure
+ *   §06 flow   five STAGES of how an option turns into a decision, unnumbered,
+ *              read top to bottom on a light ground, with a `↓` in the gap —
+ *              a descent from a vague request to a concrete next step
+ *
+ * So the rail is horizontal, dark and numbered; this flow is vertical, light
+ * and unnumbered. Numbering these five would also have been wrong on its own
+ * terms: the point of §06 is that the reader is already somewhere in this chain
+ * when they arrive, not at step one.
+ *
+ * ── WHY THE ARROW IS IN THE GAP, AND RENDERED BEFORE THE STAGE IT LEADS TO ─
+ * A `↓` after the last stage would be a promise of something below it. The
+ * arrow belongs to the space between two stages, so every stage except the
+ * first renders its own `↓` above itself and the chain cannot end on an arrow.
+ *
+ * The arrow sits in the item's first grid row and the label in the second. With
+ * no row gap between them, an item without an arrow simply has a zero-height
+ * first row — so the five labels stay on the same baseline as each other rather
+ * than each item being nudged down by an empty row's gap.
+ *
+ * ── THE LABELS ARE <h3> ───────────────────────────────────────────────────
+ * These five are the section's topics ("which suppliers appear suitable"),
+ * not decoration. An h3 each puts them in the outline, so the flow can be read
+ * as a five-item list by anything that does not render the arrows — which are
+ * `aria-hidden`, because "down arrow" adds nothing to a reader who is already
+ * in a linear document.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  steps: Array<{ label: string; description: string }>;
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, description, steps, foot, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} ind-sequence`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="ind-sequence__grid">
+      <div class="ind-sequence__head">
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} />
+      </div>
+
+      <ol class="ind-sequence__list">
+        {
+          steps.map((step, index) => (
+            <li class="ind-sequence__item">
+              {index > 0 && (
+                <span class="ind-sequence__arrow" aria-hidden="true">
+                  ↓
+                </span>
+              )}
+
+              <h3 class="ind-sequence__label">{step.label}</h3>
+              <p class="ind-sequence__desc">{step.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    {
+      foot && (
+        <div class="section-foot ind-sequence__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>
