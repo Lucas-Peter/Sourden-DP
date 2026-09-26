@@ -30,6 +30,8 @@
      src/pages/industries/index.astro
                                     →  import '../styles/industries.css'
                                       (+ services-shared.css, service-detail.css)
+     src/pages/how-it-works.astro   →  import '../styles/how-it-works.css'
+                                      (+ services-shared.css, service-detail.css)
      src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
 
    ADDING A NEW PAGE
@@ -40,8 +42,9 @@
         what enforces the next rule.
      4. Namespace every selector in it (`.sr-` for the sourcing page, `.sv-`
         for the services area, `.sd-` for service detail, `.ind-` for
-        industries) and reuse the component classes from components.css before
-        inventing new ones — that is what keeps the site visually coherent.
+        industries, `.hi-` for how-it-works) and reuse the component classes
+        from components.css before inventing new ones — that is what keeps the
+        site visually coherent.
 
    SHARING A DEVICE BETWEEN TWO PAGES
      A page sheet is per page, so two pages that need the same device would
@@ -59,16 +62,29 @@
      `PAGE_SHEETS`, including the shared ones.
 
      ONE MORE CONSISTENCY CHECK
-     `/industries` imports `services-shared.css` and `service-detail.css`. Those
-     file names say "services" because the services pages were the hero, the
-     prose split, the review grid, the rail and the FAQ's FIRST consumer — the
-     devices themselves are generic editorial sections, and the brief for this
-     page asks explicitly for reuse rather than a second visual language. When
-     a third non-services page needs them, the honest move is to rename both
-     sheets and the `.sv-` / `.sd-` prefixes to a neutral `.sec-`; doing it for
-     the second consumer would have churned five freshly verified pages for a
-     naming reason. Recorded here so the next reader knows it is a known
-     trade-off and not an oversight.
+     Three non-services pages now import `services-shared.css` and
+     `service-detail.css` — `/industries` and `/how-it-works` join `/services`
+     and the five `/services/<slug>` detail pages, so eight pages share the two
+     sheets. Those file names say "services" because the services pages were the
+     hero, the prose split, the review grid, the rail, the check-list and the
+     FAQ's FIRST consumer — the devices themselves are generic editorial
+     sections, and the briefs for both later pages ask explicitly for reuse
+     rather than a second visual language.
+
+     So the trade-off recorded here previously ("when a third non-services page
+     needs them, rename both sheets and the `.sv-` / `.sd-` prefixes to a
+     neutral `.sec-`") has now TRIGGERED. It is still deliberately not done in
+     this change, and the reason is cost rather than doubt: the rename touches
+     every class in the two sheets, the components that emit them, the page
+     sheets that reference them (`.ind-` and `.hi-` both hook `.sv-stage__verb`
+     and `.sd-note`), `PAGE_SHEETS` in `scripts/audit.mjs`, and the selectors
+     hard-coded in FOUR verification harnesses (`sd-geo.mjs`, `sv-geo.mjs`,
+     `sv-verify.mjs`, `in-geo.mjs`, plus `hi-geo.mjs`) — that is a fresh
+     full-site re-verification for a naming improvement no visitor can see, and
+     it would invalidate five already-passing pages' assertions in the same
+     change. Do it as its own task, with the harnesses updated first and the
+     page-by-page run as the acceptance test. Recorded here so the next reader
+     knows it is a known, now-due trade-off rather than an oversight.
    =========================================================================== */
 
 /* Manrope (headings) — variable, weights 200–800 */

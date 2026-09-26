@@ -268,6 +268,29 @@
   line-height: 1.62;
 }
 
+/* The destinations a stage owns, where a stage has more than one. A stage with
+   a single destination is a wrapping `.sv-stage__link` instead (that is how
+   `/services` renders its rail); this row exists for the case that shape
+   cannot express — `/how-it-works` §02's fourth stage leads to purchasing AND
+   to quality control.
+
+   WHERE THE ROW LIVES IN THE GRID — AND WHY NOTHING ABOVE CHANGED
+   The rail's templates stop at row 4 on desktop and row 3 on mobile, so an
+   item placed one row beyond that lands in an IMPLICIT `auto` row: no
+   `grid-template-rows` declaration needed editing, and the four consumers that
+   pass no links keep the exact geometry they were verified with. Placing it
+   inside the existing templates would have added a row gap above the
+   description on every detail page. */
+.sv-stage__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-2) var(--sp-5);
+  grid-column: 2;
+  grid-row: 4;
+  margin-block-start: var(--sp-1);
+}
+
 /* Desktop — the rail goes horizontal and each stage becomes a column. */
 @media (min-width: 1200px) {
   .sv-stages {
@@ -334,6 +357,16 @@
     grid-column: 1;
     grid-row: 4;
     max-width: 30ch;
+  }
+
+  /* One row below the description — see the base rule for why that row is
+     implicit rather than declared. `margin-block-start` drops to 0 here
+     because the desktop `row-gap` is already 12px, which is the same visual
+     gap the mobile margin produces. */
+  .sv-stage__links {
+    grid-column: 1;
+    grid-row: 5;
+    margin-block-start: 0;
   }
 }
 
