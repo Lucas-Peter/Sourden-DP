@@ -366,6 +366,20 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
   .hi-growth__title {
     margin-block-start: 0;
   }
+
+  /* THE RAIL SPANS THE COLUMNS — IT DOES NOT HUG THE LEFT ONE
+     The path is not a third cell in this grid: it sits outside the head and
+     runs underneath it. At this width the whole row of words is short — about
+     half the container — so a packed row leaves the eyebrow column empty below
+     the eyebrow and the body column empty opposite it, and the rail reads as an
+     unfinished column rather than as a line that belongs to the section. Spread
+     across the full width it reads as what it is: one rail under both columns.
+     Below 1200px the head is a single column and the packed row already reads as
+     part of it, so nothing is spread there — which is also why this rule lives
+     in the same query as the two-column split rather than in the 768px one. */
+  .hi-growth__path {
+    justify-content: space-between;
+  }
 }
 
 /* --- the growth path ------------------------------------------------------ */
@@ -423,15 +437,27 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
 /* Body paragraphs the brief places AFTER the growth path (/about §05). The
    paragraphs themselves reuse `.hi-growth__para` — same measure, colour and
    rhythm as the ones above the path, because they are the same kind of copy.
-   This wrapper only supplies the space between the path and the first of them:
+   This wrapper supplies the space between the path and the first of them:
    `paragraphs` above the path sits right under the heading, whereas these need
    to clear the progression. Their own `margin-block-start` collapses into this
    one, so the gap is set once, here.
 
+   ── THE HAIRLINE IS WHAT MAKES THEM A BAND ────────────────────────────────
+   Without it these paragraphs are indistinguishable from the paragraph above
+   the path: same face, same measure, same colour, same column. The section then
+   reads as one column that jogs left after the rail, which is exactly how it
+   looked before this rule existed. `/industries` §08 closes with the same kind
+   of copy and already separates it with a hairline (`.ind-scale__note`), so the
+   rule is this site's own grammar for "the copy that closes the section" — not
+   a decoration invented for this page. Full width, the way `.section-foot`'s is:
+   the band is the section's, not the paragraph's.
+
    Rendered only when a page passes `closingParagraphs`; `/how-it-works` §12
-   passes none and emits no element. */
+   passes none and emits no element, so this rule changes nothing there. */
 .hi-growth__closing {
   margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
 }
 
 /* The qualifier — the section's conclusion, not a third paragraph. No hairline

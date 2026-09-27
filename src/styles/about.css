@@ -117,12 +117,23 @@
      is what makes the stacked layout correct without a second set of rules:
      a mark that is already a sibling of the node's body stacks with it.
 
-   THE VERTICAL CHAIN IS CENTRED; THE HORIZONTAL ONE IS NOT
+   THE VERTICAL CHAIN IS CENTRED; THE HORIZONTAL ONE IS NOT —
+   AND THEY ARE CENTRED/SPREAD IN DIFFERENT SPACES
      A descent reads as a spine, so it is centred and its nodes are centred
-     under it. A correspondence is a row of equals, so it spreads across the
-     full width and each node keeps its own left edge. Centring the horizontal
-     one would have made the middle party look like the subject of the other
-     two, which is the opposite of what §14 says.
+     under it — at BOTH levels, the <li> inside the chain and the mark and label
+     inside the <li>; centring only the first is what produced a staircase of
+     five offset marks instead of a spine. A correspondence is a row of equals,
+     so it spreads across the full width and each node keeps its own left edge.
+     Centring the horizontal one would have made the middle party look like the
+     subject of the other two, which is the opposite of what §14 says.
+
+     The SPACE they are centred in also differs, and that is a consequence of the
+     same idea rather than a separate decision: the descent is centred on the
+     right-hand COLUMN (it lives inside it, and it continues the sentence printed
+     there), while the correspondence is centred/spread on the CONTAINER. Getting
+     this wrong is invisible in the stylesheet — both are "a centred chain" — and
+     it produced the section 松霖 flagged as 乱: a descent centred on the
+     container, which on a two-column head is the gutter between the columns.
    =========================================================================== */
 
 .ab-flow__grid {
@@ -224,12 +235,46 @@
 /* --- the two orientations, from 768px ------------------------------------ */
 
 @media (min-width: 768px) {
-  /* A descent: centred, narrower than the container, nodes centred under it. */
+  /* ── A DESCENT: CENTRED ON THE COLUMN IT LIVES IN ────────────────────────
+     The chain is a CHILD of the right-hand column (§08 — see the component for
+     why the placement is decided by the direction), so there is nothing left to
+     centre the box itself against. What this rule does is centre the chain's
+     CONTENTS on that column's axis, which is the whole point of a spine.
+
+     It used to be `max-width: 42rem; margin-inline: auto` as well, because the
+     chain was a sibling of the head grid and had to be narrowed and centred
+     inside the 1216px container. That is exactly what produced the defect 松霖
+     reported: the container's centre is 720, and on a two-column head 720 is
+     inside the gutter between the heading (112..595) and the paragraph
+     (732..1328) — so the six labels and the arrow between each pair descended
+     through the gap, belonging to neither column. The 42rem cap is now inert
+     (the column is 596px at 1440) and `auto` would centre against the wrong
+     box, so both are gone.
+
+     Spacing: the body cell's own 16px gap sits above the chain and it reads as
+     a continuation of the paragraph, so the base rule's `clamp(48px, 5vw, 64px)`
+     was over-large here. var(--sp-6) is the value that was prototyped and
+     picked against five other arrangements. */
   .ab-flow--vertical .ab-flow__chain {
-    max-width: 42rem;
-    margin-inline: auto;
+    margin-block-start: var(--sp-6);
     justify-items: center;
     text-align: center;
+  }
+
+  /* ── AND CENTRED AT BOTH LEVELS, OR THE SPINE IS A STAIRCASE ─────────────
+     The rule above centres each <li> inside the chain; it does NOT centre what
+     is inside one. `.ab-flow__node` is a grid of its own and keeps the base
+     `justify-items: start` at the top of this file, so the mark sat on its own
+     <li>'s left edge — and because every <li> is only as wide as its own label,
+     six labels produced five differently-placed marks. Measured before the fix:
+     label centres all 720, mark centres 632.8 / 636.1 / 679.9 / 680.1 / 680.6.
+
+     Centring the li and its contents are two different things and the spine
+     needs both: the li is centred by the chain, the mark and the label are
+     centred here. Only then do all six labels AND all five marks share one
+     axis, which is what "a descent reads as a spine" actually requires. */
+  .ab-flow--vertical .ab-flow__node {
+    justify-items: center;
   }
 
   /* A correspondence: N equal columns, each reading left to right. */
