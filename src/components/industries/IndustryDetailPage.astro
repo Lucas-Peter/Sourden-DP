@@ -1,0 +1,277 @@
+---
+/**
+ * IndustryDetailPage — the shell for every `/industries/<slug>` category page
+ * ---------------------------------------------------------------------------
+ * One shell, nine pages. It owns the document, the stylesheets, the structured
+ * data and the section order; the page's words come in as `page`, a data object
+ * from `src/data/industry-<slug>.js`, and the architecture of that object is
+ * documented in `src/data/industry-detail.js`.
+ *
+ * ── WHY THE SHELL OWNS THE STYLESHEETS ────────────────────────────────────
+ * Same reason `ServiceDetailPage` and `ReservationPage` do: a page that renders
+ * this shell cannot forget to import its CSS, and the import order (layout →
+ * shared devices → industry devices → this route's own sheet) is stated in
+ * exactly one place. Getting that order wrong makes these rules lose every
+ * same-specificity conflict against the shared core, silently — `npm run audit`
+ * fails the build if it regresses.
+ *
+ * ── WHY IT IMPORTS THE SERVICES SHEETS ────────────────────────────────────
+ * The hero, the dense check-list, the review grid, the numbered rail and the
+ * FAQ are the SAME devices the services pages render — the file names say
+ * "services" because the services pages were those devices' first consumer.
+ * The brief for these pages says to "use the existing website template, shared
+ * header, footer, typography, spacing, components, buttons, responsive
+ * behavior, and visual system" and not to create a second visual language, so
+ * these are imported rather than re-implemented. `industries.css` supplies the
+ * two devices the hub already owns (`.ind-rows`, `.ind-sequence`), and
+ * `industry-detail.css` carries the one device these pages add.
+ *
+ * ── WHY A SECTION DISPATCHER ──────────────────────────────────────────────
+ * The nine pages have the same section vocabulary in the same order with
+ * different content — that is the brief's own requirement ("the same overall
+ * content architecture … the actual content must be customized"). A dispatcher
+ * means page two is a data file and one line in `industryDetailPages`: no new
+ * markup, no new CSS, and no chance that one category quietly sizes its h2
+ * differently from the next.
+ *
+ * ── WHAT THIS SHELL DOES NOT DO ───────────────────────────────────────────
+ *   · It does not add a claim. Every string it renders comes from the page data
+ *     file, which is under the claims rule in `industry-detail.js`.
+ *   · It does not emit a `Product` node, a price, a rating, an availability or
+ *     a review for anything. The category is not a product and these pages are
+ *     informational, not transactional — see the brief's "Do NOT add product
+ *     prices, shopping carts, checkout, or product listings requiring live
+ *     inventory".
+ *   · It does not touch the header, the footer or any shared device. A category
+ *     page is an extension of `/industries`, not a new design.
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
+import '../../styles/service-detail.css';
+import '../../styles/industries.css';
+import '../../styles/industry-detail.css';
+
+import FinalCTA from '../FinalCTA.astro';
+import IndustryNav from './IndustryNav.astro';
+import IndustryRows from './IndustryRows.astro';
+import IndustrySequence from './IndustrySequence.astro';
+import ServicesFaq from '../services/ServicesFaq.astro';
+import ServicesHero from '../services/ServicesHero.astro';
+import ServiceCheckList from '../services/ServiceCheckList.astro';
+import ServiceProcess from '../services/ServiceProcess.astro';
+import ServiceReviewGrid from '../services/ServiceReviewGrid.astro';
+
+import {
+  industryBreadcrumbs,
+  industryNavFor,
+  primaryCta,
+  relatedServices,
+  secondaryCta,
+} from '../../data/industry-detail.js';
+import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+
+interface Props {
+  /** The whole page, from `src/data/industry-<slug>.js`. */
+  page: {
+    slug: string;
+    meta: { title: string; description: string };
+    hero: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      image: { key: string; caption: string };
+    };
+    sections: Array<Record<string, any>>;
+    finalCta: { eyebrow: string; title: string; description: string };
+  };
+}
+
+const { page } = Astro.props;
+
+const path = `/industries/${page.slug}`;
+
+/**
+ * The breadcrumb trail is built once and used twice — by the visible
+ * <Breadcrumbs> inside <ServicesHero> and by `breadcrumbItems()` for the
+ * BreadcrumbList node — so the trail a visitor sees and the trail Google reads
+ * cannot disagree. The "Industries" crumb comes from the registry helper, never
+ * typed here.
+ */
+const breadcrumbs = industryBreadcrumbs(page.slug);
+
+/**
+ * One graph for the page: the page itself, its breadcrumb, and a Service node
+ * for each of the five services the Related Services band links to.
+ *
+ * The Service nodes are built from the same merged records that band renders,
+ * so a structured-data claim can never describe a service the page does not
+ * show. `/industries` declares the same five nodes the same way.
+ *
+ * There is deliberately no FAQPage node: the site has no such builder and no
+ * page emits one yet, and adding a second structured-data shape on nine pages
+ * at once is a change to make deliberately, not as a side effect of writing
+ * these pages. The FAQ markup itself is plain `<details>`, so the answers are
+ * in the served HTML either way.
+ */
+const schema = [
+  webPageSchema({ title: page.meta.title, description: page.meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  ...relatedServices.map((service) =>
+    serviceSchema({ name: service.title, description: service.description, href: service.href })
+  ),
+];
+
+/**
+ * Every section needs a unique id for `aria-labelledby`. Derived from the index
+ * rather than written by hand, so inserting a section cannot produce a duplicate
+ * id. Prefixed with the slug as well as the index, because all nine pages are
+ * built into one route and an id is only unique within its own document.
+ */
+const sectionId = (index) => `id-${page.slug}-${String(index + 1).padStart(2, '0')}`;
+---
+
+<BaseLayout
+  title={page.meta.title}
+  description={page.meta.description}
+  path={path}
+  schema={schema}
+>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={page.hero.eyebrow}
+    title={page.hero.title}
+    description={page.hero.description}
+    primaryCta={primaryCta}
+    secondaryCta={secondaryCta}
+    imageKey={page.hero.image.key}
+    imageCaption={page.hero.image.caption}
+    titleId={`id-${page.slug}-hero`}
+  />
+
+  {
+    page.sections.map((section, index) => {
+      const titleId = sectionId(index);
+
+      switch (section.type) {
+        case 'checkList':
+          return (
+            <ServiceCheckList
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              tone={section.tone}
+              foot={section.foot}
+              titleId={titleId}
+            />
+          );
+
+        case 'reviewGrid':
+          return (
+            <ServiceReviewGrid
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'sequence':
+          return (
+            <IndustrySequence
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              steps={section.steps}
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'process':
+          /* The rail always owns the ink band. Its stages are numbered from the
+             array order by the component itself, and it lays out one column per
+             stage — the brief's process has six where every other rail on the
+             site has five.
+             `ind-process` is the class `/industries` §10 passes for the same
+             reason: `.ind-process .sv-stage__verb` reserves the second line a
+             wrapped stage label needs, so the six descriptions that follow keep
+             one shared top edge. Without it the six labels measure 33px and
+             17px and the whole band staircases. */
+          return (
+            <ServiceProcess
+              class="ind-process"
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              steps={section.steps}
+              note={section.note}
+              foot={section.foot}
+              titleId={titleId}
+            />
+          );
+
+        case 'rows':
+          /* The same device `/industries` §11 uses for the five services. */
+          return (
+            <IndustryRows
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              numbered
+              foot={section.foot}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'nav':
+          /* The nine categories, from the registry — a page never passes a
+             category name of its own. Only this page's own slug is read. */
+          return (
+            <IndustryNav
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={industryNavFor(page.slug)}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'faq':
+          return (
+            <ServicesFaq
+              eyebrow={section.eyebrow}
+              title={section.title}
+              items={section.items}
+              titleId={titleId}
+            />
+          );
+
+        default:
+          /* A typo in a `type` string must not render nothing and pass the
+             build — the section would simply vanish from the page. */
+          throw new Error(
+            `[IndustryDetailPage] Unknown section type "${section.type}" at index ${index} ` +
+              `of ${page.slug}. See the section vocabulary in src/data/industry-detail.js.`
+          );
+      }
+    })
+  }
+
+  <FinalCTA
+    eyebrow={page.finalCta.eyebrow}
+    title={page.finalCta.title}
+    description={page.finalCta.description}
+    cta={primaryCta}
+  />
+</BaseLayout>
