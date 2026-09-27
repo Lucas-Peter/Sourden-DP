@@ -17,10 +17,10 @@
  *   reappears in the sitemap. Nothing else needs editing.
  *
  *   Done so far: /sourcing-request, /services, the five `/services/<slug>`
- *   detail pages, /industries and /how-it-works. Their copy lives in
+ *   detail pages, /industries, /how-it-works and /about. Their copy lives in
  *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js`,
- *   `industries-page.js` and `how-it-works-page.js` respectively, and all of
- *   those routes are indexable.
+ *   `industries-page.js`, `how-it-works-page.js` and `about-page.js`
+ *   respectively, and all of those routes are indexable.
  *
  *   The five `/services/<slug>` detail pages moved out of `detailRoutePaths` by
  *   being added to `detailPages` in `service-detail.js` — the route registry
@@ -65,23 +65,6 @@ export const reservationNotice = {
 
 /** @type {ReservationPage[]} */
 export const reservedTopLevel = [
-  {
-    path: '/about',
-    label: 'About',
-    seoTitle: 'About Sourden | China Sourcing. Done.',
-    seoDescription:
-      'Sourden is a China sourcing and procurement service for small wholesalers, independent retailers, local shops and growing brands.',
-    eyebrow: 'ABOUT',
-    h1: 'Sourcing without the barriers.',
-    summary:
-      'Sourden helps businesses source products from China without needing a large purchasing team, huge order volumes or years of experience in the market.',
-    planned: [
-      'How Sourden works and who it is built for',
-      'How suppliers are researched, contacted and assessed',
-      'What we will and will not take on',
-      'How to start, and what the first request looks like',
-    ],
-  },
   {
     path: '/insights',
     label: 'Insights',
