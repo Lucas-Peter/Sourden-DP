@@ -1,0 +1,81 @@
+---
+/**
+ * FaqCategories — the in-page category navigation on /faq  (FAQ brief §3)
+ * ---------------------------------------------------------------------------
+ * "Immediately below the introduction, provide a simple category navigation …
+ * Each category should link/scroll to its corresponding FAQ section."
+ *
+ * ── WHY IT IS ANCHORS AND NOT A FILTER ────────────────────────────────────
+ * Every one of the thirty-three answers is already in the served HTML — the
+ * page is native <details> and nothing is fetched or hidden. So there is
+ * nothing for a filter to reveal: a filter would either duplicate markup or add
+ * a script whose only job is to hide content that was already there, and the
+ * page-specific script budget for this page is zero. Plain fragment links give
+ * every category a real, shareable URL, work with JavaScript disabled, and are
+ * reachable in order by keyboard.
+ *
+ * ── WHY IT IS A <section> CONTAINING A <nav> ──────────────────────────────
+ * This band is a page band like any other: it has a ground, it sits in the
+ * page's tone rhythm, and it occupies a slot in the section sequence — which is
+ * how `<IndustryNav>` is built and how every other band on the site is built,
+ * so `main > section` remains the honest way to enumerate "the bands of this
+ * page". The `<nav>` inside carries the landmark, so the links are announced as
+ * navigation rather than as a list of unrelated links.
+ *
+ * ── WHY IT IS NOT A HEADING ───────────────────────────────────────────────
+ * The brief calls this a navigation, not a section, and the page's outline
+ * should read hero → seven categories → custom sourcing → closing band. A
+ * heading here would insert an outline entry between the hero and the first
+ * category that describes no content of its own. The visible label is an
+ * `.eyebrow` — the core class, not a second label treatment — and it names the
+ * <nav> through `aria-labelledby`.
+ *
+ * ── MOBILE ────────────────────────────────────────────────────────────────
+ * The brief allows "a horizontally scrollable category navigation or compact
+ * list". It is one row that scrolls sideways below 768px and wraps into rows
+ * above it — see `faq.css`. Every chip is at least 44px tall at every width,
+ * because a scrolling row of small text links is exactly where tap targets get
+ * missed.
+ *
+ * ── TWO ENTRIES CAN POINT AT THE SAME ANCHOR ─────────────────────────────
+ * The brief lists nine categories and writes seven category sections; "Custom
+ * Products" points at §12's block and "Individual Buyers" points at Getting
+ * Started, where its only answer (Q05) actually lives. The device does not
+ * deduplicate — the brief's list is preserved as written, and `fq-geo` asserts
+ * that every anchor resolves and that this one duplicate is the only one.
+ * ---------------------------------------------------------------------------
+ */
+
+interface Props {
+  items: Array<{ label: string; href: string }>;
+  /** Visible label above the row. 〔added〕 — the brief asks for a navigation
+   *  but names no label for it; core `.eyebrow` supplies the treatment. */
+  label: string;
+  /** Section ground — the page declares it, as every other band does. */
+  tone: 'ivory' | 'white';
+  /** Id the visible label carries, referenced by the <nav>. */
+  labelId?: string;
+}
+
+const { items, label, tone, labelId = 'fq-cats-label' } = Astro.props;
+---
+
+<section class={`section section--${tone} fq-cats`} aria-label="FAQ categories">
+  <div class="container">
+    <p class="eyebrow fq-cats__label" id={labelId}>{label}</p>
+
+    <nav aria-labelledby={labelId}>
+      <ul class="fq-cats__list">
+        {
+          items.map((item) => (
+            <li class="fq-cats__item">
+              <a class="fq-cats__link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</section>
