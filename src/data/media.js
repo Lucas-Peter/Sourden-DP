@@ -304,6 +304,42 @@ export const images = {
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
 
+  /* ----------------------------------------------------------------- faq -- */
+  /* `/faq` hero — the page's only image.
+   *
+   * The FAQ brief (§2) specifies the eyebrow, the H1, the supporting paragraph
+   * and two actions, and names NO image. The hero device every other page uses
+   * carries one, so the choice was a hero without an image — which would be a
+   * second hero design — or this slot. Same 1600 × 1200 / 4:3 as every other
+   * hero, so it shares the frame without a second crop rule.
+   *
+   * WHAT IT MUST NOT BE. An FAQ page is the easiest place on the site to reach
+   * for a symbol: a question mark, a speech bubble, a glowing lightbulb, a
+   * headset, a person on a phone, a neat row of icons. The brief asks for a
+   * "professional sourcing company's practical knowledge base", and every one
+   * of those would make the page look like a support desk. The subject is
+   * therefore the WORK the questions are about — the same documentary register
+   * as the rest of the site.
+   *
+   * The questions this page answers are mostly about choosing between options
+   * (Q10/Q11 supplier research and comparison, Q12 verification, Q16/Q17
+   * samples and inspection), so the frame that matches the content is a
+   * comparison in progress rather than a generic factory shot. */
+  faqHero: {
+    file: 'faq-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'FAQ',
+    alt: 'Placeholder for a documentary photograph of supplier options and product samples being compared against a specification on a work surface.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'One documentary frame of a sourcing decision being worked through by hand: several suppliers\u2019 samples or units of the same product laid out together for comparison, samples checked against a printed specification or requirement sheet, quotations or documents worked through beside the goods they describe, or a pre-shipment inspection in progress. Two or three real objects being compared reads better than one polished product. Banned: question marks, speech bubbles, lightbulbs, headsets, call-centre or customer-support imagery, icon grids, and the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom, artificially perfect AI factory floors).',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters. Where several items are being compared, keep them all inside that middle band — a comparison cropped down to one item loses the point of the frame.',
+  },
+
   /* ---------------------------------------------------------- industries -- */
   /* `/industries` hero — the one image on the Industries overview page.
    *
