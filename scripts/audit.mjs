@@ -277,6 +277,8 @@ const PAGE_SHEETS = [
   'industry-detail.css',
   'how-it-works.css',
   'about.css',
+  'faq.css',
+  'legal.css',
 ];
 
 /** Rough selector extraction — comments stripped, at-rules skipped, lists split. */
@@ -314,6 +316,94 @@ if (existsSync(STYLE_DIR)) {
         `${collisions.length} selector(s) also defined in the shared core — the winning rule would ` +
           `depend on CSS chunk order, which Astro does not guarantee. Use a modifier class or move the ` +
           `rule into components.css → ${collisions.slice(0, 6).join(', ')}`
+      );
+    }
+  }
+}
+
+/**
+ * 8. A page that renders a shared device must SHIP that device's stylesheet.
+ * ---------------------------------------------------------------------------
+ * The defect this exists for shipped on 2026-09-27. `/faq` renders
+ * `ServiceProse` — the shared §12 prose block — but its frontmatter imported
+ * `services-shared.css` and `faq.css` and forgot `service-detail.css`, the sheet
+ * that actually defines the `.sd-prose*` rules. The build stayed green, the
+ * markup was byte-perfect, the heading and the copy and the links were all
+ * correct, and the only symptom was that the block fell back to `display: block`:
+ * one 1216px paragraph at an uncapped measure where a two-column editorial split
+ * belongs. Nothing in the audit looked at this, because `PAGE_SHEETS` above only
+ * checks the opposite direction (a page sheet must not redefine a core selector).
+ *
+ * ⚠ WHY THIS IS WRITTEN IN TERMS OF CLASS FAMILIES, NOT CLASS NAMES.
+ * A first version collected each sheet's BARE single-class selectors
+ * (`.sd-prose`, `.sv-faq`, …) and required a page using one to ship its sheet.
+ * That version passed on the very page it was written for — because
+ * `service-detail.css` does NOT define a bare `.sd-prose` at all. All five of its
+ * rules hang off `.sd-prose__grid`, `.sd-prose__body`, `.sd-prose__para`,
+ * `.sd-prose__emphasis` and `.sd-prose__foot`; `sd-prose` on the <section> is
+ * only a namespace marker that no rule ever mentions. So the rule had NO SUBJECT
+ * on that page and passed vacuously — the same "measured but asserted on an
+ * empty set" failure this codebase has been bitten by before. A guard must be
+ * made to fail on purpose once, or it is not known to be a guard.
+ *
+ * So the unit is the FAMILY: the part before `__` or `--`. `.sd-prose__grid`
+ * belongs to the family `sd-prose`. A page that uses ANY class in a family must
+ * ship CSS that defines that family. The family → sheet map is many-to-many,
+ * because a sheet may legitimately reference another's class (the industries
+ * rail adjusts `.sv-stage__verb`), and one owner being absent must not fail a
+ * page that ships the other.
+ */
+if (existsSync(STYLE_DIR)) {
+  const FAMILY = (cls) => cls.split('__')[0].split('--')[0];
+  const familySheets = new Map();
+  for (const sheet of PAGE_SHEETS) {
+    const path = join(STYLE_DIR, sheet);
+    if (!existsSync(path)) continue;
+    for (const selector of extractSelectors(readFileSync(path, 'utf8'))) {
+      for (const token of selector.matchAll(/\.([A-Za-z][A-Za-z0-9_-]*)/g)) {
+        const family = FAMILY(token[1]);
+        if (!familySheets.has(family)) familySheets.set(family, new Set());
+        familySheets.get(family).add(sheet);
+      }
+    }
+  }
+
+  for (const file of htmlFiles) {
+    const html = readFileSync(file, 'utf8');
+    const page = relative(DIST, file).replace(/\\/g, '/');
+
+    /* Everything the page ships: its linked stylesheets plus any inlined block. */
+    const shipped = [];
+    for (const link of html.matchAll(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/g)) {
+      const cssPath = resolveUrl(link[1]);
+      if (cssPath) shipped.push(readFileSync(cssPath, 'utf8'));
+    }
+    for (const style of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) shipped.push(style[1]);
+    const shippedCss = shipped.join('\n');
+
+    const usedFamilies = new Set();
+    for (const attr of html.matchAll(/class="([^"]*)"/g)) {
+      for (const name of attr[1].split(/\s+/)) {
+        if (!name || !familySheets.has(FAMILY(name))) continue;
+        usedFamilies.add(FAMILY(name));
+      }
+    }
+
+    /* Present means "a rule for this family is shipped", so a match on
+       `.sd-prose__grid` counts for `sd-prose` — hence the negative lookahead for
+       a following alphanumeric, and NOT for `_`/`-`. */
+    const missing = [...usedFamilies].filter(
+      (family) => !new RegExp(`\\.${family.replace(/-/g, '\\-')}(?![A-Za-z0-9])`).test(shippedCss)
+    );
+
+    if (missing.length > 0) {
+      fail(
+        page,
+        `uses ${missing.length} shared-device class famil${missing.length === 1 ? 'y' : 'ies'} whose ` +
+          `stylesheet it does not import → ${missing
+            .slice(0, 6)
+            .map((f) => `${f} (styles/${[...familySheets.get(f)].join(' | ')})`)
+            .join(', ')}`
       );
     }
   }
