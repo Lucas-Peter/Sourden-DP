@@ -45,6 +45,20 @@ interface Props {
   /** The page's single H1. */
   title: string;
   description: string;
+  /**
+   * Optional brand line under the description.
+   *
+   * Added for `/about`, whose brief (§01) lists a "Secondary line" separate
+   * from the hero paragraph and specifies it as the site tagline. It is
+   * optional and unrendered by default, so every existing consumer — the five
+   * detail pages and `/how-it-works` — emits byte-identical markup and gains
+   * no empty element.
+   *
+   * Only `/about` passes it today, and the value it passes is `site.tagline`,
+   * not a typed string, so the hero and the footer's copy of the same line can
+   * never disagree.
+   */
+  tagline?: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   /** Key from the image manifest in src/data/media.js — unknown keys throw. */
@@ -59,6 +73,7 @@ const {
   eyebrow,
   title,
   description,
+  tagline,
   primaryCta,
   secondaryCta,
   imageKey,
@@ -78,6 +93,8 @@ const {
         <h1 class="sv-hero__title" id={titleId}>{title}</h1>
 
         <p class="sv-hero__lead">{description}</p>
+
+        {tagline && <p class="sv-hero__tagline">{tagline}</p>}
 
         <div class="sv-hero__actions">
           <Button href={primaryCta.href} label={primaryCta.label} />
