@@ -17,18 +17,18 @@
  *   reappears in the sitemap. Nothing else needs editing.
  *
  *   Done so far: /sourcing-request, /services, the five `/services/<slug>`
- *   detail pages, /industries, /how-it-works and /about. Their copy lives in
- *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js`,
- *   `industries-page.js`, `how-it-works-page.js` and `about-page.js`
+ *   detail pages, /industries, the nine `/industries/<slug>` category pages,
+ *   /how-it-works and /about. Their copy lives in `src/data/sourcing-request.js`,
+ *   `services-page.js`, `service-<slug>.js`, `industries-page.js`,
+ *   `industry-<slug>.js`, `how-it-works-page.js` and `about-page.js`
  *   respectively, and all of those routes are indexable.
  *
  *   The five `/services/<slug>` detail pages moved out of `detailRoutePaths` by
- *   being added to `detailPages` in `service-detail.js` — the route registry
- *   reads `builtDetailPaths` from there rather than keeping a second list, so
- *   publishing a page is one line, not two edits. The same subtraction is
- *   available to the nine `/industries/<slug>` category pages when they are
- *   written: they currently render the reservation shell and carry `noindex`,
- *   which is correct while they have nothing substantial to offer.
+ *   being added to `detailPages` in `service-detail.js`, and the nine
+ *   `/industries/<slug>` category pages by being added to `industryDetailPages`
+ *   in `industry-detail.js` — the route registry reads the built paths from
+ *   those registries rather than keeping a second list, so publishing a page is
+ *   one line, not two edits.
  *
  *   A slug that is in no registry still resolves, still has every link to it
  *   live, and still carries `noindex` until its copy exists.
@@ -43,6 +43,7 @@ import { industries } from './industries.js';
 import { allCaseStudies } from './caseStudies.js';
 import { allArticles } from './insights.js';
 import { builtDetailPaths } from './service-detail.js';
+import { builtIndustryPaths } from './industry-detail.js';
 
 /** Page copy shared by every reservation page. */
 export const reservationNotice = {
@@ -174,15 +175,18 @@ export const detailRoutePaths = [
   /**
    * A detail page that has actually been written is a real, indexable page, so
    * it is subtracted here and re-enters sitemap.xml. `builtDetailPaths` is
-   * derived from the page registry in `service-detail.js` — the same registry
-   * `src/pages/services/[slug].astro` uses to decide whether to render the real
+   * derived from the page registry in `service-detail.js` and
+   * `builtIndustryPaths` from the one in `industry-detail.js` — the same
+   * registries their `[slug]` routes use to decide whether to render the real
    * page or the reservation shell — so the two can never disagree.
    *
    * This is the subtraction that is easy to forget, and forgetting it fails
    * quietly: the page renders, every internal link to it works, and it is simply
    * absent from search.
    */
-].filter((path) => !builtDetailPaths.includes(path));
+]
+  .filter((path) => !builtDetailPaths.includes(path))
+  .filter((path) => !builtIndustryPaths.includes(path));
 
 export const noindexPaths = [
   '/404',

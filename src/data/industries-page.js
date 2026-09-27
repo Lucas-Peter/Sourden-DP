@@ -52,7 +52,7 @@
  */
 
 import { industries } from './industries.js';
-import { services } from './services.js';
+import { relatedServices } from './industry-links.js';
 import { primaryCta } from './site.js';
 
 export const slug = 'industries';
@@ -296,40 +296,24 @@ export const categories = industries.map((category) => ({
 /* ===========================================================================
    11 — RELATED SERVICES
    ---------------------------------------------------------------------------
-   Same merging rule: the registry supplies number, title and href; this map
+   Same merging rule: the registry supplies number, title and href; a map
    supplies the one sentence the brief writes for each. Service 03 is published
    as "Purchasing Management" (renamed from "Purchasing & Order Management"),
    so the link label comes from the registry and reads "Purchasing Management" —
    see the note in `services.js`.
+
+   The record itself now lives in `industry-links.js`, because the nine
+   `/industries/<slug>` category pages render this same band (§13 of their own
+   brief) with the same five sentences. Declared there and re-exported here, so
+   §11 and the nine category pages can never show two descriptions of one
+   service. Nothing about this page's output changed when it moved — the merged
+   record is field-for-field the same, and the build is byte-identical.
    =========================================================================== */
 
-const serviceBlurbs = {
-  'product-sourcing': 'Find suitable products and suppliers based on your requirements.',
-  'supplier-verification': 'Evaluate supplier fit before moving forward.',
-  'purchasing-order-management':
-    'Coordinate purchasing, supplier communication and production progress.',
-  'quality-control': 'Check agreed product requirements before shipment.',
-  'shipping-from-china': 'Coordinate the movement of goods from China to their destination.',
-};
-
-/** @param {string} slug */
-function requireBlurb(slug) {
-  const blurb = serviceBlurbs[slug];
-  if (!blurb) {
-    throw new Error(
-      `[industries-page.js] No description for the service "${slug}". ` +
-        `The related-services section is merged from services.js — add its sentence here.`
-    );
-  }
-  return blurb;
-}
-
-export const relatedServices = services.map((service) => ({
-  number: service.number,
-  title: service.title,
-  href: service.href,
-  description: requireBlurb(service.slug),
-}));
+/** Imported above AND re-exported: §11 below reads the binding locally, and the
+ *  page shell imports it by name. A bare `export ... from` would hand out the
+ *  record without creating the local binding §11 needs. */
+export { relatedServices };
 
 /* ===========================================================================
    SECTIONS — in render order (brief §02 … §11)
