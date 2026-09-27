@@ -50,6 +50,19 @@ interface Props {
   paragraphs: string[];
   /** The growth path, in order. Rendered uppercase by the stylesheet. */
   progression: string[];
+  /**
+   * Body paragraphs that belong AFTER the path.
+   *
+   * Added for `/about` §05, whose brief puts a "Supporting copy" block of two
+   * paragraphs below the progression — while its opening paragraph sits above
+   * it. `paragraphs` renders before the path and `emphasis` is a single brass
+   * line, so neither slot could hold two ordinary paragraphs in the position
+   * the brief gives them.
+   *
+   * Optional and unrendered by default: `/how-it-works` §12, this component's
+   * only other consumer, passes nothing and emits byte-identical markup.
+   */
+  closingParagraphs?: string[];
   /** The qualifier that belongs to the section but is not body copy. */
   emphasis?: string;
   /** Closing link. */
@@ -58,7 +71,17 @@ interface Props {
   titleId: string;
 }
 
-const { eyebrow, title, paragraphs, progression, emphasis, foot, tone, titleId } = Astro.props;
+const {
+  eyebrow,
+  title,
+  paragraphs,
+  progression,
+  closingParagraphs,
+  emphasis,
+  foot,
+  tone,
+  titleId,
+} = Astro.props;
 
 const lastIndex = progression.length - 1;
 ---
@@ -100,6 +123,16 @@ const lastIndex = progression.length - 1;
         ))
       }
     </ol>
+
+    {
+      closingParagraphs && closingParagraphs.length > 0 && (
+        <div class="hi-growth__closing">
+          {closingParagraphs.map((paragraph) => (
+            <p class="hi-growth__para">{paragraph}</p>
+          ))}
+        </div>
+      )
+    }
 
     {emphasis && <p class="hi-growth__emphasis">{emphasis}</p>}
 

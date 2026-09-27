@@ -55,12 +55,27 @@ interface Props {
   }>;
   /** Render the number column. */
   numbered?: boolean;
+  /**
+   * Optional closing sentence, rendered under the list as a `.sd-note`.
+   *
+   * Added for `/about` §09, whose brief ends the section with one line that
+   * summarises it ("Clear information is more useful than false certainty.").
+   * Without this slot that sentence had nowhere to go and was silently
+   * dropped — the same class of loss as a section that forgets its caveat.
+   *
+   * Optional and unrendered by default, so this component's existing consumers
+   * — `/how-it-works` §10 and §14 — emit exactly the same markup they did
+   * before. Uses the shared `.sd-note` treatment rather than a new one, which
+   * is what every other device on this page does for the same kind of line.
+   */
+  note?: string;
   foot?: { label: string; href: string };
   tone: 'ivory' | 'white';
   titleId: string;
 }
 
-const { eyebrow, title, description, items, numbered = false, foot, tone, titleId } = Astro.props;
+const { eyebrow, title, description, items, numbered = false, note, foot, tone, titleId } =
+  Astro.props;
 
 /* Fail the build rather than emit nested anchors. */
 items.forEach((item, index) => {
@@ -132,6 +147,8 @@ const classes = `section section--${tone} hi-rows ${numbered ? 'hi-rows--numbere
         })
       }
     </ul>
+
+    {note && <p class="sd-note hi-rows__note">{note}</p>}
 
     {
       foot && (

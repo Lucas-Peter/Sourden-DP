@@ -43,6 +43,21 @@ interface Props {
   eyebrow?: string;
   title: string;
   description?: string;
+  /**
+   * Further body paragraphs, rendered with `description` above the list.
+   *
+   * Added for `/about` §06, whose brief puts TWO copy lines before the five
+   * stages — the position claim and the MOQ qualifier that keeps it true. The
+   * first goes in `description` (the section's opening sentence) and the rest
+   * here.
+   *
+   * Optional and unrendered by default, so this page's two existing consumers
+   * — `/how-it-works` §06 and §11 — emit exactly the same lead group they did
+   * before. It reuses `<SectionHeader>`'s own `lead` array rather than adding
+   * a second paragraph style, because that component already renders several
+   * lead paragraphs as one group.
+   */
+  paragraphs?: string[];
   items: Array<{ label: string; description: string }>;
   /** Render the number column. Numbers derive from array order, never typed. */
   numbered?: boolean;
@@ -53,17 +68,31 @@ interface Props {
   titleId: string;
 }
 
-const { eyebrow, title, description, items, numbered = false, note, foot, tone, titleId } =
-  Astro.props;
+const {
+  eyebrow,
+  title,
+  description,
+  paragraphs,
+  items,
+  numbered = false,
+  note,
+  foot,
+  tone,
+  titleId,
+} = Astro.props;
 
 const classes = `section section--${tone} hi-stages ${numbered ? 'hi-stages--numbered' : ''}`.trim();
+
+/** `description` first, then any extra paragraphs. `undefined` when there are
+ *  none, which is what keeps the lead group absent rather than empty. */
+const lead = [description, ...(paragraphs ?? [])].filter(Boolean);
 ---
 
 <section class={classes} aria-labelledby={titleId}>
   <div class="container">
     <div class="hi-stages__grid">
       <div class="hi-stages__head">
-        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} />
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={lead.length ? lead : undefined} />
       </div>
 
       <ol class="hi-stages__list">
