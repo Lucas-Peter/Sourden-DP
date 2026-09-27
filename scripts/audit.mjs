@@ -274,6 +274,7 @@ const PAGE_SHEETS = [
   'services.css',
   'service-detail.css',
   'industries.css',
+  'industry-detail.css',
   'how-it-works.css',
   'about.css',
 ];
