@@ -1,31 +1,84 @@
 ---
 /**
- * RESERVED DETAIL ROUTE — /industries/[slug]
+ * DETAIL ROUTE — /industries/[slug]
  * ---------------------------------------------------------------------------
- * Generated from the shared data files, so adding a service, category, article
- * or case study creates its route automatically — no new page file needed.
+ * Generated from the shared data files, so adding a category creates its route
+ * automatically — no new page file needed.
  *
- * One page file therefore covers every child route in this group, and they all
- * render the same reservation shell until real content is written.
+ * TWO KINDS OF PAGE, ONE ROUTE
+ *   A slug with a written page renders it (`IndustryDetailPage`); a slug
+ *   without one renders the reservation shell (`ReservationPage`). The branch is
+ *   driven by `industryPageFor()`, so building a page for real is: write its
+ *   data file, add it to `industryDetailPages` in `src/data/industry-detail.js`,
+ *   and let the path be subtracted from `detailRoutePaths` — which that
+ *   registry's `builtIndustryPaths` does automatically, so the noindex entry and
+ *   the sitemap entry can never disagree.
  *
- * TO BUILD A DETAIL PAGE FOR REAL
- * Replace <ReservationPage /> with the real sections and remove the
- * corresponding entries from `detailRoutePaths` in `src/data/routes.js`
- * so the URLs re-enter sitemap.xml.
+ *   As of the nine-category brief all nine slugs have a page file, so the
+ *   reservation branch now only guards a future tenth category. It is kept
+ *   rather than deleted for exactly that reason: the routes were published
+ *   before the content existed and every link to them is live, so a category
+ *   added to `industries.js` must resolve to something real the moment it is
+ *   added.
+ *
+ * WHY NOT ONE FILE PER CATEGORY
+ *   A static `src/pages/industries/<slug>.astro` would also work, but then the
+ *   route list lives in two places (the file system and the data registry) and
+ *   the reservation fallback has to be duplicated for every category still to
+ *   be written. One route, two branches, one registry — the same architecture
+ *   `src/pages/services/[slug].astro` uses.
+ *
+ * THE COST OF ONE ROUTE FOR TWO BRANCHES — a stated trade-off, not an oversight
+ *   Because both shells are imported statically, Astro links BOTH branches'
+ *   stylesheets on EVERY `/industries/<slug>` page, so a built category page
+ *   ships `inner-pages.css` (the reservation shell's sheet) without using it.
+ *   That is ~1 KB gzipped of CSS the visitor has almost certainly downloaded
+ *   already — `inner-pages.css` is also the sheet for `/industries`,
+ *   `/insights` and `/case-studies`. The alternative is the same path in two
+ *   route tables, where Astro's static-over-dynamic precedence would decide the
+ *   winner silently. The trade-off is the same one the services route already
+ *   documents and accepts.
+ *
+ *   SECOND, SMALLER COST, MEASURED: because these pages import the same shared
+ *   sheets as `/industries`, `/industries.html` links to differently-named CSS
+ *   chunks than it did before these routes existed — the bundler recomputes
+ *   which modules go in which chunk once a sheet has two entry points. The page's
+ *   markup is byte-identical once those hrefs are normalised; only the asset
+ *   file names change. Nothing to fix, worth knowing before diffing a build.
+ *
+ * INDEXABILITY
+ *   The reservation branch is `noindex` and absent from sitemap.xml. A built
+ *   page is indexable — its path is subtracted from `detailRoutePaths` in
+ *   `src/data/routes.js`, which is what drives both the `<meta name="robots">`
+ *   split and the sitemap filter. Forgetting that subtraction leaves a finished,
+ *   content-rich page excluded from search; `npm run check` cross-checks the two
+ *   signals and fails the build if a page is noindex but listed, or indexable
+ *   but absent.
  * ---------------------------------------------------------------------------
  */
 import ReservationPage from '../../components/ReservationPage.astro';
+import IndustryDetailPage from '../../components/industries/IndustryDetailPage.astro';
 
+import { industryPageFor } from '../../data/industry-detail.js';
 import { detailRouteGroups, reservationForDetail } from '../../data/routes.js';
 
 export function getStaticPaths() {
-  return detailRouteGroups['industries'].map((entry) => ({
-    params: { slug: entry.slug },
-    props: { page: reservationForDetail(entry.kind, entry.item, entry.parent) },
-  }));
+  return detailRouteGroups['industries'].map((entry) => {
+    const detail = industryPageFor(entry.slug);
+
+    return {
+      params: { slug: entry.slug },
+      props: detail
+        ? { detail }
+        : {
+            detail: null,
+            page: reservationForDetail(entry.kind, entry.item, entry.parent),
+          },
+    };
+  });
 }
 
-const { page } = Astro.props;
+const { detail, page } = Astro.props;
 ---
 
-<ReservationPage {...page} />
+{detail ? <IndustryDetailPage page={detail} /> : <ReservationPage {...page} />}
