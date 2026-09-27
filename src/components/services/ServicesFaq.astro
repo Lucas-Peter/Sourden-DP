@@ -37,6 +37,31 @@
  * The questions are <summary> text, not headings — a column of h3s would flood
  * the document outline with entries that are questions, not sections.
  *
+ * WHY AN ANSWER MAY BE SEVERAL PARAGRAPHS
+ *   Every answer on `/services`, the five detail pages, `/industries` and
+ *   `/about` is one sentence or two in a single paragraph, so `answer` was a
+ *   string. The FAQ page's brief writes almost all thirty-three of its answers
+ *   as two or three separate paragraphs, and flattening them would lose the
+ *   brief's own paragraphing. `answer` therefore accepts `string[]` as well;
+ *   a string is still rendered as ONE <p>, byte for byte as before, so no
+ *   existing caller changes.
+ *
+ * WHY `tone` IS OPTIONAL AND OFF BY DEFAULT
+ *   `/faq` is the first page to render this device many times over — seven
+ *   consecutive categories plus an in-page navigation that has to be able to
+ *   scroll to each one. That needs the ground to alternate, because
+ *   `.sv-faq`'s own ground is ivory and seven ivory bands in a row read as one
+ *   continuous field. `tone` is opt-in: with it unset the emitted markup is
+ *   identical to before, and `tone: 'ivory'` is the device's existing ground
+ *   rather than a second class.
+ *
+ *   The scroll target needs nothing new. `titleId` already ids the heading, and
+ *   a jump list wants to land on the category's HEADING — landing on the
+ *   section would scroll past the section's own top padding and put the heading
+ *   roughly 230px down the viewport. So `/faq` passes its own anchor strings as
+ *   `titleId` (`faq-shipping`, …) and the nav points at those. Nothing about
+ *   the component changed to support it.
+ *
  * Styles live in `services-shared.css` (`.sv-faq*`).
  * ---------------------------------------------------------------------------
  */
@@ -48,7 +73,11 @@ interface Props {
   title: string;
   items: Array<{
     question: string;
-    answer: string;
+    /**
+     * One paragraph, or several. A string renders as a single <p> exactly as it
+     * always did; an array renders one <p> per entry. See the header note.
+     */
+    answer: string | string[];
     /**
      * Optional link attached to ONE answer.
      *
@@ -65,16 +94,38 @@ interface Props {
      */
     link?: { label: string; href: string };
   }>;
+  /**
+   * Section ground. The device's own ground is ivory, so `'ivory'` emits no
+   * extra class and every existing caller is byte-identical. `'white'` exists
+   * for `/faq`, whose seven consecutive categories have to alternate.
+   */
+  tone?: 'ivory' | 'white';
   /** Optional closing link. Omitted where the section is followed by a CTA. */
   foot?: { label: string; href: string };
-  /** Unique per page: the <section> is labelled by this id. */
+  /**
+   * Unique per page: the <section> is labelled by this id.
+   *
+   * `/faq` also uses it as the navigation's scroll target — see the header
+   * note on why the heading, not the section, is the right landing point.
+   */
   titleId?: string;
 }
 
-const { eyebrow, title, items, foot, titleId = 'sv-faq-title' } = Astro.props;
+const { eyebrow, title, items, tone, foot, titleId = 'sv-faq-title' } = Astro.props;
+
+/**
+ * One <p> per paragraph. A string keeps rendering as a single paragraph, which
+ * is what keeps the existing callers' markup unchanged.
+ */
+const paragraphsOf = (answer: string | string[]) =>
+  Array.isArray(answer) ? answer : [answer];
+
+const classes = ['section', 'sv-faq', tone === 'white' && 'sv-faq--white']
+  .filter(Boolean)
+  .join(' ');
 ---
 
-<section class="section sv-faq" aria-labelledby={titleId}>
+<section class={classes} aria-labelledby={titleId}>
   <div class="container">
     <div class="sv-faq__grid">
       <div class="sv-faq__head">
@@ -91,7 +142,9 @@ const { eyebrow, title, items, foot, titleId = 'sv-faq-title' } = Astro.props;
               </summary>
 
               <div class="sv-faq__answer">
-                <p>{item.answer}</p>
+                {paragraphsOf(item.answer).map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
 
                 {item.link && (
                   <p class="sv-faq__answer-link">
