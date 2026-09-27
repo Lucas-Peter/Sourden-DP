@@ -1,0 +1,102 @@
+---
+/**
+ * AboutStatement — a heading, one prominent statement, and the copy around it
+ * ---------------------------------------------------------------------------
+ * Two consumers on `/about`:
+ *   §04 OUR APPROACH — the statement BEFORE the supporting copy
+ *   §13 OUR MINDSET  — the statement AFTER it
+ *
+ * ── WHY THIS IS NOT `ServiceProse` ────────────────────────────────────────
+ * `ServiceProse` carries an optional `emphasis`: a closing line set in brass,
+ * described in its own header as "a caveat, not body copy". Neither statement
+ * here is a caveat — the brief asks for §04's to be used "prominently" and
+ * calls §13's "a strong brand statement", and both are the sentence the reader
+ * is meant to leave the section with. Rendering them at body size with a
+ * colour change would have buried the two most quotable lines on the page.
+ *
+ * So the statement gets its own display line. Everything else about the
+ * device is deliberately identical to `ServiceProse`: the same 5/6 editorial
+ * grid (heading left, content right), the same `<SectionHeader>`, the same
+ * optional brass `foot` link, the same `section--tone` grounds. A reader
+ * moving between §02, §04, §12, §13 and §16 meets one grid, not two.
+ *
+ * ── WHY THE POSITION IS DATA ──────────────────────────────────────────────
+ * `statementPosition` exists because the two briefs put the same kind of
+ * sentence in different places. §04 gives the claim and then argues for it;
+ * §13 describes the work and then makes the promise. That is a content
+ * decision, not a layout one — the same reasoning `numbered` follows on the
+ * rows and stages devices — so it is declared in the page data and the
+ * component lays out what it is given.
+ *
+ * ── THE STATEMENT IS A <p>, NOT A SECOND HEADING ──────────────────────────
+ * It is a sentence to read, not a topic to navigate. Promoting it to an <h2>
+ * or <h3> would put a claim into the document outline as though it were a
+ * section, and a screen reader's heading list would list the page's opinions
+ * beside its subjects.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** The line the section is built around. Rendered as a display paragraph. */
+  statement: string;
+  /** Where the statement sits relative to `paragraphs`. Defaults to `before`. */
+  statementPosition?: 'before' | 'after';
+  paragraphs: string[];
+  /** Optional closing link. */
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white' | 'ink';
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId: string;
+}
+
+const {
+  eyebrow,
+  title,
+  statement,
+  statementPosition = 'before',
+  paragraphs,
+  foot,
+  tone,
+  titleId,
+} = Astro.props;
+
+const lead = statementPosition === 'before';
+
+/* `ink` maps to the core `.section--dark`, which is the class that actually
+   defines the ink band — `.section--ink` does not exist. See `AboutFlow.astro`
+   for why the shared data vocabulary and the stylesheet class differ. No
+   consumer passes `ink` to this device today; the mapping is here so the
+   declared union is honest rather than silently producing a transparent
+   section. */
+const ground = tone === 'ink' ? 'section--dark' : `section--${tone}`;
+---
+
+<section class={`section ${ground} ab-statement`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="ab-statement__grid">
+      <div class="ab-statement__head">
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} />
+      </div>
+
+      <div class="ab-statement__body">
+        {lead && <p class="ab-statement__line">{statement}</p>}
+
+        {paragraphs.map((paragraph) => <p class="ab-statement__para">{paragraph}</p>)}
+
+        {!lead && <p class="ab-statement__line">{statement}</p>}
+      </div>
+    </div>
+
+    {
+      foot && (
+        <div class="section-foot ab-statement__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>

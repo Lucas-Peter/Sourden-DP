@@ -1,0 +1,171 @@
+---
+/**
+ * AboutFlow — a labelled chain of nodes, vertical or horizontal
+ * ---------------------------------------------------------------------------
+ * Two consumers on `/about`, and they are the same idea in two shapes:
+ *   §08 WHAT WE DO      — YOUR REQUIREMENT ↓ SOURDEN ↓ SUPPLIER ↓ QUALITY
+ *                         CONTROL ↓ SHIPPING ↓ YOUR DESTINATION  (vertical)
+ *   §14 THE RELATIONSHIP — BUYER ↔ SOURDEN ↔ SUPPLIER, each with its own
+ *                          question underneath                    (horizontal)
+ *
+ * ── WHY ONE COMPONENT AND NOT TWO ─────────────────────────────────────────
+ * Both are "a few labelled positions read in sequence". What differs is the
+ * direction and the mark in the gaps — a data shape, not a layout family, the
+ * same call the stages and rows devices make about `numbered`.
+ *
+ * The direction is not decoration either, and the briefs are what decide it:
+ *   · §08 descends. A requirement enters at the top, a destination comes out
+ *     at the bottom, and Sourden is one link in the chain — which is exactly
+ *     what the brief asks the reader to understand (Sourden never owns or
+ *     manufactures the goods). So: vertical, and the gap mark is a down arrow.
+ *   · §14 corresponds. Three parties, each defined by what it knows, none of
+ *     them "after" another. So: horizontal, and the gap mark is a two-way
+ *     arrow — an arrow would have made the supplier look like a step after the
+ *     buyer.
+ *
+ * ── WHY THE MARK IS IN THE GAP, AND NEVER BEFORE THE FIRST NODE ───────────
+ * A mark after the last node would promise something beyond it. In the
+ * vertical variant the mark is therefore rendered *above* every node except
+ * the first — the arrangement `/industries` §06 uses for the same reason — and
+ * in the horizontal variant *beside* every node except the last. Either way
+ * the chain begins and ends on a node, not on an arrow.
+ *
+ * The marks are `aria-hidden`: "down arrow" and "left-right arrow" add nothing
+ * to a reader who is already moving linearly through a document.
+ *
+ * ── THE LABELS ARE <h3> ───────────────────────────────────────────────────
+ * The nodes are the section's topics ("Quality Control", "Supplier", "Your
+ * Destination"), not decoration. An h3 each puts them in the outline so the
+ * chain can be read as a list by anything that does not render the layout —
+ * which matters most here, where the whole section is a diagram.
+ *
+ * ── NO NUMBERS ────────────────────────────────────────────────────────────
+ * Unlike the five-stage rail, these chains are not steps: §08's six positions
+ * are roles in a chain and §14's three are parties to a conversation. Numbering
+ * them would have turned a diagram back into a procedure.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** Optional body copy, rendered in the right-hand column of the head grid. */
+  paragraphs?: string[];
+  /** `vertical` descends (↓ between nodes); `horizontal` corresponds (↔). */
+  orientation: 'vertical' | 'horizontal';
+  /** The chain, in order. `sub` is an optional second line under the label. */
+  nodes: Array<{ label: string; sub?: string }>;
+  /** Overrides the default gap mark. Almost nothing should. */
+  marker?: string;
+  /** Optional closing sentence, rendered after the chain. */
+  note?: string;
+  /** Optional closing link. */
+  foot?: { label: string; href: string };
+  tone: 'ivory' | 'white' | 'ink';
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId: string;
+}
+
+const {
+  eyebrow,
+  title,
+  paragraphs,
+  orientation,
+  nodes,
+  marker,
+  note,
+  foot,
+  tone,
+  titleId,
+} = Astro.props;
+
+const horizontal = orientation === 'horizontal';
+
+/** The gap mark belongs to the direction: a descent or a correspondence. */
+const gap = marker ?? (horizontal ? '↔' : '↓');
+
+const hasParagraphs = Boolean(paragraphs?.length);
+
+/**
+ * The ground class.
+ *
+ * `tone: 'ink'` maps to the CORE class `.section--dark`, because `.section--ink`
+ * does not exist. That is not an oversight invented here: `'ink'` is the
+ * shared data vocabulary for "this section sits on the ink band", and the one
+ * component that has always used it — `<ServiceProcess>`, the five-stage rail
+ * — hardcodes `section--dark` and ignores its own `tone` prop for exactly this
+ * reason. Every other device's `tone` union lists `'ink'` as accepted, but no
+ * page has ever passed it to one, so the mapping has never been needed
+ * anywhere else.
+ *
+ * This page does need it: §08 is a real editorial section that has to own the
+ * ink band, not a rail. Mapping it here keeps the page data on the same
+ * vocabulary as every other page file while emitting the class the stylesheet
+ * actually defines.
+ */
+const ground = tone === 'ink' ? 'section--dark' : `section--${tone}`;
+---
+
+<section
+  class={`section ${ground} ab-flow ab-flow--${orientation}`}
+  aria-labelledby={titleId}
+>
+  <div class="container">
+    <div class={`ab-flow__grid ${hasParagraphs ? '' : 'ab-flow__grid--head-only'}`.trim()}>
+      <div class="ab-flow__head">
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} />
+      </div>
+
+      {
+        hasParagraphs && (
+          <div class="ab-flow__body">
+            {paragraphs?.map((paragraph) => <p class="ab-flow__para">{paragraph}</p>)}
+          </div>
+        )
+      }
+    </div>
+
+    <ol class="ab-flow__chain" data-reveal-group>
+      {
+        nodes.map((node, index) => (
+          <li class="ab-flow__node">
+            {/* Vertical: the mark sits above every node but the first, in its
+                own grid row, so the first node is not nudged down by a gap. */}
+            {!horizontal && index > 0 && (
+              <span class="ab-flow__mark" aria-hidden="true">
+                {gap}
+              </span>
+            )}
+
+            {/* A <div>, not a <span>: it wraps an <h3>, and heading content
+                cannot live inside phrasing content. */}
+            <div class="ab-flow__node-body">
+              <h3 class="ab-flow__label">{node.label}</h3>
+
+              {node.sub && <p class="ab-flow__sub">{node.sub}</p>}
+            </div>
+
+            {/* Horizontal: the mark sits beside every node but the last. */}
+            {horizontal && index < nodes.length - 1 && (
+              <span class="ab-flow__mark" aria-hidden="true">
+                {gap}
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+
+    {note && <p class="sd-note ab-flow__note">{note}</p>}
+
+    {
+      foot && (
+        <div class="section-foot ab-flow__foot">
+          <ArrowLink href={foot.href} label={foot.label} brass />
+        </div>
+      )
+    }
+  </div>
+</section>
