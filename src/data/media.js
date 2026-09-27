@@ -272,6 +272,38 @@ export const images = {
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
 
+  /* --------------------------------------------------------------- about -- */
+  /* `/about` hero — the page's only image.
+   *
+   * This is the page that would normally carry a portrait: a founder, a team,
+   * an office. None of those exist as a verified fact about this business, so
+   * none of them may be invented (brief §16 bans fabricated company facts, and
+   * `media.js` cannot assert what the business has not supplied). What the
+   * page CAN show honestly is the work — the same documentary register the
+   * rest of the site uses.
+   *
+   * Brief §01 asks for exactly that: "authentic and operational rather than
+   * corporate", naming factory floor, product samples, supplier meeting,
+   * inspection, materials, packaging, warehouse and hands reviewing products,
+   * and ruling out the handshake, the boardroom, the landmark, the flag and
+   * every stock "international business" scene. Same 1600 × 1200 / 4:3 as
+   * every other hero, so it can share the hero frame without a second crop
+   * rule. */
+  aboutHero: {
+    file: 'about-hero.svg',
+    width: 1600,
+    height: 1200,
+    ratio: '4:3',
+    label: 'ABOUT SOURDEN',
+    alt: 'Placeholder for a documentary photograph of sourcing work in progress — goods or samples being reviewed by hand in a working environment.',
+    role: /** @type {ImageRole} */ ('hero'),
+    placeholder: true,
+    artDirection:
+      'One documentary frame of sourcing work being done by hand: samples compared against a specification, an inspection in progress, materials or packaging being handled, or goods checked in a warehouse. The person matters only as the person doing the work — no posed portrait, no facing-the-camera smile, no team lineup. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and artificially perfect AI factory floors.',
+    cropNote:
+      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+  },
+
   /* ---------------------------------------------------------- industries -- */
   /* `/industries` hero — the one image on the Industries overview page.
    *
