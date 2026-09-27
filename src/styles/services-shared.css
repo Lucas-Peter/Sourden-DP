@@ -139,12 +139,35 @@
    02 — THE FIVE-STAGE RAIL
    ---------------------------------------------------------------------------
    Five stages on a hairline rail. Mobile: a vertical rail down the left with
-   the number and verb beside each dot. Desktop: a horizontal rail across five
-   columns, dots sitting on it.
+   the number and verb beside each dot. Desktop: a horizontal rail across
+   `--stage-count` columns, dots sitting on it.
 
    The rail is what turns five rows into one sequence, so it is drawn even
    though it is invisible to assistive technology — the <ol> already carries
    the ordering for anything that cannot see it.
+
+   ── WHY THERE IS A `--6` MODIFIER AND NOT JUST THE NUMBER FIVE ─────────────
+   The desktop grid used to be a bare `repeat(5, …)`, which was correct for
+   every consumer until the `/industries/<slug>` category pages arrived with the
+   brief's SIX-stage sourcing process. Six stages in a five-column grid do not
+   fail loudly: the sixth wraps onto an implicit second row, the rail line stays
+   on the first, and the dots end up at two different heights — a broken
+   instrument, not a broken page, and one a screenshot review reads as "the last
+   one looks a bit off".
+
+   `ServiceProcess` therefore emits a `sv-stages--<count>` modifier from
+   `steps.length`, and this block carries one rule per count the site actually
+   uses. A count with no rule falls back to the five-column default, i.e. it
+   wraps and `id-geo.mjs` fails on `the process rail has one column per stage` —
+   which is the point: the fallback is wrong VISIBLY rather than silently.
+
+   WHY NOT AN INLINE `--stage-count` CUSTOM PROPERTY
+   That is the obvious way to avoid a rule per count, and it was the first
+   attempt. `scripts/audit.mjs` refuses any inline `style=""` attribute, on
+   purpose — it is what keeps design values in `tokens.css` and out of nine
+   templates — and the honest fix for a template that wants an inline style is
+   the modifier class this codebase already uses for the same shape of problem
+   (`.ind-rows--numbered`), not an exception carved into the audit.
 
    TWO CONSUMERS, TWO SHAPES
      · `/services`  — each stage is a LINK to that service, and the service
@@ -315,6 +338,13 @@
   .sv-stages {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--grid-gap);
+  }
+
+  /* The nine `/industries/<slug>` pages: the brief gives one six-stage process
+     to all of them, so their rail is one column wider than every other rail on
+     the site. One extra rule, not a template, and not an inline style. */
+  .sv-stages--6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .sv-stages::before {

@@ -1,0 +1,153 @@
+/* ===========================================================================
+   SOURDEN — 07e INDUSTRY CATEGORY PAGES
+   ---------------------------------------------------------------------------
+   The one section only the nine `/industries/<slug>` pages render: the
+   "EXPLORE MORE / Other sourcing categories" index (child brief §16). Imported
+   by `src/components/industries/IndustryDetailPage.astro`, so no other route
+   ships this file.
+
+   WHAT IS NOT IN THIS FILE — AND WHY THAT IS THE POINT
+   · `.sv-hero*`, `.sv-stages` / `.sv-stage*`, `.sv-faq*` — the hero, the
+     numbered rail and the FAQ. These pages render all three with the same
+     components `/services`, the five service detail pages and `/industries`
+     already use, so the rules stay in `services-shared.css` and are imported,
+     not copied.
+   · `.sd-checklist*`, `.sd-review*` and the dark-ground corrections — imported
+     from `service-detail.css` for the same reason. "What We Can Source", "What
+     We Can Help With", "Sourcing Considerations" and "Who This Category Can
+     Work For" are the dense check-list device; "What Buyers Usually Need" is the
+     review grid. Both are the detail pages' components with these pages' copy.
+   · `.ind-rows*`, `.ind-sequence*` — the rows device and the descending
+     sequence. Those already live in `industries.css`, which this shell imports;
+     a second copy here is how two sheets start to disagree about one device.
+   · The page rhythm (`.section`, `.section--ivory`, `.section--white`,
+     `.section--dark`, `.container`, `.section-head`, `.section-foot`, `.num`)
+     — shared core, loaded by every route. Nothing here redefines any of it:
+     the audit fails the build if a page stylesheet collides with the core,
+     because the winning rule would then depend on CSS chunk order, which Astro
+     does not guarantee.
+   · Any colour, size or spacing literal. Values come from `tokens.css`.
+
+   PREFIX
+   `.ind-` — the industries vocabulary. This file continues the family
+   `industries.css` started rather than opening a fourth prefix for one section.
+
+   SECTION INDEX
+     01 Explore more  (brief §16)
+   =========================================================================== */
+
+
+/* ===========================================================================
+   01 — EXPLORE MORE  (brief §16, "Industry page navigation")
+   ---------------------------------------------------------------------------
+   Nine ruled entries in a column grid: number | category name, eight of them
+   links and the ninth the page the visitor is already on.
+
+   ── THE NUMBER COLUMN IS UNCONDITIONAL, AND THAT IS DELIBERATE ─────────────
+   `.ind-rows` needs a `--numbered` modifier because it has two consumers, one
+   numbered and one not — and forgetting that modifier is how two grid items
+   land in the same cell while the DOM still looks perfect. Here every entry
+   carries its registry number, so the track is always reserved and there is no
+   flag to forget. The number is an index (`01`…`09`, from `industries.js`), not
+   a list position, which is why the markup is a `<ul>`.
+
+   ── THREE COLUMNS, NOT ONE ─────────────────────────────────────────────────
+   Nine full-width rows would make this band as tall as the section above it and
+   the brief asks for it NOT to be visually dominant. Three columns at desktop,
+   two from 768px, one below — the same breakpoints the rest of the site uses,
+   so nothing new is introduced.
+
+   ── THE CURRENT PAGE USES THE SITE'S EXISTING "YOU ARE HERE" TREATMENT ────
+   `color: var(--brass-ink)` is what `.sd-chain__stage--current` and the header's
+   `[aria-current='page']` underline already use. A new visual signal here would
+   be a fourth way of saying the same thing on one site.
+   =========================================================================== */
+
+.ind-nav__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.ind-nav__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.ind-nav__item {
+  border-bottom: var(--rule) solid var(--divider-light);
+  min-width: 0;
+}
+
+/* `align-items: baseline` so the number sits on the label's baseline rather
+   than on the top of its box — the `.num` element is `display: block`, so
+   without it the index would ride high above its own category name. */
+.ind-nav__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding-block: var(--sp-4);
+  min-width: 0;
+}
+
+/* The arrow lives inside the label's flex row rather than in a third grid
+   track: the current entry carries no arrow, and a third track would give it a
+   wider label column than the eight around it, so the nine labels would stop
+   lining up. */
+.ind-nav__body {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  min-width: 0;
+}
+
+.ind-nav__label {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  letter-spacing: var(--ls-display);
+  transition: color var(--dur) var(--ease-out);
+}
+
+/* The only coloured marks in this band: the arrow on a destination, and the
+   brass label of the page the visitor is on. */
+.ind-nav__arrow {
+  flex: none;
+  color: var(--brass-ink);
+  font-size: 0.8em;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+a.ind-nav__link:hover .ind-nav__label,
+a.ind-nav__link:focus-visible .ind-nav__label {
+  color: var(--brass-ink);
+}
+
+a.ind-nav__link:hover .ind-nav__arrow,
+a.ind-nav__link:focus-visible .ind-nav__arrow {
+  transform: translateX(5px);
+}
+
+/* The current page: the site's existing "you are here" colour, one weight up,
+   and NOT a link — it keeps `aria-current="page"` so it is announced rather
+   than offered as a destination. */
+.ind-nav__link--current .ind-nav__label {
+  color: var(--brass-ink);
+  font-weight: var(--fw-semibold);
+}
+
+@media (min-width: 768px) {
+  .ind-nav__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+  }
+}
+
+@media (min-width: 1200px) {
+  .ind-nav__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

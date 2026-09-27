@@ -571,27 +571,35 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
 
 
 /* ===========================================================================
-   05 — THE RAIL ON THIS PAGE  (brief §10)
+   05 — THE RAIL ON THE INDUSTRIES PAGES  (hub §10, child pages §7)
    ---------------------------------------------------------------------------
-   §10 renders the same five-stage rail as `/services` and the five detail
-   pages, so its rules live in `services-shared.css` (geometry) and
-   `service-detail.css` (the ink-band corrections). The one thing this page has
-   to add is the height of the rail's labels.
+   These pages render the same rail as `/services` and the five detail pages, so
+   its rules live in `services-shared.css` (geometry) and `service-detail.css`
+   (the ink-band corrections). The one thing they have to add is the height of
+   the rail's labels.
+
+   TWO CONSUMERS, ONE RULE
+     · `/industries` §10 — five stages, named as phrases.
+     · `/industries/<slug>` §7 (the nine category pages) — the SAME six stages
+       on all nine, also named as phrases, and one column narrower each because
+       there are six of them. `IndustryDetailPage` passes the class for exactly
+       that reason.
+   Both need the floor; neither needs a second copy of it.
 
    WHY
    The detail pages name their steps in one word each (UNDERSTAND, RESEARCH),
    so every label fits on one line and the five descriptions start at the same
-   height. This page's brief names the same five steps as phrases — "Tell Us
+   height. These pages' briefs name the steps as phrases — "Tell Us
    What You Need", "Verify & Compare" — and at 1200px a rail column is ~224px
    wide, which fits "Verify & Compare" and wraps "Tell Us What You Need" onto a
-   second line. Without a floor, that one wrapped label pushes its description
-   ~17px below the other four, and a rail whose dots promise a shared row but
-   whose copy does not sit on one has come apart at exactly the point it is
-   meant to prove.
+   second line. (At six columns it is ~183px, so most of them wrap.) Without a
+   floor, a wrapped label pushes its description ~17px below the others, and a
+   rail whose dots promise a shared row but whose copy does not sit on one has
+   come apart at exactly the point it is meant to prove.
 
-   Reserving two lines for all five is the same fix `.sv-stage__title` already
-   applies on `/services` for the same reason, and it is scoped to `.ind-`
-   because a page whose labels are single words should not pay for the space.
+   Reserving two lines is the same fix `.sv-stage__title` already applies on
+   `/services` for the same reason, and it is scoped to `.ind-` because a page
+   whose labels are single words should not pay for the space.
    =========================================================================== */
 
 .ind-process .sv-stage__verb {
