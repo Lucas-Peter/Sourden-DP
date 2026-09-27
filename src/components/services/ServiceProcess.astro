@@ -1,6 +1,6 @@
 ---
 /**
- * ServiceProcess — the five numbered stages of one service
+ * ServiceProcess — the numbered stages of one process, on the ink rail
  * ---------------------------------------------------------------------------
  * The detail pages' process section. Same rail device as `/services`, but the
  * stage label IS the heading here rather than a rail label above a service
@@ -8,6 +8,10 @@
  * because there the stage points at a service. On a detail page the stage is a
  * step of that service, so "01 — UNDERSTAND" is the whole heading and there is
  * nothing to link to.
+ *
+ * FIVE STAGES IS THE COMMON CASE, NOT THE CONTRACT. The rail is as wide as
+ * `steps` is long — see `stageClass` below for what a sixth stage did to a
+ * five-column grid.
  *
  * WHY THE STAGE IS NOT A LINK
  *   There is no page to link to — `page.sections` is one service's own process.
@@ -54,7 +58,10 @@ interface Props {
    * Extra class on the <section>. Every other shared component already accepts
    * one; the rail needed it when `/industries` had to reserve a second line for
    * a longer stage label — see `.ind-process .sv-stage__verb` in
-   * `industries.css` for why that has to be scoped to the page.
+   * `industries.css` for why that has to be scoped to the page. The nine
+   * `/industries/<slug>` pages pass the same class for the same reason: at six
+   * columns their stage labels wrap, so all six have to reserve the second line
+   * or the descriptions below them stop sharing a top edge.
    */
   class?: string;
   titleId: string;
@@ -70,13 +77,35 @@ const {
   class: className = '',
   titleId,
 } = Astro.props;
+
+/**
+ * The rail is exactly as wide as it has stages.
+ *
+ * `services-shared.css` used to hard-code five columns, which was right for
+ * every consumer until the `/industries/<slug>` pages arrived with the brief's
+ * SIX-stage process. A sixth stage in a five-column grid wraps onto an implicit
+ * second row: the rail line stays on the first row, the sixth dot sits ~240px
+ * below the other five, and the instrument reads as slightly broken rather than
+ * as wrong.
+ *
+ * The count is published as a modifier class rather than as an inline custom
+ * property, because `scripts/audit.mjs` refuses any inline `style=""` attribute
+ * on purpose, and the alternative to adding a rule per count is not worth an
+ * exception in the build gate. `.ind-rows--numbered` is the same shape.
+ *
+ * Emitted for every count, not only the non-default ones: the markup then says
+ * how many stages it has, and a new count is one CSS rule with no change here.
+ * A count with no rule falls back to the five-column default, which wraps — a
+ * visibly wrong rail that `id-geo.mjs` fails, not a silent one.
+ */
+const stageClass = `sv-stages sv-stages--${steps.length}`;
 ---
 
 <section class={`section section--dark sd-process ${className}`.trim()} aria-labelledby={titleId}>
   <div class="container">
     <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-process__head" />
 
-    <ol class="sv-stages" data-reveal-group>
+    <ol class={stageClass} data-reveal-group>
       {
         steps.map((step, index) => (
           <li class="sv-stage">
