@@ -1,0 +1,120 @@
+/* ===========================================================================
+   SOURDEN — /faq
+   ---------------------------------------------------------------------------
+   This sheet holds ONE device: the in-page category navigation (brief §3).
+   Everything else on the page is a shared device — the hero, the FAQ
+   disclosure group and the closing band all come from `services-shared.css`
+   and `components.css` — so this file is deliberately small. See
+   `src/styles/index.css` → "ADDING A NEW PAGE" for the import-order rule and
+   the namespace convention this follows.
+
+   NAMESPACE — `.fq-`
+   ---------------------------------------------------------------------------
+   `.fq-cats*` is the only thing here. The category sections themselves are
+   `.sv-faq`, which lives in `services-shared.css` because `/services`, the five
+   detail pages, `/industries`, `/about` and the nine `/industries/<slug>`
+   pages all render the same disclosure group; a second copy of it here would
+   be exactly the drift that sheet exists to prevent.
+
+   WHAT IS NOT HERE, ON PURPOSE
+   ---------------------------------------------------------------------------
+   · No `scroll-margin-top` on the category sections. Anchor targets already
+     clear the sticky header through `scroll-padding-top` in `base.css`, and
+     adding a target margin on top of a container padding would double the
+     offset. Whether the landing position is actually right is measured in
+     `fq-geo.mjs` rather than assumed here — if the heading lands under the
+     header, the fix belongs in this file and the check will say so.
+   · No section spacing overrides. The brief asks for "enough whitespace
+     between major categories", and `.section`'s standard rhythm is what the
+     rest of the site uses between bands; the alternating ground carries the
+     separation. Compressing it here would make the longest page on the site
+     feel denser than the shortest.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   01 — CATEGORY NAVIGATION  (brief §3)
+
+   One row below 768px that scrolls sideways; wrapping rows above it. The
+   visible label reuses the core `.eyebrow` treatment, so the only thing this
+   rule adds is the gap under it.
+   --------------------------------------------------------------------------- */
+
+.fq-cats__label {
+  margin-block-end: var(--sp-4);
+}
+
+.fq-cats__list {
+  display: flex;
+  gap: var(--sp-3);
+  /* The scroller. `overflow-x: auto` computes `overflow-y` to `auto` as well,
+     which clips the 3px-offset focus ring — hence the padding on both axes
+     rather than only the inline one. */
+  overflow-x: auto;
+  padding: var(--sp-1);
+  list-style: none;
+  /* A chip that is only half visible settles into place instead of staying
+     cut in half after a swipe. */
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+}
+
+.fq-cats__item {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.fq-cats__link {
+  display: inline-flex;
+  align-items: center;
+  /* WCAG 2.5.8 — a scrolling row of small text links is exactly where tap
+     targets get missed. */
+  min-height: 44px;
+  padding-inline: var(--sp-4);
+  border: var(--rule) solid var(--divider-light);
+  border-radius: var(--radius);
+  background-color: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-display);
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.fq-cats__link:hover,
+.fq-cats__link:focus-visible {
+  border-color: var(--brass-ink);
+  color: var(--brass-ink);
+  background-color: var(--white);
+}
+
+/* The core `:focus-visible` rule sets `border-radius: 1px` on every focused
+   element, which would visibly square off a focused chip. Keep the chip's own
+   radius so the ring wraps the shape the visitor just tapped. */
+.fq-cats__link:focus-visible {
+  border-radius: var(--radius);
+}
+
+/* ---------------------------------------------------------------------------
+   02 — TABLET AND UP
+   ---------------------------------------------------------------------------
+   Wide enough for the chips to wrap into rows, which removes the sideways
+   scroll entirely and lets the whole navigation be read at a glance. The
+   scroller's padding is reset so the first chip lines up with the label above
+   it, and with the container edge.
+   --------------------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .fq-cats__list {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+}
