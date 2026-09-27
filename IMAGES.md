@@ -251,6 +251,30 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 
 ---
 
+### About page — one slot
+
+| File | Label | Source size | Ratio | Used by |
+| --- | --- | --- | --- | --- |
+| `about-hero.svg` | ABOUT SOURDEN | **1600 × 1200** | 4:3 | `/about` hero |
+
+**This slot is a work photograph on purpose, not a founder portrait.** The page
+is the site's brand and trust page, so a portrait — a founder, a team, an office
+— is the obvious thing to shoot there. None of those exist as a verified fact
+about this business, and inventing one is exactly what the brief's §16 forbids.
+Showing the work in the same documentary register as the rest of the site is the
+one image the page can honestly carry.
+
+**Loads eagerly** — it sits beside an H1 with `priority`. WebP at ~75% quality,
+under 250 KB.
+
+- **About hero** — one frame of sourcing work being done by hand: samples
+  compared against a specification, an inspection in progress, materials or
+  packaging handled, goods checked in a warehouse. Brief §01 asks for
+  "authentic and operational rather than corporate". The person matters only as
+  the person doing the work — no posed portrait, no facing-the-camera smile, no
+  team lineup, no handshake, no boardroom, no stock "international business"
+  scene.
+
 ### Case studies — two slots
 
 | File | Source size | Ratio |
@@ -332,9 +356,9 @@ is gone.
 - Everything below the fold loads `lazy` with `decoding="async"`. Only the
   above-the-fold hero images load eagerly, one per page that has one:
   `heroSourcing` (home), `sourcingRequestHero`, `servicesHero`,
-  `industriesHero`, `howItWorksHero`, and one per `/services/<slug>` detail
-  page — **ten slots today** (five of the ten are the detail pages), and it
-  grows by one per page that ships with a hero.
+  `industriesHero`, `howItWorksHero`, `aboutHero`, and one per
+  `/services/<slug>` detail page — **eleven slots today** (five of the eleven
+  are the detail pages), and it grows by one per page that ships with a hero.
 - Hover scale is 1.03 over the standard duration, and is suppressed entirely
   under `prefers-reduced-motion`.
 
