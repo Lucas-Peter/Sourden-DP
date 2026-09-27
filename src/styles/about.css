@@ -1,0 +1,284 @@
+/**
+ * SOURDEN — /about page stylesheet
+ * ---------------------------------------------------------------------------
+ * The two devices this page contributes. Everything else on `/about` is a
+ * shared device whose rules already exist:
+ *
+ *   hero             `.sv-*`  services-shared.css
+ *   prose            `.sd-*`  service-detail.css
+ *   reviewGrid       `.sd-*`  service-detail.css
+ *   stages           `.hi-*`  how-it-works.css
+ *   growth           `.hi-*`  how-it-works.css
+ *   linkRows         `.hi-*`  how-it-works.css
+ *   faq              `.sv-*`  services-shared.css
+ *   closing band      core    components.css
+ *
+ * ── WHY THIS FILE IS MOSTLY TWO GRIDS ─────────────────────────────────────
+ * Both new devices reuse the site's 5/6 editorial grid — the same one
+ * `ServiceProse` and the services-area FAQ use (heading left, content right).
+ * That is deliberate rather than convenient: `/about` carries prose or
+ * statement sections at §02, §04, §12, §13 and §16, and a reader moving
+ * between them should meet ONE arrangement, not five. Nothing here invents a
+ * second grid, a card, a border or a shadow the site does not already have.
+ *
+ * ── THE INK BAND ──────────────────────────────────────────────────────────
+ * §08 renders on the ink band, which is the core class `.section--dark` — for
+ * why the data says `tone: 'ink'` and the markup says `section--dark`, see the
+ * `ground` mapping in `AboutFlow.astro`. Because the chain is the page's only
+ * inverted device, its colour overrides are collected in one place at the end
+ * of this file rather than beside each rule.
+ *
+ * ── SCOPE ─────────────────────────────────────────────────────────────────
+ * Every selector is `.ab-`-prefixed, so it cannot collide with the shared
+ * sheets. The `.section--dark .ab-…` compounds at the end are page-scoped
+ * overrides of this page's own classes, not redefinitions of a core selector —
+ * `scripts/audit.mjs` enforces that distinction.
+ * ---------------------------------------------------------------------------
+ */
+
+/* ===========================================================================
+   01 — THE STATEMENT  (§04 OUR APPROACH, §13 OUR MINDSET)
+   ---------------------------------------------------------------------------
+   A heading, one prominent statement, and the copy around it. The grid below
+   is copied from `.sd-prose__grid` on purpose — identical columns, identical
+   gap, identical breakpoint. If one of the two ever changes, both must.
+   =========================================================================== */
+
+.ab-statement__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .ab-statement__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .ab-statement__head {
+    grid-column: 1 / span 5;
+  }
+
+  .ab-statement__body {
+    grid-column: 7 / span 6;
+  }
+}
+
+.ab-statement__body {
+  display: grid;
+  gap: var(--sp-5);
+  align-content: start;
+  min-width: 0;
+}
+
+.ab-statement__para {
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* The section's one display line. It is set in the display face rather than
+   the body face, which is what makes it read as a statement rather than as a
+   paragraph that happens to be first. The measure is deliberately tighter
+   than the body's 56ch: at this size a 56ch line would run to ~100 characters
+   and stop reading as a line at all. */
+.ab-statement__line {
+  max-width: 40ch;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  text-wrap: pretty;
+}
+
+.ab-statement__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-6);
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+
+/* ===========================================================================
+   02 — THE FLOW  (§08 WHAT WE DO — vertical / §14 THE RELATIONSHIP — horizontal)
+   ---------------------------------------------------------------------------
+   A labelled chain of positions: a requirement descending to a destination, or
+   three parties corresponding. Same 5/6 grid as the statement above.
+
+   MOBILE FIRST, AND THE SAME ORDER IN BOTH DIRECTIONS
+     The chain is a single-column list at every size below 768px, and the two
+     orientations differ only in WHERE the gap mark sits (above the node for a
+     descent, beside it for a correspondence). That is not a coincidence — it
+     is what makes the stacked layout correct without a second set of rules:
+     a mark that is already a sibling of the node's body stacks with it.
+
+   THE VERTICAL CHAIN IS CENTRED; THE HORIZONTAL ONE IS NOT
+     A descent reads as a spine, so it is centred and its nodes are centred
+     under it. A correspondence is a row of equals, so it spreads across the
+     full width and each node keeps its own left edge. Centring the horizontal
+     one would have made the middle party look like the subject of the other
+     two, which is the opposite of what §14 says.
+   =========================================================================== */
+
+.ab-flow__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .ab-flow__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .ab-flow__head {
+    grid-column: 1 / span 5;
+  }
+
+  .ab-flow__body {
+    grid-column: 7 / span 6;
+  }
+}
+
+.ab-flow__body {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  min-width: 0;
+}
+
+.ab-flow__para {
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* --- the chain ------------------------------------------------------------ */
+
+.ab-flow__chain {
+  display: grid;
+  gap: var(--sp-5);
+  margin: 0;
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+  padding: 0;
+  list-style: none;
+}
+
+.ab-flow__node {
+  display: grid;
+  justify-items: start;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+/* Brass, and small: the mark is punctuation between two positions, not a
+   position of its own. */
+.ab-flow__mark {
+  color: var(--brass-ink);
+  font-size: var(--fs-body);
+  line-height: 1;
+}
+
+/* Uppercase, and in the stylesheet rather than the copy — the same decision the
+   rail's verbs and `/industries` §06's five stages make. The brief writes these
+   node names in caps; the data holds them as words. */
+.ab-flow__label {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  line-height: var(--lh-snug);
+  text-transform: uppercase;
+}
+
+/* The question each party answers (§14 only). Sentence case, because it is a
+   question the reader is meant to read rather than a label they scan. */
+.ab-flow__sub {
+  margin-block-start: var(--sp-1);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
+}
+
+/* `.sd-note` supplies the hairline and its own top margin; this only keeps the
+   note with the chain it describes rather than with the heading above it. */
+.ab-flow__note {
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.ab-flow__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-6);
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+/* --- the two orientations, from 768px ------------------------------------ */
+
+@media (min-width: 768px) {
+  /* A descent: centred, narrower than the container, nodes centred under it. */
+  .ab-flow--vertical .ab-flow__chain {
+    max-width: 42rem;
+    margin-inline: auto;
+    justify-items: center;
+    text-align: center;
+  }
+
+  /* A correspondence: N equal columns, each reading left to right. */
+  .ab-flow--horizontal .ab-flow__chain {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--sp-6);
+  }
+
+  .ab-flow--horizontal .ab-flow__node {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+  }
+}
+
+/* Below 768px the correspondence stacks, and its `↔` turns a quarter turn for
+   the same reason the growth path's `→` does: a horizontal mark between two
+   vertically stacked items points at nothing. The descent's `↓` is already
+   correct at every width. */
+@media (max-width: 767px) {
+  .ab-flow--horizontal .ab-flow__mark {
+    transform: rotate(90deg);
+  }
+}
+
+
+/* ===========================================================================
+   03 — THE INK BAND  (§08 only)
+   ---------------------------------------------------------------------------
+   The core `.section--dark` block already flips the eyebrow, the heading, the
+   hairline rules and every `.sd-note` it contains, so only this page's own
+   classes need restating. Collected here rather than beside each rule, because
+   the band is what the overrides belong to.
+   =========================================================================== */
+
+.section--dark .ab-flow__label {
+  color: var(--text-on-dark);
+}
+
+.section--dark .ab-flow__para,
+.section--dark .ab-flow__sub {
+  color: var(--muted-dark);
+}
+
+/* `--brass` here, not `--brass-ink`: the ink ground is dark, so the mark takes
+   the brighter brass. Same swap the footer and `.sv-approach` make. */
+.section--dark .ab-flow__mark {
+  color: var(--brass);
+}
