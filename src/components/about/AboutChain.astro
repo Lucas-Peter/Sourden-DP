@@ -1,0 +1,86 @@
+---
+/**
+ * AboutChain — §08's descent and §14's correspondence, as markup only.
+ * ---------------------------------------------------------------------------
+ * This exists so the chain can be built once and PLACED TWICE, because where it
+ * goes is part of what the two directions mean rather than a styling detail:
+ *
+ *   vertical   §08's descent is rendered inside `.ab-flow__body` — the
+ *              right-hand column — so it continues the sentence printed there
+ *              and centres on that column's axis. As a sibling of the head grid
+ *              it was a full-width block whose contents packed to the
+ *              container's centre; on a two-column head the container's centre
+ *              is the GUTTER between the columns, so the diagram floated
+ *              between them and read as belonging to neither (§4b of the
+ *              component's old notes, and the defect 松霖 flagged).
+ *   horizontal §14's correspondence stays a sibling of the head grid so it can
+ *              span the container in one row.
+ *
+ * ── WHY A SEPARATE COMPONENT AND NOT A VARIABLE IN AboutFlow ───────────────
+ * Holding the markup in a frontmatter `const chain = (<ol …/>)` is the obvious
+ * way to write this, and it does not compile: Astro parses component frontmatter
+ * as TS, not TSX, so `<ol class="…">` is read as a type assertion and the build
+ * fails with `[PARSE_ERROR] Expected '>' but found 'class'`. JSX is only valid
+ * where the template parser handles it. So the markup lives here, where its own
+ * file makes it a template again.
+ *
+ * ── WHAT IT DOES NOT DO ───────────────────────────────────────────────────
+ * No classes of its own beyond the shared `.ab-flow__*`, no layout, no tone.
+ * The section, the grid and the ground stay in AboutFlow; this is the list.
+ *
+ * ── WHY THE MARK IS IN THE GAP, AND NEVER BEFORE THE FIRST NODE ───────────
+ * A mark after the last node would promise something beyond it. In the vertical
+ * variant the mark is therefore rendered ABOVE every node except the first — the
+ * arrangement /industries §06 uses for the same reason — and in the horizontal
+ * variant BESIDE every node except the last. Either way the chain begins and
+ * ends on a node, not on an arrow. That is also why the five marks are asserted
+ * to be five, and to sit strictly between two positions, on /about's gate.
+ *
+ * The marks are aria-hidden: "down arrow" and "left-right arrow" add nothing to
+ * a reader who is already moving linearly through a document.
+ *
+ * The labels are <h3>: the nodes are the section's topics, not decoration, so
+ * they belong in the outline.
+ * ---------------------------------------------------------------------------
+ */
+interface Props {
+  /** `true` puts the gap mark beside each node; `false` puts it above. */
+  horizontal: boolean;
+  /** Already resolved by the caller: '↔' for a correspondence, '↓' for a descent. */
+  gap: string;
+  nodes: Array<{ label: string; sub?: string }>;
+}
+
+const { horizontal, gap, nodes } = Astro.props;
+---
+
+<ol class="ab-flow__chain" data-reveal-group>
+  {
+    nodes.map((node, index) => (
+      <li class="ab-flow__node">
+        {/* Vertical: the mark sits above every node but the first, in its own
+            grid row, so the first node is not nudged down by a gap. */}
+        {!horizontal && index > 0 && (
+          <span class="ab-flow__mark" aria-hidden="true">
+            {gap}
+          </span>
+        )}
+
+        {/* A <div>, not a <span>: it wraps an <h3>, and heading content cannot
+            live inside phrasing content. */}
+        <div class="ab-flow__node-body">
+          <h3 class="ab-flow__label">{node.label}</h3>
+
+          {node.sub && <p class="ab-flow__sub">{node.sub}</p>}
+        </div>
+
+        {/* Horizontal: the mark sits beside every node but the last. */}
+        {horizontal && index < nodes.length - 1 && (
+          <span class="ab-flow__mark" aria-hidden="true">
+            {gap}
+          </span>
+        )}
+      </li>
+    ))
+  }
+</ol>

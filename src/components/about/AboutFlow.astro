@@ -23,6 +23,21 @@
  *     arrow — an arrow would have made the supplier look like a step after the
  *     buyer.
  *
+ * ── WHERE EACH CHAIN IS PLACED, AND WHY THAT IS NOT A STYLE CHOICE ────────
+ * The vertical chain is rendered INSIDE the right-hand column (`.ab-flow__body`);
+ * the horizontal one is a sibling of the head grid, spanning the container. The
+ * direction decides it for the same reason it decides the mark:
+ *   · §08's descent is that column's content. It answers the sentence above it
+ *     ("Sourden sits between the buyer and the China-side sourcing process"),
+ *     so it belongs under that sentence and centred on it, not centred on the
+ *     section. Left as a sibling it packed to the container's centre — which on
+ *     a two-column head is the gutter, so the diagram floated between the two
+ *     columns and read as belonging to neither.
+ *   · §14's correspondence is between three parties, not the property of one
+ *     column, and it needs the full width to sit in one row.
+ * Both are the same `horizontal` flag, so each consumer's markup is unchanged
+ * by the other's placement.
+ *
  * ── WHY THE MARK IS IN THE GAP, AND NEVER BEFORE THE FIRST NODE ───────────
  * A mark after the last node would promise something beyond it. In the
  * vertical variant the mark is therefore rendered *above* every node except
@@ -47,6 +62,7 @@
  */
 import SectionHeader from '../SectionHeader.astro';
 import ArrowLink from '../ArrowLink.astro';
+import AboutChain from './AboutChain.astro';
 
 interface Props {
   eyebrow?: string;
@@ -122,41 +138,18 @@ const ground = tone === 'ink' ? 'section--dark' : `section--${tone}`;
         hasParagraphs && (
           <div class="ab-flow__body">
             {paragraphs?.map((paragraph) => <p class="ab-flow__para">{paragraph}</p>)}
+            {/* The descent continues the paragraph above it, so it lives in
+                that paragraph's column. When the head has no paragraphs there
+                is no such column and the fallback below places it instead. */}
+            {!horizontal && <AboutChain horizontal={horizontal} gap={gap} nodes={nodes} />}
           </div>
         )
       }
     </div>
 
-    <ol class="ab-flow__chain" data-reveal-group>
-      {
-        nodes.map((node, index) => (
-          <li class="ab-flow__node">
-            {/* Vertical: the mark sits above every node but the first, in its
-                own grid row, so the first node is not nudged down by a gap. */}
-            {!horizontal && index > 0 && (
-              <span class="ab-flow__mark" aria-hidden="true">
-                {gap}
-              </span>
-            )}
-
-            {/* A <div>, not a <span>: it wraps an <h3>, and heading content
-                cannot live inside phrasing content. */}
-            <div class="ab-flow__node-body">
-              <h3 class="ab-flow__label">{node.label}</h3>
-
-              {node.sub && <p class="ab-flow__sub">{node.sub}</p>}
-            </div>
-
-            {/* Horizontal: the mark sits beside every node but the last. */}
-            {horizontal && index < nodes.length - 1 && (
-              <span class="ab-flow__mark" aria-hidden="true">
-                {gap}
-              </span>
-            )}
-          </li>
-        ))
-      }
-    </ol>
+    {(horizontal || !hasParagraphs) && (
+      <AboutChain horizontal={horizontal} gap={gap} nodes={nodes} />
+    )}
 
     {note && <p class="sd-note ab-flow__note">{note}</p>}
 
