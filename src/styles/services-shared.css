@@ -100,6 +100,25 @@
   line-height: var(--lh-snug);
 }
 
+/* The optional brand line under the lead — /about §01's "Secondary line".
+   Rendered ONLY when a page passes `tagline`, so every other consumer of this
+   hero emits no element here at all.
+
+   It deliberately mirrors `.footer-brand__tagline` (components.css): the same
+   sentence appears in the footer of every page, and it should look like the
+   same sentence when a page chooses to print it in its hero. The one change is
+   the colour token — brass reads on the ink footer, but this hero's ground is
+   ivory, so it takes `--brass-ink`, the token reserved for brass-coloured TEXT
+   on light grounds. */
+.sv-hero__tagline {
+  margin-block-start: var(--sp-3);
+  color: var(--brass-ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+}
+
 .sv-hero__actions {
   display: flex;
   flex-wrap: wrap;
