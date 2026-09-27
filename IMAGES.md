@@ -275,6 +275,39 @@ under 250 KB.
   team lineup, no handshake, no boardroom, no stock "international business"
   scene.
 
+### FAQ page — one slot
+
+| File | Label | Source size | Ratio | Used by |
+| --- | --- | --- | --- | --- |
+| `faq-hero.svg` | FAQ | **1600 × 1200** | 4:3 | `/faq` hero |
+
+**This page names no image in its brief, and it still gets one.** The brief's
+§2 specifies the eyebrow, the H1, the supporting paragraph and two actions and
+stops there. Every other page hero on the site carries a documentary image, so
+the alternative to this slot was a second hero design — text-only — which would
+be a new visual language for one page. Same 1600 × 1200 / 4:3 as every other
+hero, so it shares the frame and the crop rule.
+
+**What it must not be.** An FAQ page is the easiest place on the site to reach
+for a symbol, and every symbol is wrong here: a question mark, a speech bubble,
+a glowing lightbulb, a headset, a smiling person on a phone, a neat row of
+support icons. The brief asks for a "professional sourcing company's practical
+knowledge base" — those props make it look like a call centre.
+
+**Loads eagerly** — it sits beside an H1 with `priority`. WebP at ~75% quality,
+under 250 KB.
+
+- **FAQ hero** — one frame of a sourcing decision being worked through by hand:
+  several suppliers' samples or units of the same product compared side by side,
+  samples checked against a printed specification, quotations or requirement
+  documents worked through beside the goods they describe, or a pre-shipment
+  inspection in progress. The questions this page answers are mostly about
+  choosing between options (supplier research, comparison, verification,
+  samples, inspection), so the frame that matches the content is a comparison in
+  progress rather than a generic factory shot. Banned: question marks, speech
+  bubbles, lightbulbs, headsets, call-centre imagery, icon grids, and the
+  site-wide clichés.
+
 ### Case studies — two slots
 
 | File | Source size | Ratio |
@@ -356,8 +389,8 @@ is gone.
 - Everything below the fold loads `lazy` with `decoding="async"`. Only the
   above-the-fold hero images load eagerly, one per page that has one:
   `heroSourcing` (home), `sourcingRequestHero`, `servicesHero`,
-  `industriesHero`, `howItWorksHero`, `aboutHero`, and one per
-  `/services/<slug>` detail page — **eleven slots today** (five of the eleven
+  `industriesHero`, `howItWorksHero`, `aboutHero`, `faqHero`, and one per
+  `/services/<slug>` detail page — **twelve slots today** (five of the twelve
   are the detail pages), and it grows by one per page that ships with a hero.
 - Hover scale is 1.03 over the standard duration, and is suppressed entirely
   under `prefers-reduced-motion`.
