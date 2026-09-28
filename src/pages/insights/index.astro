@@ -1,25 +1,168 @@
 ---
 /**
- * RESERVATION PAGE — /insights
+ * /insights — the SOURDEN content library  (Insights brief §2–§11)
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * This route used to render a reservation page. It is now the hub: one featured
+ * article, a filterable directory of the twelve planned articles, the reasons
+ * the library exists, and the path from reading to a real sourcing request.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/insights` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ * STRUCTURE (brief)
+ *   01 Hero                       §2   eyebrow, H1, supporting text, one CTA
+ *   02 Featured insight           §3   the first article, editorial split
+ *   03 Article directory (+ filter) §4 the seven category chips, §5 the grid
+ *   04 Why Sourden writes         §8   three principles, no link
+ *   05 Explore by topic           §9   the six categories as destinations
+ *   06 Connection to services     §10  the five services, from the registry
+ *   07 Final CTA                  §11  closing band, one action
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * WHAT THIS PAGE DELIBERATELY DOES NOT DO
+ *   · It does not build a single article. §13 is explicit: the purpose of this
+ *     task is the hub, and the twelve `/insights/<slug>` routes stay reserved —
+ *     they resolve, they render the reservation shell, and they carry `noindex`
+ *     until their copy exists. Every link to them is live today, so writing an
+ *     article later rewrites no link.
+ *   · It does not create category pages. §9: "Do not create unnecessary
+ *     separate category pages at this stage." The chips and the topic links
+ *     filter this page instead.
+ *   · It does not invent metadata. No dates, authors, reading times, view
+ *     counts, "Coming soon" or empty-state messages — §6, §13 and §14 forbid
+ *     every one of them by name.
+ *   · It does not redesign anything. The hero, the review grid, the ruled-row
+ *     lists, the buttons, the arrow links, the reveal device and the closing
+ *     band are all the existing site's; only the composition is new.
+ *   · It does not touch the header or the footer (§19.12).
+ *
+ * INDEXABILITY
+ *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
+ *   in `reservedTopLevel` (src/data/routes.js) was deleted in the same change —
+ *   that list is what drives the noindex/sitemap split, so forgetting it would
+ *   have left a finished, content-rich page excluded from search. The twelve
+ *   article routes stay in `detailRoutePaths` and remain noindex.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then the shared sheets, then this page's own — otherwise the
+ *   page rules lose every same-specificity conflict against the shared core and
+ *   `npm run audit` fails the build. `service-detail.css` is here for the review
+ *   grid (`.sd-review*`) §8 renders and `how-it-works.css` for the ruled rows
+ *   (`.hi-rows*`) §9 and §10 render; their file names say "services" and
+ *   "how-it-works" because those pages were those devices' first consumer, exactly
+ *   as `/industries` and `/about` already document for the same two sheets.
+ *
+ * WHY A SECTION DISPATCHER
+ *   The brief numbers the bands and gives each one's copy. A dispatcher keeps the
+ *   order, the tones and the content in `insights-page.js` and nothing about the
+ *   composition in markup — the architecture `/industries` and the five service
+ *   detail pages use — so a band can be reordered or inserted without touching a
+ *   template. An unknown `type` throws rather than rendering nothing, because a
+ *   typo in a data file must not quietly delete a section from the page.
  * ---------------------------------------------------------------------------
  */
-import ReservationPage from '../../components/ReservationPage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
+import '../../styles/service-detail.css';
+import '../../styles/how-it-works.css';
+import '../../styles/insights.css';
 
-import { reservationFor } from '../../data/routes.js';
+import FinalCTA from '../../components/FinalCTA.astro';
+import HiLinkRows from '../../components/how-it-works/HiLinkRows.astro';
+import InsightFeature from '../../components/insights/InsightFeature.astro';
+import InsightsDirectory from '../../components/insights/InsightsDirectory.astro';
+import ServiceReviewGrid from '../../components/services/ServiceReviewGrid.astro';
+import ServicesHero from '../../components/services/ServicesHero.astro';
 
-const page = reservationFor('/insights');
+import { breadcrumbs, finalCta, hero, meta, sections } from '../../data/insights-page.js';
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
+
+const path = '/insights';
+
+/**
+ * One graph for the page: the page itself and its breadcrumb.
+ *
+ * No `ItemList` of the twelve articles, deliberately. Structured data exists to
+ * describe pages a search engine can usefully visit, and every one of those
+ * twelve routes is a `noindex` reservation shell today — declaring them as a
+ * list of articles would be asserting content that does not exist, which is the
+ * same fabrication the brief forbids in prose.
+ */
+const schema = [
+  webPageSchema({ title: meta.title, description: meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+];
 ---
 
-<ReservationPage {...page} />
+<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    description={hero.description}
+    primaryCta={hero.primaryCta}
+    secondaryCta={hero.secondaryCta}
+    imageKey={hero.image.key}
+    imageCaption={hero.image.caption}
+    titleId="in-hero-title"
+  />
+
+  {
+    sections.map((section) => {
+      switch (section.type) {
+        case 'featured':
+          return (
+            <InsightFeature featured={section.featured} tone={section.tone} titleId={section.titleId} />
+          );
+
+        case 'directory':
+          return (
+            <InsightsDirectory
+              directory={section.directory}
+              tone={section.tone}
+              titleId={section.titleId}
+            />
+          );
+
+        case 'reviewGrid':
+          return (
+            <ServiceReviewGrid
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              tone={section.tone}
+              titleId={section.titleId}
+            />
+          );
+
+        case 'linkRows':
+          /* Both §9 and §10 are this device. What differs is a data shape, not a
+             layout: §9's rows are six topic destinations and are not numbered,
+             §10's are the five services in registry order and are. `numbered` is
+             the list-level flag that reserves the number column — the same split
+             `IndustryRows` and `HiLinkRows` document in their own headers. */
+          return (
+            <HiLinkRows
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              numbered={section.numbered}
+              tone={section.tone}
+              titleId={section.titleId}
+            />
+          );
+
+        default:
+          throw new Error(
+            `[/insights] Unknown section type "${section.type}". ` +
+              `See the section vocabulary in src/data/insights-page.js.`
+          );
+      }
+    })
+  }
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>
