@@ -437,6 +437,17 @@
   background-color: var(--ivory);
 }
 
+/* The device's ground is ivory, which is right for a single FAQ section at the
+   end of a page. `/faq` renders SEVEN of them in a row, so their grounds have
+   to alternate or the page reads as one continuous field. Declared here rather
+   than as `section--white` on the element because `.sv-faq`'s own background
+   comes later in the cascade than the core `.section--white` and would win the
+   same-specificity tie. */
+.sv-faq--white {
+  background-color: var(--white);
+  color: var(--ink);
+}
+
 .sv-faq__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -539,6 +550,13 @@
   color: var(--muted);
   font-size: var(--fs-body-sm);
   line-height: 1.68;
+}
+
+/* An answer written as more than one paragraph (`/faq`'s are). The first
+   paragraph carries no top margin, so an existing single-paragraph answer is
+   laid out exactly as before. */
+.sv-faq__answer > p + p {
+  margin-block-start: var(--sp-3);
 }
 
 /* An answer's own link, where the brief attaches one to a single question

@@ -35,6 +35,14 @@
      src/pages/about.astro          →  import '../styles/about.css'
                                       (+ services-shared.css, service-detail.css,
                                          how-it-works.css)
+     src/pages/faq.astro            →  import '../styles/faq.css'
+                                      (+ services-shared.css, service-detail.css)
+     src/pages/privacy-policy.astro →  import '../styles/legal.css'
+     src/pages/terms-of-service.astro     (imported inside
+                                      components/legal/LegalPage.astro — same
+                                      arrangement as the `[slug]` detail pages,
+                                      whose page components own their sheets
+                                      rather than the route file)
      src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
 
    ADDING A NEW PAGE
@@ -45,7 +53,8 @@
         what enforces the next rule.
      4. Namespace every selector in it (`.sr-` for the sourcing page, `.sv-`
         for the services area, `.sd-` for service detail, `.ind-` for
-        industries, `.hi-` for how-it-works, `.ab-` for about) and reuse the
+        industries, `.hi-` for how-it-works, `.ab-` for about, `.fq-` for faq,
+        `.lg-` for the two legal documents) and reuse the
         component classes from components.css before inventing new ones — that
         is what keeps the site visually coherent.
 
@@ -65,11 +74,15 @@
      `PAGE_SHEETS`, including the shared ones.
 
      ONE MORE CONSISTENCY CHECK
-     Four non-services pages now import `services-shared.css` and
-     `service-detail.css` — `/industries`, `/how-it-works` and `/about` join
-     `/services` and the five `/services/<slug>` detail pages, so nine pages
-     share the two sheets. (`/about` also imports `how-it-works.css`, because
-     §05/§06/§10/§11/§15 reuse HiGrowth, HiStages and HiLinkRows verbatim.)
+     Five non-services pages now import `services-shared.css` — `/industries`,
+     `/how-it-works`, `/about` and `/faq` join `/services` and the five
+     `/services/<slug>` detail pages. Four of those also import
+     `service-detail.css`, so nine pages share both sheets; `/faq` takes
+     `services-shared.css` alone, because its hero and its disclosure group are
+     shared devices but a FAQ page needs none of the `.sd-` prose, split, chain
+     or review-grid treatment. (`/about` also imports `how-it-works.css`,
+     because §05/§06/§10/§11/§15 reuse HiGrowth, HiStages and HiLinkRows
+     verbatim.)
      Those file names say "services" because the services pages were the hero,
      the prose split, the review grid, the rail, the check-list and the FAQ's
      FIRST consumer — the devices themselves are generic editorial sections,

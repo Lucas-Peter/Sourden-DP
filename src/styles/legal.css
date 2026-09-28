@@ -1,0 +1,247 @@
+/* ===========================================================================
+   SOURDEN — LEGAL DOCUMENTS  (/privacy-policy, /terms-of-service)
+   ---------------------------------------------------------------------------
+   TWO DEVICES, BOTH IN THIS FILE
+     01  `.lg-hero*`       the document header — breadcrumb, eyebrow, H1, lead,
+                           and the "Last updated" line
+     02  `.lg-sections*`   the clause run — numbered <h2> clauses, each with an
+                           ordered body of paragraphs, lists and links
+
+   NAMESPACE — `.lg-`
+   ---------------------------------------------------------------------------
+   Nothing here is shared with another page family, and nothing here redefines a
+   core selector: `.section`, `.section--white`, `.container--narrow`, `.eyebrow`
+   and `.breadcrumb` are all used exactly as the shared core defines them, and
+   the action links are the shared `.arrow-link` component rather than a new link
+   style, so this sheet only adds what is genuinely new. `npm run audit` fails
+   the build if that regresses.
+
+   WHY THE HEADER IS COMPACT AND NOT THE SERVICES HERO
+   ---------------------------------------------------------------------------
+   `ServicesHero` is a 7/5 split carrying a documentary photograph and two calls
+   to action. A legal document has neither, and the site already has the right
+   shape for a page that is text from top to bottom: the compact ivory header
+   `.reserved-hero` in `inner-pages.css`, which is what these two routes render
+   while their copy does not exist.
+
+   `.lg-hero` repeats that geometry on purpose rather than importing
+   `inner-pages.css`. That sheet is 3.5KB of reservation-only rules (`.-notice`,
+   `.-block`, `.-links`, `.-actions`, `.not-found*`) and a live page carrying it
+   forever, to reuse four declarations, is the worse trade. The two headers must
+   therefore be kept in step by hand — either change both or move the shared
+   geometry into the core. Do not let one drift from the other.
+
+   ── ONE DELIBERATE DIFFERENCE FROM `.reserved-hero`: THE COLUMN ────────────
+   `.reserved-hero` sits in the wide `.container` while its body sits in
+   `container--narrow`, and on a reservation page that mismatch does not matter
+   because the body is one line of prose. A real document is 700px of text, and
+   the mismatch is then the most visible thing on the page: measured at 1440px,
+   the wide container puts the H1 at x=112 and `container--narrow` puts the
+   clause run at x=322. That 210px offset is CONSTANT at every desktop width,
+   because `.container` stops growing at 1280px — so it never resolves itself on
+   a bigger screen, it just moves.
+
+   `.lg-hero` therefore uses `container--narrow` too, and the header and the
+   clauses share one left edge. The hero's `max-width` values stay as they are:
+   they cap the lead at 522px inside the 796px column, which is a reading
+   measure doing its job, not a leftover. If either container ever changes, the
+   alignment has to be re-measured — it is not visible in the stylesheet.
+
+   WHY THERE IS NO CLAUSE NUMBER TRACK (AND NO CSS COUNTER)
+   ---------------------------------------------------------------------------
+   While the copy did not exist, this sheet numbered the clauses itself: a
+   `counter(lg-clause)` fed a `.lg-section__num` element in a reserved left
+   column, and the data carried no numbers. That was right at the time — there
+   were no headings to number — and it is wrong now. The brief writes each
+   heading WITH its number ("1. Information We Collect"), so a counter would
+   print the number twice: "01  1. Information We Collect" on every clause.
+
+   The fix is subtraction, not suppression: `.lg-section__num`, its
+   `counter-increment`, the `counter-reset` on the list and the two-column grid
+   are all gone, and the number the reader sees is the one inside the <h2>. That
+   is also the number a gate can compare against the brief verbatim, which the
+   generated one never could.
+
+   The number track is therefore not "always reserved" any more — it does not
+   exist. If a future revision strips the numbers out of the headings, do not
+   reintroduce the counter on top of them; pick one of the two, because this is
+   the failure mode where the DOM looks perfect and only the reading is wrong.
+
+   WHY THE READING MEASURES ARE ON THE PARAGRAPH AND THE LIST, NOT THE COLUMN
+   ---------------------------------------------------------------------------
+   `container--narrow` is 860px, which is a container width, not a reading
+   measure. The 68ch cap lives on `.lg-section__para` / `.lg-section__list` so
+   that long clauses (the privacy policy's list of collected fields) cannot run
+   to a 860px line. `lg-geo` asserts both halves: no paragraph may exceed the
+   cap, and wherever the column is wider than the cap the cap must be what
+   limits the line.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   01 — DOCUMENT HEADER
+   ---------------------------------------------------------------------------
+   Same padding, ground and heading treatment as `.reserved-hero` — see the
+   header note. The breadcrumb gets its own bottom margin because the core
+   `.breadcrumb` carries none: on the reservation pages it is the first child of
+   a grid, here it sits above the head block.
+   --------------------------------------------------------------------------- */
+
+.lg-hero {
+  background-color: var(--ivory);
+  padding-block: clamp(40px, 5vw, 72px) clamp(40px, 4.5vw, 64px);
+}
+
+.lg-hero__breadcrumbs {
+  margin-block-end: var(--sp-6);
+}
+
+.lg-hero__head {
+  display: grid;
+  gap: var(--sp-4);
+  max-width: 46ch;
+}
+
+.lg-hero__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+  text-wrap: balance;
+}
+
+.lg-hero__lead {
+  max-width: 54ch;
+  color: var(--muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+}
+
+/* The "Last updated" line. Metadata, not a second lead: it keeps the body size
+   and the muted colour of the clauses rather than the lead's larger type, so
+   the eye reads the intro first. `max-width: none` is deliberate — it inherits
+   the head's 46ch, which is plenty for a date and would only be a limit to
+   fight if the line ever grew.
+   Tabular figures for the same reason the clause numbers had them: a bare year
+   next to a word should not shift if it is edited. */
+.lg-hero__updated {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   02 — THE CLAUSE RUN
+   ---------------------------------------------------------------------------
+   Hairlines between clauses rather than a filled panel per clause: a legal
+   document is one continuous text, and boxing each clause would turn it into a
+   list of cards. The first hairline closes the run off from the header; every
+   clause then ends with one, so the run terminates with a rule instead of
+   stopping in mid-air.
+   --------------------------------------------------------------------------- */
+
+.lg-sections {
+  margin: 0;
+  padding: 0;
+  /* Suppressed because each heading carries its own number — see the header
+     note. The list stays an <ol> for the semantic order, not for the marker. */
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.lg-section {
+  display: grid;
+  gap: var(--sp-4);
+  padding-block: clamp(28px, 3.4vw, 44px);
+  border-bottom: var(--rule) solid var(--divider-light);
+}
+
+.lg-section__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  max-width: 34ch;
+  text-wrap: balance;
+}
+
+/* The body holds a mixed, ORDERED run of blocks — paragraph, list, link — so it
+   is a grid with one gap rather than a stack of margins: the spacing between a
+   paragraph and the list that follows it has to equal the spacing between two
+   paragraphs, and margins would make those two different by accident. */
+.lg-section__body {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+/* The action link is the one child that must NOT stretch. `.arrow-link` puts its
+   arrow after the label, so a stretched grid item would push the arrow to the
+   far right of the 860px column with the label orphaned at the left. Only this
+   child gets `justify-self`, rather than `justify-items: start` on the parent,
+   so every paragraph keeps a full-measure box. */
+.lg-section__link {
+  justify-self: start;
+}
+
+/* The site's dense-prose treatment — the same measure, colour and leading the
+   shared FAQ answers use (`.sv-faq__answer`), because legal text is the same
+   reading problem: long, quiet, and scanned rather than read.
+   `.lg-section__contact` shares it because the contact line IS a prose line; it
+   carries a separate class only so that `.lg-section__para` keeps meaning
+   exactly "one paragraph the data declared" — see the note in `LegalPage.astro`. */
+.lg-section__para,
+.lg-section__contact {
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.68;
+}
+
+/* The company name on its own line before the contact address. Ink rather than
+   muted and medium weight so it reads as the party being contacted, not as a
+   stray word stranded between two paragraphs — which is what a lone one-word
+   paragraph looks like if it is styled as body copy. */
+.lg-section__entity {
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+}
+
+/* The contact address. Not a new link style: this is the inline-link treatment
+   the sourcing request page already uses for its own addresses and fallback
+   (`text-underline-offset: 3px`, medium weight, inherited colour), because the
+   core sets `a { text-decoration: none }` and an address that is not visibly a
+   link is a worse defect on a legal page than anywhere else. */
+.lg-section__mail {
+  font-weight: var(--fw-medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lg-section__list {
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 68ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lg-section__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+/* The core's own list dash — the same mark the reservation pages' "what this
+   page will cover" list uses, so a bullet here is not a second bullet style. */
+.lg-section__item::before {
+  content: '—';
+  color: var(--brass-ink);
+}
