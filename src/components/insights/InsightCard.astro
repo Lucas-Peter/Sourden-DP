@@ -1,0 +1,71 @@
+---
+/**
+ * InsightCard — one article in the /insights directory
+ * ---------------------------------------------------------------------------
+ * The card contents are brief §6, exactly and only: category, title, short
+ * description, read link, and an OPTIONAL image. §6 also lists the visual
+ * priority (1 title, 2 category, 3 description, 4 read link) — note that the
+ * image is not in that list, which is the same statement the structure makes by
+ * rendering it before the tag but giving it no visual weight of its own.
+ *
+ * ── WHY THE READ LINK IS A <span> ──────────────────────────────────────────
+ * The whole card is one anchor, which is a far better target than a 90px link,
+ * and `<a>` has a transparent content model so wrapping the `<h3>` is valid.
+ * `<ArrowLink as="span">` renders the identical mark without nesting an anchor
+ * inside an anchor — the same arrangement the homepage's `ArticleCard` and
+ * `InsightsFeature` use.
+ *
+ * ── WHY NO DATE, AUTHOR OR READING TIME ────────────────────────────────────
+ * §6 and §14 forbid invented publication dates, authors and statistics, and §12
+ * says to display only fields that contain real information. Every article
+ * record carries `publishedAt`, `updatedAt` and `readingTime` as `null` (see
+ * `insights-articles.js`), so the fields exist for §12's data shape and no
+ * markup is written for them. That is deliberate rather than unfinished: a
+ * `<time>` element that can never render a value is markup without a subject,
+ * and the day the first article is published the slot is added together with
+ * the first real date. §6 does not list a date among the card's contents.
+ *
+ * ── WHY THE IMAGE IS CONDITIONAL ───────────────────────────────────────────
+ * §6 lists the image and §7 says a clean card without one beats a poor stock
+ * photo. No documentary photography exists yet, so every `imageKey` is `null`
+ * and the branch never runs today. It stays because §12 and §14 ask the
+ * structure to make a future article addable WITHOUT touching the page: giving
+ * an article a picture is then a `media.js` slot plus one field here.
+ *
+ * ── WHY THE MARKER IS `data-article-category`, NOT `data-category` ─────────
+ * The filter's chips query their own attribute inside their own element, and
+ * this card's is queried inside the grid, so a shared name would still work —
+ * but it would also mean a future `<script>` doing a document-wide lookup hits
+ * both. Two names make that mistake impossible.
+ * ---------------------------------------------------------------------------
+ */
+import Media from '../Media.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  article: {
+    slug: string;
+    title: string;
+    description: string;
+    imageKey: string | null;
+  };
+  /** The article's category record — supplies the card's tag. */
+  category: { slug: string; label: string; tag: string | null };
+  href: string;
+}
+
+const { article, category, href } = Astro.props;
+---
+
+{/* A <li>: the grid is a <ul> because these twelve articles are a list, and the
+    reveal device staggers a group's direct children. */}
+<li class="in-card" data-article-category={category.slug}>
+  <a class="in-card__link" href={href}>
+    {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom class="in-card__media" />}
+
+    <span class="in-card__tag">{category.tag}</span>
+    <h3 class="in-card__title">{article.title}</h3>
+    <p class="in-card__desc">{article.description}</p>
+    <ArrowLink as="span" label="Read Article" caps class="in-card__more" />
+  </a>
+</li>

@@ -1,0 +1,78 @@
+---
+/**
+ * InsightFeature — the single featured article, brief §3
+ * ---------------------------------------------------------------------------
+ * "Create a featured article area immediately below the hero." §17 allows it a
+ * "larger editorial layout", which here means a two-column composition on
+ * desktop: the frame on the left carrying the visual weight, the article's own
+ * heading, sentence and CTA on the right. On narrow screens the two stack in
+ * source order, so nothing is reordered for keyboard or screen-reader users.
+ *
+ * ── WHY THE WHOLE BLOCK IS ONE LINK ────────────────────────────────────────
+ * Same reason as the directory cards and the homepage's featured article: a
+ * large target, and `<a>`'s transparent content model makes wrapping the `<h2>`
+ * valid. The CTA inside is `<ArrowLink as="span">` so no anchor nests.
+ *
+ * ── WHY THE ARTICLE TITLE IS THE <h2> ─────────────────────────────────────
+ * The brief gives this band no section heading of its own — §3 lists a
+ * category, a title, a description and a CTA, and no heading above them. So the
+ * article's title IS the band's heading, which is why this component does not
+ * render a `SectionHeader`. It is an `<h2>` and not an `<h3>` because it is a
+ * top-level band of the page, a peer of "LATEST INSIGHTS"; the directory's
+ * cards are the `<h3>`s beneath their own `<h2>`. Heading order is therefore
+ * h1 → h2 → h2 → h3 … with no level skipped, which `npm run audit` asserts.
+ *
+ * ── THE TAG, AND WHY THERE IS NO "FEATURED" LABEL ──────────────────────────
+ * The category tag is the article's real category, read from the registry. §3
+ * forbids a "Coming Soon" label, and nothing in the brief supplies a word like
+ * "Featured" either — so none is written. The visual weight of the band is what
+ * says this one is featured.
+ * ---------------------------------------------------------------------------
+ */
+import Media from '../Media.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  /** §3's copy, assembled in `insights-page.js` from the article registry. */
+  featured: {
+    article: {
+      slug: string;
+      title: string;
+      featuredSummary: string | null;
+    };
+    /** The band's frame — a presentation choice, not the article's own photo. */
+    imageKey: string | null;
+    category: { slug: string; label: string; tag: string | null };
+    cta: { label: string; href: string };
+  };
+  tone: 'ivory' | 'white';
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId: string;
+}
+
+const { featured, tone, titleId } = Astro.props;
+const { article, category, cta } = featured;
+---
+
+<section class={`section section--${tone} in-feature`} aria-labelledby={titleId}>
+  <div class="container">
+    <article class="in-feature__card">
+      <a class="in-feature__link" href={cta.href}>
+        {featured.imageKey && <Media imageKey={featured.imageKey} ratio="3x2" zoom class="in-feature__media" />}
+
+        <div class="in-feature__body">
+          <span class="in-feature__tag">{category.tag}</span>
+
+          {/* The band's heading, and the id the <section> is labelled by. */}
+          <h2 class="in-feature__title" id={titleId}>
+            {article.title}
+          </h2>
+
+          <p class="in-feature__summary">{article.featuredSummary}</p>
+
+          <ArrowLink as="span" label={cta.label} caps class="in-feature__more" />
+        </div>
+      </a>
+    </article>
+  </div>
+</section>
