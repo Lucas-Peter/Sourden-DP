@@ -1,0 +1,239 @@
+---
+/**
+ * LegalPage — a whole legal page  (/privacy-policy, /terms-of-service)
+ * ---------------------------------------------------------------------------
+ * Composes the four things a legal page is made of: the page shell, the compact
+ * document header, the clause run, and the site's closing band. It takes the
+ * finished page object and its route, and nothing else — so the two routes are
+ * three lines each and cannot drift apart from one another.
+ *
+ * WHY THIS OWNS THE LAYOUT
+ *   It is a routed page component, which on this site means it owns its
+ *   <BaseLayout> and its closing band — the shape `IndustryDetailPage` and
+ *   `ServiceDetailPage` already have. That is also what lets a route choose
+ *   between a finished page and a reservation shell in ONE expression
+ *   (`{page ? <LegalPage … /> : <ReservationPage … />}`) instead of splitting
+ *   the branch inside a layout, which is how `/services/[slug]` and
+ *   `/industries/[slug]` do it.
+ *
+ * WHY IT TAKES THE WHOLE PAGE OBJECT
+ *   `page` is non-null here by construction: the route only reaches this
+ *   component when `legal-privacy.js` / `legal-terms.js` has a real object. An
+ *   explicit prop interface would mean five props threaded through two routes
+ *   for no gain, and the object is already the single source of the copy.
+ *   Nothing here reads a clause from anywhere else.
+ *
+ * WHY THE CLAUSE BODY IS AN ORDERED LIST OF BLOCKS
+ *   The copy interleaves its parts and the order carries meaning: §1 and §2 of
+ *   the privacy policy each introduce a list ("…such as:") and then say one more
+ *   thing after it, and two clauses end with an action link. A `paragraphs: []`
+ *   plus an `items: []` shape cannot express "a paragraph after the list" — it
+ *   can only ever render one order — so the body is an array of blocks and is
+ *   rendered in the order the data gives. A block is one line each:
+ *
+ *     { p: '…' }                      a paragraph
+ *     { list: ['…', '…'] }            a bulleted list
+ *     { link: { label, href } }       a standalone action link (ArrowLink)
+ *     { entity: true }                the business name line, from `site.name`
+ *     { mail: true }                  the contact email line, from `site.email`
+ *
+ *   `entity` and `mail` are derived rather than typed on purpose. Both documents
+ *   print the company name and the contact address, and a legal page that states
+ *   a contact address different from the one in the footer is a real defect —
+ *   so neither string exists in the data at all and neither can drift.
+ *
+ *   The email line carries its own class (`.lg-section__contact`) rather than the
+ *   paragraph class, even though it is a paragraph and shares its styling. That
+ *   keeps `.lg-section__para` meaning exactly one thing — "one paragraph the data
+ *   declared" — which is what lets a gate compare the rendered paragraph count
+ *   against the data's. With both classes on it, the derived line counted as a
+ *   clause paragraph and the count was off by one on every clause that carries
+ *   one, on both documents.
+ *
+ * WHY THE CLAUSES ARE AN <ol> WITH NO MARKERS
+ *   A legal document is an ordered sequence by construction ("see section 4" is
+ *   a normal sentence on a page like this), so the run is an <ol> and each clause
+ *   its <li>, which is what lets assistive technology announce "list item 4 of
+ *   10". The list marker itself is suppressed because the clause NUMBER is
+ *   already part of each heading — the brief writes its headings as
+ *   "4. Reference Files and Product Information" — and printing a marker as well
+ *   would number every clause twice.
+ *
+ *   That is also why the placeholder-era device's CSS counter is gone. While the
+ *   copy did not exist the headings had no numbers, so `legal.css` generated
+ *   01, 02, … into a reserved left column. The real headings carry their own
+ *   numbering, so keeping the counter would have printed "01  1. Information We
+ *   Collect". The number the reader sees is now the one in the heading, and it
+ *   is the one a gate can compare against the brief verbatim.
+ *
+ * WHY THE CLAUSE RUN HAS NO ACCESSIBLE NAME
+ *   The header band is labelled by the H1 it contains. The clause run is that
+ *   document's text, so labelling it too would put two landmarks on the page
+ *   with the same name — worse for a screen-reader user than the unnamed section
+ *   the reservation pages already ship (`.reserved-body` carries no
+ *   `aria-labelledby` either). The document outline is carried by the <h2>s
+ *   inside it.
+ *
+ * WHY THE HEADER CARRIES A "LAST UPDATED" LINE
+ *   The brief requires one ("Last updated: September 2026") and requires it to
+ *   be the real current month, not an invented earlier date. It is data, not a
+ *   build timestamp: a date derived from the build would silently re-date the
+ *   policy every time the site is rebuilt, which is the one thing a "last
+ *   updated" line must not do. See `legal-privacy.js` for where it is declared
+ *   once for both documents.
+ *
+ * ONE CLOSING ACTION, NOT TWO
+ *   `<FinalCTA>` emits exactly one control by design (site spec §19 forbids
+ *   competing buttons in the closing band), so nothing here adds a second.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then this page's sheet, or the rules below lose every
+ *   same-specificity conflict against the shared core. `npm run audit` fails the
+ *   build if that regresses, and its "shared device" rule also fails the build
+ *   if a page renders `.lg-*` without this sheet — which is the defect that
+ *   shipped on `/faq` when it rendered a shared device from a sheet it had not
+ *   imported.
+ *
+ * Styles live in `legal.css` (`.lg-hero*`, `.lg-sections*`, `.lg-section*`).
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/legal.css';
+
+import ArrowLink from '../ArrowLink.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import FinalCTA from '../FinalCTA.astro';
+
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
+import { site } from '../../data/site.js';
+
+/**
+ * One line of a clause's body. Declared as optional keys rather than a
+ * discriminated union so the template can test them in order without the
+ * narrowing gymnastics a union would need — the same looseness the rest of this
+ * codebase's prop interfaces use.
+ */
+type Block = {
+  p?: string;
+  list?: string[];
+  link?: { label: string; href: string };
+  entity?: boolean;
+  mail?: boolean;
+};
+
+interface Props {
+  /** Root-relative route, used for canonical + og:url. */
+  path: string;
+  /**
+   * The finished document. Every string on the page comes from here except the
+   * two that are derived from `site.js` — see `entity` / `mail` above and
+   * `src/data/legal-page.js` for the shape.
+   */
+  page: {
+    meta: { title: string; description: string };
+    breadcrumbs: Array<{ label: string; href?: string }>;
+    hero: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      /** "Last updated: …" — a fixed editorial value, never the build date. */
+      updated: string;
+    };
+    sections: Array<{
+      /** Stable, unique within this document, URL-safe address for the clause. */
+      anchor: string;
+      /** Carries its own number, exactly as the brief writes it ("4. Data Security"). */
+      heading: string;
+      /** Rendered in the order given. At least one block. */
+      body: Block[];
+    }>;
+    finalCta: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      cta: { label: string; href: string };
+    };
+  };
+  /** Unique per page: the header band is labelled by this id. */
+  titleId?: string;
+}
+
+const { path, page, titleId = 'lg-title' } = Astro.props;
+const { meta, breadcrumbs, hero, sections, finalCta } = page;
+
+const schema = [
+  webPageSchema({ title: meta.title, description: meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+  <section class="lg-hero" aria-labelledby={titleId}>
+    {/* `container--narrow`, NOT the wide `.container` the other page heroes
+        use. A legal document is one column, so the header and the clause run
+        have to share a left edge: with the wide container the H1 sat at 112px
+        while the clause run sat at 322px — a 210px offset that is CONSTANT at
+        every desktop width, because the wide container stops growing at
+        1280px. See the note in `legal.css`. */}
+    <div class="container container--narrow">
+      <Breadcrumbs items={breadcrumbs} class="lg-hero__breadcrumbs" />
+
+      <div class="lg-hero__head">
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1 class="lg-hero__title" id={titleId}>{hero.title}</h1>
+        <p class="lg-hero__lead">{hero.description}</p>
+        <p class="lg-hero__updated">{hero.updated}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white">
+    <div class="container container--narrow">
+      <ol class="lg-sections">
+        {
+          sections.map((section) => (
+            <li class="lg-section" id={section.anchor}>
+              <h2 class="lg-section__title">{section.heading}</h2>
+
+              <div class="lg-section__body">
+                {section.body.map((block) =>
+                  block.list ? (
+                    <ul class="lg-section__list">
+                      {block.list.map((item) => (
+                        <li class="lg-section__item">{item}</li>
+                      ))}
+                    </ul>
+                  ) : block.link ? (
+                    <ArrowLink
+                      class="lg-section__link"
+                      label={block.link.label}
+                      href={block.link.href}
+                    />
+                  ) : block.entity ? (
+                    <p class="lg-section__entity">{site.name}</p>
+                  ) : block.mail ? (
+                    <p class="lg-section__contact">
+                      Email:{' '}
+                      <a class="lg-section__mail" href={`mailto:${site.email}`}>
+                        {site.email}
+                      </a>
+                    </p>
+                  ) : (
+                    <p class="lg-section__para">{block.p}</p>
+                  )
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>
