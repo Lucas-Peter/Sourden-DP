@@ -1,0 +1,244 @@
+/* ===========================================================================
+   SOURDEN — /insights
+   ---------------------------------------------------------------------------
+   Three devices, all new to this page and all carrying the `.in-` namespace:
+
+     .in-feature*     §3  the featured article's editorial split
+     .in-filter*      §4  the category chips
+     .in-grid/.in-card* §5 the article directory
+
+   ── WHAT THIS FILE DELIBERATELY DOES NOT DO ────────────────────────────────
+   · It does not redefine a core selector. `npm run audit` fails the build if a
+     page sheet collides with `base.css` / `layout.css` / `components.css`,
+     because Astro does not guarantee chunk order for a page that renders its
+     layout through a wrapper, so a collision would apply in one build and not
+     the next. Everything here is `.in-`, and nothing here touches `.section`,
+     `.eyebrow`, `.arrow-link`, `.media` or `.num`.
+   · It does not restyle the site's buttons, hero or section headers. The hero
+     is `ServicesHero` (`.sv-hero`, in `services-shared.css`) and the three
+     lower bands are `ServiceReviewGrid` and `HiLinkRows`, imported as-is.
+
+   ── WHY THE CARDS ARE NOT `.article-*` ─────────────────────────────────────
+   The homepage has article cards already (`InsightsFeature`, `ArticleCard`),
+   and §6 asks this page to "use the existing card/component system where
+   appropriate". It is not appropriate here, and the reason is mechanical
+   rather than aesthetic: every one of those rules — `.article-feature__link`,
+   `.article-secondary__title`, `.article__category` — lives in `home.css`,
+   because the homepage was their only consumer. Importing `home.css` onto
+   `/insights` to reuse four declarations would ship the entire homepage
+   stylesheet to a second page, which is exactly what the rule in
+   `src/styles/index.css` forbids ("a future page never ships the homepage's
+   CSS"). So the card's VISUAL LANGUAGE is copied — the brass uppercase tag,
+   the display-face title, the muted 15px/1.62 description, the caps arrow
+   link — while the rules live in this page's own sheet. If a third page ever
+   needs them, that is the moment to promote them into `components.css`, the
+   same way `ServicesHero` was promoted when its second consumer arrived.
+
+   ── RESPONSIVE ─────────────────────────────────────────────────────────────
+   §17: a balanced grid on desktop, single-column cards on mobile, no horizontal
+   overflow, tappable CTAs. The breakpoints are the site's own (768 / 1200) —
+   no new ones are introduced.
+   =========================================================================== */
+
+/* ===========================================================================
+   §3 — FEATURED ARTICLE
+   ---------------------------------------------------------------------------
+   §17 allows the featured article "a larger editorial layout". On desktop that
+   is a 7/5 split with the frame on the left; below 1200px the two stack in
+   source order, so the image stays above its own heading for a screen reader
+   and nothing is reordered with grid placement.
+   =========================================================================== */
+
+.in-feature__link {
+  display: grid;
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .in-feature__link {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+    gap: clamp(var(--sp-7), 5vw, var(--sp-8));
+  }
+}
+
+.in-feature__body {
+  display: grid;
+  gap: var(--sp-4);
+  justify-items: start;
+  align-content: start;
+}
+
+/* The card tag and the featured tag are the same mark in two sizes of context —
+   one rule, so the two bands cannot drift into two slightly different labels. */
+.in-feature__tag,
+.in-card__tag {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.in-feature__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.in-feature__summary {
+  max-width: 54ch;
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.in-feature__more {
+  margin-block-start: var(--sp-2);
+}
+
+/* ===========================================================================
+   §4 — CATEGORY FILTER
+   ---------------------------------------------------------------------------
+   Seven chips. The labels are printed in the CASE THE BRIEF USES (§4 writes
+   them as "Sourcing Guides", not "SOURCING GUIDES"), so there is no
+   `text-transform` here — unlike the card tag, which §3/§5 give in uppercase and
+   which therefore arrives already capitalised.
+
+   Touch targets are 44px tall, which is the site's floor everywhere and §18's
+   "category filters are keyboard accessible" in the pointer sense.
+
+   SELECTION IS SIGNALLED THREE WAYS, ONLY ONE OF WHICH IS COLOUR (§18):
+     1. The chip INVERTS — light text on the ink surface. That is a luminance
+        change, not a hue change, so it survives every form of colour blindness
+        including full achromatopsia.
+     2. Its border switches from the muted hairline to full ink.
+     3. `aria-current="true"` carries it to assistive technology, set by the
+        server for the default state and by the filter script thereafter.
+   Font weight is deliberately NOT changed: Manrope is variable, so a weight
+   change would reflow every chip in the row each time the filter is used.
+   =========================================================================== */
+
+.in-filter {
+  margin-block-end: clamp(var(--sp-6), 3.5vw, var(--sp-7));
+}
+
+.in-filter__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.in-filter__chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--sp-4);
+  border: var(--rule) solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.in-filter__chip:hover {
+  border-color: var(--ink);
+}
+
+.in-filter__chip[aria-current] {
+  border-color: var(--ink);
+  background-color: var(--ink);
+  color: var(--text-on-dark);
+}
+
+/* ===========================================================================
+   §5 — ARTICLE DIRECTORY
+   =========================================================================== */
+
+.in-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7)) var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .in-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .in-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.in-card {
+  display: grid;
+  padding-block-start: var(--sp-5);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+/*
+  ⚠ THIS LINE IS WHAT MAKES THE FILTER WORK AT ALL.
+
+  `[hidden]` has exactly one declaration in the user-agent stylesheet —
+  `display: none` — and ANY author declaration of `display` on the same element
+  beats it, regardless of specificity, because author styles outrank UA styles.
+  `.in-card` above sets `display: grid`, so a card the filter sets `hidden`
+  would keep its grid display and stay on the screen. The symptom would be a
+  filter that changes `aria-current`, updates the status line and moves nothing.
+
+  `.in-card[hidden]` is also more specific than `.in-card`, so it wins on its own
+  terms and does not depend on the order of these two rules.
+*/
+.in-card[hidden] {
+  display: none;
+}
+
+.in-card__link {
+  display: grid;
+  gap: var(--sp-3);
+  align-content: start;
+  justify-items: start;
+}
+
+.in-card__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.in-card__desc {
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.in-card__more {
+  margin-block-start: var(--sp-1);
+}
+
+/* The directory's section header sits above the filter, and both sit above the
+   grid; without this the header would run into the chips at every width. */
+.in-directory__head {
+  margin-block-end: clamp(var(--sp-5), 3vw, var(--sp-6));
+}
