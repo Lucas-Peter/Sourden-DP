@@ -147,6 +147,54 @@ export function serviceSchema({ name, description, href }) {
 }
 
 /**
+ * A FAQPage node — the questions and answers the page actually renders.
+ *
+ * ── ADDED FOR `/faq`, AND USED BY THAT PAGE ONLY ────────────────────────────
+ * `schema.js` had no FAQ builder, and no page emitted a FAQPage node, until
+ * `/faq` was built. `/about`, `/industries`, the nine `/industries/<slug>`
+ * pages and the five `/services/<slug>` pages all render a FAQ section too —
+ * each of them was a candidate, and each was declined for the same reason: no
+ * single one of them is a page whose purpose is answering questions, so adding
+ * the node to one alone would have made that page the only page on the site
+ * carrying it. `/faq` is different — a page that exists to answer questions is
+ * exactly what the type describes — and it is a new route, so there is no
+ * passing assertion anywhere that depends on the node's absence.
+ *
+ *   Extending this to the other FAQ-bearing pages is a separate, site-wide
+ *   change, and it has to move the two verification harnesses that currently
+ *   assert the node is ABSENT (`ab-geo.mjs`, `id-geo.mjs`) in the same commit.
+ *   Leaving those behind would make a correct change fail its own gate.
+ *
+ * ── NOTHING IS INVENTED HERE ────────────────────────────────────────────────
+ * The node is built from the same `items` array the page renders, so it cannot
+ * describe a question a visitor cannot see or read an answer back in different
+ * words — the rule `serviceSchema` follows on `/about` and `/industries`. No
+ * `dateModified`, no `author`, no `aggregateRating`: none of those can be
+ * evidenced (see the honesty rule at the top of this file).
+ *
+ * @param {Array<{ question: string, answer: string | string[] }>} items
+ * @returns {Record<string, unknown>}
+ */
+export function faqPageSchema(items) {
+  return {
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        /**
+         * An answer written as several paragraphs is joined with a blank line,
+         * which is how the same text reads on the page. A single-paragraph
+         * answer stays exactly one string, so nothing is added to it.
+         */
+        text: Array.isArray(item.answer) ? item.answer.join('\n\n') : item.answer,
+      },
+    })),
+  };
+}
+
+/**
  * An insight article. `datePublished` is emitted only when a real date exists
  * — an invented date is a fabricated fact.
  * @param {{ title: string, excerpt: string, href: string, publishedAt?: string|null, imageUrl?: string }} article

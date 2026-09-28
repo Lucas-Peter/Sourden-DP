@@ -18,10 +18,20 @@
  *
  *   Done so far: /sourcing-request, /services, the five `/services/<slug>`
  *   detail pages, /industries, the nine `/industries/<slug>` category pages,
- *   /how-it-works and /about. Their copy lives in `src/data/sourcing-request.js`,
- *   `services-page.js`, `service-<slug>.js`, `industries-page.js`,
- *   `industry-<slug>.js`, `how-it-works-page.js` and `about-page.js`
- *   respectively, and all of those routes are indexable.
+ *   /how-it-works, /about and /faq. Their copy lives in
+ *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js`,
+ *   `industries-page.js`, `industry-<slug>.js`, `how-it-works-page.js`,
+ *   `about-page.js` and `faq-page.js` respectively, and all of those routes are
+ *   indexable.
+ *
+ *   IN PROGRESS: /privacy-policy and /terms-of-service. Their device, stylesheet
+ *   and routes are built; the copy is not, because the brief they were to be
+ *   written from turned out to contain the `/services` brief instead (see
+ *   `legal-page.js`). They are the only reservation entries whose listing here
+ *   is NOT how they leave `noindexPaths` — publishing one is a single data edit,
+ *   because the page's indexability and the sitemap are both derived from the
+ *   same `null`-or-not condition. Read the note on `noindexPaths` below before
+ *   changing anything about them.
  *
  *   The five `/services/<slug>` detail pages moved out of `detailRoutePaths` by
  *   being added to `detailPages` in `service-detail.js`, and the nine
@@ -44,6 +54,7 @@ import { allCaseStudies } from './caseStudies.js';
 import { allArticles } from './insights.js';
 import { builtDetailPaths } from './service-detail.js';
 import { builtIndustryPaths } from './industry-detail.js';
+import { builtLegalPaths } from './legal-page.js';
 
 /** Page copy shared by every reservation page. */
 export const reservationNotice = {
@@ -108,23 +119,10 @@ export const reservedTopLevel = [
       'How the order was managed, checked and shipped',
     ],
   },
-  {
-    path: '/faq',
-    label: 'FAQ',
-    seoTitle: 'Frequently Asked Questions | Sourden',
-    seoDescription:
-      'Common questions about sourcing from China with Sourden, including minimum order quantities, pricing, verification and shipping.',
-    eyebrow: 'FAQ',
-    h1: 'Frequently asked questions.',
-    summary:
-      'Straight answers about how sourcing through Sourden works, from the first request through to shipping.',
-    planned: [
-      'Minimum order quantities and how they actually apply',
-      'Pricing, quotations and what is included',
-      'Supplier verification and quality control',
-      'Shipping options, timelines and destination markets',
-    ],
-  },
+  /* The two legal documents. Unlike every other entry in this list, these keep
+     their entry after the page is finished: it is what renders while the copy
+     does not exist, and `noindexPaths` below filters them out by asking
+     `builtLegalPaths` rather than by their being deleted. See the note there. */
   {
     path: '/privacy-policy',
     label: 'Privacy Policy',
@@ -190,7 +188,26 @@ export const detailRoutePaths = [
 
 export const noindexPaths = [
   '/404',
-  ...reservedTopLevel.map((page) => page.path),
+  /**
+   * The legal documents are the ONE case where an entry staying in this list is
+   * not a mistake. While `legal-privacy.js` / `legal-terms.js` exports `null`
+   * they are ordinary reservations; the moment one exports a real page object it
+   * leaves this list AND becomes indexable on the page itself, because both
+   * sides read that same condition (`builtLegalPaths` below). Publishing a
+   * document is therefore a single data edit, and the two contradictory-signal
+   * checks in `npm run audit` — "noindex but in the sitemap", "indexable but
+   * absent from the sitemap" — cannot be made to disagree by forgetting a second
+   * one.
+   *
+   * Every other finished page left this list by having its entry deleted, which
+   * is right when the reservation copy has been REPLACED. These two keep theirs
+   * because the reservation shell is still the branch that renders until the
+   * copy arrives — deleting the entry now would make `reservationFor()` throw on
+   * a route that still needs it.
+   */
+  ...reservedTopLevel
+    .filter((page) => !builtLegalPaths.includes(page.path))
+    .map((page) => page.path),
   ...detailRoutePaths,
 ];
 
