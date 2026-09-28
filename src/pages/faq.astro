@@ -1,25 +1,192 @@
 ---
 /**
- * RESERVATION PAGE — /faq
+ * /faq — Frequently Asked Questions  (FAQ brief §2, §3, §5, §12, §13)
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * This route used to render a reservation page. It is now the real thing: the
+ * page a buyer reads BEFORE submitting a request, answering the practical
+ * questions about MOQ, suppliers, samples, customisation, purchasing, quality
+ * control, shipping, fees, and whether they need to be a company at all.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/faq` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ * STRUCTURE (brief §15)
+ *   01 Hero                    §2   eyebrow, H1, supporting text, two actions
+ *   02 Category navigation     §3   nine entries, in-page
+ *   03 Getting Started         §5   5 questions
+ *   04 MOQ & Order Size        §5   4 questions
+ *   05 Suppliers & Sourcing    §5   6 questions
+ *   06 Quality & Inspection    §5   5 questions
+ *   07 Purchasing & Orders     §5   4 questions
+ *   08 Shipping                §5   7 questions
+ *   09 Pricing & Payment       §5   2 questions
+ *   10 Custom Sourcing         §12  informational block, not a ninth category
+ *   11 Final CTA               §13
+ *                              33 questions in total
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * WHAT THIS PAGE DELIBERATELY DOES NOT DO
+ *   · It does not rewrite the brief's answers. §5 of the brief calls them "the
+ *     final page content" and forbids turning them into generic SEO copy; they
+ *     are reproduced verbatim in `src/data/faq-page.js`, which also records the
+ *     two places where a site-wide naming decision overrides the brief's
+ *     literal wording.
+ *   · It does not add a single fact. No customer count, supplier count, year
+ *     count, country count, percentage, certification, award or guarantee
+ *     appears anywhere on it — brief §16 names every one of those as forbidden.
+ *     The answers that touch a limit say so plainly ("it cannot eliminate every
+ *     sourcing risk", "it cannot guarantee that every possible defect … will be
+ *     detected"), because those sentences are the brief's own.
+ *   · It does not add a scripted accordion. The disclosure group is native
+ *     `<details>`, so the whole page ships with no page-specific JavaScript and
+ *     every answer is present in the served HTML — which is also why the
+ *     category navigation can be plain fragment links (see `FaqCategories`).
+ *   · It does not add a filter, a search box or a "was this helpful?" control.
+ *     The brief's §1 lists six registers this page must not slide into, and an
+ *     ecommerce/support-desk widget is one of them.
+ *   · It does not redesign anything. Header, footer, hero, disclosure group,
+ *     prose block and closing band are all the existing site's.
+ *
+ * INDEXABILITY
+ *   The page is real, so it is indexable and appears in sitemap.xml. Its entry
+ *   in `reservedTopLevel` (src/data/routes.js) was removed in the same change —
+ *   that list drives the noindex/sitemap split, so forgetting it would have
+ *   left a finished, content-rich page excluded from search.
+ *
+ * STRUCTURED DATA
+ *   WebPage + BreadcrumbList + FAQPage, all built from the same records the page
+ *   renders. The FAQPage node is the one thing on this page that is new to the
+ *   site: `schema.js` had no FAQ builder and no page emitted one, so the node is
+ *   deliberately used by `/faq` alone and the builder's docblock records why the
+ *   other FAQ-bearing pages were left out and what extending it would involve.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then the shared sections, then this page's own sheet —
+ *   otherwise these rules lose every same-specificity conflict against the
+ *   shared core. `npm run audit` fails the build if that regresses.
+ *
+ *   `service-detail.css` IS REQUIRED, despite its name. It is the sheet that
+ *   styles the shared SECTION DEVICES — `.sd-note`, `.sd-prose`, `.sd-review`,
+ *   `.sd-checklist`, `.sd-split`, `.sd-chain`, `.sd-process` — which is why all
+ *   nine other pages that render one of them import it (`/services`, the five
+ *   `/services/<slug>` pages, `/industries`, `/how-it-works`, `/about`). §12 of
+ *   this page renders `ServiceProse`, so omitting the sheet made that band fall
+ *   back to `display: block`: a 1216px paragraph at an uncapped measure, with
+ *   the two-column editorial split silently gone. Nothing in the markup changes
+ *   — only the geometry — which is exactly the class of defect a build-and-read
+ *   review does not catch.
+ *
+ * WHY A SECTION DISPATCHER
+ *   The page's eleven bands have three shapes (a navigation, seven category
+ *   disclosure groups, a prose block) and the brief fixes their order. A
+ *   dispatcher keeps that order, the ground of each band and all of its copy in
+ *   `src/data/faq-page.js`, so a band can be reordered without touching markup
+ *   and an unknown `type` throws at build time rather than silently rendering
+ *   nothing. The hero and the closing band sit outside it because they are
+ *   shared devices with their own prop sets.
+ *
+ *   `section.anchor` is passed as `titleId`, NOT as an id on the <section>: the
+ *   jump list has to land on the category's heading, and landing on the section
+ *   would scroll past its top padding and leave the heading far down the
+ *   viewport. See `ServicesFaq`'s header note.
  * ---------------------------------------------------------------------------
  */
-import ReservationPage from '../components/ReservationPage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/services-shared.css';
+import '../styles/service-detail.css';
+import '../styles/faq.css';
 
-import { reservationFor } from '../data/routes.js';
+import FinalCTA from '../components/FinalCTA.astro';
+import FaqCategories from '../components/faq/FaqCategories.astro';
+import ServiceProse from '../components/services/ServiceProse.astro';
+import ServicesFaq from '../components/services/ServicesFaq.astro';
+import ServicesHero from '../components/services/ServicesHero.astro';
 
-const page = reservationFor('/faq');
+import { breadcrumbs, faqItems, finalCta, hero, meta, sections } from '../data/faq-page.js';
+import {
+  breadcrumbItems,
+  breadcrumbSchema,
+  faqPageSchema,
+  webPageSchema,
+} from '../data/schema.js';
+
+const path = '/faq';
+
+/**
+ * One graph for the page. The FAQPage node is built from `faqItems`, which
+ * `faq-page.js` derives from the same `sections` this template maps over — so
+ * the structured data cannot describe a question the page does not render.
+ */
+const schema = [
+  webPageSchema({ title: meta.title, description: meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  faqPageSchema(faqItems),
+];
 ---
 
-<ReservationPage {...page} />
+<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    description={hero.description}
+    primaryCta={hero.primaryCta}
+    secondaryCta={hero.secondaryCta}
+    imageKey={hero.image.key}
+    imageCaption={hero.image.caption}
+    titleId="fq-01"
+  />
+
+  {
+    sections.map((section) => {
+      switch (section.type) {
+        case 'categories':
+          /* §3. A band with a <nav> inside it — see the component for why it is
+             not a heading, and why it is a section rather than a bare <nav>. */
+          return (
+            <FaqCategories items={section.items} label={section.label} tone={section.tone} />
+          );
+
+        case 'faq':
+          /* The seven categories. `tone` alternates so no two adjacent bands
+             share a ground; `anchor` becomes the heading's id, which is what
+             the navigation above scrolls to. */
+          return (
+            <ServicesFaq
+              eyebrow={section.eyebrow}
+              title={section.title}
+              items={section.items}
+              tone={section.tone}
+              titleId={section.anchor}
+            />
+          );
+
+        case 'prose':
+          /* §12 — the Custom Sourcing block. Deliberately NOT a ninth
+             category: the brief asks for "a small informational block … rather
+             than creating another large FAQ category". */
+          return (
+            <ServiceProse
+              eyebrow={section.eyebrow}
+              title={section.title}
+              paragraphs={section.paragraphs}
+              links={section.links}
+              tone={section.tone}
+              titleId={section.anchor}
+            />
+          );
+
+        default:
+          /* A typo in a `type` string must not render nothing and pass the
+             build — the band would simply vanish from the page. */
+          throw new Error(
+            `[/faq] Unknown section type "${section.type}". ` +
+              `See the section vocabulary in src/data/faq-page.js.`
+          );
+      }
+    })
+  }
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>

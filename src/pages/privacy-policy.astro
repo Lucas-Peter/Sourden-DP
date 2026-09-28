@@ -1,25 +1,41 @@
 ---
 /**
- * RESERVATION PAGE — /privacy-policy
+ * /privacy-policy — the site's privacy policy
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * ONE ROUTE, TWO BRANCHES
+ *   `legal-privacy.js` exports the finished page object, or `null` while its
+ *   copy does not exist. While it is `null` this route renders the reservation
+ *   shell — the site's honest state for a route whose content is not written,
+ *   and what this route has rendered since the URL architecture was laid down.
+ *   When the copy exists the same route renders the document instead.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/privacy-policy` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
+ *   Publishing is therefore ONE data edit. The route leaves `noindex` and enters
+ *   `sitemap.xml` with no second edit, because the page's own indexability and
+ *   the sitemap are both derived from the same `null`-or-not condition — see
+ *   `builtLegalPaths` in `src/data/legal-page.js`. That is deliberate: the two
+ *   ways this can go wrong are "finished page still excluded from search" and
+ *   "page marked noindex but listed in the sitemap", and deriving both sides
+ *   from one fact is what makes them impossible rather than merely checked.
  *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ *   The branch is the pattern `/services/[slug].astro` and `/industries/[slug].astro`
+ *   already use to choose between a finished page and its reservation shell, so
+ *   there is one way of doing this on the site rather than two.
+ *
+ *   `reservationFor()` is called only in the branch that renders it: on a
+ *   finished page the reservation entry is not read at all.
+ *
+ * WHY THERE IS NO IMAGE
+ *   The page header is the compact document header (`LegalPage`), not
+ *   `ServicesHero`: a legal document has no documentary photograph and no second
+ *   call to action. `legal.css` records why it repeats `.reserved-hero`'s
+ *   geometry rather than importing `inner-pages.css`.
  * ---------------------------------------------------------------------------
  */
+import LegalPage from '../components/legal/LegalPage.astro';
 import ReservationPage from '../components/ReservationPage.astro';
 
+import { page, path } from '../data/legal-privacy.js';
 import { reservationFor } from '../data/routes.js';
-
-const page = reservationFor('/privacy-policy');
 ---
 
-<ReservationPage {...page} />
+{page ? <LegalPage path={path} page={page} /> : <ReservationPage {...reservationFor(path)} />}

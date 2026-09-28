@@ -1,25 +1,24 @@
 ---
 /**
- * RESERVATION PAGE — /terms-of-service
+ * /terms-of-service — the terms that apply when a buyer uses Sourden's services
  * ---------------------------------------------------------------------------
- * This route is reserved by the site architecture (spec §33) and its content is
- * not written yet. The page resolves, reads in the brand's voice, and is
- * excluded from search engines while it has nothing substantial to offer.
+ * Identical in structure to `/privacy-policy` by design — same one-route-two-
+ * branches pattern, same page component, same stylesheet, same derived
+ * indexability. The two documents differ in their copy and in nothing else, so
+ * anything that differs between these two route files other than the data file
+ * they import is a mistake. See `privacy-policy.astro` for the full note on the
+ * branch, and `src/data/legal-page.js` for the shape to write and the material
+ * the copy may be built from.
  *
- * TO BUILD THIS PAGE FOR REAL
- *   1. Copy the shell from this file (imports, BaseLayout, page hero).
- *   2. Replace <ReservationPage /> with the real sections.
- *   3. Remove the `/terms-of-service` entry from `reservedTopLevel` in
- *      `src/data/routes.js` so it re-enters sitemap.xml.
- *
- * All copy for this page lives in `src/data/routes.js` — edit it there.
+ * `reservationFor()` is called only in the branch that renders it: on a
+ * finished page the reservation entry is not read at all.
  * ---------------------------------------------------------------------------
  */
+import LegalPage from '../components/legal/LegalPage.astro';
 import ReservationPage from '../components/ReservationPage.astro';
 
+import { page, path } from '../data/legal-terms.js';
 import { reservationFor } from '../data/routes.js';
-
-const page = reservationFor('/terms-of-service');
 ---
 
-<ReservationPage {...page} />
+{page ? <LegalPage path={path} page={page} /> : <ReservationPage {...reservationFor(path)} />}
