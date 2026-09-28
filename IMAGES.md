@@ -325,7 +325,39 @@ unlinked until it has a real subject.
 
 ---
 
-### Insights — three slots
+### Insights hub — one slot
+
+| File | Source size | Ratio |
+| --- | --- | --- |
+| `insights-hero.svg` | **1600 × 1200** | 4:3 |
+
+- **Insights hero** — research in progress by hand: samples or units of the same
+  product laid out together for comparison, samples checked against a printed
+  specification, quotations worked through beside the goods they describe, or a
+  pre-shipment check under way. Two or three real objects being compared reads
+  better than one polished product.
+
+**Banned for this frame** (stated in the brief and repeated in `media.js`): the
+Great Wall, a Chinese flag, a panda, a generic business handshake, a generic world
+map, artificial "China factory" stock cliches and AI-looking factory imagery.
+
+`object-fit: cover` crops from the centre, so keep the subject inside the middle
+70%; where several items are being compared, keep them *all* inside that band — a
+comparison cropped down to one item loses the point of the frame.
+
+**The hub's twelve article cards deliberately carry no image.** The brief prefers a
+clean text card to a poor stock photograph, and `src/data/insights-articles.js`
+documents the `imageKey` slot as reserved-but-unused. Only the hero and the
+featured article are framed, and they are two *different* files: the featured
+article is also card 01, so sharing one `imageKey` between the two surfaces printed
+the same photograph twice. A gate asserts two frames from two distinct sources.
+
+---
+
+### Insights — three slots (the HOMEPAGE's §18 cards) ✱
+
+**These belong to the homepage, not to `/insights`.** Editing or replacing them
+changes `/` and never the hub.
 
 | File | Source size | Ratio |
 | --- | --- | --- |
