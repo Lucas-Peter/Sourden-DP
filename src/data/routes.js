@@ -18,11 +18,21 @@
  *
  *   Done so far: /sourcing-request, /services, the five `/services/<slug>`
  *   detail pages, /industries, the nine `/industries/<slug>` category pages,
- *   /how-it-works, /about and /faq. Their copy lives in
+ *   /how-it-works, /about, /faq and /insights. Their copy lives in
  *   `src/data/sourcing-request.js`, `services-page.js`, `service-<slug>.js`,
  *   `industries-page.js`, `industry-<slug>.js`, `how-it-works-page.js`,
- *   `about-page.js` and `faq-page.js` respectively, and all of those routes are
- *   indexable.
+ *   `about-page.js`, `faq-page.js` and `insights-page.js` respectively, and all
+ *   of those routes are indexable.
+ *
+ *   /insights is the one that kept a SECOND registry: its hub copy is in
+ *   `insights-page.js` and its twelve articles in `insights-articles.js`, while
+ *   the homepage's three cards stay in `insights.js`. That is not a split of one
+ *   thing into two — the homepage brief and the Insights brief word the same
+ *   three articles differently, so changing one must not change the other page.
+ *
+ *   The twelve `/insights/<slug>` article routes stay reserved for now: the
+ *   brief that built the hub (§13) says explicitly not to write the articles,
+ *   and every link to them is live so writing one later rewrites no link.
  *
  *   IN PROGRESS: /privacy-policy and /terms-of-service. Their device, stylesheet
  *   and routes are built; the copy is not, because the brief they were to be
@@ -51,7 +61,10 @@
 import { services } from './services.js';
 import { industries } from './industries.js';
 import { allCaseStudies } from './caseStudies.js';
-import { allArticles } from './insights.js';
+/* The Insights HUB's article library, not `insights.js` — that file holds the
+   homepage's three cards, worded by the homepage brief. The two are separate on
+   purpose; see the header of `insights-articles.js`. */
+import { insightArticles, categoryFor } from './insights-articles.js';
 import { builtDetailPaths } from './service-detail.js';
 import { builtIndustryPaths } from './industry-detail.js';
 import { builtLegalPaths } from './legal-page.js';
@@ -77,31 +90,6 @@ export const reservationNotice = {
 
 /** @type {ReservationPage[]} */
 export const reservedTopLevel = [
-  {
-    path: '/insights',
-    label: 'Insights',
-    seoTitle: 'Sourcing Insights and Guides | Sourden',
-    seoDescription:
-      'Practical guides, sourcing knowledge and insights to help you make better decisions when buying from China.',
-    eyebrow: 'INSIGHTS',
-    h1: 'Practical knowledge for sourcing from China.',
-    summary:
-      'Practical guides, sourcing knowledge and insights to help you make better decisions when buying from China.',
-    planned: [
-      'Sourcing guides: finding, comparing and evaluating suppliers',
-      'Supplier verification: what to check before you order',
-      'Quality control: inspection and pre-shipment checks',
-      'Shipping: freight options, timelines and terms',
-      'Small business sourcing: ordering from China at a smaller scale',
-    ],
-    linkList: {
-      title: 'Articles',
-      items: allArticles.map((article) => ({
-        label: article.title,
-        href: `/insights/${article.slug}`,
-      })),
-    },
-  },
   {
     path: '/case-studies',
     label: 'Case Studies',
@@ -166,7 +154,7 @@ export const reservedTopLevel = [
 export const detailRoutePaths = [
   ...services.map((item) => item.href),
   ...industries.map((item) => item.href),
-  ...allArticles.map((item) => `/insights/${item.slug}`),
+  ...insightArticles.map((item) => `/insights/${item.slug}`),
   ...allCaseStudies
     .filter((item) => item.slug)
     .map((item) => `/case-studies/${item.slug}`),
@@ -225,7 +213,7 @@ export const detailRouteGroups = {
     parent: { label: 'Industries', href: '/industries' },
     item,
   })),
-  insights: allArticles.map((item) => ({
+  insights: insightArticles.map((item) => ({
     slug: item.slug,
     kind: 'insight',
     parent: { label: 'Insights', href: '/insights' },
@@ -320,7 +308,12 @@ export function reservationForDetail(kind, item, parent) {
     kind === 'service'
       ? item.description
       : kind === 'insight'
-        ? item.excerpt
+        ? // The hub's registry (`insights-articles.js`) names the listing
+          // sentence `description`; the older `insights.js` called the same
+          // thing `excerpt`. Reading either keeps a future registry working
+          // under whichever name it picks, instead of a silent `undefined`
+          // landing in the meta description of a real page.
+          (item.description ?? item.excerpt)
         : kind === 'industry'
           ? // `summaryNoun` exists because a few category titles do not slot
             // into this sentence naturally ("sources sports & outdoors").
@@ -328,7 +321,12 @@ export function reservationForDetail(kind, item, parent) {
             `Sourden sources ${item.summaryNoun ?? item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`
           : 'This case is published only once the real requirement, process and outcome are confirmed. Details are being prepared.';
 
-  const eyebrow = kind === 'insight' ? item.category : copy.eyebrow;
+  /* The eyebrow is the article's CATEGORY TAG (`SOURCING GUIDE`), read from the
+     category registry rather than from the article record — the record stores a
+     `categorySlug`, and the tag is the category's own display string. Reading
+     `item.category` here would have printed nothing at all, quietly, because no
+     article carries that field. */
+  const eyebrow = kind === 'insight' ? categoryFor(item.categorySlug).tag : copy.eyebrow;
 
   return {
     path,

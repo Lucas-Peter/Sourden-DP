@@ -1,7 +1,21 @@
 /**
- * SOURDEN — INSIGHTS
+ * SOURDEN — INSIGHTS  (HOMEPAGE SECTION)
  * ---------------------------------------------------------------------------
  * Spec §18. This is a professional knowledge section, not a company-news blog.
+ *
+ * ── THIS FILE IS THE HOMEPAGE'S THREE CARDS, NOT THE INSIGHTS HUB ──────────
+ * Everything here is consumed by `src/components/Insights.astro` — the
+ * homepage's §18 band — and by nothing else. The `/insights` HUB reads
+ * `src/data/insights-articles.js` (its twelve articles) and
+ * `src/data/insights-page.js` (its copy).
+ *
+ * The two registries are separate on purpose: the homepage brief and the
+ * Insights brief word the same three articles differently (article 01 gets a
+ * longer sentence on the hub, article 02 is `SUPPLIER KNOWLEDGE` there and
+ * `SUPPLIER VERIFICATION` here). One shared record would have forced one of the
+ * two pages to publish the other's wording. **Editing this file changes the
+ * homepage and never the hub; editing `insights-articles.js` changes the hub and
+ * never the homepage.**
  *
  * PURPOSE (in priority order): SEO → demonstrate sourcing expertise → answer
  * customer questions → build long-term organic traffic.
