@@ -1,63 +1,61 @@
 ---
 /**
- * InsightsDirectory — §4's category filter + §5's article directory
+ * InsightsDirectory — §5's article directory, with paging
  * ---------------------------------------------------------------------------
- * One band, because §4 and §5 are one device: §4 names seven filter states and
- * §5 gives the grid its eyebrow, heading and supporting line, and a filter has
- * nowhere to sit except above the thing it filters.
+ * One band: the section header, a count line, the grid of twelve cards, and a
+ * paging control band that appears only once the library is longer than one
+ * page.
  *
- * ── THE FILTER IS LINKS, ENHANCED — NOT BUTTONS ────────────────────────────
- * Every chip is an `<a href>` to the real destination, so:
- *   · §9's `?category=` topic links and these chips are the SAME mechanism, as
- *     §9 allows ("if query-parameter filtering is not implemented, use the same
- *     category state/filter mechanism already used on the page");
- *   · the chip is focusable, keyboard-operable and copy-and-pasteable for free;
- *   · with JavaScript off the chip still does something useful — it navigates
- *     to the same page, which then renders the full library.
- * The script below then upgrades that: it filters in place, keeps the URL in
- * step with `pushState`, and answers the back button. With scripting off the
- * page shows all twelve and the "All" chip is marked current — which is the
- * honest fallback, not a broken one: nothing is hidden from a visitor who never
- * sees a filter happen.
+ * This band used to carry §4's category filter as well — seven chips above the
+ * grid, plus a `?category=` state and a `role="status"` line announcing how many
+ * insights matched. The filter is gone with the page's other removed bands (see
+ * `insights-page.js` for the full list and for what it means for §4's
+ * categories, which survive on the cards as tags).
  *
- * ── WHY THE ACTIVE STATE IS `aria-current` AND NOT A COLOR ─────────────────
- * §18 requires that color is not the only way to signal the selection. The
- * stylesheet therefore inverts the selected chip (light text on the ink surface,
- * a luminance change rather than a hue shift) AND changes its border and weight,
- * and `aria-current="true"` carries it to assistive technology. Three signals,
- * one of which is not color.
+ * ── THE SERVER RENDERS EVERY CARD. THE SCRIPT ONLY DECIDES WHAT IS VISIBLE ──
+ * All twelve cards are in the HTML, always. That is the crawler's view and the
+ * no-JS view, and it is why paging here is an enhancement rather than a
+ * dependency: if the script never runs, a visitor sees the whole library and a
+ * count that says how many articles the library holds — both true statements,
+ * neither one a degraded page.
  *
- * ── THE REVEAL TRAP, AND WHY THE GRID IS THE GROUP ─────────────────────────
- * `.js-reveal [data-reveal]` sets `opacity: 0` on an element until an
- * IntersectionObserver adds `.is-revealed` — and an element that is
- * `display: none` never intersects, so a card hidden by the filter and later
- * filtered back in would come back INVISIBLE and stay that way. Putting the
- * reveal state on the CONTAINER instead (`data-reveal-group`, whose `.is-revealed`
- * is inherited by every child) removes the failure: the grid is revealed once,
- * and a card re-shown after that is immediately visible. This is why the flag is
- * on the `<ul>` and not on each `<li>`.
+ * ── THE COUNT LINE IS THE ONE PLACE TWO RENDERERS WRITE THE SAME SENTENCE ───
+ * The count is produced twice: here at build time for the state the page ships
+ * in, and in the browser every time the visitor changes page. Both read the same
+ * three templates out of `directory.paging` (the page's data file) — this
+ * component does not carry a copy of the wording. The `{count}`, `{shown}` and
+ * `{total}` tokens are the contract between the two; the substitution itself is
+ * one line in each, which is cheaper than a shared module the client bundle
+ * would have to pull the whole page's data through.
  *
- * ── WHY THE STATUS LINE EXISTS ─────────────────────────────────────────────
- * Filtering is a visual-only change: a screen-reader user who activates a chip
- * gets no feedback at all, and the card count is the whole point of the control.
- * The `role="status"` region is visually hidden and updated with "N insights
- * shown". §4's "do not display empty category messages prominently" is
- * respected by there being no visible empty state at all — and by every
- * category holding at least one article, which `insights-articles.js` derives
- * and the gate asserts.
+ * ── `role="status"` ON THE COUNT, AND WHY NOTHING ELSE IS A LIVE REGION ─────
+ * Paging is a visual-only change: a screen-reader user who activates "Next" gets
+ * no feedback at all unless something announces it, and the count is exactly the
+ * information that changed. So the count is a polite live region and every other
+ * part of the update is silent.
+ *
+ * ── WHY THE CONTROL BAND IS `hidden` AND NOT ABSENT ────────────────────────
+ * The `<nav>` is always in the DOM so the script has something to fill and so
+ * there is no layout shift when paging appears; `hidden` is what removes it.
+ * ⚠ `[hidden]` has exactly one declaration in the user-agent stylesheet —
+ * `display: none` — and ANY author declaration of `display` on the same element
+ * beats it, because author styles outrank UA styles. `.in-pagination` sets
+ * `display: flex`, so without the `.in-pagination[hidden]` rule in `insights.css`
+ * an empty bordered row would sit under every directory on the site. The failure
+ * mode leaves the markup perfect and the script correct; only the geometry is
+ * wrong. The gate asserts the computed display, not the attribute.
  * ---------------------------------------------------------------------------
  */
 import SectionHeader from '../SectionHeader.astro';
 import InsightCard from './InsightCard.astro';
-import { categoryFor, DEFAULT_CATEGORY } from '../../data/insights-articles.js';
+import { articleHref, categoryFor } from '../../data/insights-articles.js';
 
 interface Props {
   directory: {
     eyebrow: string;
     title: string;
     description: string;
-    filterLabel: string;
-    categories: Array<{ slug: string; label: string; tag: string | null }>;
+    readLabel: string;
     articles: Array<{
       slug: string;
       title: string;
@@ -65,18 +63,34 @@ interface Props {
       imageKey: string | null;
       categorySlug: string;
     }>;
+    paging: {
+      pageSize: number;
+      navLabel: string;
+      prev: string;
+      next: string;
+      gap: string;
+      pageLabel: string;
+      countMany: string;
+      countOne: string;
+      countPaged: string;
+    };
   };
   tone: 'ivory' | 'white';
   titleId: string;
 }
 
 const { directory, tone, titleId } = Astro.props;
+const { paging } = directory;
 
-/* The href for a filter chip. "All" goes to the bare route rather than
-   `?category=all`, so the unfiltered URL stays the canonical one and a search
-   engine sees exactly one address for the page. */
-const chipHref = (categorySlug) =>
-  categorySlug === DEFAULT_CATEGORY ? '/insights' : `/insights?category=${categorySlug}`;
+/* The state the page ships in. The library fits on one page today, so this is
+   the "N articles" form; if it did not fit, the paged form would be rendered
+   for page 1 and the script would agree with it on load.
+
+   With scripting off this line is never corrected, and it stays true for the
+   reason the header gives: the whole library is on the page. */
+const total = directory.articles.length;
+const initialCount =
+  total === 1 ? paging.countOne : paging.countMany.replace('{count}', String(total));
 ---
 
 <section class={`section section--${tone} in-directory`} aria-labelledby={titleId}>
@@ -89,26 +103,20 @@ const chipHref = (categorySlug) =>
       class="in-directory__head"
     />
 
-    <nav class="in-filter" aria-label={directory.filterLabel} data-insight-filter>
-      <ul class="in-filter__list" role="list">
-        {
-          directory.categories.map((category) => (
-            <li class="in-filter__item">
-              <a
-                class="in-filter__chip"
-                href={chipHref(category.slug)}
-                data-filter-category={category.slug}
-                aria-current={category.slug === DEFAULT_CATEGORY ? 'true' : undefined}
-              >
-                {category.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-
-    <p class="visually-hidden" role="status" data-insight-status></p>
+    {/* Every word the count can print, and the size of a page, handed to the
+        script through the element it updates. The three templates are read back
+        in the script below; none of them is retyped there. */}
+    <p
+      class="in-count"
+      role="status"
+      data-insight-count
+      data-page-size={paging.pageSize}
+      data-count-one={paging.countOne}
+      data-count-many={paging.countMany}
+      data-count-paged={paging.countPaged}
+    >
+      {initialCount}
+    </p>
 
     <ul class="in-grid" data-insight-grid data-reveal-group>
       {
@@ -116,81 +124,228 @@ const chipHref = (categorySlug) =>
           <InsightCard
             article={article}
             category={categoryFor(article.categorySlug)}
-            href={`/insights/${article.slug}`}
+            href={articleHref(article)}
+            readLabel={directory.readLabel}
           />
         ))
       }
     </ul>
+
+    <nav
+      class="in-pagination"
+      aria-label={paging.navLabel}
+      data-insight-pagination
+      data-label-prev={paging.prev}
+      data-label-next={paging.next}
+      data-label-gap={paging.gap}
+      data-label-page={paging.pageLabel}
+      hidden
+    >
+    </nav>
   </div>
 </section>
 
 <script>
   /* ---------------------------------------------------------------------------
-     Category filter — progressive enhancement over the chips above.
+     Paging — progressive enhancement over the server-rendered grid.
 
-     The server renders all twelve cards and marks "All" current. Everything
-     below is additive: if it never runs, the page is a complete, readable,
-     crawlable directory.
+     None of the wording lives here: the count's three templates come off the
+     count element and the control labels off the control band, both rendered
+     from `insights-page.js`. This script only decides WHICH cards are on screen
+     and WHICH control is current.
      ------------------------------------------------------------------------- */
-  const filter = document.querySelector('[data-insight-filter]');
   const grid = document.querySelector('[data-insight-grid]');
+  const nav = document.querySelector('[data-insight-pagination]');
+  const counter = document.querySelector('[data-insight-count]');
 
-  if (filter && grid) {
-    const chips = Array.from(filter.querySelectorAll('[data-filter-category]'));
-    const cards = Array.from(grid.querySelectorAll('[data-article-category]'));
-    const status = document.querySelector('[data-insight-status]');
+  if (grid && nav && counter) {
+    const pageSize = Number(counter.dataset.pageSize);
 
-    /* Every state a chip can ask for. A `?category=` value outside this set
-       falls back to the default rather than emptying the grid — a stale or
-       mistyped link should show the library, not nothing. */
-    const known = new Set(chips.map((chip) => chip.dataset.filterCategory));
-    const DEFAULT = 'all';
+    /* No page size means no paging — bail out rather than divide by zero and
+       print "Page 1 of Infinity". The library then shows in full, which is the
+       same state a visitor without scripting gets. */
+    if (pageSize >= 1) {
+      const templates = {
+        one: counter.dataset.countOne || '',
+        many: counter.dataset.countMany || '',
+        paged: counter.dataset.countPaged || '',
+      };
+      const words = {
+        prev: nav.dataset.labelPrev || '',
+        next: nav.dataset.labelNext || '',
+        gap: nav.dataset.labelGap || '',
+        page: nav.dataset.labelPage || '',
+      };
 
-    const apply = (requested) => {
-      const wanted = known.has(requested) ? requested : DEFAULT;
+      const fill = (template, values) =>
+        template.replace(/\{(\w+)\}/g, (match, key) =>
+          key in values ? String(values[key]) : match
+        );
 
-      let shown = 0;
-      for (const card of cards) {
-        const match = wanted === DEFAULT || card.dataset.articleCategory === wanted;
-        card.hidden = !match;
-        if (match) shown += 1;
-      }
+      /* The directory's own address, read rather than typed. A relative `?page=2`
+         would resolve against this URL correctly, but a relative drop back to
+         page 1 would not: on `/insights` (no trailing slash) `./` resolves to
+         `/`. So the path is taken from the location — which also means the
+         control band has real, correct hrefs for a crawler and for a modified
+         click. */
+      const base = window.location.pathname;
 
-      for (const chip of chips) {
-        if (chip.dataset.filterCategory === wanted) chip.setAttribute('aria-current', 'true');
-        else chip.removeAttribute('aria-current');
-      }
+      /* Re-read on every render rather than capturing a snapshot at load: the
+         grid is the page's live content, and a snapshot would make the controls
+         describe a directory that no longer exists the moment anything else
+         touches it. */
+      const cards = () => Array.from(grid.querySelectorAll('.in-card'));
+      const lastPage = () => Math.max(1, Math.ceil(cards().length / pageSize));
 
-      if (status) {
-        status.textContent = shown + (shown === 1 ? ' insight shown' : ' insights shown');
-      }
+      const pageFromLocation = () => {
+        const raw = parseInt(
+          new URLSearchParams(window.location.search).get('page'),
+          10
+        );
+        if (isNaN(raw) || raw < 1) return 1;
+        /* A stale `?page=9` on a three-page library lands on the last page
+           rather than on an empty grid. */
+        return Math.min(raw, lastPage());
+      };
 
-      return wanted;
-    };
+      const show = (page) => {
+        const all = cards();
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        let shown = 0;
 
-    const fromLocation = () =>
-      new URLSearchParams(window.location.search).get('category') || DEFAULT;
+        all.forEach((card, index) => {
+          const visible = index >= start && index < end;
+          if (visible) card.removeAttribute('hidden');
+          else card.setAttribute('hidden', '');
+          if (visible) shown += 1;
+        });
 
-    /* Apply the URL on load, so §9's topic links land on a filtered page. */
-    apply(fromLocation());
+        counter.textContent =
+          all.length <= pageSize
+            ? all.length === 1
+              ? templates.one
+              : fill(templates.many, { count: all.length })
+            : fill(templates.paged, { shown, total: all.length });
+      };
 
-    filter.addEventListener('click', (event) => {
-      if (!(event.target instanceof Element)) return;
-      const chip = event.target.closest('[data-filter-category]');
-      if (!chip) return;
+      /* A compact window of page numbers: 1 … (p-1) p (p+1) … last. */
+      const pageWindow = (page, last) => {
+        if (last <= 7) {
+          return Array.from({ length: last }, (_, i) => i + 1);
+        }
+        const window = [1];
+        if (page > 3) window.push('gap');
+        for (let p = Math.max(2, page - 1); p <= Math.min(last - 1, page + 1); p += 1) {
+          window.push(p);
+        }
+        if (page < last - 2) window.push('gap');
+        window.push(last);
+        return window;
+      };
 
-      /* A modified click is the visitor asking for a new tab or window — let the
-         browser have it; the href is a real, filterable permalink. */
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const control = (label, page, options) => {
+        const settings = options || {};
+        const el = document.createElement('a');
+        el.className = 'in-pagination__btn';
+        el.textContent = label;
 
-      event.preventDefault();
-      const wanted = apply(chip.dataset.filterCategory);
-      const href = chip.getAttribute('href');
-      if (href) window.history.pushState({ category: wanted }, '', href);
-    });
+        if (settings.disabled) {
+          /* No href at all: a control that cannot go anywhere must not be a
+             link, must not be focusable, and must not be clickable — so it is
+             not given a target and is never wired to the click handler. */
+          el.setAttribute('aria-disabled', 'true');
+          el.setAttribute('role', 'link');
+          return el;
+        }
 
-    /* The back button has to undo a filter, or the history entry the pushState
-       above created is a lie. */
-    window.addEventListener('popstate', () => apply(fromLocation()));
+        el.href = page <= 1 ? base : base + '?page=' + page;
+        el.dataset.pageTarget = String(page);
+
+        if (settings.current) {
+          el.classList.add('is-current');
+          el.setAttribute('aria-current', 'page');
+        }
+        if (settings.numbered) {
+          /* A bare "3" between two arrows is ambiguous read aloud; the visible
+             label stays a number and the accessible name says what it is. */
+          el.setAttribute('aria-label', fill(words.page, { n: page }));
+        }
+        return el;
+      };
+
+      const renderControls = (page, last) => {
+        nav.innerHTML = '';
+
+        if (last <= 1) {
+          nav.hidden = true;
+          return;
+        }
+        nav.hidden = false;
+
+        nav.appendChild(control(words.prev, page - 1, { disabled: page === 1 }));
+
+        pageWindow(page, last).forEach((entry) => {
+          if (entry === 'gap') {
+            const gap = document.createElement('span');
+            gap.className = 'in-pagination__gap';
+            gap.textContent = words.gap;
+            gap.setAttribute('aria-hidden', 'true');
+            nav.appendChild(gap);
+            return;
+          }
+          nav.appendChild(
+            control(String(entry), entry, {
+              current: entry === page,
+              numbered: true,
+            })
+          );
+        });
+
+        nav.appendChild(control(words.next, page + 1, { disabled: page === last }));
+      };
+
+      /* `replaceState`, not `pushState`: moving between pages of one directory
+         is not a journey the back button should have to walk back through. A
+         visitor who arrives at `?page=2` and presses back leaves the page — which
+         is what they expect, and what the control band's `href`s make possible
+         for a crawler or a modified click. */
+      const render = (page) => {
+        const last = lastPage();
+        const current = Math.min(Math.max(1, page), last);
+
+        show(current);
+        renderControls(current, last);
+
+        const url = new URL(window.location.href);
+        if (current === 1) url.searchParams.delete('page');
+        else url.searchParams.set('page', current);
+        window.history.replaceState(null, '', url);
+      };
+
+      nav.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) return;
+        const button = event.target.closest('[data-page-target]');
+        if (!button) return;
+
+        /* A modified click is the visitor asking for a new tab — let the browser
+           have it; the href is a real address for that page of the directory. */
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        event.preventDefault();
+        render(Number(button.dataset.pageTarget));
+
+        /* The grid, not the top of the page: the visitor pressed a control that
+           belongs to the directory and should stay in it. Offset by the sticky
+           header. */
+        const top = grid.getBoundingClientRect().top + window.scrollY - 96;
+        const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top, behavior: still ? 'auto' : 'smooth' });
+      });
+
+      window.addEventListener('popstate', () => render(pageFromLocation()));
+
+      render(pageFromLocation());
+    }
   }
 </script>

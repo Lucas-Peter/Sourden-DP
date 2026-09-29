@@ -15,6 +15,11 @@
  * inside an anchor — the same arrangement the homepage's `ArticleCard` and
  * `InsightsFeature` use.
  *
+ * ── WHY `readLabel` IS A PROP, NOT A STRING IN THIS FILE ───────────────────
+ * Every visible word on the site lives in `src/data/*.js`; a component that
+ * types its own copy is how a page ends up with two wordings for one control.
+ * The directory passes `directory.readLabel`.
+ *
  * ── WHY NO DATE, AUTHOR OR READING TIME ────────────────────────────────────
  * §6 and §14 forbid invented publication dates, authors and statistics, and §12
  * says to display only fields that contain real information. Every article
@@ -32,11 +37,18 @@
  * structure to make a future article addable WITHOUT touching the page: giving
  * an article a picture is then a `media.js` slot plus one field here.
  *
- * ── WHY THE MARKER IS `data-article-category`, NOT `data-category` ─────────
- * The filter's chips query their own attribute inside their own element, and
- * this card's is queried inside the grid, so a shared name would still work —
- * but it would also mean a future `<script>` doing a document-wide lookup hits
- * both. Two names make that mistake impossible.
+ * ── WHY THERE IS NO LONGER A `data-article-category` MARKER ────────────────
+ * That attribute was the category filter's hook: the chip row read it to decide
+ * which cards to hide. The filter is gone (see `insights-page.js`), so the
+ * attribute had no reader left, and an attribute nothing queries is the same
+ * liability as a field nothing renders. The category still reaches the screen —
+ * as the tag above the title, resolved through `categoryFor()`.
+ *
+ * ── THE CARD IS A BOX ──────────────────────────────────────────────────────
+ * `.in-card` is the surface: white, a hairline border, the site's 3px radius,
+ * and a 2px lift with the border going to full ink on hover. That is the
+ * presentation this directory was redesigned to, and the reason the card cannot
+ * simply inherit the top-ruled row the page's other lists use.
  * ---------------------------------------------------------------------------
  */
 import Media from '../Media.astro';
@@ -50,22 +62,24 @@ interface Props {
     imageKey: string | null;
   };
   /** The article's category record — supplies the card's tag. */
-  category: { slug: string; label: string; tag: string | null };
+  category: { slug: string; tag: string };
   href: string;
+  /** The read link's label, from the page's data file. */
+  readLabel: string;
 }
 
-const { article, category, href } = Astro.props;
+const { article, category, href, readLabel } = Astro.props;
 ---
 
 {/* A <li>: the grid is a <ul> because these twelve articles are a list, and the
     reveal device staggers a group's direct children. */}
-<li class="in-card" data-article-category={category.slug}>
+<li class="in-card">
   <a class="in-card__link" href={href}>
     {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom class="in-card__media" />}
 
     <span class="in-card__tag">{category.tag}</span>
     <h3 class="in-card__title">{article.title}</h3>
     <p class="in-card__desc">{article.description}</p>
-    <ArrowLink as="span" label="Read Article" caps class="in-card__more" />
+    <ArrowLink as="span" label={readLabel} caps class="in-card__more" />
   </a>
 </li>
