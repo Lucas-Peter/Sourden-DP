@@ -498,39 +498,28 @@ export const images = {
   },
 
   /* ------------------------------------------------------------ insights -- */
-  /* `/insights` hub hero — the page's one hero frame.
+  /* THE `/insights` HUB HAS NO IMAGE SLOT AT ALL — and the slot it used to have
+     was DELETED, not left unused.
    *
-   * The Insights brief (§2) gives the hero four things — an eyebrow, the H1, a
-   * supporting line and one CTA — and names no image. Every other hub page on
-   * the site carries one frame in the same 1600 × 1200 / 4:3 slot, and §17 asks
-   * this page to feel like part of the existing site, so this is that slot
-   * rather than a second hero design.
+   * `insightsHero` (1600 × 1200) lived here and the hub hero rendered it. The
+   * page's presentation has since been reduced to a compact hero, the article
+   * directory and two closing bands, and the hero now carries only §2's four
+   * elements — eyebrow, H1, supporting line, CTA — which is what §2's own
+   * "Do not make the hero overly large" asks for.
    *
-   * §7 is unusually specific about the banned list — Great Wall, Chinese flags,
-   * pandas, generic business handshakes, generic world maps, artificial "China
-   * factory" stock clichés, AI-looking factory imagery — and §2 says not to make
-   * the hero large, so the frame should read as work rather than spectacle.
+   * An orphan slot is not free. `npm run placeholders` keeps writing its file
+   * into `public/images/`, and `check:remote` then asks for an upload of a file
+   * nothing on the site references — so the slot, its file and its `IMAGES.md`
+   * row went together. If a hero frame is ever wanted again, this comment is
+   * the record of what the slot was: alt, ratio and the §7 banned list.
    */
-  insightsHero: {
-    file: 'insights-hero.svg',
-    width: 1600,
-    height: 1200,
-    ratio: '4:3',
-    label: 'INSIGHTS',
-    alt: 'Placeholder for a documentary photograph of supplier research — product samples and documents compared against a specification on a work surface.',
-    role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
-    artDirection:
-      'Research in progress by hand: samples or units of the same product laid out together for comparison, samples checked against a printed specification or requirement sheet, quotations or documents worked through beside the goods they describe, or a pre-shipment check under way. Two or three real objects being compared reads better than one polished product. Banned, per the brief: the Great Wall, a Chinese flag, a panda, a generic business handshake, a generic world map, artificial "China factory" stock cliches and AI-looking factory imagery.',
-    cropNote:
-      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters. Where several items are being compared, keep them all inside that middle band — a comparison cropped down to one item loses the point of the frame.',
-  },
-  /* The three `insight*` slots below belong to the HOMEPAGE's §18 cards. The
-     hub's directory carries no images on purpose: brief §6 lists the card image
+
+  /* The three `insight*` slots below belong to the HOMEPAGE's §18 cards, and
+     the hub's directory still carries no images: brief §6 lists the card image
      as optional and §7 says a clean editorial card without one beats a poor
-     stock photo, and no documentary photography exists yet. Only the featured
-     article on the hub uses a frame, and it reuses `insightSupplierResearch`
-     below — it is that same article. See `insights-articles.js`. */
+     stock photo, and no documentary photography exists yet. Nothing on
+     `/insights` renders a frame today — the article directory is text-only on
+     purpose. See `insights-articles.js`. */
   insightSupplierResearch: {
     file: 'insight-supplier-research.svg',
     width: 1400,

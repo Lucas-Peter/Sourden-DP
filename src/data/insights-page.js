@@ -1,32 +1,56 @@
 /**
  * SOURDEN — /insights  (Practical knowledge for sourcing from China)
  * ---------------------------------------------------------------------------
- * Every editable word on the Insights hub, from the Insights brief (§2–§11).
+ * Every editable word on the Insights hub.
  *
  * ── WHAT THIS PAGE IS ──────────────────────────────────────────────────────
  * The central content library: a hub, not a blog. §1 is explicit about what it
  * must NOT look like — a generic company blog, a news site, an SEO article
  * directory, a fake industry publication, or a page of dozens of empty cards.
  * What it says instead is "practical knowledge for people who actually buy from
- * China", so the page is three things and nothing more: one featured piece, a
- * filterable directory of the twelve planned articles, and the reasons the
- * library exists.
+ * China", so the page is a hero, one directory of the twelve planned articles,
+ * and the two bands that close it.
+ *
+ * ── IT USED TO BE SEVEN BANDS. IT IS NOW THREE PLUS THE CLOSING CTA ─────────
+ * The original build followed the brief band by band. The page was then
+ * simplified — the presentation, not the content underneath it — to the shape
+ * the directory page was designed for in the project's own static prototype:
+ * a compact hero, the listing, and the closing bands. What that removed, named
+ * so that nobody later reads the absence as an oversight:
+ *
+ *   · §3's FEATURED BAND. Its article still leads the page: it is card 01 of the
+ *     directory and the first record in `insights-articles.js`, which is what
+ *     §14's "only the featured article needs to be treated as the first
+ *     priority" asks for. The band's longer §3 sentence went with the band —
+ *     every card, that one included, prints §5's `description`.
+ *   · §4's CATEGORY FILTER. The categories are still the taxonomy: each card
+ *     prints its category's uppercase tag. What is gone is the chip row and the
+ *     `?category=` state.
+ *   · §8 WHY SOURDEN WRITES and §9 EXPLORE BY TOPIC, both whole.
+ *   · The hero's image, and with it §2's reading that a hub hero carries a frame.
+ *     §2's own last line — "Do not make the hero overly large" — is what the
+ *     hero now follows.
+ *
+ * §10 is KEPT: it is the page's five links into the service detail pages and
+ * §15 asks the page to link to all five by name. §11's closing band is kept.
+ * The brief still holds every removed band's copy (§3, §4, §8, §9), so bringing
+ * one back is a re-read of the brief rather than a reconstruction.
  *
  * ── WHAT THIS FILE AUTHORS, AND WHAT IT DOES NOT ───────────────────────────
- * Every eyebrow, heading, paragraph, article title, article description and
- * principle below is the brief's own wording, verbatim, in its straight ASCII
- * apostrophes — the convention every other page file follows.
+ * Every eyebrow, heading and paragraph below is the brief's own wording,
+ * verbatim, in its straight ASCII apostrophes — the convention every other page
+ * file follows.
  *
- * The strings this file authors are marked 〔added〕: the hero image caption and
- * the section `tone` values. Nothing else. In particular:
+ * The strings this file authors are marked 〔added〕: the pagination's control
+ * labels and the count line's three templates, none of which the brief supplies.
+ * Nothing else. In particular:
  *   · every service name and href in §10 comes from `service-links.js`, and the
  *     sentence beside it is the registry's own `description` — the brief gives
  *     the five names and routes and no sentences, and this file does not invent
  *     five. The brief writes service 03 as "Purchasing & Order Management"; the
  *     site publishes it as "Purchasing Management", so the registry wins. See
  *     the same decision recorded in `about-page.js`.
- *   · every category word comes from `insights-articles.js`.
- *   · every article comes from `insights-articles.js`.
+ *   · every category word and every article comes from `insights-articles.js`.
  *
  * ── THE TWO CONFLICTS WITH THE SITE'S OWN RULES, AND HOW THEY RESOLVED ─────
  * 1. §11 names a SECONDARY action in the closing band ("How It Works →").
@@ -34,38 +58,41 @@
  *    competing buttons there — and that rule has now been held four times
  *    (`/industries` §13, `/how-it-works` §16, `/about` §18, and the five detail
  *    pages). The same resolution is used here: the destination moves to the
- *    hero as the secondary action, which §15 also asks the page to link to. So
- *    nothing is lost and the closing band still has one action.
+ *    hero as the secondary action. That is also load-bearing rather than
+ *    decorative — §15 names `/how-it-works` as a page this hub must link to, and
+ *    the hero's secondary action is its only occurrence in the page body.
  *
- * 2. §2 gives the hero exactly four things — eyebrow, H1, supporting text and
- *    ONE primary CTA. `<ServicesHero>` requires a secondary action and every
- *    other hub page passes one, so the hero carries `How It Works →`. That is
- *    not a fifth invented element: it is the destination §11 named and §15
- *    listed, and it is the string `/industries`, `/about` and `/faq` all use.
+ * 2. §2 gives the hero four things — eyebrow, H1, supporting text and ONE
+ *    primary CTA. `<ServicesHero>` takes a required secondary action and every
+ *    other hub page passes one, so the hero carries `How It Works →` as well.
+ *    That is not a fifth invented element: it is the destination §11 named and
+ *    §15 listed, and it is the string `/industries`, `/about` and `/faq` all use.
  *
  * ── NO FABRICATED METADATA ─────────────────────────────────────────────────
  * §6 and §14 forbid, by name: author names, reading statistics, view counts,
  * comment counts, publication dates, "Coming soon" and "we have no articles
  * yet". The article records carry those fields as `null` (see
- * `insights-articles.js`) and the card renders a field only when it is a real
- * string, so there is nothing to fake and nothing to remove later.
+ * `insights-articles.js`) and the card renders no markup for them, so there is
+ * nothing to fake and nothing to remove later. The count line reports how many
+ * articles the library holds — §14 states plainly that the initial twelve cards
+ * ARE the planned content library, so the number is a count of what is on the
+ * page, not a statistic about the business.
  *
- * ── WHY THE PAGE HAS SEVEN BANDS AND NOT TWELVE ────────────────────────────
- * §4 (category navigation) and §5 (article directory) are one device: the
- * filter sits under §5's section header and above §5's grid. §6 and §7 are not
- * sections at all — §6 is the card spec and §7 is image direction. So the brief's
- * §2–§11 become: hero → featured → directory (+ filter) → why → topics →
- * services → closing band.
+ * ── PAGINATION IS AN ENHANCEMENT, NOT A DEPENDENCY ─────────────────────────
+ * The server renders all twelve cards. The script in `InsightsDirectory.astro`
+ * then shows one page of them at a time and builds the controls, which do not
+ * appear at all while the library fits on a single page — so with today's twelve
+ * articles against a page size of twelve, the control band is hidden, and a
+ * thirteenth article is what makes it appear.
+ *
+ * With scripting off nothing is hidden and the whole library is on the page:
+ * the honest fallback, and the one a crawler sees. `pageSize` and the control
+ * words live here rather than in the script so that the page and its gate read
+ * the same strings — see the tokens each template accepts.
  * ---------------------------------------------------------------------------
  */
 
-import {
-  insightArticles,
-  insightCategories,
-  topicCategories,
-  articleHref,
-  categoryFor,
-} from './insights-articles.js';
+import { insightArticles } from './insights-articles.js';
 import { serviceForSlug } from './service-links.js';
 import { primaryCta } from './site.js';
 
@@ -93,6 +120,10 @@ export const breadcrumbs = [{ label: 'Insights' }];
 
 /* ===========================================================================
    §2 — HERO
+   ---------------------------------------------------------------------------
+   No image, and therefore no `imageKey` slot in `media.js` either — the slot was
+   deleted rather than left unused, because an orphan slot keeps generating a
+   placeholder into `public/images/` that nothing on the site references.
    =========================================================================== */
 
 export const hero = {
@@ -103,65 +134,15 @@ export const hero = {
   /** The site-wide primary action, declared once in `site.js`. */
   primaryCta,
   /**
-   * The brief's §11 secondary ("How It Works →"), placed here because
-   * `<FinalCTA>` renders one control — see the header. §15 also names
-   * `/how-it-works` as a page the hub should link to.
+   * §11's secondary ("How It Works →"), placed here because `<FinalCTA>` renders
+   * one control — see the header. §15 also names `/how-it-works` as a page the
+   * hub should link to, and this is where that link lives.
    */
   secondaryCta: { label: 'How It Works', href: '/how-it-works' },
-  image: {
-    key: 'insightsHero',
-    /**
-     * 〔added〕 Image direction is brief §7 entirely, including its banned list;
-     * the caption is written here because the brief does not supply one and
-     * every hero on the site has one.
-     */
-    caption: 'Supplier research and product samples compared against a specification.',
-  },
 };
 
 /* ===========================================================================
-   §3 — FEATURED INSIGHT
-   ---------------------------------------------------------------------------
-   The record is looked up rather than re-declared, so the featured band and the
-   article's own card cannot disagree about its title or its category. §3 gives
-   this one article a LONGER description than §5 does, and that is why the
-   record carries `featuredSummary` beside `description` instead of one field
-   being made to serve both.
-   =========================================================================== */
-
-const FEATURED_SLUG = 'how-to-find-reliable-suppliers-in-china';
-
-const featuredArticle = insightArticles.find((article) => article.slug === FEATURED_SLUG);
-
-if (!featuredArticle) {
-  throw new Error(
-    `[insights-page.js] No article registered with slug "${FEATURED_SLUG}", so the featured ` +
-      `section would render empty. Fix the slug or the article list in insights-articles.js.`
-  );
-}
-
-export const featured = {
-  article: featuredArticle,
-  category: categoryFor(featuredArticle.categorySlug),
-  /**
-   * The featured band's frame.
-   *
-   * This lives HERE rather than on the article record, and the reason is a real
-   * defect the gate caught: the featured article is also card 01 of the
-   * directory, because §19.4 requires all twelve cards. With one `imageKey` on
-   * the record, the same photograph rendered twice on the same page — once in
-   * the band and once in the card directly below it. So the frame is a
-   * presentation choice of this surface; `article.imageKey` remains §12's data
-   * slot for the article's own photograph.
-   */
-  imageKey: 'insightSupplierResearch',
-  /** §3's CTA label, verbatim. The grid's cards use "Read Article" instead —
-   *  see `InsightCard.astro` — because only this one is called a guide. */
-  cta: { label: 'Read the Guide', href: articleHref(featuredArticle) },
-};
-
-/* ===========================================================================
-   §5 — ARTICLE DIRECTORY  (+ §4's filter, which is its control)
+   §5 — ARTICLE DIRECTORY
    =========================================================================== */
 
 export const directory = {
@@ -169,106 +150,80 @@ export const directory = {
   title: 'Useful knowledge, without the noise.',
   description:
     "We focus on the practical side of sourcing — the questions that matter when you're actually trying to find, buy and move products from China.",
-  /** Accessible name for the filter. 〔added〕 — §4 names the categories, not the control. */
-  filterLabel: 'Filter insights by category',
-  articles: insightArticles,
   /**
-   * All SEVEN entries, "All" included — the filter needs the default state as
-   * a chip, and §4 lists it first in the category list. §9's topic section
-   * renders the six real categories only, from `topicCategories`.
+   * 〔added〕 §6 requires a "read link" on every card but does not word one. This
+   * is the wording the directory was designed with, and it lives here rather
+   * than in `InsightCard.astro` because every visible word on the site lives in
+   * a data file — a component that types its own copy is how one control ends up
+   * with two wordings.
    */
-  categories: insightCategories,
+  readLabel: 'Read Article',
+  /** Order is display order — see `insights-articles.js`. */
+  articles: insightArticles,
+
+  /**
+   * Paging, and every word the paging controls can print.
+   *
+   * 〔added〕 The brief specifies neither a page size nor any control label, and
+   * §12 only asks that the structure make future articles easy to add. Twelve per
+   * page is the number the project's directory prototype settled on, and it is
+   * also the size of the whole library today — which is why no control appears
+   * until a thirteenth article exists.
+   *
+   * The templates carry tokens because the same three sentences are produced
+   * twice: once here at build time for the state the page ships in, and once in
+   * the browser when the visitor changes page. `{count}` / `{shown}` / `{total}`
+   * are substituted with numbers by both. Keeping the words here rather than in
+   * the script is what stops the two renderers from drifting into two different
+   * sentences for the same state.
+   *
+   * `countOne` exists so that a one-article library cannot print "1 articles".
+   * It is unreachable today and stays because the day it becomes reachable is
+   * the day a wrong plural would be published.
+   */
+  paging: {
+    pageSize: 12,
+    /** Accessible name for the control band. */
+    navLabel: 'Insights pagination',
+    prev: '← Prev',
+    next: 'Next →',
+    /** Printed between distant page numbers, and inert. */
+    gap: '…',
+    /** Accessible name for each page number. `{n}` is the page. */
+    pageLabel: 'Page {n}',
+    /** `{count}` — the library fits on one page. */
+    countMany: '{count} articles',
+    /** The one-article form of `countMany`. */
+    countOne: '1 article',
+    /** `{shown}` / `{total}` — the library is longer than one page. */
+    countPaged: 'Showing {shown} of {total} articles',
+  },
 };
 
 /* ===========================================================================
    THE BANDS
    ---------------------------------------------------------------------------
-   Order, tones and content live here so the composition is data, not markup —
-   the architecture `/industries` and `/about` use. `type` selects the device in
-   the route; an unknown type throws at build time rather than rendering an
-   empty band.
+   Order and tones live here so the composition is data, not markup — the
+   architecture `/industries` and `/about` use. `type` selects the device in the
+   route; an unknown type throws at build time rather than rendering an empty
+   band.
 
-   TONES alternate ivory/white against the hero, which is ivory itself
-   (`.sv-hero`). §8/§9/§10 use three DEVICES THE SITE ALREADY HAS — the review
-   grid and the two ruled-row lists — rather than three new ones, which is what
-   "the page feels like part of the existing website" (§19.14) asks for.
+   Two bands: the directory, then §10. Tones alternate ivory/white against the
+   hero, which is ivory itself (`.sv-hero`).
    =========================================================================== */
 
 export const sections = [
   {
-    type: 'featured',
-    tone: 'white',
-    titleId: 'in-featured',
-    featured,
-  },
-
-  {
     type: 'directory',
-    tone: 'ivory',
+    tone: 'white',
     titleId: 'in-directory',
     directory,
-  },
-
-  /* ---- §8 WHY SOURDEN WRITES -------------------------------------------- */
-  {
-    type: 'reviewGrid',
-    tone: 'white',
-    titleId: 'in-why',
-    eyebrow: 'WHY THESE INSIGHTS',
-    title: 'Written for people who actually buy.',
-    description:
-      "Sourcing advice can become complicated very quickly. We focus on the practical questions that come up when you're actually researching suppliers, comparing quotations, placing orders and moving products from China.",
-    /**
-     * The brief's three principles. §8 says this section "should reinforce the
-     * SOURDEN brand without becoming another sales section", so there is no
-     * link and no call to action here — the section states a position and stops.
-     */
-    items: [
-      {
-        title: 'Practical',
-        description: 'Focus on decisions buyers actually need to make.',
-      },
-      {
-        title: 'Clear',
-        description: 'Explain sourcing concepts without unnecessary jargon.',
-      },
-      {
-        title: 'Realistic',
-        description: 'No promises of perfect suppliers, guaranteed savings or risk-free sourcing.',
-      },
-    ],
-  },
-
-  /* ---- §9 EXPLORE BY TOPIC ---------------------------------------------- */
-  {
-    type: 'linkRows',
-    tone: 'ivory',
-    titleId: 'in-topics',
-    numbered: false,
-    eyebrow: 'EXPLORE BY TOPIC',
-    title: 'Find the information you need.',
-    /**
-     * §9's six topics, derived from the category registry rather than typed —
-     * name, one-line description and `?category=` destination all come from
-     * there, so a topic and its filter chip can never describe different things.
-     *
-     * §9 allows the fallback: "if query-parameter filtering is not implemented,
-     * use the same category state/filter mechanism already used on the page."
-     * The `?category=` links ARE that mechanism — the page's filter script reads
-     * the query string on load — so both forms work and neither is a dead end.
-     */
-    items: topicCategories.map((category) => ({
-      title: category.label,
-      description: category.description,
-      href: `/insights?category=${category.slug}`,
-    })),
-    /** §9: "Do not create unnecessary separate category pages at this stage." */
   },
 
   /* ---- §10 CONNECTION TO SERVICES --------------------------------------- */
   {
     type: 'linkRows',
-    tone: 'white',
+    tone: 'ivory',
     titleId: 'in-services',
     numbered: true,
     eyebrow: 'FROM KNOWLEDGE TO ACTION',

@@ -1,149 +1,108 @@
 /**
  * SOURDEN — INSIGHTS ARTICLE LIBRARY
  * ---------------------------------------------------------------------------
- * Every article the Insights hub knows about, from the Insights brief (§4, §5,
- * §9, §12, §13). A LEAF module: it imports nothing, so `insights-page.js` can
- * import it and the route can import that without a cycle. The same rule
- * `service-links.js` states for the services side of the site.
+ * Every article the Insights hub knows about, from the Insights brief (§5, §13).
+ * A LEAF module: it imports nothing, so `insights-page.js` can import it and the
+ * route can import that without a cycle. The same rule `service-links.js` states
+ * for the services side of the site.
  *
  * ── THIS IS NOT `insights.js` ───────────────────────────────────────────────
  * `src/data/insights.js` holds the HOMEPAGE's three cards, worded by the
  * homepage brief (§18). This file holds the HUB's twelve, worded by the
  * Insights brief. The two briefs specify different text for the same article —
- * article 01's featured sentence is longer on the hub than the homepage's card
- * excerpt, and article 02 is tagged `SUPPLIER KNOWLEDGE` here but `SUPPLIER
- * VERIFICATION` there. Both texts are real, so both are kept; neither file
- * writes into the other's surface. Editing one does NOT change the other page.
+ * article 02 is tagged `SUPPLIER KNOWLEDGE` here but `SUPPLIER VERIFICATION`
+ * there. Both texts are real, so both are kept; neither file writes into the
+ * other's surface. Editing one does NOT change the other page.
  *   · homepage section → `src/components/Insights.astro` → `insights.js`
  *   · this hub page    → `src/pages/insights/index.astro` → `insights-page.js`
  *
- * ── ONE CATEGORY LIST, THREE CONSUMERS ─────────────────────────────────────
- * The brief names categories three times and they are not quite the same words
- * each time: §3/§5 use the SHORT UPPERCASE tag printed on an article card
- * (`SOURCING GUIDE`), §4 names the filter chips (`Sourcing Guides`), §9 gives
- * each topic a one-line description and a `?category=` destination. Declaring
- * that three times is how "Sourcing Guide" and "Sourcing Guides" end up as two
- * categories. So there is one record per category with both wordings — `tag`
- * for the card, `label` for the filter — and the three consumers read it.
+ * ── THE FIELDS THAT ARE GONE, AND WHY THEY WENT WITH THEIR SURFACES ─────────
+ * The hub's presentation is now three bands: the hero, this directory and the
+ * two closing bands. When it was cut back from seven bands, three things in this
+ * module lost their only reader — and a field the page cannot render is worse
+ * than no field, because the next person fills it in and nothing happens (the
+ * `publishedAt` note below is the same failure, caught in time):
  *
- * `tag` is `null` on `all` because "All" is a filter state, not a category an
- * article can belong to. Anything that renders a tag asks for the article's
- * category record, so a null tag can never reach a card.
+ *   · `featuredSummary` — the LONGER §3 sentence, written for the featured band.
+ *     That band is gone and every card, this article's included, prints §5's
+ *     `description`. So an article carries exactly ONE sentence now.
+ *   · `label` and `description` on a category — §4's seven filter names and §9's
+ *     six topic lines. Both bands are gone; the only category word that reaches
+ *     the screen is the uppercase `tag` printed on a card.
+ *   · the `all` category — that is a filter STATE, not a category an article can
+ *     belong to, and with no filter there is no default state to name.
+ *
+ * The brief still holds every one of them (§4, §9, and each article's §3 entry),
+ * so restoring a filter means re-reading the brief, not reconstructing anything.
  *
  * ── THE ARTICLE SHAPE (brief §12) ───────────────────────────────────────────
  * §12 asks the structure to support `slug`, `category`, `title`, `description`,
- * `image`, `publishedDate`, `updatedDate`, `readingTime` and `featured`, and
- * then says to display only the fields that hold real information. So all of
- * those fields exist here — and the four that would be fabricated are `null`:
+ * `image`, `publishedDate`, `updatedDate`, `readingTime` and `featured`, and then
+ * says to display only the fields that hold real information. All of those
+ * fields exist here — which is why this module KEEPS a few that nothing renders
+ * today — and the ones that would be fabricated are empty:
  *
  *   · `publishedAt` / `updatedAt` — no article has a publication date, because
- *     none has been published. §6 and §14 both forbid inventing one. The
- *     card renders the date only if the value is a real string, so filling one
- *     in later is a data edit, not a markup change.
+ *     none has been published. §6 and §14 both forbid inventing one.
+ *     ⚠ FILLING ONE IN DOES NOT MAKE IT APPEAR. No component on this page
+ *     renders these fields — `InsightCard.astro` writes no `<time>` and says so
+ *     in its own header. Publishing the first dated article is a FIELD change
+ *     and a MARKUP change, together. An earlier version of this comment claimed
+ *     the card already rendered whatever date it was given, which would have
+ *     led straight to filling the field in and seeing nothing — the same
+ *     "silently prints nothing" failure as reading `item.category` where the
+ *     record holds `categorySlug` (see `routes.js`).
  *   · `readingTime` — same: a reading time for a body that does not exist is a
  *     fabricated statistic (§6, §14).
- *   · `imageKey` — see the note on images below.
- *
- * `featured` marks the one article the featured band highlights. `description`
- * is the listing sentence (§5) and is what a card prints; `featuredSummary` is
- * the longer one §3 gives that same article for the featured band, and is
- * `null` on the other eleven because the brief does not write them one.
- *
- * ── WHY NO ARTICLE CARRIES AN IMAGE ────────────────────────────────────────
- * §6 makes the card image optional and §7 says plainly that "if appropriate
- * high-quality images are not available, a clean editorial card without an
- * image is preferable to a poor stock image". No documentary photography exists
- * yet — every slot on the site is still a labelled placeholder — so the honest
- * reading is a text-only directory. The featured band does carry the existing
- * `insightSupplierResearch` slot, so the page still opens with one frame. A
- * later article gets an image by adding a `media.js` slot and naming it here.
+ *   · `imageKey` — §12's `image` slot. All twelve are `null`: §6 makes the card
+ *     image optional and §7 says plainly that "if appropriate high-quality
+ *     images are not available, a clean editorial card without an image is
+ *     preferable to a poor stock image". No documentary photography exists yet,
+ *     so the directory is text-only on purpose. Giving an article a picture is a
+ *     `media.js` slot plus this field — nothing else on the page changes.
+ *   · `featured` — §12's slot for §14's "only the featured article needs to be
+ *     treated as the first priority". Nothing renders it: the directory shows
+ *     all twelve equally and in array order, so the first record IS the lead
+ *     article. Read it as the record of which article the brief leads with
+ *     rather than as a display switch — a featured surface would consume it.
  *
  * ── ORDER IS THE DISPLAY ORDER ─────────────────────────────────────────────
  * The array is the brief's article order (01–12) and the grid renders it as
  * written. Nothing sorts it: a `publishedAt` sort would move every card the day
  * a date is filled in, which is not what a content library should do silently.
+ * It is also what decides which articles land on which page of the directory's
+ * pagination (§12: "make it easy to add future articles without redesigning the
+ * Insights page").
  * ---------------------------------------------------------------------------
  */
 
 /**
  * @typedef {Object} InsightCategory
- * @property {string}      slug         `?category=` value and the filter key.
- * @property {string}      label        Filter chip + §9 topic name.
- * @property {string|null} tag          The short uppercase card label. null on "all".
- * @property {string|null} description  §9's one line. null on "all".
+ * @property {string} slug  Key an article's `categorySlug` points at.
+ * @property {string} tag   The short uppercase label printed on a card.
  */
 
 /** @type {InsightCategory[]} */
 export const insightCategories = [
-  {
-    slug: 'all',
-    label: 'All',
-    tag: null,
-    description: null,
-  },
-  {
-    slug: 'sourcing-guides',
-    label: 'Sourcing Guides',
-    tag: 'SOURCING GUIDE',
-    description: 'Practical guidance for finding products and suppliers.',
-  },
-  {
-    slug: 'supplier-knowledge',
-    label: 'Supplier Knowledge',
-    tag: 'SUPPLIER KNOWLEDGE',
-    description: 'Understand suppliers, verification and sourcing relationships.',
-  },
-  {
-    slug: 'purchasing',
-    label: 'Purchasing',
-    tag: 'PURCHASING',
-    description: 'Practical knowledge about MOQ, quotations and order management.',
-  },
-  {
-    slug: 'quality-control',
-    label: 'Quality Control',
-    tag: 'QUALITY CONTROL',
-    description: 'Learn what to check before products leave China.',
-  },
-  {
-    slug: 'shipping',
-    label: 'Shipping',
-    tag: 'SHIPPING',
-    description: 'Understand the practical side of moving goods from China.',
-  },
-  {
-    slug: 'product-sourcing',
-    label: 'Product Sourcing',
-    tag: 'PRODUCT SOURCING',
-    description: 'Explore product-specific sourcing questions and considerations.',
-  },
+  { slug: 'sourcing-guides', tag: 'SOURCING GUIDE' },
+  { slug: 'supplier-knowledge', tag: 'SUPPLIER KNOWLEDGE' },
+  { slug: 'purchasing', tag: 'PURCHASING' },
+  { slug: 'quality-control', tag: 'QUALITY CONTROL' },
+  { slug: 'shipping', tag: 'SHIPPING' },
+  { slug: 'product-sourcing', tag: 'PRODUCT SOURCING' },
 ];
-
-/**
- * The category an article can actually belong to — i.e. everything except the
- * "all" filter state. §9's topic section renders exactly this list, so the six
- * topics and the six real filter chips cannot drift apart.
- */
-export const topicCategories = insightCategories.filter((category) => category.tag !== null);
-
-/**
- * The default filter state. Declared as a name rather than left implicit so the
- * page, the filter script and the audit all mean the same thing by "unfiltered".
- */
-export const DEFAULT_CATEGORY = 'all';
 
 /**
  * @typedef {Object} InsightArticle
  * @property {string}      slug
  * @property {string}      categorySlug    Key into `insightCategories`.
  * @property {string}      title
- * @property {string}      description     The listing sentence (§5).
- * @property {string|null} featuredSummary §3's longer sentence, featured only.
+ * @property {string}      description     The listing sentence (§5) — the card's.
  * @property {string|null} imageKey        Key from `media.js`, or null.
  * @property {string|null} publishedAt     ISO date. null — nothing is published.
  * @property {string|null} updatedAt       ISO date. null — nothing is published.
  * @property {string|null} readingTime     null — a body that does not exist has no reading time.
- * @property {boolean}     featured
+ * @property {boolean}     featured        §14's first priority. Nothing renders it.
  */
 
 /** @type {InsightArticle[]} */
@@ -154,19 +113,6 @@ export const insightArticles = [
     title: 'How to Find Reliable Suppliers in China',
     description:
       'A practical guide to researching suppliers, comparing options and identifying suppliers that fit your product and purchasing requirements.',
-    featuredSummary:
-      'Finding a supplier is easy. Finding one that actually fits your product, quantity, quality requirements and business goals is a different task. This guide explains what to look for when researching suppliers in China.',
-    /* null, and not the `insightSupplierResearch` slot, even though that slot
-       exists and is about this article.
-       Reason: this article is rendered TWICE on the hub — once in the featured
-       band and once as card 01, because §19.4 requires all twelve cards. With
-       an `imageKey` here, the SAME photograph appeared in both places, one
-       directly under the other, which is the duplication `media.js` already
-       warns about for the service pages ("the visitor sees the same photograph
-       twice — once on the card they clicked and again on the page it opened").
-       The featured band's frame is therefore a PRESENTATION choice and lives on
-       `featured` in `insights-page.js`. This field stays as §12's `image` slot
-       for the article's own photograph, which does not exist yet. */
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -179,7 +125,6 @@ export const insightArticles = [
     title: 'How to Verify a Chinese Supplier Before You Order',
     description:
       'What to look at before choosing a supplier, including product capability, MOQ, pricing, communication, production and other practical considerations.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -192,7 +137,6 @@ export const insightArticles = [
     title: "China Supplier vs. Trading Company: What's the Difference?",
     description:
       'Understand the practical differences between manufacturers and trading companies, and why the right choice depends on your product and sourcing requirements.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -205,7 +149,6 @@ export const insightArticles = [
     title: 'What Information Should You Give a China Supplier?',
     description:
       'The product details, specifications, quantities and requirements that can make supplier communication faster and quotations more useful.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -218,7 +161,6 @@ export const insightArticles = [
     title: 'MOQ in China Sourcing: What It Really Means',
     description:
       'Why suppliers set minimum order quantities, what affects MOQ and how buyers can approach smaller-volume sourcing.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -231,7 +173,6 @@ export const insightArticles = [
     title: 'How to Compare Supplier Quotations in China',
     description:
       'A quotation is more than a unit price. Learn what to compare before deciding which supplier is actually the right fit.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -244,7 +185,6 @@ export const insightArticles = [
     title: 'Why You Should Check Products Before They Ship',
     description:
       'What pre-shipment inspection can help identify, what it cannot guarantee, and why clear inspection criteria matter.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -257,7 +197,6 @@ export const insightArticles = [
     title: 'What Should a Pre-Shipment Inspection Check?',
     description:
       'A practical overview of quantity, appearance, specifications, packaging and other checks that may be relevant before shipment.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -270,7 +209,6 @@ export const insightArticles = [
     title: 'Air Freight vs. Sea Freight from China',
     description:
       'Understand the main differences between air and sea freight and the factors that should influence your shipping decision.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -283,7 +221,6 @@ export const insightArticles = [
     title: 'What Affects the Cost of Shipping from China?',
     description:
       'Weight, volume, destination, shipping method, packaging and other factors can all affect the final logistics cost.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -296,7 +233,6 @@ export const insightArticles = [
     title: 'Can You Source a Product from a Photo?',
     description:
       'What a product image can tell a sourcing partner, what it cannot tell you, and what additional information helps identify suitable suppliers.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -309,7 +245,6 @@ export const insightArticles = [
     title: 'How Product Samples Fit Into the Sourcing Process',
     description:
       'Why samples can matter before bulk production and what buyers should evaluate before approving a product.',
-    featuredSummary: null,
     imageKey: null,
     publishedAt: null,
     updatedAt: null,
@@ -320,8 +255,8 @@ export const insightArticles = [
 
 /**
  * The route for an article. Built here rather than typed into the page so the
- * card link, the reserved route and the `?category=` links all derive from one
- * slug. This is the same rule `services.js` follows with its `href`.
+ * card link, the reserved route and anything else that points at an article all
+ * derive from one slug. This is the same rule `services.js` follows with `href`.
  *
  * @param {InsightArticle} article
  */
@@ -332,9 +267,10 @@ export function articleHref(article) {
 /**
  * Look up a category, or fail the build.
  *
- * A silent `find()` here would let a typo'd `categorySlug` render a card with
- * no tag and drop that article out of every filter — a page that looks finished
- * while quietly hiding a fifth of the library.
+ * A silent `find()` here would let a typo'd `categorySlug` render a card with no
+ * tag — a page that looks finished while one of its cards has lost the label the
+ * brief gives every article. Failing the build is the only outcome that cannot
+ * ship.
  *
  * @param {string} slug
  * @returns {InsightCategory}
@@ -344,38 +280,8 @@ export function categoryFor(slug) {
   if (!category) {
     throw new Error(
       `[insights-articles.js] No category registered with slug "${slug}". ` +
-        `Add it to insightCategories — the filter, the card tag and the §9 topics all read that list.`
+        `Add it to insightCategories — every card's tag reads that list.`
     );
   }
   return category;
-}
-
-/**
- * Articles in a category, in display order. `all` returns the whole library.
- *
- * @param {string} slug
- * @returns {InsightArticle[]}
- */
-export function articlesInCategory(slug) {
-  if (slug === DEFAULT_CATEGORY) return insightArticles;
-  categoryFor(slug);
-  return insightArticles.filter((article) => article.categorySlug === slug);
-}
-
-/**
- * How many articles each real category holds.
- *
- * The hub renders no "nothing here yet" message (brief §14 bans one), so this
- * is not used to populate an empty state. It exists so the page — and a gate —
- * can assert that every category the filter offers actually matches something:
- * a chip that can only ever produce an empty grid is a broken filter.
- *
- * @returns {Array<{ slug: string, label: string, count: number }>}
- */
-export function categoryCounts() {
-  return topicCategories.map((category) => ({
-    slug: category.slug,
-    label: category.label,
-    count: articlesInCategory(category.slug).length,
-  }));
 }
