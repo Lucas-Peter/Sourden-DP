@@ -325,32 +325,23 @@ unlinked until it has a real subject.
 
 ---
 
-### Insights hub — one slot
+### Insights hub — no slots
 
-| File | Source size | Ratio |
-| --- | --- | --- |
-| `insights-hero.svg` | **1600 × 1200** | 4:3 |
+**`/insights` carries no image at all.** Its brief gives the hero four elements —
+eyebrow, H1, supporting text and two actions — and closes with "Do not make the
+hero overly large", so the hero is a single-column text block. `ServicesHero`
+takes an optional `imageKey` and this page simply does not pass one.
 
-- **Insights hero** — research in progress by hand: samples or units of the same
-  product laid out together for comparison, samples checked against a printed
-  specification, quotations worked through beside the goods they describe, or a
-  pre-shipment check under way. Two or three real objects being compared reads
-  better than one polished product.
+The slot above (`insights-hero.svg`) existed and was **deleted rather than left
+unused**. An orphaned entry in `media.js` still generates a placeholder file, and
+`check:remote` then reports a file the repository does not need — the manifest
+would be describing an image that no page renders.
 
-**Banned for this frame** (stated in the brief and repeated in `media.js`): the
-Great Wall, a Chinese flag, a panda, a generic business handshake, a generic world
-map, artificial "China factory" stock cliches and AI-looking factory imagery.
-
-`object-fit: cover` crops from the centre, so keep the subject inside the middle
-70%; where several items are being compared, keep them *all* inside that band — a
-comparison cropped down to one item loses the point of the frame.
-
-**The hub's twelve article cards deliberately carry no image.** The brief prefers a
-clean text card to a poor stock photograph, and `src/data/insights-articles.js`
-documents the `imageKey` slot as reserved-but-unused. Only the hero and the
-featured article are framed, and they are two *different* files: the featured
-article is also card 01, so sharing one `imageKey` between the two surfaces printed
-the same photograph twice. A gate asserts two frames from two distinct sources.
+**The twelve article cards carry no image either, and that is the brief's own
+preference:** a clean text card beats a poor stock photograph (§7). `imageKey` is
+`null` on every article in `src/data/insights-articles.js`, where the field is
+documented as reserved-but-unused — giving one a real photograph later is a data
+edit and nothing else. A gate asserts the hub renders zero images in `main`.
 
 ---
 
