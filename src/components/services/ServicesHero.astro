@@ -28,6 +28,19 @@
  *   correct for keyboard and screen-reader users. Desktop moves the image into
  *   the right-hand column with grid placement only.
  *
+ * WHY THE IMAGE IS OPTIONAL
+ *   Added for `/insights`, whose §2 ends with "Do not make the hero overly
+ *   large" and whose page carries no frame at all — the presentation it was
+ *   given is a compact hero and a text-only directory. `imageKey` and
+ *   `imageCaption` are therefore optional and the figure is not rendered when
+ *   `imageKey` is absent, which collapses the grid to one column via
+ *   `sv-hero--solo`.
+ *
+ *   This is an ADDITIVE change: every consumer that passes an image passes the
+ *   same values and renders the same markup it did before, which is why the
+ *   other ten heroes needed no edit. Same rule as `tagline` below — a new
+ *   optional capability, never a second component.
+ *
  * Styles live in `services-shared.css` (`.sv-hero*`) — see its header for why
  * that file is separate from the overview page's sheet.
  * ---------------------------------------------------------------------------
@@ -61,9 +74,16 @@ interface Props {
   tagline?: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
-  /** Key from the image manifest in src/data/media.js — unknown keys throw. */
-  imageKey: string;
-  imageCaption: string;
+  /**
+   * Key from the image manifest in src/data/media.js — unknown keys throw.
+   *
+   * Optional, and absent only on `/insights`. The two travel together: a frame
+   * without its caption would be the only uncaptioned one on the site, so
+   * `imageCaption` is required whenever `imageKey` is given and ignored without
+   * it.
+   */
+  imageKey?: string;
+  imageCaption?: string;
   /** Unique per page: the <section> is labelled by this id. */
   titleId?: string;
 }
@@ -82,7 +102,7 @@ const {
 } = Astro.props;
 ---
 
-<section class="sv-hero" aria-labelledby={titleId}>
+<section class:list={['sv-hero', !imageKey && 'sv-hero--solo']} aria-labelledby={titleId}>
   <div class="container">
     <Breadcrumbs items={breadcrumbs} class="sv-hero__breadcrumbs" />
 
@@ -102,10 +122,14 @@ const {
         </div>
       </div>
 
-      <figure class="sv-hero__figure">
-        <Media imageKey={imageKey} ratio="4x3" priority class="sv-hero__media" />
-        <figcaption class="media-caption">{imageCaption}</figcaption>
-      </figure>
+      {
+        imageKey && (
+          <figure class="sv-hero__figure">
+            <Media imageKey={imageKey} ratio="4x3" priority class="sv-hero__media" />
+            <figcaption class="media-caption">{imageCaption}</figcaption>
+          </figure>
+        )
+      }
     </div>
   </div>
 </section>
