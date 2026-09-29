@@ -78,6 +78,23 @@
   }
 }
 
+/* ---- no image: one column at every width -------------------------------
+   `/insights` is the only consumer that passes no `imageKey`, and this is what
+   makes that safe rather than a hole where the figure used to be.
+
+   Two classes on purpose. `.sv-hero--solo .sv-hero__grid` outranks the
+   single-class `.sv-hero__grid` above on its own terms, so the rule holds
+   whatever order the bundler emits these in — including the media query, which
+   adds no specificity of its own. A one-class override placed after the media
+   query would work today and break the first time two sheets are reordered.
+
+   The text column is not widened to fill the row: `.sv-hero__title` and
+   `.sv-hero__lead` each cap their own measure, so a full-width track produces
+   the same reading width as before rather than a 1280px line. */
+.sv-hero--solo .sv-hero__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .sv-hero__text {
   display: grid;
   gap: var(--sp-4);

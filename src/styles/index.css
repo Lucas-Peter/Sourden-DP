@@ -44,8 +44,10 @@
                                       whose page components own their sheets
                                       rather than the route file)
      src/pages/insights/index.astro →  import '../styles/insights.css'
-                                      (+ services-shared.css, service-detail.css,
-                                         how-it-works.css)
+                                      (+ services-shared.css, how-it-works.css —
+                                         and deliberately NOT service-detail.css,
+                                         which its review grid was the only
+                                         reason to ship)
      src/pages/**  (reservation)    →  import '../styles/inner-pages.css'
 
    ADDING A NEW PAGE
@@ -80,13 +82,16 @@
      ONE MORE CONSISTENCY CHECK
      `services-shared.css` now has five non-services consumers: `/industries`,
      `/how-it-works`, `/about`, `/faq` and `/insights`, which join `/services`
-     and the five `/services/<slug>` detail pages. Four of those five also import
-     `service-detail.css`, so ten pages share both sheets; `/faq` takes
-     `services-shared.css` alone, because its hero and its disclosure group are
-     shared devices but a FAQ page needs none of the `.sd-` prose, split, chain
-     or review-grid treatment. Two non-services pages also import
+     and the five `/services/<slug>` detail pages. Three of those five also
+     import `service-detail.css`, so nine pages share both sheets. The other two
+     take `services-shared.css` alone, for the same reason twice over: `/faq`'s
+     hero and disclosure group are shared devices but a FAQ page needs none of
+     the `.sd-` prose, split, chain or review-grid treatment, and `/insights`
+     needs none of it either now that §8's review grid has left the page — its
+     own three devices are in `insights.css` and everything else it renders is a
+     hero or a ruled-row list. Two non-services pages also import
      `how-it-works.css`: `/about` (§05/§06/§10/§11/§15 reuse HiGrowth, HiStages
-     and HiLinkRows verbatim) and `/insights` (§09 and §10 are `HiLinkRows`).
+     and HiLinkRows verbatim) and `/insights` (§10 is `HiLinkRows`).
      Those file names say "services" because the services pages were the hero,
      the prose split, the review grid, the rail, the check-list and the FAQ's
      FIRST consumer — the devices themselves are generic editorial sections,
@@ -94,9 +99,8 @@
      than a second visual language. `about.css` therefore adds only the two
      devices nothing else had (a heading-plus-statement block and a labelled
      node chain in both orientations) and reuses the other seven read-only;
-     `insights.css` adds only its three (the featured split, the filter and the
-     article card) and reuses the hero, the review grid and both ruled-row
-     lists.
+     `insights.css` adds only its three (the count line, the boxed article card
+     and the paging controls) and reuses the hero and the ruled-row list.
 
      So the trade-off recorded here previously ("when a third non-services page
      needs them, rename both sheets and the `.sv-` / `.sd-` prefixes to a
