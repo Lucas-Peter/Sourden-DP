@@ -1,19 +1,25 @@
 ---
 /**
- * /insights — the SOURDEN content library  (Insights brief §2–§11)
+ * /insights — the SOURDEN content library
  * ---------------------------------------------------------------------------
- * This route used to render a reservation page. It is now the hub: one featured
- * article, a filterable directory of the twelve planned articles, the reasons
- * the library exists, and the path from reading to a real sourcing request.
+ * This route used to render a reservation page. It is now the hub: a compact
+ * hero, the directory of the twelve planned articles, the five service links,
+ * and the closing band.
  *
- * STRUCTURE (brief)
- *   01 Hero                       §2   eyebrow, H1, supporting text, one CTA
- *   02 Featured insight           §3   the first article, editorial split
- *   03 Article directory (+ filter) §4 the seven category chips, §5 the grid
- *   04 Why Sourden writes         §8   three principles, no link
- *   05 Explore by topic           §9   the six categories as destinations
- *   06 Connection to services     §10  the five services, from the registry
- *   07 Final CTA                  §11  closing band, one action
+ * STRUCTURE
+ *   01 Hero                     §2   eyebrow, H1, supporting text, two actions
+ *   02 Article directory        §5   the grid, its count line and its paging
+ *   03 Connection to services   §10  the five services, from the registry
+ *   04 Final CTA                §11  closing band, one action
+ *
+ * IT CARRIED SEVEN BANDS AND NOW CARRIES FOUR
+ *   The presentation was simplified to the shape this directory was designed
+ *   for. §3's featured band, §4's category chips, §8 and §9 are gone; §10 is
+ *   kept because §15 asks the page to link to all five service detail pages and
+ *   it is where those links live. `src/data/insights-page.js` holds the full
+ *   list, with what each removal means and where the brief's copy for it still
+ *   is. The hero has no image for the same reason — see `media.js`, where the
+ *   slot was deleted rather than left unused.
  *
  * WHAT THIS PAGE DELIBERATELY DOES NOT DO
  *   · It does not build a single article. §13 is explicit: the purpose of this
@@ -22,52 +28,50 @@
  *     until their copy exists. Every link to them is live today, so writing an
  *     article later rewrites no link.
  *   · It does not create category pages. §9: "Do not create unnecessary
- *     separate category pages at this stage." The chips and the topic links
- *     filter this page instead.
+ *     separate category pages at this stage." The categories are printed on the
+ *     cards as tags.
  *   · It does not invent metadata. No dates, authors, reading times, view
  *     counts, "Coming soon" or empty-state messages — §6, §13 and §14 forbid
  *     every one of them by name.
- *   · It does not redesign anything. The hero, the review grid, the ruled-row
- *     lists, the buttons, the arrow links, the reveal device and the closing
- *     band are all the existing site's; only the composition is new.
+ *   · It does not redesign anything. The hero, the ruled-row list, the buttons,
+ *     the arrow links, the reveal device and the closing band are all the
+ *     existing site's; only the composition and the card are new, and the card
+ *     borrows the homepage's card language without its stylesheet.
  *   · It does not touch the header or the footer (§19.12).
  *
  * INDEXABILITY
  *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
- *   in `reservedTopLevel` (src/data/routes.js) was deleted in the same change —
- *   that list is what drives the noindex/sitemap split, so forgetting it would
- *   have left a finished, content-rich page excluded from search. The twelve
- *   article routes stay in `detailRoutePaths` and remain noindex.
+ *   in `reservedTopLevel` (src/data/routes.js) was deleted when it was
+ *   published — that list is what drives the noindex/sitemap split, so
+ *   forgetting it would have left a finished, content-rich page excluded from
+ *   search. The twelve article routes stay in `detailRoutePaths` and remain
+ *   noindex.
  *
  * IMPORT ORDER IS LOAD-BEARING
  *   Layout first, then the shared sheets, then this page's own — otherwise the
  *   page rules lose every same-specificity conflict against the shared core and
- *   `npm run audit` fails the build. `service-detail.css` is here for the review
- *   grid (`.sd-review*`) §8 renders and `how-it-works.css` for the ruled rows
- *   (`.hi-rows*`) §9 and §10 render; their file names say "services" and
- *   "how-it-works" because those pages were those devices' first consumer, exactly
- *   as `/industries` and `/about` already document for the same two sheets.
+ *   `npm run audit` fails the build. `how-it-works.css` is here for the ruled
+ *   rows (`.hi-rows*`) §10 renders; its file name says "how-it-works" because
+ *   that page was the device's first consumer, exactly as `/industries` and
+ *   `/about` already document for the same sheet.
  *
  * WHY A SECTION DISPATCHER
- *   The brief numbers the bands and gives each one's copy. A dispatcher keeps the
- *   order, the tones and the content in `insights-page.js` and nothing about the
- *   composition in markup — the architecture `/industries` and the five service
- *   detail pages use — so a band can be reordered or inserted without touching a
- *   template. An unknown `type` throws rather than rendering nothing, because a
- *   typo in a data file must not quietly delete a section from the page.
+ *   A dispatcher keeps the order, the tones and the content in
+ *   `insights-page.js` and nothing about the composition in markup — the
+ *   architecture `/industries` and the five service detail pages use — so a
+ *   band can be reordered or inserted without touching a template. An unknown
+ *   `type` throws rather than rendering nothing, because a typo in a data file
+ *   must not quietly delete a section from the page.
  * ---------------------------------------------------------------------------
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/services-shared.css';
-import '../../styles/service-detail.css';
 import '../../styles/how-it-works.css';
 import '../../styles/insights.css';
 
 import FinalCTA from '../../components/FinalCTA.astro';
 import HiLinkRows from '../../components/how-it-works/HiLinkRows.astro';
-import InsightFeature from '../../components/insights/InsightFeature.astro';
 import InsightsDirectory from '../../components/insights/InsightsDirectory.astro';
-import ServiceReviewGrid from '../../components/services/ServiceReviewGrid.astro';
 import ServicesHero from '../../components/services/ServicesHero.astro';
 
 import { breadcrumbs, finalCta, hero, meta, sections } from '../../data/insights-page.js';
@@ -91,6 +95,8 @@ const schema = [
 ---
 
 <BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+  {/* No `imageKey` — §2 ends with "Do not make the hero overly large", and this
+      page's presentation carries no frame. The hero collapses to one column. */}
   <ServicesHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
@@ -98,19 +104,12 @@ const schema = [
     description={hero.description}
     primaryCta={hero.primaryCta}
     secondaryCta={hero.secondaryCta}
-    imageKey={hero.image.key}
-    imageCaption={hero.image.caption}
     titleId="in-hero-title"
   />
 
   {
     sections.map((section) => {
       switch (section.type) {
-        case 'featured':
-          return (
-            <InsightFeature featured={section.featured} tone={section.tone} titleId={section.titleId} />
-          );
-
         case 'directory':
           return (
             <InsightsDirectory
@@ -120,24 +119,10 @@ const schema = [
             />
           );
 
-        case 'reviewGrid':
-          return (
-            <ServiceReviewGrid
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              items={section.items}
-              tone={section.tone}
-              titleId={section.titleId}
-            />
-          );
-
         case 'linkRows':
-          /* Both §9 and §10 are this device. What differs is a data shape, not a
-             layout: §9's rows are six topic destinations and are not numbered,
-             §10's are the five services in registry order and are. `numbered` is
-             the list-level flag that reserves the number column — the same split
-             `IndustryRows` and `HiLinkRows` document in their own headers. */
+          /* §10: the five services in registry order, numbered. `numbered` is
+             the list-level flag that reserves the number column — the same
+             split `IndustryRows` and `HiLinkRows` document in their headers. */
           return (
             <HiLinkRows
               eyebrow={section.eyebrow}
