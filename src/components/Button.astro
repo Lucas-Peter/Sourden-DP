@@ -7,13 +7,12 @@
  *   primary  ink on ivory/white surfaces (52px, spec default)
  *   inverse  ivory on ink surfaces — #111315 on #111315 would be invisible,
  *            so dark sections invert the same geometry (17.3:1 contrast)
- *   ghost    outlined, used only inside the mobile menu panel
  */
 interface Props {
   href: string;
   label: string;
-  variant?: 'primary' | 'inverse' | 'ghost';
-  /** `sm` is the compact header variant. See COMPLIANCE.md. */
+  variant?: 'primary' | 'inverse';
+  /** `sm` is the compact header variant. */
   size?: 'md' | 'sm';
   arrow?: boolean;
   class?: string;

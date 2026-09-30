@@ -19,7 +19,7 @@ interface Props {
   /** Key from the image manifest in src/data/media.js — unknown keys throw. */
   imageKey: string;
   /** Optional fixed aspect ratio. Omit when a grid row dictates the height. */
-  ratio?: '4x3' | '3x2' | '16x10' | '4x5';
+  ratio?: '4x3' | '3x2';
   /** Enable the subtle hover scale. */
   zoom?: boolean;
   /** Above-the-fold images: load eagerly with high fetch priority. */
