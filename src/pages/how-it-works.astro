@@ -106,7 +106,7 @@ import {
   relatedServices,
   sections,
 } from '../data/how-it-works-page.js';
-import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../data/schema.js';
+import { breadcrumbItems, breadcrumbSchema, faqPageSchema, serviceSchema, webPageSchema } from '../data/schema.js';
 
 const path = '/how-it-works';
 
@@ -126,6 +126,9 @@ const schema = [
   ...relatedServices.map((service) =>
     serviceSchema({ name: service.title, description: service.description, href: service.href })
   ),
+  /* Built from the same `faqItems` <ServicesFaq> renders below, so the node can
+     never describe a question a visitor cannot see. */
+  faqPageSchema(faqItems),
 ];
 
 /**
