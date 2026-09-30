@@ -56,7 +56,7 @@ interface Props {
   /** Render the number column. */
   numbered?: boolean;
   /**
-   * Optional closing sentence, rendered under the list as a `.sd-note`.
+   * Optional closing sentence, rendered under the list as a `.sec-note`.
    *
    * Added for `/about` §09, whose brief ends the section with one line that
    * summarises it ("Clear information is more useful than false certainty.").
@@ -65,7 +65,7 @@ interface Props {
    *
    * Optional and unrendered by default, so this component's existing consumers
    * — `/how-it-works` §10 and §14 — emit exactly the same markup they did
-   * before. Uses the shared `.sd-note` treatment rather than a new one, which
+   * before. Uses the shared `.sec-note` treatment rather than a new one, which
    * is what every other device on this page does for the same kind of line.
    */
   note?: string;
@@ -148,7 +148,7 @@ const classes = `section section--${tone} hi-rows ${numbered ? 'hi-rows--numbere
       }
     </ul>
 
-    {note && <p class="sd-note hi-rows__note">{note}</p>}
+    {note && <p class="sec-note hi-rows__note">{note}</p>}
 
     {
       foot && (
