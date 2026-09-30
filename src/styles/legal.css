@@ -187,7 +187,7 @@
 }
 
 /* The site's dense-prose treatment — the same measure, colour and leading the
-   shared FAQ answers use (`.sv-faq__answer`), because legal text is the same
+   shared FAQ answers use (`.sec-faq__answer`), because legal text is the same
    reading problem: long, quiet, and scanned rather than read.
    `.lg-section__contact` shares it because the contact line IS a prose line; it
    carries a separate class only so that `.lg-section__para` keeps meaning

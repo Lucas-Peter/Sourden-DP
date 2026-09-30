@@ -15,7 +15,7 @@
      the next. Everything here is `.in-`, and nothing here touches `.section`,
      `.eyebrow`, `.arrow-link`, `.media` or `.num`.
    · It does not restyle the site's buttons, hero or section headers. The hero
-     is `ServicesHero` (`.sv-hero`, in `services-shared.css`, with the image
+     is `ServicesHero` (`.sec-hero`, in `services-shared.css`, with the image
      omitted) and the closing band is `HiLinkRows`, imported as-is.
 
    ── WHAT WENT OUT OF THIS FILE ─────────────────────────────────────────────
@@ -258,14 +258,8 @@
   color: var(--text-on-dark);
 }
 
-/* A control with no destination: `aria-disabled` carries it to assistive
-   technology and the script gives it no href, so this only has to make the
-   shape obviously inert to a pointer. */
-.in-pagination__btn.is-disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
+/* The skipped-page ellipsis between two numbered controls. `aria-hidden`, so
+   it needs no accessible name. */
 .in-pagination__gap {
   border-color: transparent;
   background: none;

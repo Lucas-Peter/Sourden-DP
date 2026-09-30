@@ -4,10 +4,10 @@
    Imported by `src/pages/how-it-works.astro` only.
 
    WHAT IS NOT IN THIS FILE
-   The hero (`.sv-hero*`), the five-stage rail (`.sv-stages` / `.sv-stage*`) and
-   the FAQ (`.sv-faq*`) are NOT here — they live in `services-shared.css`,
+   The hero (`.sec-hero*`), the five-stage rail (`.sec-stages` / `.sec-stage*`) and
+   the FAQ (`.sec-faq*`) are NOT here — they live in `services-shared.css`,
    imported by this page. Nor are the prose split, the review grid, the
-   check-list and the two-column split (`.sd-*`), which live in
+   check-list and the two-column split (`.sec-*`), which live in
    `service-detail.css`, also imported here. Nor is the page's section rhythm or
    the closing band, which are in the shared core (`layout.css`,
    `components.css`).
@@ -37,7 +37,7 @@
      class — the audit fails the build if a page sheet collides with
      `base.css` / `layout.css` / `components.css`, because the winning rule
      would otherwise depend on CSS chunk order, which Astro does not guarantee.
-     Nothing here redefines a `.sd-` or `.sv-` class either: those sheets are in
+     Nothing here redefines a `.sec-` or `.sec-` class either: those sheets are in
      the same chunk, so an override would be a silent coin-flip.
    · Values come from `tokens.css`. No hex literals, no raw px font sizes.
    · IMPORT ORDER IS LOAD-BEARING: layout first, then `services-shared.css`,
@@ -65,16 +65,16 @@
    four, and a rail whose dots promise a shared row but whose copy does not sit
    on one has come apart at exactly the point it is meant to prove.
 
-   Reserving two lines for all five is the same fix `.sv-stage__title` already
+   Reserving two lines for all five is the same fix `.sec-stage__title` already
    applies on `/services`, and the same one `.ind-process` applies on
    `/industries` — scoped to the page, because a page whose labels are single
    words should not pay for the space.
 
-   `2.6em` is two lines at the `1.3` line-height declared on `.sv-stage__verb`
+   `2.6em` is two lines at the `1.3` line-height declared on `.sec-stage__verb`
    in `services-shared.css`.
    =========================================================================== */
 
-.hi-process .sv-stage__verb {
+.hi-process .sec-stage__verb {
   min-height: 2.6em;
 }
 
@@ -559,7 +559,7 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
   line-height: 1.62;
 }
 
-/* The two closing caveats on this page. `.sd-note` supplies the treatment (a
+/* The two closing caveats on this page. `.sec-note` supplies the treatment (a
    hairline above, quieter type); these sentences are longer than the detail
    pages' one-liners, so the measure is widened from its 62ch default. */
 .hi-stages__note,

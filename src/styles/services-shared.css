@@ -12,8 +12,8 @@
    before the split. What the split buys is that no page has to import another
    page's stylesheet: a detail page links `services-shared.css` plus
    `service-detail.css` and skips the ~6.6 KB of overview-only rules
-   (`.sv-overview`, `.sv-path`, `.sv-audience`, `.sv-scale`, `.sv-expect`,
-   `.sv-approach`) that it would otherwise download and never apply.
+   (`.sec-overview`, `.sec-path`, `.sec-audience`, `.sec-scale`, `.sec-expect`,
+   `.sec-approach`) that it would otherwise download and never apply.
 
    WHY THIS FILE EXISTS SEPARATELY
    These three sections used to live in `services.css`, which only `/services`
@@ -32,13 +32,13 @@
 
    HOUSE RULES THIS FILE FOLLOWS
    ───────────────────────────────────────────────────────────────────────────
-   · Every selector is prefixed `.sv-`. Nothing here redefines a shared-core
+   · Every selector is prefixed `.sec-`. Nothing here redefines a shared-core
      class — the site's audit fails the build if a page stylesheet collides
      with `base.css` / `layout.css` / `components.css`, because the winning
      rule would otherwise depend on CSS chunk order, which Astro does not
      guarantee.
    · Where a core element needs a different measure in these sections, the
-     override is SCOPED (`.sv-hero > .container`), never a redefinition.
+     override is SCOPED (`.sec-hero > .container`), never a redefinition.
    · Values come from `tokens.css`. No hex literals, no raw px font sizes.
    · IMPORT ORDER IS LOAD-BEARING: the shared core is linked first, then this
      file, then the page sheet. A page must `import` its layout before any
@@ -59,7 +59,7 @@
    is correct for keyboard and screen-reader users without any reordering.
    =========================================================================== */
 
-.sv-hero {
+.sec-hero {
   /* One change, eleven pages: this band is shared by `/services`, the five
      detail pages, `/industries`, the nine industry sub-pages, `/how-it-works`,
      `/about`, `/faq`, `/insights`, the article pages and both legal pages.
@@ -70,14 +70,14 @@
   padding-block: clamp(32px, 4vw, 56px) clamp(48px, 5.5vw, 88px);
 }
 
-.sv-hero__grid {
+.sec-hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(var(--sp-6), 4vw, var(--sp-7));
 }
 
 @media (min-width: 768px) {
-  .sv-hero__grid {
+  .sec-hero__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
     gap: var(--grid-gap);
     align-items: center;
@@ -88,27 +88,27 @@
    `/insights` is the only consumer that passes no `imageKey`, and this is what
    makes that safe rather than a hole where the figure used to be.
 
-   Two classes on purpose. `.sv-hero--solo .sv-hero__grid` outranks the
-   single-class `.sv-hero__grid` above on its own terms, so the rule holds
+   Two classes on purpose. `.sec-hero--solo .sec-hero__grid` outranks the
+   single-class `.sec-hero__grid` above on its own terms, so the rule holds
    whatever order the bundler emits these in — including the media query, which
    adds no specificity of its own. A one-class override placed after the media
    query would work today and break the first time two sheets are reordered.
 
-   The text column is not widened to fill the row: `.sv-hero__title` and
-   `.sv-hero__lead` each cap their own measure, so a full-width track produces
+   The text column is not widened to fill the row: `.sec-hero__title` and
+   `.sec-hero__lead` each cap their own measure, so a full-width track produces
    the same reading width as before rather than a 1280px line. */
-.sv-hero--solo .sv-hero__grid {
+.sec-hero--solo .sec-hero__grid {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.sv-hero__text {
+.sec-hero__text {
   display: grid;
   gap: var(--sp-4);
   align-content: start;
   min-width: 0;
 }
 
-.sv-hero__title {
+.sec-hero__title {
   font-size: var(--fs-h1);
   font-weight: var(--fw-semibold);
   line-height: var(--lh-display);
@@ -116,7 +116,7 @@
   max-width: 22ch;
 }
 
-.sv-hero__lead {
+.sec-hero__lead {
   max-width: 50ch;
   color: var(--muted);
   font-size: var(--fs-lead);
@@ -133,7 +133,7 @@
    the colour token — brass reads on the ink footer, but this hero's ground is
    ivory, so it takes `--brass-ink`, the token reserved for brass-coloured TEXT
    on light grounds. */
-.sv-hero__tagline {
+.sec-hero__tagline {
   margin-block-start: var(--sp-3);
   color: var(--brass-ink);
   font-family: var(--font-display);
@@ -142,7 +142,7 @@
   letter-spacing: 0.04em;
 }
 
-.sv-hero__actions {
+.sec-hero__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -150,7 +150,7 @@
   margin-block-start: var(--sp-3);
 }
 
-.sv-hero__figure {
+.sec-hero__figure {
   display: grid;
   gap: var(--sp-3);
   align-content: start;
@@ -178,7 +178,7 @@
    instrument, not a broken page, and one a screenshot review reads as "the last
    one looks a bit off".
 
-   `ServiceProcess` therefore emits a `sv-stages--<count>` modifier from
+   `ServiceProcess` therefore emits a `sec-stages--<count>` modifier from
    `steps.length`, and this block carries one rule per count the site actually
    uses. A count with no rule falls back to the five-column default, i.e. it
    wraps and `id-geo.mjs` fails on `the process rail has one column per stage` —
@@ -198,21 +198,21 @@
      · detail pages — the stage IS the process step, so the label in the rail
        (`01 — UNDERSTAND`) is the whole heading, there is no separate <h3> and
        nothing to link to.
-   `.sv-stage__link` is therefore only present on the overview page; a detail
-   page uses `.sv-stage__body` instead (see `service-detail.css`). Everything
+   `.sec-stage__link` is therefore only present on the overview page; a detail
+   page uses `.sec-stage__body` instead (see `service-detail.css`). Everything
    else — the dot, the rail, the number, the verb, the description — is
    identical, which is why this file owns the device and not the pages.
    =========================================================================== */
 
-.sv-process {
+.sec-process {
   background-color: var(--white);
 }
 
-.sv-process__head {
+.sec-process__head {
   margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
-.sv-stages {
+.sec-stages {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -222,17 +222,17 @@
   list-style: none;
 }
 
-.sv-stage {
+.sec-stage {
   position: relative;
 }
 
-/* `.sv-stage__body` is the non-link twin of `.sv-stage__link`: the detail pages'
+/* `.sec-stage__body` is the non-link twin of `.sec-stage__link`: the detail pages'
    process stages have nowhere to link to, so they use a <div> with the identical
    grid geometry. Both selectors are listed on every layout rule below so the two
    consumers cannot drift apart — a stage's dot, number, verb and description sit
    in the same places on `/services` and on a detail page. */
-.sv-stage__body,
-.sv-stage__link {
+.sec-stage__body,
+.sec-stage__link {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
   grid-template-rows: auto auto auto;
@@ -242,7 +242,7 @@
 }
 
 /* The dot. Sits in row 1 beside the number, so the rail runs through it. */
-.sv-stage__marker {
+.sec-stage__marker {
   grid-column: 1;
   grid-row: 1;
   align-self: start;
@@ -254,7 +254,7 @@
 }
 
 /* Vertical connector between stages — mobile and tablet only. */
-.sv-stage:not(:last-child)::after {
+.sec-stage:not(:last-child)::after {
   content: '';
   position: absolute;
   left: 5px;
@@ -264,7 +264,7 @@
   background-color: var(--stone);
 }
 
-.sv-stage__rail {
+.sec-stage__rail {
   display: flex;
   grid-column: 2;
   grid-row: 1;
@@ -273,18 +273,18 @@
   min-width: 0;
 }
 
-.sv-stage__num {
+.sec-stage__num {
   margin-block-start: 1px;
 }
 
-.sv-stage__dash {
+.sec-stage__dash {
   color: var(--brass-ink);
   font-size: var(--fs-num);
 }
 
 /* The verb is the connective tissue — the reason these five are a process and
    not a menu — so it is set as a labels-weight accent rather than as body. */
-.sv-stage__verb {
+.sec-stage__verb {
   color: var(--brass-ink);
   font-size: var(--fs-label);
   font-weight: var(--fw-semibold);
@@ -301,7 +301,7 @@
    is right, so `space-between` is applied only in the horizontal layout (see
    the desktop block), where it pins every arrow to the column's right edge and
    the five read as one row of links. */
-.sv-stage__title {
+.sec-stage__title {
   display: flex;
   grid-column: 2;
   grid-row: 2;
@@ -313,18 +313,18 @@
   letter-spacing: var(--ls-display);
 }
 
-.sv-stage__arrow {
+.sec-stage__arrow {
   color: var(--brass-ink);
   font-size: 0.8em;
   transition: transform var(--dur) var(--ease-out);
 }
 
-.sv-stage__link:hover .sv-stage__arrow,
-.sv-stage__link:focus-visible .sv-stage__arrow {
+.sec-stage__link:hover .sec-stage__arrow,
+.sec-stage__link:focus-visible .sec-stage__arrow {
   transform: translateX(5px);
 }
 
-.sv-stage__desc {
+.sec-stage__desc {
   grid-column: 2;
   grid-row: 3;
   max-width: 46ch;
@@ -334,7 +334,7 @@
 }
 
 /* The destinations a stage owns, where a stage has more than one. A stage with
-   a single destination is a wrapping `.sv-stage__link` instead (that is how
+   a single destination is a wrapping `.sec-stage__link` instead (that is how
    `/services` renders its rail); this row exists for the case that shape
    cannot express — `/how-it-works` §02's fourth stage leads to purchasing AND
    to quality control.
@@ -346,7 +346,7 @@
    pass no links keep the exact geometry they were verified with. Placing it
    inside the existing templates would have added a row gap above the
    description on every detail page. */
-.sv-stage__links {
+.sec-stage__links {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -358,7 +358,7 @@
 
 /* Desktop — the rail goes horizontal and each stage becomes a column. */
 @media (min-width: 1200px) {
-  .sv-stages {
+  .sec-stages {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--grid-gap);
   }
@@ -366,11 +366,11 @@
   /* The nine `/industries/<slug>` pages: the brief gives one six-stage process
      to all of them, so their rail is one column wider than every other rail on
      the site. One extra rule, not a template, and not an inline style. */
-  .sv-stages--6 {
+  .sec-stages--6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .sv-stages::before {
+  .sec-stages::before {
     content: '';
     position: absolute;
     left: 0;
@@ -380,8 +380,8 @@
     background-color: var(--stone);
   }
 
-  .sv-stage__body,
-  .sv-stage__link {
+  .sec-stage__body,
+  .sec-stage__link {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto auto;
     column-gap: 0;
@@ -389,12 +389,12 @@
     padding-block: 0;
   }
 
-  .sv-stage:not(:last-child)::after {
+  .sec-stage:not(:last-child)::after {
     content: none;
   }
 
   /* The dot punches through the rail so the line does not show inside it. */
-  .sv-stage__marker {
+  .sec-stage__marker {
     grid-column: 1;
     grid-row: 1;
     position: relative;
@@ -403,16 +403,16 @@
     border: var(--rule) solid var(--brass);
   }
 
-  .sv-stage__rail {
+  .sec-stage__rail {
     grid-column: 1;
     grid-row: 2;
   }
 
-  .sv-stage__num {
+  .sec-stage__num {
     margin-block-start: 0;
   }
 
-  .sv-stage__title {
+  .sec-stage__title {
     /* Reserve two lines. At 1200–1440 the column is 208–224px wide, which fits
        "Product Sourcing" and "Quality Control" on one line and wraps the other
        three onto two. Without a floor, the descriptions would then start 29px
@@ -425,7 +425,7 @@
     grid-row: 3;
   }
 
-  .sv-stage__desc {
+  .sec-stage__desc {
     grid-column: 1;
     grid-row: 4;
     max-width: 30ch;
@@ -435,14 +435,14 @@
      implicit rather than declared. `margin-block-start` drops to 0 here
      because the desktop `row-gap` is already 12px, which is the same visual
      gap the mobile margin produces. */
-  .sv-stage__links {
+  .sec-stage__links {
     grid-column: 1;
     grid-row: 5;
     margin-block-start: 0;
   }
 }
 
-.sv-process__foot {
+.sec-process__foot {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
@@ -456,52 +456,52 @@
    that needs no glyph font and cannot shift the baseline.
    =========================================================================== */
 
-.sv-faq {
+.sec-faq {
   background-color: var(--ivory);
 }
 
 /* The device's ground is ivory, which is right for a single FAQ section at the
    end of a page. `/faq` renders SEVEN of them in a row, so their grounds have
    to alternate or the page reads as one continuous field. Declared here rather
-   than as `section--white` on the element because `.sv-faq`'s own background
+   than as `section--white` on the element because `.sec-faq`'s own background
    comes later in the cascade than the core `.section--white` and would win the
    same-specificity tie. */
-.sv-faq--white {
+.sec-faq--white {
   background-color: var(--white);
   color: var(--ink);
 }
 
-.sv-faq__grid {
+.sec-faq__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(var(--sp-6), 4vw, var(--sp-7));
 }
 
 @media (min-width: 1200px) {
-  .sv-faq__grid {
+  .sec-faq__grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--grid-gap);
     align-items: start;
   }
 
-  .sv-faq__head {
+  .sec-faq__head {
     grid-column: 1 / span 5;
   }
 
-  .sv-faq__list {
+  .sec-faq__list {
     grid-column: 7 / span 6;
   }
 }
 
-.sv-faq__list {
+.sec-faq__list {
   border-top: var(--rule) solid var(--divider-light);
 }
 
-.sv-faq__item {
+.sec-faq__item {
   border-bottom: var(--rule) solid var(--divider-light);
 }
 
-.sv-faq__question {
+.sec-faq__question {
   display: flex;
   align-items: start;
   justify-content: space-between;
@@ -517,25 +517,25 @@
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.sv-faq__question::-webkit-details-marker {
+.sec-faq__question::-webkit-details-marker {
   display: none;
 }
 
-.sv-faq__question::marker {
+.sec-faq__question::marker {
   content: '';
 }
 
-.sv-faq__question:hover {
+.sec-faq__question:hover {
   color: var(--brass-ink);
 }
 
-.sv-faq__question-text {
+.sec-faq__question-text {
   min-width: 0;
 }
 
 /* A drawn indicator: the horizontal bar is the minus, the vertical bar the
    plus. Opening rotates the vertical bar onto the horizontal one. */
-.sv-faq__mark {
+.sec-faq__mark {
   position: relative;
   flex: none;
   width: 13px;
@@ -544,8 +544,8 @@
   color: var(--brass-ink);
 }
 
-.sv-faq__mark::before,
-.sv-faq__mark::after {
+.sec-faq__mark::before,
+.sec-faq__mark::after {
   content: '';
   position: absolute;
   left: 0;
@@ -555,20 +555,20 @@
   background-color: currentColor;
 }
 
-.sv-faq__mark::after {
+.sec-faq__mark::after {
   transform: rotate(90deg);
   transition: transform var(--dur) var(--ease-out);
 }
 
-.sv-faq__item[open] .sv-faq__mark::after {
+.sec-faq__item[open] .sec-faq__mark::after {
   transform: rotate(0deg);
 }
 
-.sv-faq__answer {
+.sec-faq__answer {
   padding-block-end: var(--sp-5);
 }
 
-.sv-faq__answer > p {
+.sec-faq__answer > p {
   max-width: 68ch;
   color: var(--muted);
   font-size: var(--fs-body-sm);
@@ -578,7 +578,7 @@
 /* An answer written as more than one paragraph (`/faq`'s are). The first
    paragraph carries no top margin, so an existing single-paragraph answer is
    laid out exactly as before. */
-.sv-faq__answer > p + p {
+.sec-faq__answer > p + p {
   margin-block-start: var(--sp-3);
 }
 
@@ -586,12 +586,12 @@
    (`/industries` §12 attaches three). It sits under the answer it belongs to
    rather than in the section's closing row, so the link cannot be read as
    answering a different question. */
-.sv-faq__answer-link {
+.sec-faq__answer-link {
   margin-block-start: var(--sp-3);
   font-size: var(--fs-body-sm);
 }
 
-.sv-faq__foot {
+.sec-faq__foot {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
@@ -604,12 +604,12 @@
    =========================================================================== */
 
 @media print {
-  .sv-faq__mark {
+  .sec-faq__mark {
     display: none;
   }
 
-  .sv-stage,
-  .sv-faq__item {
+  .sec-stage,
+  .sec-faq__item {
     break-inside: avoid;
   }
 }

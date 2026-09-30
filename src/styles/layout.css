@@ -27,10 +27,6 @@
   padding-block: var(--section-y);
 }
 
-.section--major {
-  padding-block: var(--section-y-major);
-}
-
 .section--tight {
   padding-block: var(--section-y-tight);
 }
@@ -50,10 +46,6 @@
 .section--dark {
   background-color: var(--surface-slate);
   color: var(--text-on-dark);
-}
-
-.section--dark .muted {
-  color: var(--muted-dark);
 }
 
 /* ------------------------------------------------------------- 12-col grid -- */
@@ -81,28 +73,9 @@
 
 /* ------------------------------------------------------------- helpers -- */
 
-/* Vertical rhythm without ad-hoc margins. */
-.stack > * + * {
-  margin-block-start: var(--stack-gap, var(--sp-5, 24px));
-}
-
 .lead {
   font-size: var(--fs-lead);
   line-height: var(--lh-snug);
-}
-
-.muted {
-  color: var(--muted);
-}
-
-/* Full-bleed horizontal rule that respects the container gutter. */
-.rule {
-  border: 0;
-  border-top: var(--rule) solid var(--divider-light);
-}
-
-.section--dark .rule {
-  border-top-color: var(--divider-dark);
 }
 
 /* Any element that must remain reachable off-screen (e.g. skip targets). */

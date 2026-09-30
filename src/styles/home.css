@@ -674,10 +674,6 @@
   background-color: var(--ivory);
 }
 
-.barriers__head {
-  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
-}
-
 .barriers__statement {
   max-width: 24ch;
   font-family: var(--font-display);

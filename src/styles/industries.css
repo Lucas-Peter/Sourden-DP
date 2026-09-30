@@ -5,14 +5,14 @@
    `src/pages/industries/index.astro`, so no other route ships this file.
 
    WHAT IS NOT IN THIS FILE
-   · `.sv-hero*`, `.sv-stages` / `.sv-stage*` and `.sv-faq*` — the hero, the
+   · `.sec-hero*`, `.sec-stages` / `.sec-stage*` and `.sec-faq*` — the hero, the
      five-stage rail and the FAQ. This page renders all three with the same
      components `/services` and the five detail pages use, so the rules stay in
      `services-shared.css` and are imported, not copied. See `index.css` →
      "SHARING A DEVICE BETWEEN TWO PAGES" for why a shared sheet is the right
      home even though the file name says "services": the components are generic
      editorial devices whose first consumer happened to be the services pages.
-   · `.sd-prose*`, `.sd-review*`, `.sd-checklist*`, `.sd-split*`, `.sd-chain*`
+   · `.sec-prose*`, `.sec-review*`, `.sec-checklist*`, `.sec-split*`, `.sec-chain*`
      and the dark-ground corrections — imported from `service-detail.css` for
      the same reason. This page renders §02/§04/§09 as prose, §05 as a review
      grid and §10 as the rail; all four are the detail pages' components with
@@ -27,10 +27,13 @@
    · Any colour, size or spacing literal. Values come from `tokens.css`.
 
    PREFIX
-   Every selector is `.ind-` (industries). The prefixes mean something on this
-   site: `.sv-` is the services-area vocabulary, `.sd-` what a service detail
-   page renders, `.sr-` the sourcing request, `.ind-` here. A rule in the wrong
-   file is the first thing a reader would notice.
+   Every selector is `.ind-` (industries). PAGE prefixes mean something on this
+   site: `.sr-` the sourcing request, `.ind-` here, `.hi-` how-it-works, `.ab-`
+   about, `.fq-` faq, `.lg-` the legal documents, `.in-` the insights hub,
+   `.ia-` a written article. The SHARED editorial devices are the exception —
+   they are `.sec-*`, one vocabulary in two sheets, and this page hooks them
+   rather than redefining them. A rule in the wrong file is the first thing a
+   reader would notice.
 
    SECTION INDEX
      01 Category directory       04 Scale + growth path
@@ -47,7 +50,7 @@
    below that.
 
    WHY IT IS TOP-ALIGNED RATHER THAN CENTRED
-   `.sv-audience-row` on `/services` centres its two columns against a fixed
+   `.sec-audience-row` on `/services` centres its two columns against a fixed
    132px row, because each of its rows holds one sentence. A directory entry
    holds a description plus up to eight product types, so its right-hand column
    is several times the height of its left-hand one; centring the name against
@@ -597,13 +600,13 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
    rail whose dots promise a shared row but whose copy does not sit on one has
    come apart at exactly the point it is meant to prove.
 
-   Reserving two lines is the same fix `.sv-stage__title` already applies on
+   Reserving two lines is the same fix `.sec-stage__title` already applies on
    `/services` for the same reason, and it is scoped to `.ind-` because a page
    whose labels are single words should not pay for the space.
    =========================================================================== */
 
-.ind-process .sv-stage__verb {
-  min-height: 2.6em; /* 2 lines × the 1.3 line-height on `.sv-stage__verb` */
+.ind-process .sec-stage__verb {
+  min-height: 2.6em; /* 2 lines × the 1.3 line-height on `.sec-stage__verb` */
 }
 
 

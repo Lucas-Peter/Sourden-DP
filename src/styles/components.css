@@ -48,7 +48,7 @@
 }
 
 /* Compact variant for the header bar, where 52px inside an 80px bar leaves
-   no optical padding. See COMPLIANCE.md for the rationale. */
+   no optical padding. */
 .btn--sm {
   min-height: var(--btn-h-sm);
   padding-inline: var(--sp-5);
@@ -77,17 +77,6 @@
 
 .btn:hover .btn__arrow {
   transform: translateX(4px);
-}
-
-/* Text-only button, used inside the mobile menu panel. */
-.btn--ghost {
-  background-color: transparent;
-  color: var(--ink);
-  border-color: var(--stone);
-}
-
-.btn--ghost:hover {
-  background-color: var(--white);
 }
 
 /* ===========================================================================
@@ -149,10 +138,6 @@
   color: var(--text-on-dark);
 }
 
-.section--dark .arrow-link {
-  --tw-none: 0; /* no-op, keeps specificity predictable */
-}
-
 /* Brass accent variant (used for the "DONE" / "→" emphasis). */
 .arrow-link--brass {
   color: var(--brass-ink);
@@ -196,13 +181,6 @@
 
 .section--dark .num {
   color: var(--brass);
-}
-
-/* Brass hairlines — the only other place the accent is allowed. */
-.rule-brass {
-  border: 0;
-  border-top: var(--rule) solid var(--brass);
-  opacity: 0.55;
 }
 
 /* ===========================================================================
@@ -303,14 +281,6 @@
 
 .media--3x2 {
   aspect-ratio: 3 / 2;
-}
-
-.media--16x10 {
-  aspect-ratio: 16 / 10;
-}
-
-.media--4x5 {
-  aspect-ratio: 4 / 5;
 }
 
 /* Editorial caption under an image, e.g. "SOURCING IN CHINA". */
@@ -493,42 +463,8 @@
 }
 
 /* ===========================================================================
-   TAG LIST — case-study scope tags
-   =========================================================================== */
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2) var(--sp-4);
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.tags__item {
-  color: var(--muted);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-medium);
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-}
-
-/* ===========================================================================
    SHARED PAGE CHROME — reservation pages + 404
    =========================================================================== */
-
-.page-hero {
-  padding-block-start: clamp(56px, 7vw, 96px);
-  padding-block-end: var(--section-y-tight);
-}
-
-.page-hero__title {
-  font-size: var(--fs-h1);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-display);
-  letter-spacing: var(--ls-tight);
-  max-width: 22ch;
-}
 
 .breadcrumb {
   display: flex;

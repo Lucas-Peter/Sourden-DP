@@ -13,7 +13,7 @@
 
    HOUSE RULES THIS FILE FOLLOWS
    ───────────────────────────────────────────────────────────────────────────
-   · Every selector is prefixed `.sv-`. Nothing here redefines a shared-core
+   · Every selector is prefixed `.sec-`. Nothing here redefines a shared-core
      class — the site's audit fails the build if a page stylesheet collides
      with `base.css` / `layout.css` / `components.css`, because the winning
      rule would otherwise depend on CSS chunk order, which Astro does not
@@ -40,22 +40,22 @@
    always reads text first.
    =========================================================================== */
 
-.sv-overview {
+.sec-overview {
   background-color: var(--ivory);
 }
 
-.sv-overview__head {
+.sec-overview__head {
   margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
-.sv-services {
+.sec-services {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
 }
 
 /* A hairline between services, not around them — the rows stay one continuous
    editorial list rather than five boxes. */
-.sv-service {
+.sec-service {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(var(--sp-5), 4vw, var(--sp-7));
@@ -63,14 +63,14 @@
   border-top: var(--rule) solid var(--divider-light);
 }
 
-.sv-service__body {
+.sec-service__body {
   display: grid;
   gap: var(--sp-4);
   align-content: start;
   min-width: 0;
 }
 
-.sv-service__title {
+.sec-service__title {
   max-width: 26ch;
   font-size: var(--fs-h3);
   font-weight: var(--fw-medium);
@@ -78,7 +78,7 @@
   letter-spacing: var(--ls-display);
 }
 
-.sv-service__desc {
+.sec-service__desc {
   max-width: 52ch;
   color: var(--muted);
   font-size: var(--fs-body);
@@ -87,7 +87,7 @@
 
 /* "Key areas" — an h4 so each list stays attached to its service in the
    document outline, styled as a small label rather than as a heading. */
-.sv-service__label {
+.sec-service__label {
   margin-block-start: var(--sp-2);
   color: var(--muted);
   font-family: var(--font-body);
@@ -98,7 +98,7 @@
   text-transform: uppercase;
 }
 
-.sv-service__areas {
+.sec-service__areas {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--sp-2) var(--sp-5);
@@ -108,12 +108,12 @@
 }
 
 @media (min-width: 768px) {
-  .sv-service__areas {
+  .sec-service__areas {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.sv-service__area {
+.sec-service__area {
   position: relative;
   padding-inline-start: var(--sp-4);
   color: var(--muted);
@@ -123,7 +123,7 @@
 
 /* A brass hairline instead of an icon or a bullet character — the same accent
    the rest of the site uses for list structure. */
-.sv-service__area::before {
+.sec-service__area::before {
   content: '';
   position: absolute;
   left: 0;
@@ -133,11 +133,11 @@
   background-color: var(--brass);
 }
 
-.sv-service__cta {
+.sec-service__cta {
   margin-block-start: var(--sp-2);
 }
 
-.sv-service__figure {
+.sec-service__figure {
   display: grid;
   gap: var(--sp-3);
   align-content: start;
@@ -146,13 +146,13 @@
 
 /* The image sits under the copy on mobile and beside it on desktop. */
 @media (min-width: 768px) and (max-width: 1199px) {
-  .sv-service {
+  .sec-service {
     gap: clamp(var(--sp-6), 4vw, var(--sp-7));
   }
 }
 
 @media (min-width: 1200px) {
-  .sv-service {
+  .sec-service {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--grid-gap);
     /* Centre rather than top-align: the copy block is taller than a 4:3 image
@@ -162,12 +162,12 @@
   }
 
   /* Default (02, 04): copy left in 7, image right in 5. */
-  .sv-service__body {
+  .sec-service__body {
     grid-row: 1;
     grid-column: 1 / span 7;
   }
 
-  .sv-service__figure {
+  .sec-service__figure {
     grid-row: 1;
     grid-column: 8 / span 5;
   }
@@ -182,22 +182,22 @@
      column 1, and the figure gets pushed onto a second row — the image stacks
      under the copy instead of sitting beside it. Pinning both to row 1 removes
      the dependency on DOM order entirely. */
-  .sv-service--media-left .sv-service__figure {
+  .sec-service--media-left .sec-service__figure {
     grid-column: 1 / span 5;
   }
 
-  .sv-service--media-left .sv-service__body {
+  .sec-service--media-left .sec-service__body {
     grid-column: 6 / span 7;
   }
 
   /* The image is the smaller half of the row, so its caption does not need to
      run the full column width. */
-  .sv-service__figure .media-caption {
+  .sec-service__figure .media-caption {
     max-width: 34ch;
   }
 }
 
-.sv-overview__foot {
+.sec-overview__foot {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
@@ -211,29 +211,29 @@
    path 01 look like the lesser option.
    =========================================================================== */
 
-.sv-paths {
+.sec-paths {
   background-color: var(--white);
 }
 
-.sv-paths__head {
+.sec-paths__head {
   margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
-.sv-path-grid {
+.sec-path-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
 @media (min-width: 768px) {
-  .sv-path-grid {
+  .sec-path-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--grid-gap);
     align-items: start;
   }
 }
 
-.sv-path {
+.sec-path {
   display: grid;
   gap: var(--sp-4);
   align-content: start;
@@ -241,11 +241,11 @@
   border-top: var(--rule) solid var(--brass);
 }
 
-.sv-path__num {
+.sec-path__num {
   margin: 0;
 }
 
-.sv-path__label {
+.sec-path__label {
   font-size: var(--fs-h3);
   font-weight: var(--fw-medium);
   line-height: 1.2;
@@ -256,7 +256,7 @@
 /* The chain. Kept vertical at every breakpoint: the arrows mean "this stage
    follows that one", and wrapping them into columns would break the reading of
    the sequence. */
-.sv-path__flow {
+.sec-path__flow {
   display: grid;
   gap: 0;
   margin: var(--sp-2) 0 0;
@@ -264,7 +264,7 @@
   list-style: none;
 }
 
-.sv-path__step {
+.sec-path__step {
   font-family: var(--font-display);
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
@@ -274,7 +274,7 @@
 
 /* The arrow belongs to the item BELOW it, so it can never be orphaned at the
    end of a chain. */
-.sv-path__step + .sv-path__step::before {
+.sec-path__step + .sec-path__step::before {
   content: '↓';
   display: block;
   color: var(--brass-ink);
@@ -283,11 +283,11 @@
 
 /* The terminating line of the short path. Brass so it reads as a conclusion
    rather than as a third stage. */
-.sv-path__step--closing {
+.sec-path__step--closing {
   color: var(--brass-ink);
 }
 
-.sv-path__desc {
+.sec-path__desc {
   max-width: 46ch;
   color: var(--muted);
   font-size: var(--fs-body-sm);
@@ -299,11 +299,11 @@
    03 — WHO WE WORK WITH + SOURCE AT YOUR SCALE  (services brief §13 + §14)
    =========================================================================== */
 
-.sv-audience {
+.sec-audience {
   background-color: var(--ivory);
 }
 
-.sv-audience__grid {
+.sec-audience__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(var(--sp-5), 4vw, var(--sp-6));
@@ -311,24 +311,24 @@
 }
 
 @media (min-width: 1200px) {
-  .sv-audience__grid {
+  .sec-audience__grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--grid-gap);
     align-items: end;
   }
 
-  .sv-audience__head {
+  .sec-audience__head {
     grid-column: 1 / span 7;
   }
 
-  .sv-audience__note {
+  .sec-audience__note {
     grid-column: 9 / span 4;
   }
 }
 
 /* The business-first positioning line. Given the brass hairline treatment the
    page uses for asides, so it reads as framing rather than small print. */
-.sv-audience__note {
+.sec-audience__note {
   max-width: 42ch;
   padding-inline-start: var(--sp-4);
   border-inline-start: 2px solid var(--brass);
@@ -337,13 +337,13 @@
   line-height: 1.62;
 }
 
-.sv-audience__list {
+.sec-audience__list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.sv-audience-row {
+.sec-audience-row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto auto;
@@ -353,12 +353,12 @@
   padding-block: var(--sp-6);
 }
 
-.sv-audience-row__num {
+.sec-audience-row__num {
   grid-column: 1;
   grid-row: 1 / span 2;
 }
 
-.sv-audience-row__title {
+.sec-audience-row__title {
   grid-column: 2;
   grid-row: 1;
   font-size: var(--fs-h3);
@@ -367,7 +367,7 @@
   letter-spacing: var(--ls-display);
 }
 
-.sv-audience-row__desc {
+.sec-audience-row__desc {
   grid-column: 2;
   grid-row: 2;
   max-width: 52ch;
@@ -377,7 +377,7 @@
 }
 
 @media (min-width: 1200px) {
-  .sv-audience-row {
+  .sec-audience-row {
     grid-template-columns: 72px minmax(0, 5fr) minmax(0, 6fr);
     grid-template-rows: auto;
     align-items: center;
@@ -386,17 +386,17 @@
     padding-block: 0;
   }
 
-  .sv-audience-row__num {
+  .sec-audience-row__num {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .sv-audience-row__title {
+  .sec-audience-row__title {
     grid-column: 2;
     grid-row: 1;
   }
 
-  .sv-audience-row__desc {
+  .sec-audience-row__desc {
     grid-column: 3;
     grid-row: 1;
   }
@@ -406,13 +406,13 @@
 
 /* A brass rule, not a box. The MOQ statement has to read as a principle the
    business holds, not as a promotional badge. */
-.sv-scale {
+.sec-scale {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-9));
   padding-block-start: clamp(var(--sp-5), 3vw, var(--sp-6));
   border-top: var(--rule) solid var(--brass);
 }
 
-.sv-scale__title {
+.sec-scale__title {
   font-size: var(--fs-h3);
   font-weight: var(--fw-regular);
   line-height: 1.34;
@@ -420,7 +420,7 @@
   max-width: 30ch;
 }
 
-.sv-scale__desc {
+.sec-scale__desc {
   margin-block-start: var(--sp-4);
   max-width: 60ch;
   color: var(--muted);
@@ -429,22 +429,22 @@
 }
 
 @media (min-width: 1200px) {
-  .sv-scale {
+  .sec-scale {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--grid-gap);
     align-items: start;
   }
 
-  .sv-scale__eyebrow {
+  .sec-scale__eyebrow {
     grid-column: 1;
   }
 
-  .sv-scale__body {
+  .sec-scale__body {
     grid-column: 2;
   }
 
-  .sv-scale__desc {
+  .sec-scale__desc {
     max-width: 58ch;
   }
 }
@@ -458,28 +458,28 @@
    lists in a row would otherwise look like the same device used twice.
    =========================================================================== */
 
-.sv-expect {
+.sec-expect {
   background-color: var(--white);
 }
 
-.sv-expect__head {
+.sec-expect__head {
   margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
 }
 
-.sv-expect__list {
+.sec-expect__list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.sv-expect-row {
+.sec-expect-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--sp-3);
   padding-block: var(--sp-6);
 }
 
-.sv-expect-row__title {
+.sec-expect-row__title {
   font-size: var(--fs-list-title);
   font-weight: var(--fw-semibold);
   line-height: 1.2;
@@ -487,7 +487,7 @@
   text-transform: uppercase;
 }
 
-.sv-expect-row__desc {
+.sec-expect-row__desc {
   max-width: 54ch;
   color: var(--muted);
   font-size: var(--fs-body-sm);
@@ -495,18 +495,18 @@
 }
 
 @media (min-width: 1200px) {
-  .sv-expect-row {
+  .sec-expect-row {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--grid-gap);
     align-items: center;
   }
 
-  .sv-expect-row__desc {
+  .sec-expect-row__desc {
     max-width: 58ch;
   }
 }
 
-.sv-expect__foot {
+.sec-expect__foot {
   margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
 }
 
@@ -515,34 +515,34 @@
    05 — THE SOURDEN APPROACH  (services brief §16, dark)
    =========================================================================== */
 
-.sv-approach__grid {
+.sec-approach__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(var(--sp-6), 4vw, var(--sp-7));
 }
 
 @media (min-width: 1200px) {
-  .sv-approach__grid {
+  .sec-approach__grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--grid-gap);
     align-items: start;
   }
 
-  .sv-approach__head {
+  .sec-approach__head {
     grid-column: 1 / span 6;
   }
 
-  .sv-approach__desc {
+  .sec-approach__desc {
     grid-column: 8 / span 5;
   }
 }
 
-.sv-approach__head {
+.sec-approach__head {
   display: grid;
   gap: var(--sp-4);
 }
 
-.sv-approach__title {
+.sec-approach__title {
   font-size: clamp(1.5rem, 1.13rem + 1.5vw, 2.125rem);
   font-weight: var(--fw-medium);
   line-height: 1.26;
@@ -553,20 +553,20 @@
 /* The second half of the heading — the answer to the first half. It is inside
    the <h2>, not a sibling paragraph, so the point of the section stays in the
    document outline. Colour is the only thing that separates them. */
-.sv-approach__emphasis {
+.sec-approach__emphasis {
   display: block;
   margin-block-start: 0.35em;
   color: var(--brass);
 }
 
-.sv-approach__desc {
+.sec-approach__desc {
   max-width: 56ch;
   color: var(--muted-dark);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
 }
 
-.sv-approach__foot {
+.sec-approach__foot {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
 }
 
@@ -579,9 +579,9 @@
    =========================================================================== */
 
 @media print {
-  .sv-path,
-  .sv-audience-row,
-  .sv-expect-row {
+  .sec-path,
+  .sec-audience-row,
+  .sec-expect-row {
     break-inside: avoid;
   }
 }

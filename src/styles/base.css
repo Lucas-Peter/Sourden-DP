@@ -190,14 +190,6 @@ b {
   border: 0;
 }
 
-/* Keyboard users skip a long scrollable strip. */
-.h-scroll {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-
 /* --------------------------------------------------- reduced motion -- */
 
 @media (prefers-reduced-motion: reduce) {

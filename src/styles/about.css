@@ -4,13 +4,13 @@
  * The two devices this page contributes. Everything else on `/about` is a
  * shared device whose rules already exist:
  *
- *   hero             `.sv-*`  services-shared.css
- *   prose            `.sd-*`  service-detail.css
- *   reviewGrid       `.sd-*`  service-detail.css
+ *   hero             `.sec-*`  services-shared.css
+ *   prose            `.sec-*`  service-detail.css
+ *   reviewGrid       `.sec-*`  service-detail.css
  *   stages           `.hi-*`  how-it-works.css
  *   growth           `.hi-*`  how-it-works.css
  *   linkRows         `.hi-*`  how-it-works.css
- *   faq              `.sv-*`  services-shared.css
+ *   faq              `.sec-*`  services-shared.css
  *   closing band      core    components.css
  *
  * ── WHY THIS FILE IS MOSTLY TWO GRIDS ─────────────────────────────────────
@@ -40,7 +40,7 @@
    01 — THE STATEMENT  (§04 OUR APPROACH, §13 OUR MINDSET)
    ---------------------------------------------------------------------------
    A heading, one prominent statement, and the copy around it. The grid below
-   is copied from `.sd-prose__grid` on purpose — identical columns, identical
+   is copied from `.sec-prose__grid` on purpose — identical columns, identical
    gap, identical breakpoint. If one of the two ever changes, both must.
    =========================================================================== */
 
@@ -219,7 +219,7 @@
   line-height: var(--lh-body);
 }
 
-/* `.sd-note` supplies the hairline and its own top margin; this only keeps the
+/* `.sec-note` supplies the hairline and its own top margin; this only keeps the
    note with the chain it describes rather than with the heading above it. */
 .ab-flow__note {
   margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
@@ -308,7 +308,7 @@
    03 — THE INK BAND  (§08 only)
    ---------------------------------------------------------------------------
    The core `.section--dark` block already flips the eyebrow, the heading, the
-   hairline rules and every `.sd-note` it contains, so only this page's own
+   hairline rules and every `.sec-note` it contains, so only this page's own
    classes need restating. Collected here rather than beside each rule, because
    the band is what the overrides belong to.
    =========================================================================== */
@@ -323,7 +323,7 @@
 }
 
 /* `--brass` here, not `--brass-ink`: the ink ground is dark, so the mark takes
-   the brighter brass. Same swap the footer and `.sv-approach` make. */
+   the brighter brass. Same swap the footer and `.sec-approach` make. */
 .section--dark .ab-flow__mark {
   color: var(--brass);
 }

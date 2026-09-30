@@ -60,18 +60,21 @@
         layout import, or the page sheet silently loses its conflicts.
      3. Add the file name to `PAGE_SHEETS` in `scripts/audit.mjs`, which is
         what enforces the next rule.
-     4. Namespace every selector in it (`.sr-` for the sourcing page, `.sv-`
-        for the services area, `.sd-` for service detail, `.ind-` for
-        industries, `.hi-` for how-it-works, `.ab-` for about, `.fq-` for faq,
-        `.lg-` for the two legal documents, `.in-` for the insights hub) and
+     4. Namespace every selector in it (`.sr-` for the sourcing page, `.ind-`
+        for industries, `.hi-` for how-it-works, `.ab-` for about, `.fq-` for
+        faq, `.lg-` for the two legal documents, `.in-` for the insights hub,
+        `.ia-` for a written article) and
         reuse the
         component classes from components.css before inventing new ones — that
         is what keeps the site visually coherent.
+        The two SHARED sheets are the exception: they own a `.sec-` vocabulary
+        rather than a page prefix, because their devices outgrew the page that
+        first used them. See the rename note at the end of this header.
 
    SHARING A DEVICE BETWEEN TWO PAGES
      A page sheet is per page, so two pages that need the same device would
      otherwise each carry a copy of it. That is what `services-shared.css` is
-     for: `.sv-hero*`, the five-stage rail and the FAQ are used by `/services`
+     for: `.sec-hero*`, the five-stage rail and the FAQ are used by `/services`
      AND by every `/services/<slug>` detail page, so they live in one file both
      import. Add to it only when a second page genuinely needs the device —
      and note that this buys a single source of truth, NOT a shared download:
@@ -79,7 +82,12 @@
      imports, so a "shared" sheet is not a separately cached file. The win is
      that pages which do not need the rules do not ship them.
      `service-detail.css` is the opposite case: rules only the detail pages
-     need, prefixed `.sd-` so they cannot collide with `.sv-`.
+     need. Both sheets now share ONE namespace, `.sec-` — which means the prefix
+     no longer says which file a rule belongs to. What separates them is which
+     pages import them: `services-shared.css` is for a device a second page
+     genuinely needs, `service-detail.css` for rules only these five detail
+     pages render. A rule in the wrong file is still the first thing a reader
+     would notice, so each file's section index has to carry that weight now.
      Every sheet in the chain — core, shared and page — needs its own line in
      `PAGE_SHEETS`, including the shared ones.
 
@@ -91,7 +99,7 @@
      `service-detail.css`, so nine pages share both sheets. The other three take
      `services-shared.css` alone, for the same reason twice over: `/faq`'s
      hero and disclosure group are shared devices but a FAQ page needs none of
-     the `.sd-` prose, split, chain or review-grid treatment; `/insights` needs
+     the `.sec-` prose, split, chain or review-grid treatment; `/insights` needs
      none of it either now that §8's review grid has left the page, and its own
      three devices are in `insights.css`; and a written article takes from this
      sheet ONLY the hero — its table of contents, its reading column and its five
@@ -110,19 +118,39 @@
 
      So the trade-off recorded here previously ("when a third non-services page
      needs them, rename both sheets and the `.sv-` / `.sd-` prefixes to a
-     neutral `.sec-`") has TRIGGERED REPEATEDLY and is now overdue. It is still
-     deliberately not done in any page change, and the reason is cost rather
-     than doubt: the rename touches every class in the two sheets, the
-     components that emit them, the page sheets that reference them (`.ind-`,
-     `.hi-`, `.ab-` and `.in-` all hook `.sv-` and `.sd-` classes), `PAGE_SHEETS`
-     in `scripts/audit.mjs`, and the selectors hard-coded in EIGHT verification
-     harnesses (`sd-geo.mjs`, `sv-geo.mjs`, `sv-verify.mjs`, `in-geo.mjs`,
-     `hi-geo.mjs`, `ab-geo.mjs`, `fq-geo.mjs`, `lg-geo.mjs`) — that is a
-     fresh full-site re-verification for a naming improvement no visitor can
-     see, and it would invalidate nine already-passing pages' assertions in the
-     same change. Do it as its own task, with the harnesses updated first and
-     the page-by-page run as the acceptance test. Recorded here so the next
-     reader knows it is a known, now-due trade-off rather than an oversight.
+     neutral `.sec-`") had TRIGGERED REPEATEDLY and was overdue. **It is now
+     DONE — 2026-09-30.**
+
+     WHY IT WAS RIGHT TO DO
+     `.sv-` and `.sd-` were two prefixes for one idea: "a generic editorial
+     section". Their names recorded which page happened to consume them FIRST,
+     not what they are, which is exactly why they had been wrong for six
+     non-services consumers. The merge leaves one vocabulary, `.sec-`.
+
+     THE ONE GENUINE COLLISION, AND HOW IT WAS RESOLVED
+     `.sv-process` and `.sd-process` are different things wearing the same
+     suffix:
+       · `.sv-process` — the LIGHT five-stage rail on `/services`. Its own bare
+         rule is `background-color: var(--white)`.
+       · `.sd-process` — the DARK rail on a service detail page, whose rules are
+         all SCOPED descendants (`.sd-process .sv-stage__marker` and friends).
+     Collapsing the two would have let that bare `background-color: var(--white)`
+     apply to the dark band — a silent, purely visual regression. So the dark
+     family was renamed `.sec-process-dark` FIRST, and `.sv-process` then took
+     `.sec-process`. `sd-process__head` / `__foot` had to follow it even though
+     no rule mentions them: reusing the light rail's `.sec-process__head` would
+     have applied ITS rule to the dark band.
+     (`.sv-geo`, `.sd-geo`, `.sv-verify` and `.sv-mobile` are harness FILENAMES,
+     not classes, and were deliberately left alone.)
+
+     WHAT IT COST
+     Every class in the two sheets, the components that emit them, the page
+     sheets that hook them (`.ind-`, `.hi-`, `.ab-`, `.in-`, `.fq-`, `.lg-`,
+     `.ia-`, `.sr-`), and the selectors hard-coded in ten verification
+     harnesses. It is a naming change no visitor can see, and it was accepted as
+     its own task with the harnesses updated first and a full page-by-page run
+     as the acceptance test — never folded into a page change. Recorded here so
+     the next reader knows it is settled rather than still pending.
    =========================================================================== */
 
 /* Manrope (headings) — variable, weights 200–800 */

@@ -7,12 +7,12 @@
    ships this file.
 
    WHAT IS NOT IN THIS FILE — AND WHY THAT IS THE POINT
-   · `.sv-hero*`, `.sv-stages` / `.sv-stage*`, `.sv-faq*` — the hero, the
+   · `.sec-hero*`, `.sec-stages` / `.sec-stage*`, `.sec-faq*` — the hero, the
      numbered rail and the FAQ. These pages render all three with the same
      components `/services`, the five service detail pages and `/industries`
      already use, so the rules stay in `services-shared.css` and are imported,
      not copied.
-   · `.sd-checklist*`, `.sd-review*` and the dark-ground corrections — imported
+   · `.sec-checklist*`, `.sec-review*` and the dark-ground corrections — imported
      from `service-detail.css` for the same reason. "What We Can Source", "What
      We Can Help With", "Sourcing Considerations" and "Who This Category Can
      Work For" are the dense check-list device; "What Buyers Usually Need" is the
@@ -58,7 +58,7 @@
    so nothing new is introduced.
 
    ── THE CURRENT PAGE USES THE SITE'S EXISTING "YOU ARE HERE" TREATMENT ────
-   `color: var(--brass-ink)` is what `.sd-chain__stage--current` and the header's
+   `color: var(--brass-ink)` is what `.sec-chain__stage--current` and the header's
    `[aria-current='page']` underline already use. A new visual signal here would
    be a fourth way of saying the same thing on one site.
    =========================================================================== */
