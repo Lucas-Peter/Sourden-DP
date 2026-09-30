@@ -233,6 +233,15 @@
   --btn-h-sm: 46px; /* header / dense contexts (see COMPLIANCE.md) */
   --radius: 3px; /* spec: 2–4px, never a pill */
 
+  /* Height of the mobile sticky CTA bar — its own padding, its button, and the
+     hairline it draws across its top. The floating back-to-top control has to
+     clear that bar, and clearing it from a second hand-written number is how
+     the two silently drift apart. The `--rule` is easy to forget and worth
+     exactly 1px of overlap, which is the kind of error nothing else catches.
+     This is the bar's HEIGHT, not the space it takes up on the glass: each
+     consumer adds `env(safe-area-inset-bottom)` itself. */
+  --sticky-cta-h: calc(var(--sp-3) * 2 + var(--btn-h) + var(--rule));
+
   --rule: 1px;
 
   /* Width of the brass seam drawn across the top of every hero band. It is
@@ -257,6 +266,12 @@
      --------------------------------------------------------------------- */
   --z-base: 1;
   --z-sticky-cta: 40;
+  /* Floating back-to-top. It sits between the sticky CTA bar and the header:
+     above the bar so a click can never be swallowed by it, below the header
+     and the menu panel, which must always win. Choosing a value rather than
+     leaving it auto keeps the paint order fixed instead of source-order
+     dependent. */
+  --z-to-top: 50;
   --z-header: 60;
   --z-menu: 70;
 

@@ -222,6 +222,7 @@ b {
   .site-header,
   .mobile-menu,
   .sticky-cta,
+  .to-top,
   .skip-link {
     display: none !important;
   }

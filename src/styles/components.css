@@ -1007,6 +1007,10 @@ body.is-menu-open .sticky-cta {
   bottom: 0;
   z-index: var(--z-sticky-cta);
   display: none;
+  /* Makes the token the bar's real height instead of a claim about it: the
+     back-to-top control clears the bar using the same number, so if the
+     button ever changes size the two move together. */
+  min-height: var(--sticky-cta-h);
   padding: var(--sp-3) var(--gutter) calc(var(--sp-3) + env(safe-area-inset-bottom, 0px));
   background-color: var(--surface-hero);
   border-top: var(--rule) solid var(--stone);
@@ -1031,4 +1035,117 @@ body.is-menu-open .sticky-cta {
 
 .sticky-cta .btn {
   width: 100%;
+}
+
+/* ===========================================================================
+   BACK TO TOP  (spec §21 — the second piece of fixed chrome)
+   A floating return-to-top control, on every page.
+
+   WHAT COLOUR, AND WHY NOT `--ink`
+   This is the only element on the site that floats over EVERY band in the
+   system — warm-sand hero, ivory, white, both mid-page darks, and the footer —
+   and the band behind it changes as the visitor scrolls. `--ink` would have
+   been the obvious pick, because every other dark control on the site is ink,
+   but at L* 5.8 it all but vanishes against the footer (`--surface-footer`,
+   L* 8.4) — which is the one place on a long page where a visitor most wants
+   this control. `--surface-cta` is the ramp's guarantee instead: 11.3:1
+   against ivory, and at least 7 L* away from both of the other darks, so the
+   chip stays legible on every band it can possibly float over.
+
+   The brass glyph and hairline are the same accent the hero bands draw, so the
+   chip reads as part of the design language rather than a bolted-on widget.
+   =========================================================================== */
+
+.to-top {
+  position: fixed;
+  inset-inline-end: var(--gutter);
+  /* Clears the iPhone home indicator even on the page that has no sticky bar
+     to clear. The bar case is the modifier below. */
+  bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+  z-index: var(--z-to-top);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* `--btn-h-sm` is the compact-control height the header already uses, and it
+     clears the 44px touch-target floor with room to spare. */
+  width: var(--btn-h-sm);
+  height: var(--btn-h-sm);
+  padding: 0;
+  border: var(--rule) solid var(--brass);
+  border-radius: var(--radius);
+  background-color: var(--surface-cta);
+  color: var(--brass);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1;
+  cursor: pointer;
+  /* Hidden with the same `opacity` + `visibility` + `pointer-events` idiom as
+     the mobile menu, and for the same two reasons: the transition still runs,
+     and `visibility: hidden` takes the control out of the tab order, so a
+     keyboard visitor can never land on a button they cannot see. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    visibility 0s linear var(--dur);
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  /* Show immediately, hide only after the fade has finished. */
+  transition-delay: 0s;
+}
+
+.to-top:hover {
+  background-color: var(--surface-slate);
+}
+
+.to-top:active {
+  background-color: var(--surface-footer);
+}
+
+/* The site's arrow idiom: the glyph nudges the way it points. `.arrow-link`
+   moves its → by 5px on hover and `.btn` its → by 4px; this one is vertical,
+   so it is 3px up. */
+.to-top__icon {
+  display: inline-block;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.to-top:hover .to-top__icon,
+.to-top:focus-visible .to-top__icon {
+  transform: translateY(-3px);
+}
+
+/* The site's focus ring is `--focus-ring`, flipped to ivory by a dark DOM
+   ancestor. A fixed element cannot use that: what is behind it is a band it
+   knows nothing about, and it changes as the page scrolls. So the indicator is
+   drawn twice over — an ink ring that reads against the light bands, and an
+   ivory halo that reads against the dark ones. One of the two always contrasts
+   with whatever the chip is floating over. */
+.to-top:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--ivory);
+}
+
+/* The sticky CTA bar owns the bottom of the viewport below 768px, so the chip
+   clears it: the bar's own height plus one step of breathing room, and the
+   inset clears the iPhone home indicator.
+
+   `--above-bar` is set by the component from the same boolean that decides
+   whether the bar renders at all, so `/sourcing-request` — the one route with
+   `hideStickyCta` — keeps the plain gutter offset instead of reserving 89px of
+   empty space for a bar that is not there. */
+@media (max-width: 767px) {
+  .to-top--above-bar {
+    bottom: calc(var(--sticky-cta-h) + var(--sp-3) + env(safe-area-inset-bottom, 0px));
+  }
 }
