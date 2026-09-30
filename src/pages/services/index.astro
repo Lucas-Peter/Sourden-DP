@@ -71,7 +71,7 @@ import {
   overviewSections,
   servicesPageMeta,
 } from '../../data/services-page.js';
-import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+import { breadcrumbItems, breadcrumbSchema, faqPageSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
 
 const path = '/services';
 
@@ -99,6 +99,9 @@ const schema = [
   ...overviewSections.map((section) =>
     serviceSchema({ name: section.title, description: section.description, href: section.href })
   ),
+  /* Built from the same `faqItems` <ServicesFaq> renders below, so the node can
+     never describe a question a visitor cannot see. */
+  faqPageSchema(faqItems),
 ];
 ---
 
@@ -117,7 +120,7 @@ const schema = [
     secondaryCta={hero.secondaryCta}
     imageKey={hero.image.key}
     imageCaption={hero.image.caption}
-    titleId="sv-hero-title"
+    titleId="sec-hero-title"
   />
 
   <SourcingProcess />
@@ -137,7 +140,7 @@ const schema = [
     title={faqIntro.title}
     items={faqItems}
     foot={faqIntro.cta}
-    titleId="sv-faq-title"
+    titleId="sec-faq-title"
   />
 
   <FinalCTA
