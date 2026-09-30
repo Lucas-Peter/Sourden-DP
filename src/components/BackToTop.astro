@@ -1,0 +1,83 @@
+---
+/**
+ * BackToTop — a floating return-to-top control, rendered once per page by
+ * BaseLayout so every route gets it from the same markup.
+ *
+ * Behaviour
+ *   · Appears once the visitor has scrolled past the first viewport, and
+ *     withdraws again above it. Nothing is measured against a page-specific
+ *     element, so this holds on a 12-screen article and on the 404 alike.
+ *   · Clicking scrolls to the top AND moves focus to `#main`. The scroll alone
+ *     would only work visually: a screen reader's reading position would stay
+ *     at the bottom of the document it just asked to leave.
+ *
+ * Progressive enhancement
+ *   Without JavaScript the control never appears. That is the same safe
+ *   degradation the sticky CTA bar uses — a "back to top" button is a
+ *   convenience for someone already able to scroll, so nothing is lost, and
+ *   nothing is ever hidden behind it.
+ *
+ * Why no `behavior: 'smooth'`
+ *   `window.scrollTo({ top: 0 })` deliberately omits it. Left to the default
+ *   the CSS `scroll-behavior` property decides, and `base.css` already
+ *   switches that to `auto` under `prefers-reduced-motion`. Asking for smooth
+ *   scrolling here would hand that preference straight back.
+ */
+
+interface Props {
+  /** Accessible name. The control is an icon, so it has no visible label. */
+  label?: string;
+  /**
+   * Whether the sticky CTA bar owns the bottom of the viewport on this page.
+   *
+   * The bar is suppressed on `/sourcing-request` (see `hideStickyCta` in
+   * BaseLayout), and the control has to clear it on mobile — so the two must
+   * agree about whether it exists. Left to CSS the chip would keep reserving
+   * space for a bar that is not there and float 89px up the page for no
+   * reason. `:has()` would express this in one selector, but it is outside the
+   * browser floor (Chrome 87 / Safari 14), so the fact is passed in instead.
+   */
+  aboveStickyBar?: boolean;
+}
+
+const { label = 'Back to top', aboveStickyBar = true } = Astro.props;
+
+const classes = ['to-top', aboveStickyBar && 'to-top--above-bar'].filter(Boolean).join(' ');
+---
+
+<button class={classes} type="button" data-to-top aria-label={label}>
+  <span class="to-top__icon" aria-hidden="true">↑</span>
+</button>
+
+<script>
+  (function () {
+    var btn = document.querySelector('[data-to-top]');
+
+    if (!btn) return;
+
+    var shown = false;
+
+    /* Compare against the last state before touching the DOM: a scroll fires
+       dozens of times a second, and toggling the class on every one of them
+       would queue a style recalculation for no visible change. */
+    function sync() {
+      var shouldShow = window.scrollY > window.innerHeight;
+
+      if (shouldShow === shown) return;
+
+      shown = shouldShow;
+      btn.classList.toggle('is-visible', shouldShow);
+    }
+
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync, { passive: true });
+    sync();
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0 });
+
+      var main = document.getElementById('main');
+      if (main) main.focus({ preventScroll: true });
+    });
+  })();
+</script>
