@@ -329,7 +329,7 @@ if (existsSync(STYLE_DIR)) {
  * The defect this exists for shipped on 2026-09-27. `/faq` renders
  * `ServiceProse` — the shared §12 prose block — but its frontmatter imported
  * `services-shared.css` and `faq.css` and forgot `service-detail.css`, the sheet
- * that actually defines the `.sd-prose*` rules. The build stayed green, the
+ * that actually defines the `.sec-prose*` rules. The build stayed green, the
  * markup was byte-perfect, the heading and the copy and the links were all
  * correct, and the only symptom was that the block fell back to `display: block`:
  * one 1216px paragraph at an uncapped measure where a two-column editorial split
@@ -338,21 +338,21 @@ if (existsSync(STYLE_DIR)) {
  *
  * ⚠ WHY THIS IS WRITTEN IN TERMS OF CLASS FAMILIES, NOT CLASS NAMES.
  * A first version collected each sheet's BARE single-class selectors
- * (`.sd-prose`, `.sv-faq`, …) and required a page using one to ship its sheet.
+ * (`.sec-prose`, `.sec-faq`, …) and required a page using one to ship its sheet.
  * That version passed on the very page it was written for — because
- * `service-detail.css` does NOT define a bare `.sd-prose` at all. All five of its
- * rules hang off `.sd-prose__grid`, `.sd-prose__body`, `.sd-prose__para`,
- * `.sd-prose__emphasis` and `.sd-prose__foot`; `sd-prose` on the <section> is
+ * `service-detail.css` does NOT define a bare `.sec-prose` at all. All five of
+ * its rules hang off `.sec-prose__grid`, `.sec-prose__body`, `.sec-prose__para`,
+ * `.sec-prose__emphasis` and `.sec-prose__foot`; `sec-prose` on the <section> is
  * only a namespace marker that no rule ever mentions. So the rule had NO SUBJECT
  * on that page and passed vacuously — the same "measured but asserted on an
  * empty set" failure this codebase has been bitten by before. A guard must be
  * made to fail on purpose once, or it is not known to be a guard.
  *
- * So the unit is the FAMILY: the part before `__` or `--`. `.sd-prose__grid`
- * belongs to the family `sd-prose`. A page that uses ANY class in a family must
+ * So the unit is the FAMILY: the part before `__` or `--`. `.sec-prose__grid`
+ * belongs to the family `sec-prose`. A page that uses ANY class in a family must
  * ship CSS that defines that family. The family → sheet map is many-to-many,
  * because a sheet may legitimately reference another's class (the industries
- * rail adjusts `.sv-stage__verb`), and one owner being absent must not fail a
+ * rail adjusts `.sec-stage__verb`), and one owner being absent must not fail a
  * page that ships the other.
  */
 if (existsSync(STYLE_DIR)) {
@@ -392,7 +392,7 @@ if (existsSync(STYLE_DIR)) {
     }
 
     /* Present means "a rule for this family is shipped", so a match on
-       `.sd-prose__grid` counts for `sd-prose` — hence the negative lookahead for
+       `.sec-prose__grid` counts for `sec-prose` — hence the negative lookahead for
        a following alphanumeric, and NOT for `_`/`-`. */
     const missing = [...usedFamilies].filter(
       (family) => !new RegExp(`\\.${family.replace(/-/g, '\\-')}(?![A-Za-z0-9])`).test(shippedCss)
