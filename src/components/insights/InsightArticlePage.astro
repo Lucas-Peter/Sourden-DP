@@ -1,0 +1,275 @@
+---
+/**
+ * InsightArticlePage — the shell for every written `/insights/<slug>` article
+ * ---------------------------------------------------------------------------
+ * It owns the document, the stylesheets, the structured data and the section
+ * order; the article's words arrive as `content` from
+ * `src/data/insight-<slug>.js`, and its title, listing sentence and category
+ * arrive as `article` from `insights-articles.js` — the same record the hub's
+ * directory renders its card from. Nothing is declared twice.
+ *
+ * ── THE SHAPE OF AN ARTICLE PAGE ───────────────────────────────────────────
+ *   hero      the shared device, the article's category tag as its eyebrow and
+ *             NO image — the document carries no artwork (see the body file)
+ *   toc       the table of contents (§ added; see below)
+ *   body      every section, in the document's order, as one `<article>`
+ *   (nothing) the article's own closing band IS the page's closing band
+ *
+ * ── WHY THERE IS NO `FinalCTA` HERE ────────────────────────────────────────
+ * Every other page on the site ends with the shared `FinalCTA` device, and this
+ * one deliberately does not: the document already ends with its own closing
+ * band ("Need Help Finding Suppliers in China?"), which names the primary
+ * action AND links to a service page. Stacking the site's CTA device directly
+ * under it would print two consecutive call-to-action bands, the second one
+ * repeating the first's button verbatim. The document's ending is a better
+ * closing band than the generic one because it is specific to the article, so
+ * it is rendered as the last section and keeps both of its links — the service
+ * link in particular, since §15 of the hub brief requires this area to reach
+ * all five service detail pages.
+ *
+ * ── WHY THE TABLE OF CONTENTS EXISTS, AND WHERE ITS COPY COMES FROM ───────
+ * The document has no table of contents and seventeen numbered chapters. The
+ * page adds one for navigation only. Its heading is the single authored string
+ * in the article's data file (`tocHeading`) and the entries are DERIVED from
+ * the sections themselves — a chapter cannot be renamed in the data without the
+ * link text following, and a section cannot be added without appearing here.
+ * `inToc: false` is how the closing band stays out: it is an action, not a
+ * chapter, and linking to it as "chapter eighteen" would be a lie about the
+ * document's structure.
+ *
+ * The entries are real `#anchor` links inside one document, so there is no
+ * script: `<html>`'s existing `scroll-padding-top` keeps the heading clear of
+ * the sticky header. That one declaration is the whole mechanism — see the note
+ * on `.ia-chapter` for why the stylesheet deliberately adds no
+ * `scroll-margin-top` on top of it.
+ *
+ * ── WHY THE BODY IS A BLOCK DISPATCHER ────────────────────────────────────
+ * An article has no fixed section vocabulary — its shape is whatever the author
+ * wrote. So each section carries typed blocks (`p` / `list` / `h3` / `table` /
+ * `links`) and this shell renders them. An unknown block type THROWS rather
+ * than rendering nothing, because a silently dropped paragraph is invisible in
+ * review and obvious to a reader. Same rule as `IndustryDetailPage`.
+ *
+ * ── WHAT THIS SHELL DOES NOT DO ───────────────────────────────────────────
+ *   · It emits no `datePublished` and no `image`. Both are the article's real
+ *     values arriving as `null` (nothing is published and nothing is
+ *     photographed), and `articleSchema` omits them rather than inventing them.
+ *   · It emits no `FAQPage`, no `Product`, no rating and no author.
+ *   · It renders no image anywhere: the document's `[Image]` paragraphs are
+ *     empty placeholders — `doc_get_images` returns no picture at all — so the
+ *     article is text only, which is also what §7 of the hub brief prefers to a
+ *     poor stock photograph.
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
+import '../../styles/insight-article.css';
+
+import ArrowLink from '../ArrowLink.astro';
+import ServicesHero from '../services/ServicesHero.astro';
+
+import { articleHref, categoryFor } from '../../data/insights-articles.js';
+import { primaryCta } from '../../data/site.js';
+import {
+  articleSchema,
+  breadcrumbItems,
+  breadcrumbSchema,
+  webPageSchema,
+} from '../../data/schema.js';
+
+interface Props {
+  /** The record from `insights-articles.js` — the hub's own registry. */
+  article: {
+    slug: string;
+    title: string;
+    description: string;
+    categorySlug: string;
+    publishedAt: string | null;
+  };
+  /** The body, from `src/data/insight-<slug>.js`. */
+  content: { tocHeading: string; sections: Array<Record<string, any>> };
+  /** `{ label: 'Insights', href: '/insights' }`, from the route registry. */
+  parent: { label: string; href: string };
+}
+
+const { article, content, parent } = Astro.props;
+
+const path = articleHref(article);
+
+/**
+ * The article's category, read from the category registry rather than from the
+ * article record — the record stores a `categorySlug` and the tag is the
+ * category's own display string. This is the same lookup `routes.js` used to
+ * build the reservation page's eyebrow, so the eyebrow does not change when the
+ * article stops being a reservation.
+ */
+const category = categoryFor(article.categorySlug);
+
+const breadcrumbs = [{ label: parent.label, href: parent.href }, { label: article.title }];
+
+/**
+ * The hero's secondary action — the insights equivalent of "View All Services"
+ * on a service page. Declared here rather than in the article file, which
+ * carries no navigation copy at all.
+ */
+const secondaryCta = { label: 'View All Insights', href: '/insights' };
+
+/**
+ * The title keeps the exact string the reservation shell published
+ * (`<title> | Sourden`), so this article's title does not change the day its
+ * body arrives — the same reason `reservationForDetail` builds it this way.
+ */
+const pageMeta = {
+  title: `${article.title} | Sourden`,
+  description: article.description,
+};
+
+const tocTitleId = `ia-${article.slug}--toc`;
+
+/** Chapters only: a heading, an id, and not explicitly kept out of the list. */
+const tocEntries = content.sections.filter(
+  (section) =>
+    section.type === 'section' && section.id && section.heading && section.inToc !== false
+);
+
+const schema = [
+  webPageSchema({ title: pageMeta.title, description: pageMeta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+  articleSchema({
+    title: article.title,
+    excerpt: article.description,
+    href: path,
+    publishedAt: article.publishedAt,
+  }),
+];
+---
+
+<BaseLayout
+  title={pageMeta.title}
+  description={pageMeta.description}
+  path={path}
+  schema={schema}
+>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={category.tag}
+    title={article.title}
+    description={article.description}
+    primaryCta={primaryCta}
+    secondaryCta={secondaryCta}
+    titleId={`ia-${article.slug}--hero`}
+  />
+
+  <nav class="section section--tight section--ivory ia-toc" aria-labelledby={tocTitleId}>
+    <div class="container container--narrow">
+      <h2 class="eyebrow ia-toc__title" id={tocTitleId}>{content.tocHeading}</h2>
+
+      <ol class="ia-toc__list">
+        {
+          tocEntries.map((entry) => (
+            <li class="ia-toc__item">
+              <a class="ia-toc__link" href={`#${entry.id}`}>
+                {entry.heading}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </nav>
+
+  <article class="section section--white ia-body">
+    <div class="container container--narrow">
+      {
+        content.sections.map((section, index) => {
+          const blocks = section.blocks.map((block, blockIndex) => {
+            switch (block.type) {
+              case 'p':
+                return <p class="ia-p">{block.text}</p>;
+
+              case 'list':
+                return (
+                  <ul class="ia-list">
+                    {block.items.map((item) => (
+                      <li class="ia-list__item">{item}</li>
+                    ))}
+                  </ul>
+                );
+
+              case 'h3':
+                return <h3 class="ia-h3">{block.text}</h3>;
+
+              case 'table':
+                /* Wrapped so a two-column table can scroll sideways on a
+                   narrow screen instead of forcing the page to scroll. */
+                return (
+                  <div class="ia-table-wrap">
+                    <table class="ia-table">
+                      <thead>
+                        <tr>
+                          {block.head.map((cell) => (
+                            <th class="ia-table__head" scope="col">
+                              {cell}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {block.rows.map((row) => (
+                          <tr class="ia-table__row">
+                            {row.map((cell) => (
+                              <td class="ia-table__cell">{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+
+              case 'links':
+                return (
+                  <div class="ia-links">
+                    {block.items.map((link) => (
+                      <ArrowLink href={link.href} label={link.label} brass />
+                    ))}
+                  </div>
+                );
+
+              default:
+                /* A typo in a block `type` must not render nothing and pass the
+                   build — the paragraph would simply vanish from the article. */
+                throw new Error(
+                  `[InsightArticlePage] Unknown block type "${block.type}" at block ` +
+                    `${blockIndex} of section "${section.id ?? index}" in ${article.slug}. ` +
+                    `See the block vocabulary in src/data/insight-<slug>.js.`
+                );
+            }
+          });
+
+          /* The unnumbered opening run: no heading, so no anchor and no entry
+             in the table of contents. */
+          if (section.type === 'lead') {
+            return <div class="ia-lead">{blocks}</div>;
+          }
+
+          if (section.type !== 'section') {
+            throw new Error(
+              `[InsightArticlePage] Unknown section type "${section.type}" at index ` +
+                `${index} of ${article.slug}. Expected "lead" or "section".`
+            );
+          }
+
+          return (
+            <section class="ia-chapter" id={section.id} aria-labelledby={`${section.id}--title`}>
+              <h2 class="ia-chapter__title" id={`${section.id}--title`}>
+                {section.heading}
+              </h2>
+              {blocks}
+            </section>
+          );
+        })
+      }
+    </div>
+  </article>
+</BaseLayout>
