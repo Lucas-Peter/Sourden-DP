@@ -25,7 +25,7 @@
  */
 
 /** The month the current text of both legal documents was last revised. */
-export const LEGAL_LAST_UPDATED = 'September 2026';
+const LEGAL_LAST_UPDATED = 'September 2026';
 
 /**
  * The complete metadata line, label included, so the two documents cannot

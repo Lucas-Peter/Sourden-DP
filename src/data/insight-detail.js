@@ -94,7 +94,7 @@ export function insightPageFor(slug) {
 }
 
 /** Slugs whose article body has been written. */
-export const builtInsightSlugs = Object.keys(insightDetailPages);
+const builtInsightSlugs = Object.keys(insightDetailPages);
 
 /**
  * Root-relative paths of the written articles.

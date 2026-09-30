@@ -114,7 +114,7 @@ import { page as terms } from './legal-terms.js';
  * to `null` while its copy is unwritten.
  * @type {Record<string, Record<string, unknown> | null>}
  */
-export const legalPages = {
+const legalPages = {
   '/privacy-policy': privacy,
   '/terms-of-service': terms,
 };

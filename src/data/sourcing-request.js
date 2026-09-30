@@ -54,7 +54,7 @@ export const formIntro = {
  * `number` is displayed as a brass label ("01"), `label` as the uppercase
  * section name ("PRODUCT"), so the eyebrow reads "01 — PRODUCT".
  */
-export const formSections = [
+const formSections = [
   { id: 'product', number: '01', label: 'PRODUCT', title: 'What are you looking for?' },
   { id: 'requirements', number: '02', label: 'REQUIREMENTS', title: 'Tell us about the product.' },
   { id: 'order', number: '03', label: 'ORDER', title: 'What quantity are you considering?' },

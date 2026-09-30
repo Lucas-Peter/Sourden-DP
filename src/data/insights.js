@@ -81,7 +81,6 @@ export const secondaryArticles = [
   },
 ];
 
-export const allArticles = [featuredArticle, ...secondaryArticles];
 
 /** §18 section header copy. The heading is deliberately two lines. */
 export const insightsIntro = {

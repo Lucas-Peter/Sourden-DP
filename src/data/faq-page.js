@@ -164,6 +164,15 @@ export const hero = {
    block it points at comes after all seven categories).
    =========================================================================== */
 
+/**
+ * Category navigation.
+ *
+ * ⚠ Exported for the harness: `fq-geo.mjs` reads `PAGE.categoryNav` to assert
+ * the category bands' ground rhythm against the data. Un-exporting it does NOT
+ * fail the build or the gate — the gate silently reads `undefined` and its
+ * rhythm assertions stop testing anything. The harnesses live in the SESSION
+ * directory, not the repo, so a repo-only dead-export scan gets this wrong.
+ */
 export const categoryNav = [
   { label: 'Getting Started', href: '#faq-getting-started' },
   { label: 'MOQ & Order Size', href: '#faq-moq-order-size' },
@@ -533,7 +542,7 @@ const faqSections = [
    actions.
    =========================================================================== */
 
-export const customSourcingSection = {
+const customSourcingSection = {
   type: 'prose',
   anchor: 'faq-custom-sourcing',
   tone: 'white',

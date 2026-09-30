@@ -660,4 +660,23 @@ export const finalCta = {
    THE PAGE OBJECT
    =========================================================================== */
 
-export const industriesPage = { slug, meta, breadcrumbs, hero, sections, faqIntro, faqItems, finalCta };
+/**
+ * The whole page as one object.
+ *
+ * ⚠ NOT DEAD CODE — do not remove this as "unused". The page imports the named
+ * pieces above individually, so nothing in `src/` reads this; its ONE consumer
+ * is the harness `in-geo.mjs` (`PAGE.industriesPage`). The harnesses live in the
+ * SESSION directory, so a dead-export scan limited to the repo reports this as
+ * unused — see the same warning in `about-page.js`.
+ */
+export const industriesPage = {
+  slug,
+  meta,
+  breadcrumbs,
+  hero,
+  sections,
+  faqIntro,
+  faqItems,
+  finalCta,
+};
+

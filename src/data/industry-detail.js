@@ -143,7 +143,7 @@ export function industryPageFor(slug) {
 }
 
 /** Slugs whose category page has been written. */
-export const builtIndustrySlugs = Object.keys(industryDetailPages);
+const builtIndustrySlugs = Object.keys(industryDetailPages);
 
 /**
  * Root-relative paths of the built category pages.

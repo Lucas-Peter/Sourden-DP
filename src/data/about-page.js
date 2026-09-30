@@ -809,6 +809,21 @@ export const finalCta = {
    THE PAGE OBJECT
    =========================================================================== */
 
+/**
+ * The whole page as one object.
+ *
+ * ⚠ NOT DEAD CODE — do not remove this as "unused".
+ *
+ * No `.astro` file imports it; the page imports the named pieces above
+ * individually. Its ONE consumer is the harness `ab-geo.mjs`, which imports this
+ * module's namespace and reads `PAGE.aboutPage` so that every expected heading
+ * and string is derived from the data rather than hard-coded a second time.
+ *
+ * The harnesses live in the SESSION directory, not in the repo — so a
+ * dead-export scan that only walks `src/` reports this as unused, and deleting
+ * it makes three gates crash on `PAGE.aboutPage` being undefined. Scan the
+ * harness directory too.
+ */
 export const aboutPage = {
   slug,
   meta,
@@ -820,3 +835,4 @@ export const aboutPage = {
   faqFoot,
   finalCta,
 };
+

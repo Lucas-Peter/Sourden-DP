@@ -829,6 +829,15 @@ export const finalCta = {
    THE PAGE OBJECT
    =========================================================================== */
 
+/**
+ * The whole page as one object.
+ *
+ * ⚠ NOT DEAD CODE — do not remove this as "unused". The page imports the named
+ * pieces above individually, so nothing in `src/` reads this; its ONE consumer
+ * is the harness `hi-geo.mjs` (`PAGE.howItWorksPage`). The harnesses live in the
+ * SESSION directory, so a dead-export scan limited to the repo reports this as
+ * unused — see the same warning in `about-page.js`.
+ */
 export const howItWorksPage = {
   slug,
   meta,
@@ -839,3 +848,4 @@ export const howItWorksPage = {
   faqItems,
   finalCta,
 };
+

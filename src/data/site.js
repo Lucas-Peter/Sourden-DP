@@ -135,21 +135,3 @@ export const seoDefaults = {
   titleSuffix: ' | Sourden',
 };
 
-/* ---------------------------------------------------------------------------
-   BLUEPRINT — reserved routes (spec §33)
-   Not rendered anywhere. It exists so the site's URL contract is declared in
-   one reviewable place and future work cannot accidentally invent a
-   conflicting path.
-   --------------------------------------------------------------------------- */
-
-export const reservedRoutes = {
-  implemented: ['/', '/services', '/industries', '/how-it-works', '/about', '/insights', '/case-studies', '/faq', '/sourcing-request', '/privacy-policy', '/terms-of-service'],
-  dynamic: [
-    '/services/[slug]',
-    '/industries/[slug]',
-    '/insights/[slug]',
-    '/case-studies/[slug]',
-  ],
-  planned: ['/products', '/products/[category]', '/products/[slug]'],
-  api: ['/api/inquiry', '/api/upload', '/api/contact'],
-};

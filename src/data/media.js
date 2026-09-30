@@ -591,9 +591,3 @@ export function img(key) {
   };
 }
 
-/** Every placeholder still awaiting a real photograph. Used by `<PlaceholderNotice>`. */
-export function outstandingPlaceholders() {
-  return Object.entries(images)
-    .filter(([, asset]) => asset.placeholder)
-    .map(([key, asset]) => ({ key, ...asset }));
-}

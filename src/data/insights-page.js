@@ -209,7 +209,7 @@ export const directory = {
    band.
 
    Two bands: the directory, then §10. Tones alternate ivory/white against the
-   hero, which is ivory itself (`.sv-hero`).
+   hero, which is ivory itself (`.sec-hero`).
    =========================================================================== */
 
 export const sections = [
