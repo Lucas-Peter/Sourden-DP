@@ -69,7 +69,13 @@ import {
   relatedServices,
   secondaryCta,
 } from '../../data/industry-detail.js';
-import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+import {
+  breadcrumbItems,
+  breadcrumbSchema,
+  faqPageSchema,
+  serviceSchema,
+  webPageSchema,
+} from '../../data/schema.js';
 
 interface Props {
   /** The whole page, from `src/data/industry-<slug>.js`. */
@@ -101,18 +107,22 @@ const path = `/industries/${page.slug}`;
 const breadcrumbs = industryBreadcrumbs(page.slug);
 
 /**
- * One graph for the page: the page itself, its breadcrumb, and a Service node
- * for each of the five services the Related Services band links to.
+ * The FAQPage node is built from the very array `<ServicesFaq>` renders below,
+ * so the graph can never describe a question a visitor cannot see.
+ *
+ * It is read off the data rather than assumed. All nine pages carry a `faq`
+ * section today, but deriving it means a page without one emits no node instead
+ * of an empty FAQPage claiming zero questions.
+ */
+const faqSection = page.sections.find((section) => section.type === 'faq');
+
+/**
+ * One graph for the page: the page itself, its breadcrumb, a Service node for
+ * each of the five services the Related Services band links to, and the FAQ.
  *
  * The Service nodes are built from the same merged records that band renders,
  * so a structured-data claim can never describe a service the page does not
  * show. `/industries` declares the same five nodes the same way.
- *
- * There is deliberately no FAQPage node: the site has no such builder and no
- * page emits one yet, and adding a second structured-data shape on nine pages
- * at once is a change to make deliberately, not as a side effect of writing
- * these pages. The FAQ markup itself is plain `<details>`, so the answers are
- * in the served HTML either way.
  */
 const schema = [
   webPageSchema({ title: page.meta.title, description: page.meta.description, path }),
@@ -120,6 +130,7 @@ const schema = [
   ...relatedServices.map((service) =>
     serviceSchema({ name: service.title, description: service.description, href: service.href })
   ),
+  ...(faqSection ? [faqPageSchema(faqSection.items)] : []),
 ];
 
 /**
@@ -201,7 +212,7 @@ const sectionId = (index) => `id-${page.slug}-${String(index + 1).padStart(2, '0
              stage — the brief's process has six where every other rail on the
              site has five.
              `ind-process` is the class `/industries` §10 passes for the same
-             reason: `.ind-process .sv-stage__verb` reserves the second line a
+             reason: `.ind-process .sec-stage__verb` reserves the second line a
              wrapped stage label needs, so the six descriptions that follow keep
              one shared top edge. Without it the six labels measure 33px and
              17px and the whole band staircases. */
