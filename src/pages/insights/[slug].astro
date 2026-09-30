@@ -1,31 +1,85 @@
 ---
 /**
- * RESERVED DETAIL ROUTE — /insights/[slug]
+ * DETAIL ROUTE — /insights/[slug]
  * ---------------------------------------------------------------------------
- * Generated from the shared data files, so adding a service, category, article
- * or case study creates its route automatically — no new page file needed.
+ * Generated from the shared data files, so adding an article creates its route
+ * automatically — no new page file needed.
  *
- * One page file therefore covers every child route in this group, and they all
- * render the same reservation shell until real content is written.
+ * TWO KINDS OF PAGE, ONE ROUTE
+ *   A slug with a written body renders it (`InsightArticlePage`); a slug without
+ *   one renders the reservation shell (`ReservationPage`). The branch is driven
+ *   by `insightPageFor()`, so writing an article for real is: write its body
+ *   file, add it to `insightDetailPages` in `src/data/insight-detail.js`, and
+ *   let its path be subtracted from `detailRoutePaths` — which that registry's
+ *   `builtInsightPaths` does automatically, so the noindex entry and the sitemap
+ *   entry can never disagree.
  *
- * TO BUILD A DETAIL PAGE FOR REAL
- * Replace <ReservationPage /> with the real sections and remove the
- * corresponding entries from `detailRoutePaths` in `src/data/routes.js`
- * so the URLs re-enter sitemap.xml.
+ *   Article 01 (`how-to-find-reliable-suppliers-in-china`) is published. The
+ *   other eleven still render the reservation shell, which is kept rather than
+ *   deleted for exactly that reason: the twelve routes were published before any
+ *   content existed and every link to them is live, so an article must resolve
+ *   to something real the moment its body is added.
+ *
+ * WHY NOT ONE FILE PER ARTICLE
+ *   A static `src/pages/insights/<slug>.astro` would also work, but then the
+ *   route list lives in two places (the file system and the data registry) and
+ *   the reservation fallback has to be duplicated for every article still to be
+ *   written. One route, two branches, one registry — the same architecture
+ *   `src/pages/industries/[slug].astro` and `src/pages/services/[slug].astro`
+ *   use.
+ *
+ * THE COST OF ONE ROUTE FOR TWO BRANCHES — measured, and the same on all three
+ *   Because both shells are imported statically, Astro links BOTH branches'
+ *   stylesheets on EVERY `/insights/<slug>` page, so a written article ships
+ *   `inner-pages.css` (the reservation shell's sheet) without using it, and a
+ *   reserved article ships `insight-article.css`. That is a small amount of CSS
+ *   the visitor has almost certainly downloaded already — `inner-pages.css` is
+ *   also the sheet for `/insights`, `/industries` and `/case-studies`. The
+ *   alternative is the same path in two route tables, where Astro's
+ *   static-over-dynamic precedence would decide the winner silently.
+ *
+ * INDEXABILITY — THE ONE STEP TO REMEMBER
+ *   The reservation branch is `noindex` and absent from sitemap.xml. A written
+ *   article is indexable: its path is subtracted from `detailRoutePaths` in
+ *   `src/data/routes.js` through `builtInsightPaths`.
+ *
+ *   ⚠ Forgetting that subtraction fails SILENTLY. The article renders, every
+ *   internal link to it works, the copy is complete — and it is simply absent
+ *   from search. `npm run audit` fails only when the two signals CONTRADICT
+ *   ("noindex but listed in the sitemap"); a page that is noindex AND unlisted
+ *   is a perfectly consistent pair, so nothing complains. Adding the slug to
+ *   `insightDetailPages` is what does both halves at once.
  * ---------------------------------------------------------------------------
  */
 import ReservationPage from '../../components/ReservationPage.astro';
+import InsightArticlePage from '../../components/insights/InsightArticlePage.astro';
 
+import { insightPageFor } from '../../data/insight-detail.js';
 import { detailRouteGroups, reservationForDetail } from '../../data/routes.js';
 
 export function getStaticPaths() {
-  return detailRouteGroups['insights'].map((entry) => ({
-    params: { slug: entry.slug },
-    props: { page: reservationForDetail(entry.kind, entry.item, entry.parent) },
-  }));
+  return detailRouteGroups['insights'].map((entry) => {
+    const content = insightPageFor(entry.slug);
+
+    return {
+      params: { slug: entry.slug },
+      props: content
+        ? { content, article: entry.item, parent: entry.parent }
+        : {
+            content: null,
+            page: reservationForDetail(entry.kind, entry.item, entry.parent),
+          },
+    };
+  });
 }
 
-const { page } = Astro.props;
+const { content, article, parent, page } = Astro.props;
 ---
 
-<ReservationPage {...page} />
+{
+  content ? (
+    <InsightArticlePage article={article} content={content} parent={parent} />
+  ) : (
+    <ReservationPage {...page} />
+  )
+}
