@@ -30,25 +30,30 @@
  *   thing into two — the homepage brief and the Insights brief word the same
  *   three articles differently, so changing one must not change the other page.
  *
- *   The twelve `/insights/<slug>` article routes stay reserved for now: the
- *   brief that built the hub (§13) says explicitly not to write the articles,
- *   and every link to them is live so writing one later rewrites no link.
+ *   The twelve `/insights/<slug>` article routes were published as reservations
+ *   because the brief that built the hub (§13) said explicitly not to write the
+ *   articles. Their bodies are being written now, one at a time: a written
+ *   article is added to `insightDetailPages` in `insight-detail.js`, and its
+ *   path leaves `detailRoutePaths` through that registry's `builtInsightPaths`.
+ *   Article 01 (`/insights/how-to-find-reliable-suppliers-in-china`) is
+ *   published; the other eleven are still reservations, and every link to them
+ *   is live, so writing one later rewrites no link.
  *
- *   IN PROGRESS: /privacy-policy and /terms-of-service. Their device, stylesheet
- *   and routes are built; the copy is not, because the brief they were to be
- *   written from turned out to contain the `/services` brief instead (see
- *   `legal-page.js`). They are the only reservation entries whose listing here
- *   is NOT how they leave `noindexPaths` — publishing one is a single data edit,
- *   because the page's indexability and the sitemap are both derived from the
- *   same `null`-or-not condition. Read the note on `noindexPaths` below before
- *   changing anything about them.
+ *   /privacy-policy and /terms-of-service are the only reservations that KEEP
+ *   their entry in `reservedTopLevel` once finished: that entry is what renders
+ *   while the copy does not exist, so `noindexPaths` filters them out by asking
+ *   `builtLegalPaths` rather than by their having been deleted. Publishing one
+ *   was a single data edit, because the page's indexability and the sitemap both
+ *   derive from the same `null`-or-not condition. Read the note on
+ *   `noindexPaths` below before changing anything about them.
  *
  *   The five `/services/<slug>` detail pages moved out of `detailRoutePaths` by
- *   being added to `detailPages` in `service-detail.js`, and the nine
+ *   being added to `detailPages` in `service-detail.js`, the nine
  *   `/industries/<slug>` category pages by being added to `industryDetailPages`
- *   in `industry-detail.js` — the route registry reads the built paths from
- *   those registries rather than keeping a second list, so publishing a page is
- *   one line, not two edits.
+ *   in `industry-detail.js`, and each written article by being added to
+ *   `insightDetailPages` in `insight-detail.js` — the route registry reads the
+ *   built paths from those registries rather than keeping a second list, so
+ *   publishing a page is one line, not two edits.
  *
  *   A slug that is in no registry still resolves, still has every link to it
  *   live, and still carries `noindex` until its copy exists.
@@ -67,6 +72,7 @@ import { allCaseStudies } from './caseStudies.js';
 import { insightArticles, categoryFor } from './insights-articles.js';
 import { builtDetailPaths } from './service-detail.js';
 import { builtIndustryPaths } from './industry-detail.js';
+import { builtInsightPaths } from './insight-detail.js';
 import { builtLegalPaths } from './legal-page.js';
 
 /** Page copy shared by every reservation page. */
@@ -161,10 +167,11 @@ export const detailRoutePaths = [
   /**
    * A detail page that has actually been written is a real, indexable page, so
    * it is subtracted here and re-enters sitemap.xml. `builtDetailPaths` is
-   * derived from the page registry in `service-detail.js` and
-   * `builtIndustryPaths` from the one in `industry-detail.js` — the same
-   * registries their `[slug]` routes use to decide whether to render the real
-   * page or the reservation shell — so the two can never disagree.
+   * derived from the page registry in `service-detail.js`, `builtIndustryPaths`
+   * from the one in `industry-detail.js`, and `builtInsightPaths` from the one
+   * in `insight-detail.js` — the same registries their `[slug]` routes ask to
+   * decide whether to render the real page or the reservation shell, so the two
+   * can never disagree.
    *
    * This is the subtraction that is easy to forget, and forgetting it fails
    * quietly: the page renders, every internal link to it works, and it is simply
@@ -172,7 +179,8 @@ export const detailRoutePaths = [
    */
 ]
   .filter((path) => !builtDetailPaths.includes(path))
-  .filter((path) => !builtIndustryPaths.includes(path));
+  .filter((path) => !builtIndustryPaths.includes(path))
+  .filter((path) => !builtInsightPaths.includes(path));
 
 export const noindexPaths = [
   '/404',

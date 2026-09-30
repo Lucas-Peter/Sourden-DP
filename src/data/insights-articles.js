@@ -254,6 +254,34 @@ export const insightArticles = [
 ];
 
 /**
+ * Look up an article record, or fail the build.
+ *
+ * Added when article 01 needed to link to article 03 BY NAME: the link text is
+ * that article's real title, and the alternative is a retyped one that stops
+ * matching the moment the title is edited in this file. A `find()` returning
+ * `undefined` would print the word "undefined" where a cross-reference belongs,
+ * so this throws instead — the same rule `categoryFor` below, `serviceLink()`
+ * and `requireIndustry()` all follow.
+ *
+ * This is also what the ROUTE registry asks, indirectly: `builtInsightPaths`
+ * subtracts a written article's path from the noindex list, so publishing an
+ * article and pointing at it read the same record.
+ *
+ * @param {string} slug
+ * @returns {InsightArticle}
+ */
+export function articleFor(slug) {
+  const article = insightArticles.find((entry) => entry.slug === slug);
+  if (!article) {
+    throw new Error(
+      `[insights-articles.js] No article registered with slug "${slug}". ` +
+        `Add it to insightArticles — a cross-reference never types a title of its own.`
+    );
+  }
+  return article;
+}
+
+/**
  * The route for an article. Built here rather than typed into the page so the
  * card link, the reserved route and anything else that points at an article all
  * derive from one slug. This is the same rule `services.js` follows with `href`.
