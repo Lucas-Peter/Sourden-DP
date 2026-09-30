@@ -280,6 +280,7 @@ const PAGE_SHEETS = [
   'faq.css',
   'legal.css',
   'insights.css',
+  'insight-article.css',
 ];
 
 /** Rough selector extraction — comments stripped, at-rules skipped, lists split. */
