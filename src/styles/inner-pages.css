@@ -17,7 +17,8 @@
    =========================================================================== */
 
 .reserved-hero {
-  background-color: var(--ivory);
+  background-color: var(--surface-hero);
+  border-top: var(--hero-rule) solid var(--brass);
   padding-block: clamp(40px, 5vw, 72px) clamp(40px, 4.5vw, 64px);
 }
 

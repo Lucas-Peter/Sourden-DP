@@ -128,7 +128,7 @@ b {
 }
 
 ::selection {
-  background-color: var(--ink);
+  background-color: var(--surface-slate);
   color: var(--ivory);
 }
 
@@ -164,7 +164,7 @@ b {
   z-index: 100;
   transform: translateY(-120%);
   padding: 12px 20px;
-  background-color: var(--ink);
+  background-color: var(--surface-slate);
   color: var(--ivory);
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);

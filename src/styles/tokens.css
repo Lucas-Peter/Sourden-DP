@@ -5,6 +5,42 @@
    Nothing in this project should hard-code a hex value or a px font size —
    change it here and it changes everywhere.
 
+   TWO RULES THAT ARE WORTH READING BEFORE YOU CHANGE A COLOUR
+   ----------------------------------------------------------
+   1. INK IS FOR TEXT, SURFACES ARE FOR FIELDS.
+
+      `--ink` (#111315) was once used for three different jobs at once: the
+      colour of body text, the fill of dark section backgrounds, and the fill
+      of dark buttons. It is L* 5.8 — a hair above black. That is right for
+      text on ivory (17.07:1) and wrong for a large field of colour, where it
+      stops reading as a designed dark band and starts reading as a hole in
+      the page. Three consequences were visible in the rendered site:
+
+        · every dark band looked like the same black slab;
+        · the closing call to action and the footer were the SAME colour, so
+          the two merged into one dark mass and the CTA lost its own weight;
+        · the hero was the same ivory as everything under it, so it had
+          nothing to announce itself with.
+
+      `--ink` is therefore now the TEXT colour only. Dark FIELDS are painted
+      from the `--surface-*` ramp, and the two families are changed
+      independently. If you find yourself writing `background-color:
+      var(--ink)`, you want a surface token instead.
+
+   2. THE DARK RAMP IS WARM, AND ITS STEPS ARE MEASURED.
+
+      Three dark surfaces, one family, hue-matched to the ivory paper and the
+      brass accent rather than to a neutral grey. A cool black against warm
+      ivory and brass looks dirty; a warm charcoal looks deliberate.
+
+      Adjacent dark bands are separated by at least 6 L*. That number is the
+      whole point: below roughly 6 the eye reads two bands as one, which is
+      exactly the defect this ramp was introduced to fix.
+
+        --surface-slate  #28241C  L* 14.4   14.16:1 against ivory text
+        --surface-cta    #38332A  L* 21.5   11.29:1
+        --surface-footer #1B1813  L*  8.4   16.22:1
+
    Accessibility note on the accent colour
    ---------------------------------------
    The spec mandates #B49A6C (Muted Brass). Measured against the Ivory
@@ -12,8 +48,10 @@
    text, and below 3:1 for large text. Brass is therefore split into two
    tokens with identical hue but different lightness:
 
-     --brass      #B49A6C  decorative use + any text on the dark #111315
-                           background (6.99:1 — passes AA comfortably)
+     --brass      #B49A6C  decorative use + any text on a dark surface
+                           (6.56:1 on the footer, 5.72:1 on slate, and the
+                           tightest pairing in the system at 4.64:1 on the
+                           CTA — still above the 4.5:1 body-text line)
      --brass-ink  #82693C  any brass-coloured TEXT on ivory/white
                            (4.77:1 against Ivory — passes AA)
 
@@ -27,13 +65,41 @@
      COLOUR
      --------------------------------------------------------------------- */
 
-  /* Primary / Ink — dark sections, header text, primary buttons, footer */
+  /* Ink — the TEXT colour. Body copy, headings, icons, and the fill of small
+     dark chips. Never a section background; see SURFACES below. */
   --ink: #111315;
-  --ink-soft: #1A1D1F; /* one step up from ink, for layering dark sections */
 
-  /* Backgrounds */
+  /* ---------------------------------------------------------------------
+     SURFACES — light.
+     --------------------------------------------------------------------- */
+
+  /* The hero band, plus the chrome that sits above it at the top of a page.
+     `--surface-hero` and `.site-header` are intentionally the SAME value:
+     the header is sticky and ivory, so while the hero was ivory too the two
+     were seamless. Tinting the hero without tinting the header would put a
+     visible seam across the top of every page at rest.
+
+     Deeper and warmer than `--ivory` on purpose. At only 1.7 L* apart the
+     hero still read as "the same paper as everything else"; at 3.4 L* apart
+     it reads as a cover, which is what the hero is for. */
+  --surface-hero: #EFEBE1;
+
   --ivory: #F6F5F1; /* main editorial background */
   --white: #FFFFFF; /* alternating sections */
+
+  /* ---------------------------------------------------------------------
+     SURFACES — dark. See "TWO RULES" at the top of this file.
+     --------------------------------------------------------------------- */
+  --surface-slate: #28241C; /* mid-page dark bands          L* 14.4 */
+  --surface-cta: #38332A; /* the closing call to action    L* 21.5 */
+  --surface-footer: #1B1813; /* the footer — the ground       L*  8.4 */
+
+  /* Primary-button interaction states. These were hard-coded cool darks
+     (#23262a hover, #000203 active) which were the only cool blacks left in
+     a warm system — subtle, but the kind of thing that makes a palette feel
+     borrowed rather than designed. */
+  --surface-btn-hover: #332E24;
+  --surface-btn-active: #1E1B15;
 
   /* Structure */
   --stone: #E7E5DF; /* borders, dividers, subtle backgrounds */
@@ -41,8 +107,11 @@
 
   /* Text */
   --muted: #686A68; /* secondary text on ivory/white  (5.00:1 AA) */
-  --muted-dark: #A5A7A3; /* secondary text on ink        (7.77:1 AAA) */
-  --text-on-dark: #F6F5F1; /* primary text on ink          (17.3:1 AAA) */
+  --muted-dark: #A9A297; /* secondary text on a dark surface. Warmed from
+                            #A5A7A3 — a cool grey picks up a blue cast on a
+                            warm charcoal. Tightest pairing is 4.96:1 on the
+                            CTA, still past the 4.5:1 body-text line. */
+  --text-on-dark: #F6F5F1; /* primary text on a dark surface  (16.2:1 AAA) */
 
   /* Accent — use sparingly (section numbers, labels, thin rules, states) */
   --brass: #B49A6C;
@@ -61,9 +130,13 @@
   --danger: #A32B21;
   --danger-soft: rgba(163, 43, 33, 0.06);
 
-  /* Dividers */
+  /* Dividers.
+     The dark hairline is warmed to match the ramp. It does not need a higher
+     alpha on the lighter dark surfaces: composited over them it lands at
+     1.57:1 against --surface-slate and 1.56:1 against --surface-cta, both
+     slightly MORE visible than the 1.51:1 it produced over the old #111315. */
   --divider-light: var(--stone);
-  --divider-dark: rgba(231, 229, 223, 0.16);
+  --divider-dark: rgba(236, 229, 214, 0.17);
 
   /* Surfaces that sit on top of a dark background */
   --surface-dark-raised: rgba(255, 255, 255, 0.04);
@@ -161,6 +234,13 @@
   --radius: 3px; /* spec: 2–4px, never a pill */
 
   --rule: 1px;
+
+  /* Width of the brass seam drawn across the top of every hero band. It is
+     the device that makes the hero read as a cover rather than as the first
+     paragraph of the page, and it lives in one token so the whole treatment
+     can be removed — or thickened — in a single line. Every hero band
+     applies it as `border-top: var(--hero-rule) solid var(--brass)`. */
+  --hero-rule: 2px;
 
   /* ---------------------------------------------------------------------
      MOTION — spec §24 (restrained: 200–500ms, no continuous animation)

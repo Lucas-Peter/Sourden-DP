@@ -468,7 +468,7 @@ a.sd-chain__stage:focus-visible {
 }
 
 .sd-process .sv-stage__marker {
-  background-color: var(--ink);
+  background-color: var(--surface-slate);
   border-color: var(--brass);
 }
 

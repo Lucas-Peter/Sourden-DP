@@ -28,6 +28,11 @@
    =========================================================================== */
 
 .sr-hero {
+  /* This band had no background of its own — it took the body's ivory — so it
+     was the one hero that would have been left behind by a hero-only tint.
+     It now declares its own value like every other hero band. */
+  background-color: var(--surface-hero);
+  border-top: var(--hero-rule) solid var(--brass);
   /* The header is in normal flow, so the hero only owes itself headroom. */
   padding-block: clamp(40px, 5vw, 72px) var(--section-y-tight);
 }
@@ -512,7 +517,7 @@
 }
 
 .sr-filefield__picker:hover {
-  background-color: var(--ink);
+  background-color: var(--surface-slate);
   color: var(--white);
 }
 

@@ -60,7 +60,13 @@
    =========================================================================== */
 
 .sv-hero {
-  background-color: var(--ivory);
+  /* One change, eleven pages: this band is shared by `/services`, the five
+     detail pages, `/industries`, the nine industry sub-pages, `/how-it-works`,
+     `/about`, `/faq`, `/insights`, the article pages and both legal pages.
+     That is exactly why the hero tint lives in a token — a per-page value
+     would have drifted on the first page that forgot it. */
+  background-color: var(--surface-hero);
+  border-top: var(--hero-rule) solid var(--brass);
   padding-block: clamp(32px, 4vw, 56px) clamp(48px, 5.5vw, 88px);
 }
 

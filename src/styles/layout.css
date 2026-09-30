@@ -48,7 +48,7 @@
 }
 
 .section--dark {
-  background-color: var(--ink);
+  background-color: var(--surface-slate);
   color: var(--text-on-dark);
 }
 

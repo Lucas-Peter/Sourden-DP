@@ -18,6 +18,12 @@
   padding-inline: var(--sp-5);
   border: var(--rule) solid transparent;
   border-radius: var(--radius);
+  /* Brief §22 pins this one: "Primary button: background #111315". It is the
+     only place the brief gives the ink colour as a FILL, and unlike a section
+     background a 52px button never becomes a field of colour — so it stays the
+     mandated value while the section surfaces move to the warm ramp. The
+     interaction states below are the brief's own "subtle background
+     adjustment", which it leaves open, and those take the warm family. */
   background-color: var(--ink);
   color: var(--white);
   font-family: var(--font-body);
@@ -34,11 +40,11 @@
 }
 
 .btn:hover {
-  background-color: #23262a;
+  background-color: var(--surface-btn-hover);
 }
 
 .btn:active {
-  background-color: #000203;
+  background-color: var(--surface-btn-active);
 }
 
 /* Compact variant for the header bar, where 52px inside an 80px bar leaves
@@ -440,6 +446,19 @@
    CSS on every route, which is the price of not having two of these drift apart.
    =========================================================================== */
 
+/* The closing CTA is the SECOND step of the dark ramp, not the first. It sits
+   immediately above the footer, and while both were painted `--ink` the two
+   merged into one black mass — the CTA had no visible end of its own and the
+   page looked like it simply stopped. Bronze against the footer's espresso is
+   13.1 L* apart, which is comfortably past the ~6 L* at which two adjacent
+   dark bands start reading as two.
+
+   A compound selector on purpose: this has to outrank the core
+   `.section--dark` on SPECIFICITY, not on import order. */
+.section--dark.final-cta {
+  background-color: var(--surface-cta);
+}
+
 .final-cta {
   display: grid;
   place-items: center;
@@ -567,7 +586,11 @@
   position: sticky;
   top: 0;
   z-index: var(--z-header);
-  background-color: var(--ivory);
+  /* Same value as the hero band, deliberately. The header is sticky and sits
+     directly on top of the hero, so if the two differ there is a visible seam
+     across the top of every page before the visitor scrolls a pixel. When the
+     hero changes, this changes with it — see `--surface-hero` in tokens.css. */
+  background-color: var(--surface-hero);
   border-bottom: var(--rule) solid transparent;
   transition: border-color var(--dur) var(--ease-out);
 }
@@ -726,7 +749,7 @@
   display: flex;
   flex-direction: column;
   padding: var(--sp-4) var(--gutter) var(--sp-8);
-  background-color: var(--ivory);
+  background-color: var(--surface-hero);
   overflow-y: auto;
   overscroll-behavior: contain;
   opacity: 0;
@@ -809,7 +832,11 @@ body.is-menu-open .sticky-cta {
    =========================================================================== */
 
 .site-footer {
-  background-color: var(--ink);
+  /* The deepest step of the dark ramp. The footer is the ground the page
+     stands on, and it is the one dark band whose value nothing else should
+     match — the closing CTA directly above it is `--surface-cta`, 13.1 L*
+     lighter, so the two read as two bands rather than as one black slab. */
+  background-color: var(--surface-footer);
   color: var(--text-on-dark);
   padding-block-start: var(--section-y);
   padding-block-end: var(--sp-6);
@@ -981,7 +1008,7 @@ body.is-menu-open .sticky-cta {
   z-index: var(--z-sticky-cta);
   display: none;
   padding: var(--sp-3) var(--gutter) calc(var(--sp-3) + env(safe-area-inset-bottom, 0px));
-  background-color: var(--ivory);
+  background-color: var(--surface-hero);
   border-top: var(--rule) solid var(--stone);
   transform: translateY(100%);
   transition: transform var(--dur) var(--ease-out);
