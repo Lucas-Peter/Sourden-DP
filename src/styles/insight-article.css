@@ -1,0 +1,245 @@
+/* ===========================================================================
+   SOURDEN — INSIGHT ARTICLE PAGE (`.ia-`)
+   ---------------------------------------------------------------------------
+   The device for `/insights/<slug>` once its body has been written. Three
+   things: the table of contents, the long-form reading column, and the five
+   block types the body dispatcher renders (`p` / `list` / `h3` / `table` /
+   `links`).
+
+   ── WHAT THIS FILE IS NOT ALLOWED TO DO ───────────────────────────────────
+   It defines only `.ia-*` selectors. `.section`, `.container`,
+   `.container--narrow` and `.eyebrow` are core classes it USES, never
+   redefines — `npm run audit` fails the build when a page sheet redefines a
+   core selector, because which rule wins would then depend on CSS chunk order.
+   The hero is not here either: it is `ServicesHero`, styled by
+   `services-shared.css`, the same device every services-area page uses.
+
+   ── THE READING MEASURE IS ON THE BLOCKS, NOT ON THE CONTAINER ───────────
+   `container--narrow` is 860px — a CONTAINER width, not a reading measure. The
+   68ch cap therefore lives on `.ia-p`, `.ia-list` and `.ia-table-wrap`, so the
+   column and the text inside it are two separate decisions. `legal.css` states
+   the same rule for the same reason.
+
+   ── WHY THE BODY IS INK, NOT MUTED ────────────────────────────────────────
+   The legal pages set their clauses in `--muted` at `--fs-body-sm`, and say so:
+   legal text is scanned, not read. An insight article is the opposite problem —
+   it is the site's long-form reading surface, and it is meant to be read from
+   top to bottom — so the body is `--ink` at `--fs-body` with a 1.75 line
+   height. The muted tone is kept for the table's cells, which are reference
+   material inside a chapter rather than the chapter's prose.
+
+   ── THE ANCHOR OFFSET ─────────────────────────────────────────────────────
+   The table of contents links to chapters inside one document. The header is
+   sticky, so `scroll-margin-top` reserves its height plus a little air;
+   without it every jump lands with the heading tucked under the header. The
+   site's core already sets `scroll-padding-top` on `<html>` for the same
+   reason — this is the per-element half of it, and it is what makes the
+   contents work with no script at all.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   01 — TABLE OF CONTENTS
+   ---------------------------------------------------------------------------
+   Nineteen entries on article 01: seventeen chapters, the checklist and Final
+   Thoughts. One column on a phone and two from 768px up, separated by hairlines
+   rather than boxed — the same restraint the clause run uses on the legal
+   pages, and the reason the entries are not cards.
+   --------------------------------------------------------------------------- */
+
+.ia-toc__title {
+  /* The `.eyebrow` class carries the type treatment; this only spaces it. */
+  margin-block-end: var(--sp-5);
+}
+
+.ia-toc__list {
+  display: grid;
+  gap: 0 var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+@media (min-width: 768px) {
+  .ia-toc__list {
+    /* Two columns: nineteen full-width entries would be a page of its own
+       before the article even starts. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ia-toc__item {
+  min-width: 0;
+  /* The rule lives on the LINK, but the grid item is what stretches to the row
+     height. Without this, a row where one entry wraps to a second line and its
+     neighbour does not leaves the two rules at different heights and the two
+     columns stair-step — markup completely correct, only the geometry wrong.
+     Stretching the link also makes the whole cell clickable rather than just
+     the text inside it. */
+  display: flex;
+}
+
+/* `padding-block` rather than a fixed height: 12px above and below a 15px line
+   clears the 44px touch target without a height that would clip a wrapped
+   entry. A long chapter title wraps to a second line and stays on one link. */
+.ia-toc__link {
+  display: block;
+  /* Fill the item so the rule lands on the row's baseline — see `.ia-toc__item`. */
+  flex: 1;
+  padding-block: var(--sp-3);
+  border-bottom: var(--rule) solid var(--divider-light);
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.ia-toc__link:hover,
+.ia-toc__link:focus-visible {
+  color: var(--brass-ink);
+}
+
+/* ---------------------------------------------------------------------------
+   02 — THE READING COLUMN
+   ---------------------------------------------------------------------------
+   One `<article>` holds every section, and each section is a grid with a single
+   gap — so the space between a paragraph and the list that follows it is the
+   same as the space between two paragraphs. Margins would make those two
+   different by accident, which is the same reasoning `legal.css` records.
+   --------------------------------------------------------------------------- */
+
+.ia-body {
+  /* Long-form reading: the sections are separated by air, not by rules or
+     panels, so the eye is never asked to restart at a hard edge. */
+  overflow-wrap: break-word;
+}
+
+.ia-lead {
+  display: grid;
+  gap: var(--sp-5);
+  margin-block-end: var(--sp-8);
+}
+
+.ia-chapter {
+  display: grid;
+  gap: var(--sp-5);
+  /* Space BETWEEN chapters. The first chapter follows the lead, which carries
+     its own closing margin, so this applies from chapter two onwards. */
+  margin-block-start: var(--sp-8);
+  /* NO `scroll-margin-top`. The core already sets `scroll-padding-top: calc(
+     var(--header-h) + 24px)` on <html> — "anchor targets must clear the sticky
+     header" — and the two are ADDITIVE: the target lands at
+     scroll-padding + scroll-margin, so adding one here reserved the header
+     twice and dropped every one of the nineteen anchors 216px down the viewport
+     instead of 104px. `faq.css` records the same decision. */
+}
+
+.ia-chapter__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  /* `--fs-h3`, not `--fs-h2`: there are nineteen of these on one page and the
+     document's chapters are peers, not major bands. The legal pages made the
+     same choice for their clause headings. */
+  max-width: 40ch;
+  text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------------------
+   03 — THE BLOCKS
+   --------------------------------------------------------------------------- */
+
+.ia-p {
+  max-width: 68ch;
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.75;
+}
+
+.ia-list {
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 68ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The core's own dash, not a second bullet style — the same mark the legal
+   clauses and the reservation pages' "what this page will cover" list use. */
+.ia-list__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-4);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.ia-list__item::before {
+  content: '—';
+  color: var(--brass-ink);
+}
+
+/* The checklist's five group names. One step down from a chapter title, since
+   they sit INSIDE a chapter and organise it rather than starting a new one. */
+.ia-h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  max-width: 40ch;
+}
+
+.ia-table-wrap {
+  max-width: 68ch;
+  /* A two-column table must not force the page sideways on a phone. */
+  overflow-x: auto;
+}
+
+.ia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+}
+
+.ia-table__head {
+  padding: var(--sp-3) 0;
+  border-bottom: var(--rule) solid var(--border-strong);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  text-align: left;
+}
+
+.ia-table__cell {
+  padding: var(--sp-3) 0;
+  border-bottom: var(--rule) solid var(--divider-light);
+  color: var(--muted);
+}
+
+/* The gap between the two columns. Set on the cells rather than with
+   `border-spacing`, which needs `border-collapse: separate` and would take the
+   hairlines with it. */
+.ia-table__head:first-child,
+.ia-table__cell:first-child {
+  padding-inline-end: var(--sp-5);
+}
+
+.ia-links {
+  display: grid;
+  gap: var(--sp-3);
+  /* An arrow-link stretches to fill its grid cell, which would push the arrow
+     to the far edge of the column with the label orphaned at the left. */
+  justify-items: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ia-toc__link {
+    transition: none;
+  }
+}
