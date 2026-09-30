@@ -38,21 +38,21 @@ interface Props {
 const { eyebrow, title, description, items, note, tone, foot, titleId } = Astro.props;
 ---
 
-<section class={`section section--${tone} sd-checklist`} aria-labelledby={titleId}>
+<section class={`section section--${tone} sec-checklist`} aria-labelledby={titleId}>
   <div class="container">
-    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-checklist__head" />
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sec-checklist__head" />
 
     {/* Items carry no headings: they are fragments, and a list of nine <h3>s
         for "Estimated quantity" would tell a screen reader nothing. */}
-    <ul class="sd-checklist__list" data-reveal-group>
-      {items.map((item) => <li class="sd-checklist__item">{item}</li>)}
+    <ul class="sec-checklist__list" data-reveal-group>
+      {items.map((item) => <li class="sec-checklist__item">{item}</li>)}
     </ul>
 
-    {note && <p class="sd-note sd-checklist__note">{note}</p>}
+    {note && <p class="sec-note sec-checklist__note">{note}</p>}
 
     {
       foot && (
-        <div class="section-foot sd-checklist__foot">
+        <div class="section-foot sec-checklist__foot">
           <ArrowLink href={foot.href} label={foot.label} brass />
         </div>
       )

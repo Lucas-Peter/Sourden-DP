@@ -26,39 +26,39 @@ import SectionHeader from '../SectionHeader.astro';
 import { audienceGroups, audienceIntro, scale } from '../../data/services-page.js';
 ---
 
-<section class="section sv-audience" aria-labelledby="sv-audience-title">
+<section class="section sec-audience" aria-labelledby="sec-audience-title">
   <div class="container">
-    <div class="sv-audience__grid">
-      <div class="sv-audience__head">
+    <div class="sec-audience__grid">
+      <div class="sec-audience__head">
         <SectionHeader
-          id="sv-audience-title"
+          id="sec-audience-title"
           eyebrow={audienceIntro.eyebrow}
           title={audienceIntro.title}
           lead={audienceIntro.description}
         />
       </div>
 
-      <p class="sv-audience__note">{audienceIntro.note}</p>
+      <p class="sec-audience__note">{audienceIntro.note}</p>
     </div>
 
-    <ol class="rows sv-audience__list" data-reveal-group>
+    <ol class="rows sec-audience__list" data-reveal-group>
       {
         audienceGroups.map((group) => (
-          <li class="sv-audience-row">
-            <span class="num sv-audience-row__num">{group.number}</span>
-            <h3 class="sv-audience-row__title">{group.title}</h3>
-            <p class="sv-audience-row__desc">{group.description}</p>
+          <li class="sec-audience-row">
+            <span class="num sec-audience-row__num">{group.number}</span>
+            <h3 class="sec-audience-row__title">{group.title}</h3>
+            <p class="sec-audience-row__desc">{group.description}</p>
           </li>
         ))
       }
     </ol>
 
-    <div class="sv-scale">
-      <p class="eyebrow sv-scale__eyebrow">{scale.eyebrow}</p>
+    <div class="sec-scale">
+      <p class="eyebrow sec-scale__eyebrow">{scale.eyebrow}</p>
 
-      <div class="sv-scale__body">
-        <h3 class="sv-scale__title">{scale.title}</h3>
-        <p class="sv-scale__desc">{scale.description}</p>
+      <div class="sec-scale__body">
+        <h3 class="sec-scale__title">{scale.title}</h3>
+        <p class="sec-scale__desc">{scale.description}</p>
       </div>
     </div>
   </div>

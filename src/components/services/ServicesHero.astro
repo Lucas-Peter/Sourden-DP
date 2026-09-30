@@ -34,14 +34,14 @@
  *   given is a compact hero and a text-only directory. `imageKey` and
  *   `imageCaption` are therefore optional and the figure is not rendered when
  *   `imageKey` is absent, which collapses the grid to one column via
- *   `sv-hero--solo`.
+ *   `sec-hero--solo`.
  *
  *   This is an ADDITIVE change: every consumer that passes an image passes the
  *   same values and renders the same markup it did before, which is why the
  *   other ten heroes needed no edit. Same rule as `tagline` below — a new
  *   optional capability, never a second component.
  *
- * Styles live in `services-shared.css` (`.sv-hero*`) — see its header for why
+ * Styles live in `services-shared.css` (`.sec-hero*`) — see its header for why
  * that file is separate from the overview page's sheet.
  * ---------------------------------------------------------------------------
  */
@@ -98,25 +98,25 @@ const {
   secondaryCta,
   imageKey,
   imageCaption,
-  titleId = 'sv-hero-title',
+  titleId = 'sec-hero-title',
 } = Astro.props;
 ---
 
-<section class:list={['sv-hero', !imageKey && 'sv-hero--solo']} aria-labelledby={titleId}>
+<section class:list={['sec-hero', !imageKey && 'sec-hero--solo']} aria-labelledby={titleId}>
   <div class="container">
-    <Breadcrumbs items={breadcrumbs} class="sv-hero__breadcrumbs" />
+    <Breadcrumbs items={breadcrumbs} class="sec-hero__breadcrumbs" />
 
-    <div class="sv-hero__grid">
-      <div class="sv-hero__text">
+    <div class="sec-hero__grid">
+      <div class="sec-hero__text">
         <p class="eyebrow">{eyebrow}</p>
 
-        <h1 class="sv-hero__title" id={titleId}>{title}</h1>
+        <h1 class="sec-hero__title" id={titleId}>{title}</h1>
 
-        <p class="sv-hero__lead">{description}</p>
+        <p class="sec-hero__lead">{description}</p>
 
-        {tagline && <p class="sv-hero__tagline">{tagline}</p>}
+        {tagline && <p class="sec-hero__tagline">{tagline}</p>}
 
-        <div class="sv-hero__actions">
+        <div class="sec-hero__actions">
           <Button href={primaryCta.href} label={primaryCta.label} />
           <ArrowLink href={secondaryCta.href} label={secondaryCta.label} />
         </div>
@@ -124,8 +124,8 @@ const {
 
       {
         imageKey && (
-          <figure class="sv-hero__figure">
-            <Media imageKey={imageKey} ratio="4x3" priority class="sv-hero__media" />
+          <figure class="sec-hero__figure">
+            <Media imageKey={imageKey} ratio="4x3" priority class="sec-hero__media" />
             <figcaption class="media-caption">{imageCaption}</figcaption>
           </figure>
         )

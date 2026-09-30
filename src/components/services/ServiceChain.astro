@@ -39,23 +39,23 @@ interface Props {
 const { eyebrow, title, description, stages, note, tone, titleId } = Astro.props;
 ---
 
-<section class={`section section--${tone} sd-chain`} aria-labelledby={titleId}>
+<section class={`section section--${tone} sec-chain`} aria-labelledby={titleId}>
   <div class="container">
-    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-chain__head" />
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sec-chain__head" />
 
-    <ol class="sd-chain__list" data-reveal-group>
+    <ol class="sec-chain__list" data-reveal-group>
       {
         stages.map((stage, index) => (
-          <li class="sd-chain__item">
+          <li class="sec-chain__item">
             {stage.current ? (
-              <span class="sd-chain__stage sd-chain__stage--current" aria-current="page">
-                <span class="num sd-chain__num">{stage.number}</span>
-                <span class="sd-chain__label">{stage.label}</span>
+              <span class="sec-chain__stage sec-chain__stage--current" aria-current="page">
+                <span class="num sec-chain__num">{stage.number}</span>
+                <span class="sec-chain__label">{stage.label}</span>
               </span>
             ) : (
-              <a class="sd-chain__stage" href={stage.href}>
-                <span class="num sd-chain__num">{stage.number}</span>
-                <span class="sd-chain__label">{stage.label}</span>
+              <a class="sec-chain__stage" href={stage.href}>
+                <span class="num sec-chain__num">{stage.number}</span>
+                <span class="sec-chain__label">{stage.label}</span>
               </a>
             )}
 
@@ -63,7 +63,7 @@ const { eyebrow, title, description, stages, note, tone, titleId } = Astro.props
                 rendered after every item except the last — never before the
                 first. */}
             {index < stages.length - 1 && (
-              <span class="sd-chain__arrow" aria-hidden="true">
+              <span class="sec-chain__arrow" aria-hidden="true">
                 →
               </span>
             )}
@@ -72,6 +72,6 @@ const { eyebrow, title, description, stages, note, tone, titleId } = Astro.props
       }
     </ol>
 
-    {note && <p class="sd-note sd-chain__note">{note}</p>}
+    {note && <p class="sec-note sec-chain__note">{note}</p>}
   </div>
 </section>

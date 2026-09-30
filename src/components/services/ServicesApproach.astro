@@ -23,22 +23,22 @@ import ArrowLink from '../ArrowLink.astro';
 import { approach } from '../../data/services-page.js';
 ---
 
-<section class="section section--dark sv-approach" aria-labelledby="sv-approach-title">
+<section class="section section--dark sec-approach" aria-labelledby="sec-approach-title">
   <div class="container">
-    <div class="sv-approach__grid">
-      <div class="sv-approach__head">
+    <div class="sec-approach__grid">
+      <div class="sec-approach__head">
         <p class="eyebrow">{approach.eyebrow}</p>
 
-        <h2 class="sv-approach__title" id="sv-approach-title">
+        <h2 class="sec-approach__title" id="sec-approach-title">
           {approach.title}
-          <span class="sv-approach__emphasis">{approach.emphasis}</span>
+          <span class="sec-approach__emphasis">{approach.emphasis}</span>
         </h2>
       </div>
 
-      <p class="sv-approach__desc">{approach.description}</p>
+      <p class="sec-approach__desc">{approach.description}</p>
     </div>
 
-    <div class="section-foot sv-approach__foot">
+    <div class="section-foot sec-approach__foot">
       <ArrowLink href={approach.foot.href} label={approach.foot.label} />
     </div>
   </div>

@@ -39,7 +39,7 @@ interface Props {
    * stays exactly as it was and this is the wider case. Supply one or the
    * other, not both; `foot` wins if a page somehow passes both.
    *
-   * The visual treatment is `.sd-split__links`' arrangement (a wrapping row
+   * The visual treatment is `.sec-split__links`' arrangement (a wrapping row
    * with real gaps between the links), because two inline arrow-links with no
    * gap read as one six-word link.
    */
@@ -53,23 +53,23 @@ const { eyebrow, title, paragraphs, emphasis, tone, foot, links, titleId } = Ast
 const footLinks = foot ? [foot] : (links ?? []);
 ---
 
-<section class={`section section--${tone} sd-prose`} aria-labelledby={titleId}>
+<section class={`section section--${tone} sec-prose`} aria-labelledby={titleId}>
   <div class="container">
-    <div class="sd-prose__grid">
-      <div class="sd-prose__head">
+    <div class="sec-prose__grid">
+      <div class="sec-prose__head">
         <SectionHeader id={titleId} eyebrow={eyebrow} title={title} />
       </div>
 
-      <div class="sd-prose__body">
-        {paragraphs.map((paragraph) => <p class="sd-prose__para">{paragraph}</p>)}
+      <div class="sec-prose__body">
+        {paragraphs.map((paragraph) => <p class="sec-prose__para">{paragraph}</p>)}
 
-        {emphasis && <p class="sd-prose__emphasis">{emphasis}</p>}
+        {emphasis && <p class="sec-prose__emphasis">{emphasis}</p>}
       </div>
     </div>
 
     {
       footLinks.length > 0 && (
-        <div class="section-foot sd-prose__foot">
+        <div class="section-foot sec-prose__foot">
           {footLinks.map((link) => (
             <ArrowLink href={link.href} label={link.label} brass />
           ))}

@@ -24,23 +24,23 @@ import SectionHeader from '../SectionHeader.astro';
 import { paths, pathsIntro } from '../../data/services-page.js';
 ---
 
-<section class="section sv-paths" aria-labelledby="sv-paths-title">
+<section class="section sec-paths" aria-labelledby="sec-paths-title">
   <div class="container">
     <SectionHeader
-      id="sv-paths-title"
+      id="sec-paths-title"
       eyebrow={pathsIntro.eyebrow}
       title={pathsIntro.title}
       lead={pathsIntro.description}
-      class="sv-paths__head"
+      class="sec-paths__head"
     />
 
-    <div class="sv-path-grid">
+    <div class="sec-path-grid">
       {
         paths.map((path) => (
-          <article class="sv-path" aria-labelledby={`sv-path-${path.number}`} data-reveal>
-            <p class="num sv-path__num">{path.number}</p>
+          <article class="sec-path" aria-labelledby={`sec-path-${path.number}`} data-reveal>
+            <p class="num sec-path__num">{path.number}</p>
 
-            <h3 class="sv-path__label" id={`sv-path-${path.number}`}>
+            <h3 class="sec-path__label" id={`sec-path-${path.number}`}>
               {path.label}
             </h3>
 
@@ -49,19 +49,19 @@ import { paths, pathsIntro } from '../../data/services-page.js';
                 ("Supplier Verification ↓ You decide how to proceed."), and
                 styling it as a terminating step keeps the two paths comparable
                 in structure as well as in weight. */}
-            <ol class="sv-path__flow">
+            <ol class="sec-path__flow">
               {path.flow.map((stage) => (
-                <li class="sv-path__step">{stage}</li>
+                <li class="sec-path__step">{stage}</li>
               ))}
 
               {
                 path.closing && (
-                  <li class="sv-path__step sv-path__step--closing">{path.closing}</li>
+                  <li class="sec-path__step sec-path__step--closing">{path.closing}</li>
                 )
               }
             </ol>
 
-            <p class="sv-path__desc">{path.description}</p>
+            <p class="sec-path__desc">{path.description}</p>
           </article>
         ))
       }

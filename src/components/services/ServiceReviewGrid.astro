@@ -45,26 +45,26 @@ interface Props {
 const { eyebrow, title, description, items, note, foot, tone, titleId } = Astro.props;
 ---
 
-<section class={`section section--${tone} sd-review`} aria-labelledby={titleId}>
+<section class={`section section--${tone} sec-review`} aria-labelledby={titleId}>
   <div class="container">
-    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-review__head" />
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sec-review__head" />
 
-    <ul class="sd-review__list" data-reveal-group>
+    <ul class="sec-review__list" data-reveal-group>
       {
         items.map((item) => (
-          <li class="sd-review__item">
-            <h3 class="sd-review__title">{item.title}</h3>
-            <p class="sd-review__desc">{item.description}</p>
+          <li class="sec-review__item">
+            <h3 class="sec-review__title">{item.title}</h3>
+            <p class="sec-review__desc">{item.description}</p>
           </li>
         ))
       }
     </ul>
 
-    {note && <p class="sd-note sd-review__note">{note}</p>}
+    {note && <p class="sec-note sec-review__note">{note}</p>}
 
     {
       foot && (
-        <div class="section-foot sd-review__foot">
+        <div class="section-foot sec-review__foot">
           <ArrowLink href={foot.href} label={foot.label} brass />
         </div>
       )

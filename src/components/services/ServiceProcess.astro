@@ -57,7 +57,7 @@ interface Props {
   /**
    * Extra class on the <section>. Every other shared component already accepts
    * one; the rail needed it when `/industries` had to reserve a second line for
-   * a longer stage label — see `.ind-process .sv-stage__verb` in
+   * a longer stage label — see `.ind-process .sec-stage__verb` in
    * `industries.css` for why that has to be scoped to the page. The nine
    * `/industries/<slug>` pages pass the same class for the same reason: at six
    * columns their stage labels wrap, so all six have to reserve the second line
@@ -98,32 +98,32 @@ const {
  * A count with no rule falls back to the five-column default, which wraps — a
  * visibly wrong rail that `id-geo.mjs` fails, not a silent one.
  */
-const stageClass = `sv-stages sv-stages--${steps.length}`;
+const stageClass = `sec-stages sec-stages--${steps.length}`;
 ---
 
-<section class={`section section--dark sd-process ${className}`.trim()} aria-labelledby={titleId}>
+<section class={`section section--dark sec-process-dark ${className}`.trim()} aria-labelledby={titleId}>
   <div class="container">
-    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-process__head" />
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sec-process-dark__head" />
 
     <ol class={stageClass} data-reveal-group>
       {
         steps.map((step, index) => (
-          <li class="sv-stage">
-            {/* `.sv-stage__body` is the non-link twin of `.sv-stage__link` in
+          <li class="sec-stage">
+            {/* `.sec-stage__body` is the non-link twin of `.sec-stage__link` in
                 services-shared.css — it carries the identical grid geometry
                 without the anchor semantics or the hover arrow. */}
-            <div class="sv-stage__body">
-              <span class="sv-stage__marker" aria-hidden="true" />
+            <div class="sec-stage__body">
+              <span class="sec-stage__marker" aria-hidden="true" />
 
-              <h3 class="sv-stage__rail sd-process__step">
-                <span class="num sv-stage__num">{String(index + 1).padStart(2, '0')}</span>
-                <span class="sv-stage__dash" aria-hidden="true">
+              <h3 class="sec-stage__rail sec-process-dark__step">
+                <span class="num sec-stage__num">{String(index + 1).padStart(2, '0')}</span>
+                <span class="sec-stage__dash" aria-hidden="true">
                   —
                 </span>
-                <span class="sv-stage__verb">{step.label}</span>
+                <span class="sec-stage__verb">{step.label}</span>
               </h3>
 
-              <p class="sv-stage__desc">{step.description}</p>
+              <p class="sec-stage__desc">{step.description}</p>
 
               {/* Only rendered when a step actually has destinations, so the
                   four existing consumers — whose steps carry none — produce
@@ -132,7 +132,7 @@ const stageClass = `sv-stages sv-stages--${steps.length}`;
                   (`auto`), no `grid-template-rows` declaration had to change,
                   which is what keeps this additive rather than a re-layout. */}
               {step.links && step.links.length > 0 && (
-                <div class="sv-stage__links">
+                <div class="sec-stage__links">
                   {step.links.map((link) => (
                     <ArrowLink href={link.href} label={link.label} brass />
                   ))}
@@ -144,11 +144,11 @@ const stageClass = `sv-stages sv-stages--${steps.length}`;
       }
     </ol>
 
-    {note && <p class="sd-note sd-process__note">{note}</p>}
+    {note && <p class="sec-note sec-process-dark__note">{note}</p>}
 
     {
       foot && (
-        <div class="section-foot sd-process__foot">
+        <div class="section-foot sec-process-dark__foot">
           <ArrowLink href={foot.href} label={foot.label} brass />
         </div>
       )

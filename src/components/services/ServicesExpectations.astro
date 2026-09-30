@@ -21,27 +21,27 @@ import ArrowLink from '../ArrowLink.astro';
 import { expectations, expectationsIntro } from '../../data/services-page.js';
 ---
 
-<section class="section sv-expect" aria-labelledby="sv-expect-title">
+<section class="section sec-expect" aria-labelledby="sec-expect-title">
   <div class="container">
     <SectionHeader
-      id="sv-expect-title"
+      id="sec-expect-title"
       eyebrow={expectationsIntro.eyebrow}
       title={expectationsIntro.title}
-      class="sv-expect__head"
+      class="sec-expect__head"
     />
 
-    <ul class="rows sv-expect__list" data-reveal-group>
+    <ul class="rows sec-expect__list" data-reveal-group>
       {
         expectations.map((item) => (
-          <li class="sv-expect-row">
-            <h3 class="sv-expect-row__title">{item.title}</h3>
-            <p class="sv-expect-row__desc">{item.description}</p>
+          <li class="sec-expect-row">
+            <h3 class="sec-expect-row__title">{item.title}</h3>
+            <p class="sec-expect-row__desc">{item.description}</p>
           </li>
         ))
       }
     </ul>
 
-    <div class="section-foot sv-expect__foot">
+    <div class="section-foot sec-expect__foot">
       <ArrowLink href={expectationsIntro.foot.href} label={expectationsIntro.foot.label} />
     </div>
   </div>

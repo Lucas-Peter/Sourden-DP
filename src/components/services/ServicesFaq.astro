@@ -50,7 +50,7 @@
  *   `/faq` is the first page to render this device many times over — seven
  *   consecutive categories plus an in-page navigation that has to be able to
  *   scroll to each one. That needs the ground to alternate, because
- *   `.sv-faq`'s own ground is ivory and seven ivory bands in a row read as one
+ *   `.sec-faq`'s own ground is ivory and seven ivory bands in a row read as one
  *   continuous field. `tone` is opt-in: with it unset the emitted markup is
  *   identical to before, and `tone: 'ivory'` is the device's existing ground
  *   rather than a second class.
@@ -62,7 +62,7 @@
  *   `titleId` (`faq-shipping`, …) and the nav points at those. Nothing about
  *   the component changed to support it.
  *
- * Styles live in `services-shared.css` (`.sv-faq*`).
+ * Styles live in `services-shared.css` (`.sec-faq*`).
  * ---------------------------------------------------------------------------
  */
 import SectionHeader from '../SectionHeader.astro';
@@ -111,7 +111,7 @@ interface Props {
   titleId?: string;
 }
 
-const { eyebrow, title, items, tone, foot, titleId = 'sv-faq-title' } = Astro.props;
+const { eyebrow, title, items, tone, foot, titleId = 'sec-faq-title' } = Astro.props;
 
 /**
  * One <p> per paragraph. A string keeps rendering as a single paragraph, which
@@ -120,34 +120,34 @@ const { eyebrow, title, items, tone, foot, titleId = 'sv-faq-title' } = Astro.pr
 const paragraphsOf = (answer: string | string[]) =>
   Array.isArray(answer) ? answer : [answer];
 
-const classes = ['section', 'sv-faq', tone === 'white' && 'sv-faq--white']
+const classes = ['section', 'sec-faq', tone === 'white' && 'sec-faq--white']
   .filter(Boolean)
   .join(' ');
 ---
 
 <section class={classes} aria-labelledby={titleId}>
   <div class="container">
-    <div class="sv-faq__grid">
-      <div class="sv-faq__head">
+    <div class="sec-faq__grid">
+      <div class="sec-faq__head">
         <SectionHeader id={titleId} eyebrow={eyebrow} title={title} />
       </div>
 
-      <div class="sv-faq__list">
+      <div class="sec-faq__list">
         {
           items.map((item, index) => (
-            <details class="sv-faq__item" open={index === 0}>
-              <summary class="sv-faq__question">
-                <span class="sv-faq__question-text">{item.question}</span>
-                <span class="sv-faq__mark" aria-hidden="true" />
+            <details class="sec-faq__item" open={index === 0}>
+              <summary class="sec-faq__question">
+                <span class="sec-faq__question-text">{item.question}</span>
+                <span class="sec-faq__mark" aria-hidden="true" />
               </summary>
 
-              <div class="sv-faq__answer">
+              <div class="sec-faq__answer">
                 {paragraphsOf(item.answer).map((paragraph) => (
                   <p>{paragraph}</p>
                 ))}
 
                 {item.link && (
-                  <p class="sv-faq__answer-link">
+                  <p class="sec-faq__answer-link">
                     <ArrowLink href={item.link.href} label={item.link.label} brass />
                   </p>
                 )}
@@ -160,7 +160,7 @@ const classes = ['section', 'sv-faq', tone === 'white' && 'sv-faq--white']
 
     {
       foot && (
-        <div class="section-foot sv-faq__foot">
+        <div class="section-foot sec-faq__foot">
           <ArrowLink href={foot.href} label={foot.label} brass />
         </div>
       )

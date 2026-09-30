@@ -47,25 +47,25 @@ interface Props {
 const { eyebrow, title, description, columns, links, note, tone, titleId } = Astro.props;
 ---
 
-<section class={`section section--${tone} sd-split`} aria-labelledby={titleId}>
+<section class={`section section--${tone} sec-split`} aria-labelledby={titleId}>
   <div class="container">
-    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sd-split__head" />
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} class="sec-split__head" />
 
-    <div class="sd-split__grid">
+    <div class="sec-split__grid">
       {
         columns.map((column) => (
-          <div class="sd-split__col" data-reveal>
-            <h3 class="sd-split__label">{column.label}</h3>
+          <div class="sec-split__col" data-reveal>
+            <h3 class="sec-split__label">{column.label}</h3>
 
-            {column.note && <p class="sd-split__note">{column.note}</p>}
+            {column.note && <p class="sec-split__note">{column.note}</p>}
 
-            {column.text && <p class="sd-split__text">{column.text}</p>}
+            {column.text && <p class="sec-split__text">{column.text}</p>}
 
             {
               column.items && (
-                <ul class="sd-split__list">
+                <ul class="sec-split__list">
                   {column.items.map((item) => (
-                    <li class="sd-split__item">{item}</li>
+                    <li class="sec-split__item">{item}</li>
                   ))}
                 </ul>
               )
@@ -75,11 +75,11 @@ const { eyebrow, title, description, columns, links, note, tone, titleId } = Ast
       }
     </div>
 
-    {note && <p class="sd-note sd-split__note-line">{note}</p>}
+    {note && <p class="sec-note sec-split__note-line">{note}</p>}
 
     {
       links && (
-        <div class="sd-split__links">
+        <div class="sec-split__links">
           {links.map((link) => (
             <ArrowLink href={link.href} label={link.label} />
           ))}

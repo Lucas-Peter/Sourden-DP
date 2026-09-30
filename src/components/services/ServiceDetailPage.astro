@@ -51,7 +51,13 @@ import {
   secondaryCta,
   serviceForSlug,
 } from '../../data/service-detail.js';
-import { breadcrumbItems, breadcrumbSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+import {
+  breadcrumbItems,
+  breadcrumbSchema,
+  faqPageSchema,
+  serviceSchema,
+  webPageSchema,
+} from '../../data/schema.js';
 
 interface Props {
   /** The whole page, from `src/data/service-<slug>.js`. */
@@ -82,10 +88,19 @@ const service = serviceForSlug(page.slug);
  */
 const breadcrumbs = detailBreadcrumbs(page.slug);
 
+/**
+ * The FAQPage node is built from the very array `<ServicesFaq>` renders below,
+ * so the graph can never describe a question a visitor cannot see. Read off the
+ * data rather than assumed, so a page without a `faq` section emits no node
+ * instead of an empty FAQPage claiming zero questions.
+ */
+const faqSection = page.sections.find((section) => section.type === 'faq');
+
 const schema = [
   webPageSchema({ title: page.meta.title, description: page.meta.description, path }),
   breadcrumbSchema(breadcrumbItems(breadcrumbs)),
   serviceSchema({ name: service.title, description: service.description, href: path }),
+  ...(faqSection ? [faqPageSchema(faqSection.items)] : []),
 ];
 
 /**
@@ -93,7 +108,7 @@ const schema = [
  * rather than written by hand, so inserting a section in the middle of a page
  * cannot produce a duplicate id.
  */
-const sectionId = (index) => `sd-${page.slug}-${String(index + 1).padStart(2, '0')}`;
+const sectionId = (index) => `sec-${page.slug}-${String(index + 1).padStart(2, '0')}`;
 ---
 
 <BaseLayout
@@ -111,7 +126,7 @@ const sectionId = (index) => `sd-${page.slug}-${String(index + 1).padStart(2, '0
     secondaryCta={secondaryCta}
     imageKey={page.hero.image.key}
     imageCaption={page.hero.image.caption}
-    titleId={`sd-${page.slug}-hero`}
+    titleId={`sec-${page.slug}-hero`}
   />
 
   {
