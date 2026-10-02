@@ -4,7 +4,9 @@
  * ---------------------------------------------------------------------------
  * "You don't need to start big." — one paragraph, the clarification that keeps
  * it honest, the FIRST ORDER → TEST → REPEAT → GROW → SCALE path, and a closing
- * sentence about the path changing as the business does.
+ * sentence about the path changing as the business does. The path and the
+ * closing sentence render inside the body column (under the copy, 2026-10-02)
+ * — not full-width below the block.
  *
  * ── THE LOAD-BEARING SENTENCE ─────────────────────────────────────────────
  * `emphasis` is not a second paragraph. It is the qualifier without which the
@@ -62,30 +64,33 @@ const lastIndex = progression.length - 1;
         {paragraphs.map((paragraph) => <p class="ind-scale__para">{paragraph}</p>)}
 
         {emphasis && <p class="ind-scale__emphasis">{emphasis}</p>}
+
+        {/* An <ol>: the five stages are read in order even though they are not
+            numbered on screen — the progression is the content. Lives inside
+            the body (2026-10-02, owner) so the desktop grid carries it in the
+            RIGHT column, directly under the copy it sequences; on mobile it
+            simply continues the stack. */}
+        <ol class="ind-scale__path">
+          {
+            progression.map((stage, index) => (
+              <li class="ind-scale__stage">
+                <span class="ind-scale__stage-label">{stage}</span>
+
+                {/* The arrow belongs to the gap between two stages, so it is
+                    rendered after every stage except the last. It turns a quarter
+                    turn on the stacked layout — see the stylesheet. */}
+                {index < lastIndex && (
+                  <span class="ind-scale__arrow" aria-hidden="true">
+                    →
+                  </span>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+
+        {note && <p class="ind-scale__note">{note}</p>}
       </div>
     </div>
-
-    {/* An <ol>: the five stages are read in order even though they are not
-        numbered on screen — the progression is the content. */}
-    <ol class="ind-scale__path">
-      {
-        progression.map((stage, index) => (
-          <li class="ind-scale__stage">
-            <span class="ind-scale__stage-label">{stage}</span>
-
-            {/* The arrow belongs to the gap between two stages, so it is
-                rendered after every stage except the last. It turns a quarter
-                turn on the stacked layout — see the stylesheet. */}
-            {index < lastIndex && (
-              <span class="ind-scale__arrow" aria-hidden="true">
-                →
-              </span>
-            )}
-          </li>
-        ))
-      }
-    </ol>
-
-    {note && <p class="ind-scale__note">{note}</p>}
   </div>
 </section>
