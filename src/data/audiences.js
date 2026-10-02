@@ -1,8 +1,12 @@
 /**
  * SOURDEN — WHO WE'RE BUILT FOR
  * ---------------------------------------------------------------------------
- * Spec §13 (audience rows), §14 (no-fixed-MOQ block), §15 (grow with the
- * customer progression).
+ * Spec §13 (audience rows) and §14 (no-fixed-MOQ block).
+ *
+ * §15 (the "Start where you are." growth progression) was REMOVED on
+ * 2026-10-02 as part of the homepage content-density pass: the owner cut the
+ * duplicated growth story. The MOQ message (§14) is the section's close now —
+ * nothing replaces the removed progression.
  *
  * ── MOQ WORDING RULE (spec §14) — READ BEFORE EDITING ──────────────────────
  * The MOQ copy may NEVER become any of the following:
@@ -70,19 +74,4 @@ export const audienceGroups = [
 export const scaleBlock = {
   eyebrow: 'SOURCE AT YOUR SCALE.',
   copy: 'We don’t impose our own minimum order quantity. We’ll work with you to find sourcing options that fit your current stage and requirements.',
-};
-
-/** §15 — "Start where you are." progression. Keep the visual simple: no
- *  growth charts, no cartoon graphics. */
-export const growBlock = {
-  title: 'START WHERE YOU ARE.',
-  supporting:
-    'Your sourcing needs change as your business grows. Sourden is built to grow with you.',
-  progression: [
-    'FIRST ORDER',
-    'TEST THE MARKET',
-    'REPEAT ORDERS',
-    'GROWING VOLUME',
-    'SCALE SOURCING',
-  ],
 };

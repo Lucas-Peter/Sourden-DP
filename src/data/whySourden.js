@@ -1,7 +1,9 @@
 /**
  * SOURDEN — WHY SOURDEN
  * ---------------------------------------------------------------------------
- * Spec §16. Dark section, five reasons, plus a brand-philosophy statement.
+ * Spec §16. Dark section. Three reasons (reduced from five on 2026-10-02 as
+ * part of the homepage content-density pass — the removed reasons restated
+ * the survivors), plus a brand-philosophy statement.
  *
  * WORDING RULE: `philosophy` is brand philosophy, NOT a measurable claim. The
  * spec explicitly forbids presenting it as one. Do not attach numbers,
@@ -17,32 +19,20 @@ export const whyIntro = {
 export const whyReasons = [
   {
     number: '01',
-    title: 'One Point of Contact',
+    title: 'One Partner',
     description:
       'One partner coordinating sourcing from supplier research to shipment.',
   },
   {
     number: '02',
-    title: 'Local Supplier Access',
+    title: 'Practical Verification',
     description:
-      'Access to China’s supplier network without navigating it alone.',
+      'We look beyond supplier listings to understand product fit, capability, pricing and requirements.',
   },
   {
     number: '03',
-    title: 'Practical Verification',
-    description:
-      'Look beyond online listings to understand supplier fit and capability.',
-  },
-  {
-    number: '04',
     title: 'Quality Before Shipping',
-    description: 'Arrange product checks before goods leave China.',
-  },
-  {
-    number: '05',
-    title: 'End-to-End Coordination',
-    description:
-      'Supplier communication, purchasing, production, quality control and shipping through one partner.',
+    description: 'We can arrange product checks before goods leave China.',
   },
 ];
 

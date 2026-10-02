@@ -16,7 +16,7 @@ export const services = [
     slug: 'product-sourcing',
     href: '/services/product-sourcing',
     description:
-      'Research and identify suitable suppliers based on your product requirements, specifications, target pricing and sourcing goals.',
+      'Find suitable suppliers based on your product requirements, specifications, target pricing and sourcing goals.',
     /** Short label for the footer column (same string, declared for clarity). */
     shortTitle: 'Product Sourcing',
   },
@@ -26,7 +26,7 @@ export const services = [
     slug: 'supplier-verification',
     href: '/services/supplier-verification',
     description:
-      'Assess supplier capabilities, product fit, pricing, MOQ, lead times and other factors before you move forward.',
+      'Review supplier capabilities, product fit, MOQ, pricing, lead times and other key factors before you move forward.',
     shortTitle: 'Supplier Verification',
   },
   {
@@ -44,7 +44,7 @@ export const services = [
     slug: 'quality-control',
     href: '/services/quality-control',
     description:
-      'Arrange product checks before shipment to identify issues and confirm that the order matches the agreed requirements.',
+      'Arrange product checks before shipment to identify issues and confirm the order meets agreed requirements.',
     shortTitle: 'Quality Control',
   },
   {
@@ -53,7 +53,7 @@ export const services = [
     slug: 'shipping-from-china',
     href: '/services/shipping-from-china',
     description:
-      'Coordinate shipping from China and connect the sourcing process with an appropriate logistics solution.',
+      'Coordinate shipping from China and connect your sourcing process with the right logistics solution.',
     shortTitle: 'Shipping from China',
   },
 ];
