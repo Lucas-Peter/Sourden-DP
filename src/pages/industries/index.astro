@@ -1,76 +1,54 @@
 ---
 /**
- * /industries — Industries & Product Categories  (Industries brief §01–§13)
+ * /industries — Industries & Product Categories  (Industries brief §01–§16)
  * ---------------------------------------------------------------------------
- * This route used to render a reservation page. It is now a hub: the range of
- * products Sourden sources, presented as an editorial directory of nine
- * categories rather than as a menu.
+ * This route is the site's product-category hub: it answers "what can SOURDEN
+ * source from China?" with a nine-entry directory and routes the visitor to the
+ * nine `/industries/<slug>` pages, which carry the deeper per-category content.
  *
- * STRUCTURE (brief)
- *   01 Hero                          §01  eyebrow, H1, copy, two actions, image
- *   02 Introduction                  §02  why the category changes the approach
- *   03 Industry / category directory §03  nine entries, each linking onward
- *   04 Not sure which category?      §04  the "tell us anyway" exit
- *   05 Category ≠ process            §05  four sourcing strategies
- *   06 From category to supplier     §06  five-stage flow
- *   07 Who we source for             §07  five buyer types
- *   08 Source at your scale          §08  the MOQ position + growth path
- *   09 Why source from China?        §09  the ecosystem, and the process behind
- *   10 How sourcing works            §10  the five-stage rail (ink band)
- *   11 Related services              §11  the five services
- *   12 FAQ                           §12  eight questions, native disclosures
- *   13 Final CTA                     §13  one primary action
+ * STRUCTURE (2026-10-02, content-simplification pass)
+ *   01 Hero                        eyebrow, H1, one-line copy, two actions
+ *   02 Category directory          nine entries + the scope note
+ *   03 Not sure where it fits?     the "tell us anyway" exit
+ *   04 Our approach                short prose + "How It Works →"
+ *   05 Who we source for           the five buyer types
+ *   06 No fixed MOQ                one statement + one qualifier
+ *   —  "Have questions? View FAQ"  one centred text link, not a section
+ *   +   Final CTA                  one primary action
  *
  * WHAT THIS PAGE DELIBERATELY DOES NOT DO
- *   · It does not duplicate the homepage's `WHAT WE SOURCE`. The homepage shows
- *     nine image tiles so a visitor can recognise a category; this page shows
- *     nine ruled text entries with descriptions and real product types so a
- *     visitor can tell whether their product is in scope (brief §"Page
- *     Purpose" is explicit that the two must differ).
- *   · It does not build the nine `/industries/<slug>` category pages. They stay
- *     reserved routes that resolve, render the reservation shell and carry
- *     `noindex` — the brief says to "create the route/link structure without
- *     attempting to build the pages in this task", and every one of the nine
- *     links is live so nothing has to be rewritten when they are written.
- *   · It does not redesign anything. Header, footer, buttons, rows, media, the
- *     reveal device, the hero, the prose device, the review grid, the rail and
- *     the FAQ are all the existing site's; only the composition on this page is
- *     new (brief §"Implementation notes": "Do not create a second visual
- *     language for this page").
- *   · It adds no claim the business cannot evidence. See the claims rule in
- *     `src/data/industries-page.js`, which also records how each of the brief's
- *     four per-category writing constraints is met.
+ *   · It does not reproduce the nine category pages. Each directory entry is
+ *     name + one concise description + "Learn More"; the product-type lists,
+ *     per-category caveats and process detail live on the child pages.
+ *   · It does not duplicate the five-step rail (→ /how-it-works), the five
+ *     service descriptions (→ /services), the FAQ (→ /faq), the five strategies
+ *     or the growth path. Those were removed in this pass — the hub is
+ *     navigation, not a second About / Services / How-It-Works page.
+ *   · It adds no claim the business cannot evidence (see the claims rule in
+ *     `src/data/industries-page.js`).
  *
  * INDEXABILITY
- *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
- *   in `reservedTopLevel` (src/data/routes.js) was removed in the same change —
- *   that list is what drives the noindex/sitemap split, so forgetting it would
- *   have left a finished, content-rich page excluded from search.
+ *   This page is real, so it is indexable and appears in sitemap.xml.
  *
  * IMPORT ORDER IS LOAD-BEARING
- *   Layout first, then the shared sections, then the detail-page sections, then
- *   this page's own sheet — otherwise these rules lose every same-specificity
- *   conflict against the shared core. `npm run audit` fails the build if that
- *   regresses.
+ *   Layout first, then the shared sections, then this page's own sheet —
+ *   otherwise these rules lose every same-specificity conflict against the
+ *   shared core. `npm run audit` fails the build if that regresses.
  *
- *   This page imports `services-shared.css` and `service-detail.css` rather
- *   than carrying its own copies of the hero, the prose split, the review grid,
- *   the rail and the FAQ. The file names say "services" because the services
- *   pages were those devices' first consumer; the devices themselves are
- *   generic editorial sections, and the brief asks for exactly this — reuse,
- *   and no second visual language. See `src/styles/index.css` →
- *   "SHARING A DEVICE BETWEEN TWO PAGES".
+ *   This page imports `service-detail.css` for the prose device (`.sec-prose*`)
+ *   rather than carrying its own copy. It no longer imports `services-shared.css`:
+ *   the rail and the FAQ — that sheet's only consumers here — were removed in
+ *   this pass, and the hero is the background `<BackgroundHero>` (core
+ *   `components.css`), not the old `.sec-hero`. See `src/styles/index.css`.
  *
  * WHY A SECTION DISPATCHER
- *   The brief numbers thirteen sections and gives each one's copy verbatim. A
- *   dispatcher means the page's order, tones and content live in the data file
- *   and nothing about the composition is buried in markup — the same
+ *   A dispatcher means the page's order, tones and content live in the data
+ *   file and nothing about the composition is buried in markup — the same
  *   architecture the five service-detail pages use, so a section can be
  *   reordered or inserted without touching a template.
  * ---------------------------------------------------------------------------
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import '../../styles/services-shared.css';
 import '../../styles/service-detail.css';
 import '../../styles/industries.css';
 
@@ -78,46 +56,31 @@ import FinalCTA from '../../components/FinalCTA.astro';
 import IndustryDirectory from '../../components/industries/IndustryDirectory.astro';
 import IndustryRows from '../../components/industries/IndustryRows.astro';
 import IndustryScale from '../../components/industries/IndustryScale.astro';
-import IndustrySequence from '../../components/industries/IndustrySequence.astro';
-import ServiceProcess from '../../components/services/ServiceProcess.astro';
 import ServiceProse from '../../components/services/ServiceProse.astro';
-import ServiceReviewGrid from '../../components/services/ServiceReviewGrid.astro';
-import ServicesFaq from '../../components/services/ServicesFaq.astro';
 import BackgroundHero from '../../components/BackgroundHero.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
 
 import {
   breadcrumbs,
-  faqIntro,
-  faqItems,
   finalCta,
   hero,
   meta,
-  relatedServices,
   sections,
 } from '../../data/industries-page.js';
-import { breadcrumbItems, breadcrumbSchema, faqPageSchema, serviceSchema, webPageSchema } from '../../data/schema.js';
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
 
 const path = '/industries';
 
 /**
- * One graph for the page: the page itself, its breadcrumb, and a Service node
- * for each of the five services §11 links to.
- *
- * The Service nodes are built from the same merged records §11 renders, so a
- * structured-data claim can never describe a service the page does not show.
- * `serviceSchema` is the site's existing builder and emits no price, rating or
- * availability — none of those can be evidenced. `/services` declares the same
- * five nodes the same way.
+ * One graph for the page: the page itself and its breadcrumb. There are no
+ * Service or FAQPage nodes — the related-services band and the FAQ were removed
+ * in this pass, so the structured data must not describe content the page does
+ * not show (a Service node for a service the page no longer lists would be a
+ * structured-data claim about a different page).
  */
 const schema = [
   webPageSchema({ title: meta.title, description: meta.description, path }),
   breadcrumbSchema(breadcrumbItems(breadcrumbs)),
-  ...relatedServices.map((service) =>
-    serviceSchema({ name: service.title, description: service.description, href: service.href })
-  ),
-  /* Built from the same `faqItems` <ServicesFaq> renders below, so the node can
-     never describe a question a visitor cannot see. */
-  faqPageSchema(faqItems),
 ];
 
 /**
@@ -125,9 +88,7 @@ const schema = [
  *
  * Derived from the index rather than written by hand, so inserting a section
  * cannot produce a duplicate id. Numbered from `index + 2` because the array
- * starts at the brief's §02 — §01 is the hero, which owns its own id — so the
- * ids line up with the brief's numbering and a reader can go straight from
- * "§07" in the brief to `id="ind-07"` in the build.
+ * starts at the brief's §02 — §01 is the hero, which owns its own id.
  */
 const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
 ---
@@ -171,35 +132,8 @@ const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
             <IndustryDirectory
               eyebrow={section.eyebrow}
               title={section.title}
-              description={section.description}
               items={section.items}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'reviewGrid':
-          return (
-            <ServiceReviewGrid
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              items={section.items}
-              note={section.note}
-              foot={section.foot}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'sequence':
-          return (
-            <IndustrySequence
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              steps={section.steps}
-              foot={section.foot}
+              scopeNote={section.scopeNote}
               tone={section.tone}
               titleId={titleId}
             />
@@ -222,44 +156,8 @@ const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
           return (
             <IndustryScale
               eyebrow={section.eyebrow}
-              title={section.title}
-              paragraphs={section.paragraphs}
-              emphasis={section.emphasis}
-              progression={section.progression}
-              note={section.note}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'process':
-          /* The rail always owns the ink band, and `.ind-process` is the one
-             hook this page adds to it — see `industries.css` §05 for why this
-             page's longer stage labels need a two-line floor. */
-          return (
-            <ServiceProcess
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              steps={section.steps}
-              note={section.note}
-              foot={section.foot}
-              class="ind-process"
-              titleId={titleId}
-            />
-          );
-
-        case 'services':
-          /* The same rows device §07 uses, with `numbered` — the difference
-             between the two lists is a data shape, not a layout. */
-          return (
-            <IndustryRows
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              items={section.items}
-              numbered
-              foot={section.foot}
+              statement={section.statement}
+              qualifier={section.qualifier}
               tone={section.tone}
               titleId={titleId}
             />
@@ -276,7 +174,11 @@ const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
     })
   }
 
-  <ServicesFaq eyebrow={faqIntro.eyebrow} title={faqIntro.title} items={faqItems} titleId="ind-12" />
+  {/* Brief §09: the full FAQ lives at /faq; one centred text link is enough.
+      A <div>, not a <section>, so the page keeps its six-section structure. */}
+  <div class="container ind-faq-link">
+    <ArrowLink href="/faq" label="Have questions? View FAQ" brass />
+  </div>
 
   <FinalCTA
     eyebrow={finalCta.eyebrow}
