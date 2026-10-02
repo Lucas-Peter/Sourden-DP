@@ -52,7 +52,6 @@ export const hero = {
   secondaryCta: { label: 'How It Works', href: '/how-it-works' },
   image: {
     key: 'servicesHero',
-    caption: 'SAMPLE & SUPPLIER REVIEW',
   },
 };
 

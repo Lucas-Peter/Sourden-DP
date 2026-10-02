@@ -99,7 +99,9 @@ export const images = {
    * All five service slots are 4:3 and share a single treatment, because they
    * are presented as one alternating sequence — mixing ratios inside that
    * sequence would make the column widths jump from row to row. The hero is
-   * 4:3 as well, matching the homepage and sourcing-request heroes.
+   * the exception: it moved to the full-bleed background shape on 2026-10-02
+   * (16:9, copy overlaid) alongside the homepage, /how-it-works, /industries
+   * and /about heroes, so it no longer shares the 4:3 service-section frame.
    *
    * Spec §21 bans the usual China shorthand here (Great Wall, flag, panda,
    * generic handshake, staged corporate meeting, giant globe, AI-perfect
@@ -107,16 +109,18 @@ export const images = {
    */
   servicesHero: {
     file: 'services-hero.webp',
-    width: 1600,
-    height: 1200,
-    ratio: '4:3',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
     label: 'SOURCING SERVICES',
-    alt: 'A gloved worker comparing machined metal fasteners in compartmented trays on a stainless-steel bench, with a steel rule and a blank check sheet beside them.',
+    /* alt is EMPTY on purpose: the photograph is a decorative background (the
+       hero's copy is overlaid on it) — same call as `heroSourcing`. */
+    alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'Documentary sourcing imagery: product sample review, supplier or product inspection, packaging review, a manufacturing process, warehouse preparation or material inspection. It has to read as a working scene. Avoid every China cliché (Great Wall / flag / panda / globe / container-port sunsets), generic handshakes, staged corporate meetings and artificially perfect AI factory floors. Category for this slot: Industrial Products — machined metal fasteners and rubber gaskets on a stainless-steel bench. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
+      'One documentary frame of the sourcing services in progress on a stainless-steel bench: machined metal fasteners in compartmented trays, rubber gaskets, a steel rule and a blank check sheet, arranged in the RIGHT two thirds of a 16:9 frame with the left third empty for the overlaid copy. No people, no hands, no readable text, no logos. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): staged corporate meetings and artificially perfect AI factory floors. Category: Industrial Products. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
     cropNote:
-      'Shown 4:3 in the right-hand column (5 of 12 on desktop), height-capped and placed below the text on mobile. Keep the subject inside the middle 70% horizontally and vertically — `object-fit: cover` crops symmetrically from the centre.',
+      'Rendered as a full-bleed background (object-fit: cover) behind the hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the objects right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
   /* Service DETAIL page heroes — one per `/services/<slug>` page.
    *
@@ -270,16 +274,17 @@ export const images = {
    * plus artificially perfect AI factory floors. */
   howItWorksHero: {
     file: 'how-it-works-hero.webp',
-    width: 1600,
-    height: 1200,
-    ratio: '4:3',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
     label: 'HOW IT WORKS',
-    alt: 'A sourcing workflow laid out on a bright worktable: folded textile samples, a woven basket, a ceramic bowl, a tape dispenser, a magnifier and a steel rule, sealed bags of packed garments and plain cardboard shipping cartons.',
+    /* alt is EMPTY on purpose: decorative background (copy overlaid). */
+    alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of the whole sourcing journey on a single worktable: product samples and textiles at left, inspection and measurement tools in the middle, packed goods and shipping cartons weighted right, generous ivory negative space around the arrangement. No people, no screens, no readable text. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors.',
+      'One documentary frame of the whole sourcing journey on a single worktable, composed for a background band: folded textile samples, a woven basket, a ceramic bowl, a tape dispenser, a magnifier and a steel rule, then sealed bags of packed garments and plain cardboard shipping cartons — the whole workflow gathered in the RIGHT two thirds of a 16:9 frame, with the left third empty for the overlaid copy. No people, no screens, no readable text. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors. Never a woodworking or craft scene: no timber, no wooden blanks, no bamboo.',
     cropNote:
-      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+      'Rendered as a full-bleed background (object-fit: cover) behind the hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the workflow right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
 
   /* --------------------------------------------------------------- about -- */
@@ -296,21 +301,23 @@ export const images = {
    * corporate", naming factory floor, product samples, supplier meeting,
    * inspection, materials, packaging, warehouse and hands reviewing products,
    * and ruling out the handshake, the boardroom, the landmark, the flag and
-   * every stock "international business" scene. Same 1600 × 1200 / 4:3 as
-   * every other hero, so it can share the hero frame without a second crop
-   * rule. */
+   * every stock "international business" scene. Since 2026-10-02 it is a
+   * 16:9 (1920 × 1080) full-bleed background frame — the copy is overlaid on
+   * the photograph, so the subject sits right of centre and the left third
+   * stays empty (see the slot's cropNote). */
   aboutHero: {
     file: 'about-hero.webp',
-    width: 1600,
-    height: 1200,
-    ratio: '4:3',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
     label: 'ABOUT SOURDEN',
-    alt: 'A buyer’s sample-comparison bench: a frosted cream jar, a white pump bottle and an aluminium tube standing side by side on a light-wood table with blank swatch cards, a steel ruler and a coiled measuring tape, a bright workshop softly out of focus behind.',
+    /* alt is EMPTY on purpose: decorative background (copy overlaid). */
+    alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of the buyer’s desk: three supplier versions of one cosmetic product (frosted cream jar, white pump bottle, aluminium tube) compared side by side on a light-wood table with blank swatch cards, a steel ruler and a measuring tape, weighted right of centre, a bright workshop softly out of focus behind. Category: Beauty & Personal Care. No posed people, no screens, no readable text, no logos. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and rustic timber-workshop drift. v5 (2026-10-02) replaced the earlier fabric-and-clipboard desk, which read as decoration rather than sourcing work.',
+      'One documentary frame of the buyer\u2019s comparison bench, composed for a background band: three supplier versions of one cosmetic product (a frosted cream jar, a white pump bottle and an aluminium tube) compared side by side on a light table with blank swatch cards, a steel ruler and a coiled measuring tape, the whole arrangement in the RIGHT two thirds of a 16:9 frame with the left third empty for the overlaid copy, a bright workshop softly out of focus behind. Category: Beauty & Personal Care. No posed people, no screens, no readable text, no logos. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and rustic timber-workshop drift — no timber, no wooden workbench, no wood offcuts. v6 (2026-10-02) recomposes v5 for the background shape.',
     cropNote:
-      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+      'Rendered as a full-bleed background (object-fit: cover) behind the hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the three products right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
 
   /* ----------------------------------------------------------------- faq -- */
@@ -319,8 +326,10 @@ export const images = {
    * The FAQ brief (§2) specifies the eyebrow, the H1, the supporting paragraph
    * and two actions, and names NO image. The hero device every other page uses
    * carries one, so the choice was a hero without an image — which would be a
-   * second hero design — or this slot. Same 1600 × 1200 / 4:3 as every other
-   * hero, so it shares the frame without a second crop rule.
+   * second hero design — or this slot. It stays on the split-column hero (the
+   * 4:3 `ServicesHero` frame) rather than the full-bleed background the
+   * homepage, /services, /how-it-works, /industries and /about moved to on
+   * 2026-10-02, so it keeps 1600 × 1200 / 4:3 and a real alt.
    *
    * WHAT IT MUST NOT BE. An FAQ page is the easiest place on the site to reach
    * for a symbol: a question mark, a speech bubble, a glowing lightbulb, a
@@ -366,16 +375,17 @@ export const images = {
    * world maps, landmarks, flags, handshakes and AI-looking factory imagery. */
   industriesHero: {
     file: 'industries-hero.webp',
-    width: 1600,
-    height: 1200,
-    ratio: '4:3',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
     label: 'WHAT WE SOURCE',
-    alt: 'A tray of moulded plastic housings, folded textiles, a plain cardboard carton, a glass jar and machined metal fittings gathered on a packing table.',
+    /* alt is EMPTY on purpose: decorative background (copy overlaid). */
+    alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'Breadth shown honestly: several DIFFERENT kinds of product being handled together in a real working context — samples on a bench, goods from different categories staged for inspection, or a production or packing area where more than one product line is visible. Mixed materials and unfinished packs are better than polished hero products. Banned: artificial collages, a neat grid of unrelated products on white, generic world maps, the Great Wall, a flag, a panda, handshakes, staged meeting rooms and artificially perfect AI factory floors. Category for this slot: deliberately mixed — a moulded plastic tray, folded textiles, a kraft carton, a glass jar and machined metal fittings. Never a woodworking or craft scene: no timber, no wood offcuts, no wood chips.',
+      'Breadth shown honestly in one documentary frame: several DIFFERENT kinds of product — a moulded plastic tray, folded textiles, a plain kraft carton, a glass jar and machined metal fittings — gathered on a packing table in the RIGHT two thirds of a 16:9 frame, with the left third empty for the overlaid copy. Mixed materials and unfinished packs are better than polished hero products. Banned: artificial collages, a neat grid of unrelated products on white, generic world maps, the Great Wall, a flag, a panda, handshakes, staged meeting rooms and artificially perfect AI factory floors. Category: deliberately mixed. Never a woodworking or craft scene: no timber, no wood offcuts, no wood chips.',
     cropNote:
-      'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
+      'Rendered as a full-bleed background (object-fit: cover) behind the hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the objects right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
   industryConsumerProducts: {
     file: 'industry-consumer-products.webp',

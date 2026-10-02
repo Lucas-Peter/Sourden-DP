@@ -99,8 +99,6 @@ export const hero = {
    *  with the slot in `media.js`. */
   image: {
     key: 'industriesHero',
-    /** 〔added〕 — the brief specifies the image but not its caption. */
-    caption: 'PRODUCT SAMPLES ACROSS CATEGORIES',
   },
 };
 

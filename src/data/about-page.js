@@ -119,10 +119,6 @@ export const hero = {
    */
   image: {
     key: 'aboutHero',
-    /** 〔added〕 — the brief specifies the image but not its caption. It names
-     *  the page's own subject rather than describing the photograph, so it
-     *  stays true when the real image replaces the placeholder. */
-    caption: 'THE WORK BEHIND A SOURCING ORDER',
   },
 };
 
