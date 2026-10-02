@@ -613,11 +613,12 @@
 }
 
 /* ===========================================================================
-   07 — SOURCING WITHOUT THE BARRIERS  (spec §13 + §14 + §15)
-   The most important section on the page. Three distinct blocks:
-     a) header + large statement + four audience rows
+   07 — SOURCING WITHOUT THE BARRIERS  (spec §13 + §14)
+   The most important section on the page. Two distinct blocks:
+     a) header + large statement + five audience rows
      b) no-fixed-MOQ editorial block
-     c) "Start where you are." progression
+   (The §15 growth progression was removed 2026-10-02 — the MOQ block closes
+   the section now.)
    =========================================================================== */
 
 .barriers {
@@ -749,68 +750,10 @@
   }
 }
 
-/* --- c) grow with the customer (spec §15) --------------------------------- */
-
-.grow-block {
-  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-9));
-  padding-block-start: clamp(var(--sp-5), 3vw, var(--sp-6));
-  border-top: var(--rule) solid var(--divider-light);
-}
-
-.grow-block__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-h2);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-display);
-  letter-spacing: var(--ls-display);
-}
-
-.grow-block__supporting {
-  max-width: 46ch;
-  margin-block-start: var(--sp-4);
-  color: var(--muted);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-}
-
-.grow-block__progression {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-3) var(--sp-4);
-  margin: clamp(var(--sp-6), 4vw, var(--sp-7)) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.prog__item {
-  display: flex;
-  align-items: center;
-  font-family: var(--font-display);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-caps-wide);
-  text-transform: uppercase;
-}
-
-.prog__sep {
-  margin-inline-start: var(--sp-3);
-  color: var(--brass-ink);
-}
-
-@media (max-width: 767px) {
-  .grow-block__progression {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--sp-2);
-  }
-
-  /* The arrow becomes a down-arrow in the vertical progression. */
-  .prog__sep {
-    transform: rotate(90deg);
-    margin-inline-start: 10px;
-  }
-}
+/* --- c) grow with the customer (spec §15) — REMOVED 2026-10-02 -------------
+   The "START WHERE YOU ARE." progression and its supporting sentence were cut
+   in the homepage content-density pass; the no-fixed-MOQ block above is the
+   section's close. */
 
 /* ===========================================================================
    08 — WHY SOURDEN  (spec §16)
