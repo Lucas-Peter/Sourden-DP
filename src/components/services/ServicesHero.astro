@@ -77,10 +77,11 @@ interface Props {
   /**
    * Key from the image manifest in src/data/media.js — unknown keys throw.
    *
-   * Optional, and absent only on `/insights`. The two travel together: a frame
-   * without its caption would be the only uncaptioned one on the site, so
-   * `imageCaption` is required whenever `imageKey` is given and ignored without
-   * it.
+   * Optional. No current consumer omits it: `/insights` was the one page that
+   * did, and on 2026-10-02 it left this hero entirely for its own background
+   * device (`InsightsHero.astro`). The optional prop stays so a page can still
+   * ship a text-only hero without a second component; `imageCaption` is
+   * required whenever `imageKey` is given and ignored without it.
    */
   imageKey?: string;
   imageCaption?: string;
