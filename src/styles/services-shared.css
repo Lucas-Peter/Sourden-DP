@@ -11,9 +11,10 @@
    pages — `/services` still ships a single 11.8 KB chunk, exactly as it did
    before the split. What the split buys is that no page has to import another
    page's stylesheet: a detail page links `services-shared.css` plus
-   `service-detail.css` and skips the ~6.6 KB of overview-only rules
-   (`.sec-overview`, `.sec-path`, `.sec-audience`, `.sec-scale`, `.sec-expect`,
-   `.sec-approach`) that it would otherwise download and never apply.
+   `service-detail.css` and skips the `.sec-overview` rules — the only
+   overview-only device left after the 2026-10-02 content-density pass removed
+   the paths / audience / scale / expectations / approach sections — that it
+   would otherwise download and never apply.
 
    WHY THIS FILE EXISTS SEPARATELY
    These three sections used to live in `services.css`, which only `/services`
@@ -238,10 +239,20 @@
 .sec-stage__link {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
-  grid-template-rows: auto auto auto;
   column-gap: var(--sp-4);
   row-gap: var(--sp-2);
   padding-block: var(--sp-5);
+}
+
+/* The overview's stage no longer carries a description (2026-10-02: the copy
+   duplicated the service rows below it), so its grid is one row shorter than
+   the detail pages' twin — which still places a description in row 3. */
+.sec-stage__body {
+  grid-template-rows: auto auto auto;
+}
+
+.sec-stage__link {
+  grid-template-rows: auto auto;
 }
 
 /* The dot. Sits in row 1 beside the number, so the rail runs through it. */
@@ -386,10 +397,19 @@
   .sec-stage__body,
   .sec-stage__link {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
     column-gap: 0;
     row-gap: var(--sp-3);
     padding-block: 0;
+  }
+
+  /* The detail pages' stage keeps a description in row 4; the overview's
+     stage (no description) ends at row 3. See the base rule above. */
+  .sec-stage__body {
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .sec-stage__link {
+    grid-template-rows: auto auto auto;
   }
 
   .sec-stage:not(:last-child)::after {
@@ -447,6 +467,21 @@
 
 .sec-process__foot {
   margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+/* The supporting sentence under the rail — "Not every project needs every
+   service." It belongs to the process but must not read as one more stage, so
+   it is separated by a hairline and set quieter, the same treatment `.sec-note`
+   gives the detail pages' closing caveats. Overview-only: the detail pages'
+   rail carries no such line. */
+.sec-process__note {
+  max-width: 62ch;
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.68;
 }
 
 
