@@ -33,7 +33,6 @@ import { processIntro, processStages } from '../../data/services-page.js';
       id="sec-process-title"
       eyebrow={processIntro.eyebrow}
       title={processIntro.title}
-      lead={processIntro.description}
       class="sec-process__head"
     />
 
@@ -60,13 +59,13 @@ import { processIntro, processStages } from '../../data/services-page.js';
                   →
                 </span>
               </h3>
-
-              <p class="sec-stage__desc">{stage.description}</p>
             </a>
           </li>
         ))
       }
     </ol>
+
+    <p class="sec-process__note">{processIntro.note}</p>
 
     <div class="section-foot sec-process__foot">
       <ArrowLink href="/how-it-works" label="See how the whole process works" />

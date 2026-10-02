@@ -5,20 +5,19 @@
  * The hub body: five service sections, alternating image ↔ text.
  *
  * WHY FIVE SECTIONS RATHER THAN FIVE CARDS
- *   Each service needs a heading, a paragraph and eight concrete key areas.
- *   Cards would force that into a grid of equal boxes and cap the amount each
- *   one can say — the brief explicitly forbids it. Alternating full-width rows
- *   give every service the same weight and as much room as it needs.
+ *   Each service needs a name, a one-line description and a link to its own
+ *   page. Alternating full-width rows give every service the same weight and
+ *   as much room as it needs without boxing it into a grid of equal cards.
  *
- * WHY THE EIGHT KEY AREAS ARE A LIST AND NOT PROSE
- *   They answer "what actually happens in this service?" in the form a
- *   purchasing manager scans rather than reads. They are also the only place on
- *   the page that names the specific activities, which is what makes the
- *   section substantive instead of promotional.
+ * SIMPLIFIED 2026-10-02
+ *   The eight "key areas" per service and the descriptive heading were dropped
+ *   in the content-density pass: the detail pages carry the substance, and
+ *   this page is the scannable hub. Each row is now number → service name →
+ *   one-line description → "Learn More", with the photograph on the mirrored
+ *   side.
  *
  * HEADING LEVELS
- *   h2 (section) → h3 (service) → h4 (Key areas) — no level is skipped, and the
- *   h4 keeps each list attached to its service in the document outline.
+ *   h2 (section) → h3 (service) — no level is skipped.
  * ---------------------------------------------------------------------------
  */
 import SectionHeader from '../SectionHeader.astro';
@@ -49,18 +48,10 @@ import { overviewIntro, overviewSections } from '../../data/services-page.js';
               <p class="eyebrow">{section.eyebrow}</p>
 
               <h3 class="sec-service__title" id={`sec-service-${section.slug}`}>
-                {section.heading}
+                {section.title}
               </h3>
 
               <p class="sec-service__desc">{section.description}</p>
-
-              <h4 class="sec-service__label">Key areas</h4>
-
-              <ul class="sec-service__areas">
-                {section.keyAreas.map((area) => (
-                  <li class="sec-service__area">{area}</li>
-                ))}
-              </ul>
 
               <div class="sec-service__cta">
                 <ArrowLink href={section.href} label={section.cta} brass />
