@@ -1,28 +1,25 @@
 /**
  * SOURDEN — /about page stylesheet
  * ---------------------------------------------------------------------------
- * The two devices this page contributes. Everything else on `/about` is a
- * shared device whose rules already exist:
+ * The devices this page contributes. Everything else on `/about` is a shared
+ * device whose rules already exist:
  *
- *   hero             `.sec-*`  services-shared.css
- *   prose            `.sec-*`  service-detail.css
- *   reviewGrid       `.sec-*`  service-detail.css
- *   stages           `.hi-*`  how-it-works.css
- *   growth           `.hi-*`  how-it-works.css
- *   linkRows         `.hi-*`  how-it-works.css
- *   faq              `.sec-*`  services-shared.css
- *   closing band      core    components.css
+ *   hero             `.bg-hero*`      components.css
+ *   prose            `.sec-prose*`    service-detail.css
+ *   reviewGrid       `.sec-review*`   service-detail.css
+ *   contact          `.ab-contact*`   THIS FILE
+ *   flow (chain)     `.ab-flow*`      THIS FILE
+ *   closing band      core            components.css
  *
- * ── WHY THIS FILE IS MOSTLY TWO GRIDS ─────────────────────────────────────
- * Both new devices reuse the site's 5/6 editorial grid — the same one
- * `ServiceProse` and the services-area FAQ use (heading left, content right).
- * That is deliberate rather than convenient: `/about` carries prose or
- * statement sections at §02, §04, §12, §13 and §16, and a reader moving
- * between them should meet ONE arrangement, not five. Nothing here invents a
+ * ── WHY THIS FILE IS ONE GRID + ONE CHAIN + ONE CONTACT LIST ──────────────
+ * The flow chain reuses the site's 5/6 editorial grid (heading left, content
+ * right) — the same one `ServiceProse` and the services-area FAQ use. The
+ * contact list uses the same 5/6 split for the same reason: a reader moving
+ * through the page meets ONE arrangement, not several. Nothing here invents a
  * second grid, a card, a border or a shadow the site does not already have.
  *
  * ── THE INK BAND ──────────────────────────────────────────────────────────
- * §08 renders on the ink band, which is the core class `.section--dark` — for
+ * §05 renders on the ink band, which is the core class `.section--dark` — for
  * why the data says `tone: 'ink'` and the markup says `section--dark`, see the
  * `ground` mapping in `AboutFlow.astro`. Because the chain is the page's only
  * inverted device, its colour overrides are collected in one place at the end
@@ -37,103 +34,34 @@
  */
 
 /* ===========================================================================
-   01 — THE STATEMENT  (§04 OUR APPROACH, §13 OUR MINDSET)
+   01 — THE FLOW  (§04 OUR APPROACH — horizontal → / §05 WHAT WE ACTUALLY DO — vertical ↓)
    ---------------------------------------------------------------------------
-   A heading, one prominent statement, and the copy around it. The grid below
-   is copied from `.sec-prose__grid` on purpose — identical columns, identical
-   gap, identical breakpoint. If one of the two ever changes, both must.
-   =========================================================================== */
-
-.ab-statement__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
-}
-
-@media (min-width: 1200px) {
-  .ab-statement__grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--grid-gap);
-    align-items: start;
-  }
-
-  .ab-statement__head {
-    grid-column: 1 / span 5;
-  }
-
-  .ab-statement__body {
-    grid-column: 7 / span 6;
-  }
-}
-
-.ab-statement__body {
-  display: grid;
-  gap: var(--sp-5);
-  align-content: start;
-  min-width: 0;
-}
-
-.ab-statement__para {
-  max-width: 56ch;
-  color: var(--muted);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-}
-
-/* The section's one display line. It is set in the display face rather than
-   the body face, which is what makes it read as a statement rather than as a
-   paragraph that happens to be first. The measure is deliberately tighter
-   than the body's 56ch: at this size a 56ch line would run to ~100 characters
-   and stop reading as a line at all. */
-.ab-statement__line {
-  max-width: 40ch;
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-snug);
-  letter-spacing: var(--ls-tight);
-  text-wrap: pretty;
-}
-
-.ab-statement__foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-4) var(--sp-6);
-  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
-}
-
-
-/* ===========================================================================
-   02 — THE FLOW  (§08 WHAT WE DO — vertical / §14 THE RELATIONSHIP — horizontal)
-   ---------------------------------------------------------------------------
-   A labelled chain of positions: a requirement descending to a destination, or
-   three parties corresponding. Same 5/6 grid as the statement above.
+   A labelled chain of positions. Same 5/6 grid as the prose sections.
 
    MOBILE FIRST, AND THE SAME ORDER IN BOTH DIRECTIONS
      The chain is a single-column list at every size below 768px, and the two
      orientations differ only in WHERE the gap mark sits (above the node for a
-     descent, beside it for a correspondence). That is not a coincidence — it
-     is what makes the stacked layout correct without a second set of rules:
-     a mark that is already a sibling of the node's body stacks with it.
+     descent, beside it for a walk). That is not a coincidence — it is what
+     makes the stacked layout correct without a second set of rules: a mark that
+     is already a sibling of the node's body stacks with it.
 
    THE VERTICAL CHAIN IS CENTRED; THE HORIZONTAL ONE IS NOT —
    AND THEY ARE CENTRED/SPREAD IN DIFFERENT SPACES
      A descent reads as a spine, so it is centred and its nodes are centred
      under it — at BOTH levels, the <li> inside the chain and the mark and label
      inside the <li>; centring only the first is what produced a staircase of
-     five offset marks instead of a spine. A correspondence is a row of equals,
-     so it spreads across the full width and each node keeps its own left edge.
-     Centring the horizontal one would have made the middle party look like the
-     subject of the other two, which is the opposite of what §14 says.
+     offset marks instead of a spine. A walk is a row of steps, so it spreads
+     across the full width and each node keeps its own left edge. Centring the
+     horizontal one would have made the middle step look like the subject of the
+     other five, which is the opposite of what §04 says.
 
-     The SPACE they are centred in also differs, and that is a consequence of the
-     same idea rather than a separate decision: the descent is centred on the
-     right-hand COLUMN (it lives inside it, and it continues the sentence printed
-     there), while the correspondence is centred/spread on the CONTAINER. Getting
-     this wrong is invisible in the stylesheet — both are "a centred chain" — and
-     it produced the section 松霖 flagged as 乱: a descent centred on the
-     container, which on a two-column head is the gutter between the columns.
+     The SPACE they are centred in also differs: the descent is centred on the
+     right-hand COLUMN (it lives inside it, continuing the sentence printed
+     there), while the walk is spread on the CONTAINER. Getting this wrong is
+     invisible in the stylesheet — both are "a centred chain" — and it produced
+     the section the owner flagged as 乱 on the page's earlier form: a descent
+     centred on the container, which on a two-column head is the gutter between
+     the columns.
    =========================================================================== */
 
 .ab-flow__grid {
@@ -210,8 +138,8 @@
   text-transform: uppercase;
 }
 
-/* The question each party answers (§14 only). Sentence case, because it is a
-   question the reader is meant to read rather than a label they scan. */
+/* An optional second line under a node's label. Kept for the component's
+   declared `sub` capability — no section on the simplified page passes one. */
 .ab-flow__sub {
   margin-block-start: var(--sp-1);
   color: var(--muted);
@@ -219,8 +147,6 @@
   line-height: var(--lh-body);
 }
 
-/* `.sec-note` supplies the hairline and its own top margin; this only keeps the
-   note with the chain it describes rather than with the heading above it. */
 .ab-flow__note {
   margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
 }
@@ -236,25 +162,10 @@
 
 @media (min-width: 768px) {
   /* ── A DESCENT: CENTRED ON THE COLUMN IT LIVES IN ────────────────────────
-     The chain is a CHILD of the right-hand column (§08 — see the component for
+     The chain is a CHILD of the right-hand column (§05 — see the component for
      why the placement is decided by the direction), so there is nothing left to
      centre the box itself against. What this rule does is centre the chain's
-     CONTENTS on that column's axis, which is the whole point of a spine.
-
-     It used to be `max-width: 42rem; margin-inline: auto` as well, because the
-     chain was a sibling of the head grid and had to be narrowed and centred
-     inside the 1216px container. That is exactly what produced the defect 松霖
-     reported: the container's centre is 720, and on a two-column head 720 is
-     inside the gutter between the heading (112..595) and the paragraph
-     (732..1328) — so the six labels and the arrow between each pair descended
-     through the gap, belonging to neither column. The 42rem cap is now inert
-     (the column is 596px at 1440) and `auto` would centre against the wrong
-     box, so both are gone.
-
-     Spacing: the body cell's own 16px gap sits above the chain and it reads as
-     a continuation of the paragraph, so the base rule's `clamp(48px, 5vw, 64px)`
-     was over-large here. var(--sp-6) is the value that was prototyped and
-     picked against five other arrangements. */
+     CONTENTS on that column's axis, which is the whole point of a spine. */
   .ab-flow--vertical .ab-flow__chain {
     margin-block-start: var(--sp-6);
     justify-items: center;
@@ -263,21 +174,13 @@
 
   /* ── AND CENTRED AT BOTH LEVELS, OR THE SPINE IS A STAIRCASE ─────────────
      The rule above centres each <li> inside the chain; it does NOT centre what
-     is inside one. `.ab-flow__node` is a grid of its own and keeps the base
-     `justify-items: start` at the top of this file, so the mark sat on its own
-     <li>'s left edge — and because every <li> is only as wide as its own label,
-     six labels produced five differently-placed marks. Measured before the fix:
-     label centres all 720, mark centres 632.8 / 636.1 / 679.9 / 680.1 / 680.6.
-
-     Centring the li and its contents are two different things and the spine
-     needs both: the li is centred by the chain, the mark and the label are
-     centred here. Only then do all six labels AND all five marks share one
-     axis, which is what "a descent reads as a spine" actually requires. */
+     is inside one. Both levels must share one axis or the five marks sit at
+     five different places. */
   .ab-flow--vertical .ab-flow__node {
     justify-items: center;
   }
 
-  /* A correspondence: N equal columns, each reading left to right. */
+  /* A walk: N equal columns, each reading left to right. */
   .ab-flow--horizontal .ab-flow__chain {
     grid-auto-flow: column;
     grid-auto-columns: minmax(0, 1fr);
@@ -293,10 +196,10 @@
   }
 }
 
-/* Below 768px the correspondence stacks, and its `↔` turns a quarter turn for
-   the same reason the growth path's `→` does: a horizontal mark between two
-   vertically stacked items points at nothing. The descent's `↓` is already
-   correct at every width. */
+/* Below 768px the walk stacks, and its `→` turns a quarter turn for the same
+   reason the growth path's `→` does: a horizontal mark between two vertically
+   stacked items points at nothing. The descent's `↓` is already correct at
+   every width. */
 @media (max-width: 767px) {
   .ab-flow--horizontal .ab-flow__mark {
     transform: rotate(90deg);
@@ -305,7 +208,83 @@
 
 
 /* ===========================================================================
-   03 — THE INK BAND  (§08 only)
+   02 — THE CONTACT LIST  (§08 GET IN TOUCH)
+   ---------------------------------------------------------------------------
+   Two contact channels, each a label over a clickable value. Same 5/6 grid as
+   the prose and flow sections. The hairline above each item is the site's own
+   list grammar (`.sec-review__item` does the same), so the two rows read as one
+   ruled list rather than two loose links.
+   =========================================================================== */
+
+.ab-contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+@media (min-width: 1200px) {
+  .ab-contact__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .ab-contact__head {
+    grid-column: 1 / span 5;
+  }
+
+  .ab-contact__body {
+    grid-column: 7 / span 6;
+  }
+}
+
+.ab-contact__list {
+  display: grid;
+  gap: var(--sp-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ab-contact__item {
+  padding-block-start: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+  min-width: 0;
+}
+
+/* Uppercase in CSS, not in the data — the label is a scan target, like every
+   other label on the site. */
+.ab-contact__label {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* The value IS the contact detail, so it is set one step above body and
+   underlined to read as a link. The underline is brass rather than ink so it
+   matches the site's link accent. The block padding lifts the tap target above
+   the 24px WCAG 2.5.8 floor — at the small lead size the text alone measures
+   ~23px, and these two are the page's contact anchors, not inline prose. */
+.ab-contact__value {
+  display: inline-block;
+  margin-block-start: var(--sp-2);
+  padding-block: 4px;
+  color: var(--ink);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--brass-ink);
+}
+
+
+/* ===========================================================================
+   03 — THE INK BAND  (§05 only)
    ---------------------------------------------------------------------------
    The core `.section--dark` block already flips the eyebrow, the heading, the
    hairline rules and every `.sec-note` it contains, so only this page's own
@@ -326,4 +305,20 @@
    the brighter brass. Same swap the footer and `.sec-approach` make. */
 .section--dark .ab-flow__mark {
   color: var(--brass);
+}
+
+
+/* ===========================================================================
+   04 — THE "VIEW FAQ" TEXT LINK  (brief §11)
+   ---------------------------------------------------------------------------
+   The brief allows at most a single text link where the full FAQ used to sit.
+   It is a <div>, not a <section> — the page keeps its eight-section structure —
+   so this rule only centres it and gives it room before the closing band. The
+   ground is the body's ivory, which the preceding section also uses, so the
+   link reads as the tail of that section rather than as a new one.
+   =========================================================================== */
+
+.ab-faq-link {
+  padding-block: var(--section-y-tight);
+  text-align: center;
 }

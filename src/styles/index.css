@@ -33,8 +33,7 @@
      src/pages/how-it-works.astro   →  import '../styles/how-it-works.css'
                                       (+ services-shared.css, service-detail.css)
      src/pages/about.astro          →  import '../styles/about.css'
-                                      (+ services-shared.css, service-detail.css,
-                                         how-it-works.css)
+                                      (+ service-detail.css)
      src/pages/faq.astro            →  import '../styles/faq.css'
                                       (+ services-shared.css, service-detail.css)
      src/pages/privacy-policy.astro →  import '../styles/legal.css'
@@ -92,27 +91,28 @@
      `PAGE_SHEETS`, including the shared ones.
 
      ONE MORE CONSISTENCY CHECK
-     `services-shared.css` now has six non-services consumers: `/industries`,
-     `/how-it-works`, `/about`, `/faq`, `/insights` and every written
-     `/insights/<slug>` article, which join `/services` and the five
-     `/services/<slug>` detail pages. Three of those six also import
-     `service-detail.css`, so nine pages share both sheets. The other three take
+     `services-shared.css` now has five non-services consumers: `/industries`,
+     `/how-it-works`, `/faq`, `/insights` and every written `/insights/<slug>`
+     article, which join `/services` and the five `/services/<slug>` detail
+     pages. Three of those five also import `service-detail.css`, so eight
+     pages share both sheets. The other three take
      `services-shared.css` alone, for the same reason twice over: `/faq`'s
      hero and disclosure group are shared devices but a FAQ page needs none of
      the `.sec-` prose, split, chain or review-grid treatment; `/insights` needs
      none of it either now that §8's review grid has left the page, and its own
      three devices are in `insights.css`; and a written article takes from this
      sheet ONLY the hero — its table of contents, its reading column and its five
-     block types are `insight-article.css`. Two non-services pages also import
-     `how-it-works.css`: `/about` (§05/§06/§10/§11/§15 reuse HiGrowth, HiStages
-     and HiLinkRows verbatim) and `/insights` (§10 is `HiLinkRows`).
+     block types are `insight-article.css`.      One non-services page still imports
+     `how-it-works.css`: `/insights` (§10 is `HiLinkRows`). `/about` stopped
+     importing it on 2026-10-02, when its simplification brief removed every
+     `Hi*` device from the page.
      Those file names say "services" because the services pages were the hero,
      the prose split, the review grid, the rail, the check-list and the FAQ's
      FIRST consumer — the devices themselves are generic editorial sections,
      and the briefs for all four later pages ask explicitly for reuse rather
-     than a second visual language. `about.css` therefore adds only the two
-     devices nothing else had (a heading-plus-statement block and a labelled
-     node chain in both orientations) and reuses the other seven read-only;
+     than a second visual language.      `about.css` therefore adds only its own
+     devices (a labelled node chain in both orientations and the contact list)
+     and reuses the prose and review-grid read-only from `service-detail.css`;
      `insights.css` adds only its three (the count line, the boxed article card
      and the paging controls) and reuses the hero and the ruled-row list.
 
