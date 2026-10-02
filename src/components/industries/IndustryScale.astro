@@ -1,95 +1,58 @@
 ---
 /**
- * IndustryScale — the MOQ position and the growth path  (brief §08)
+ * IndustryScale — the MOQ position, as a short statement  (松霖 §2)
  * ---------------------------------------------------------------------------
- * "You don't need to start big." — one paragraph, the clarification that keeps
- * it honest, the FIRST ORDER → TEST → REPEAT → GROW → SCALE path, and a closing
- * sentence about the path changing as the business does. The path and the
- * closing sentence render inside the body column (under the copy, 2026-10-02)
- * — not full-width below the block.
+ * "NO FIXED MOQ FROM SOURDEN" as a small eyebrow / label, "Source at your
+ * scale." as the statement, and one qualifier. Nothing else.
+ *
+ * ── WHAT THIS USED TO BE ──────────────────────────────────────────────────
+ * This component once carried the full "You don't need to start big." essay and
+ * the FIRST ORDER → TEST → REPEAT → GROW → SCALE growth path. Both are gone
+ * (2026-10-02): the brief removes the growth diagram, and 松霖 asked for a
+ * short statement, not a long explanation. The component kept its name so the
+ * section keeps its `.ind-scale` ground treatment and the page keeps one
+ * device for the MOQ position.
  *
  * ── THE LOAD-BEARING SENTENCE ─────────────────────────────────────────────
- * `emphasis` is not a second paragraph. It is the qualifier without which the
- * paragraph above becomes the claim this site must never make: Sourden imposes
- * no fixed MOQ of its own, and that is NOT the same as "every supplier accepts
- * small orders". The same distinction is drawn on the homepage, in `/services`
- * and in this page's FAQ, and the brief restates it here as an explicit
- * "Important clarification". Setting it in brass, as the section's own
- * conclusion, is what stops it reading as small print under a promise.
+ * `qualifier` is not a second paragraph — it is the line without which the
+ * statement becomes the claim this site must never make: Sourden imposes no
+ * fixed MOQ of its own, and that is NOT the same as "every supplier accepts
+ * small orders". Setting it in the muted body size under the statement is what
+ * stops it reading as small print under a promise while keeping it from
+ * ballooning into an explanation.
  *
- * ── WHY THE GROWTH PATH IS NOT THE FIVE-STAGE RAIL ────────────────────────
- * Five stages with arrows between them, on a page that already has a
- * five-stage rail (§10) — so the two had to be built differently. The rail is
- * numbered, dotted and pinned to an ink band because it is an ordered
- * procedure. This path is five bare words on the section's own ground, with no
- * numbers and no descriptions, because it is not a procedure: it is a sequence
- * of business stages the visitor moves through over months, and next to the
- * rail it should read as a smaller, quieter thing.
- *
- * ── WHY THE STAGES ARE UPPERCASE IN CSS, NOT IN THE DATA ──────────────────
- * The data holds them as words ("First Order"), the stylesheet uppercases them.
- * The rail's verbs work the same way. It keeps one typographic decision in the
- * stylesheet rather than spelling it out five times in the copy.
+ * ── NO HEADING ────────────────────────────────────────────────────────────
+ * The brief §14 gives this page four H2 headings — What We Source, Not Sure?,
+ * Our Approach, Who We Source For. This block is not one of them, so it is
+ * labelled with `aria-label` (from the eyebrow) rather than with an `aria-
+ * labelledby` heading; the section stays a named region without adding a fifth
+ * H2 to the page.
  * ---------------------------------------------------------------------------
  */
-import SectionHeader from '../SectionHeader.astro';
 
 interface Props {
   eyebrow?: string;
-  title: string;
-  paragraphs: string[];
-  /** The qualifier that belongs to the section but is not body copy. */
-  emphasis?: string;
-  /** The growth path, in order. Rendered uppercase. */
-  progression: string[];
-  /** Closing sentence, rendered after the path. */
-  note?: string;
+  /** The one short statement, set prominently. */
+  statement: string;
+  /** The honest qualifier, set quietly under the statement. */
+  qualifier?: string;
   tone: 'ivory' | 'white';
+  /** The section's own id (it has no heading to carry one). */
   titleId: string;
 }
 
-const { eyebrow, title, paragraphs, emphasis, progression, note, tone, titleId } = Astro.props;
-
-const lastIndex = progression.length - 1;
+const { eyebrow, statement, qualifier, tone, titleId } = Astro.props;
 ---
 
-<section class={`section section--${tone} ind-scale`} aria-labelledby={titleId}>
+<section class={`section section--${tone} ind-scale`} aria-label={eyebrow} id={titleId}>
   <div class="container">
     <div class="ind-scale__block">
       <p class="eyebrow ind-scale__eyebrow">{eyebrow}</p>
 
       <div class="ind-scale__body">
-        <h2 class="ind-scale__title" id={titleId}>{title}</h2>
+        <p class="ind-scale__statement">{statement}</p>
 
-        {paragraphs.map((paragraph) => <p class="ind-scale__para">{paragraph}</p>)}
-
-        {emphasis && <p class="ind-scale__emphasis">{emphasis}</p>}
-
-        {/* An <ol>: the five stages are read in order even though they are not
-            numbered on screen — the progression is the content. Lives inside
-            the body (2026-10-02, owner) so the desktop grid carries it in the
-            RIGHT column, directly under the copy it sequences; on mobile it
-            simply continues the stack. */}
-        <ol class="ind-scale__path">
-          {
-            progression.map((stage, index) => (
-              <li class="ind-scale__stage">
-                <span class="ind-scale__stage-label">{stage}</span>
-
-                {/* The arrow belongs to the gap between two stages, so it is
-                    rendered after every stage except the last. It turns a quarter
-                    turn on the stacked layout — see the stylesheet. */}
-                {index < lastIndex && (
-                  <span class="ind-scale__arrow" aria-hidden="true">
-                    →
-                  </span>
-                )}
-              </li>
-            ))
-          }
-        </ol>
-
-        {note && <p class="ind-scale__note">{note}</p>}
+        {qualifier && <p class="ind-scale__qualifier">{qualifier}</p>}
       </div>
     </div>
   </div>
