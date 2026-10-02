@@ -165,11 +165,11 @@
      value and the upper bound equals its DESKTOP value.
 
      --fs-hero is the FALLBACK for browsers without container query units
-     (Safari < 16, Firefox < 110) — exactly the browsers at our support floor,
-     so it still has to satisfy spec §3's 64–72px desktop rule on its own.
-     The slope is therefore steep enough to clear 64px at a 1200px viewport:
-     0.9rem + 4.2vw = 64.8px at 1200px, 68px (the cap) from ~1360px up. */
-  --fs-hero: clamp(2.625rem, 0.9rem + 4.2vw, 4.25rem); /* 42 → 68 */
+     (Safari < 16, Firefox < 110). The desktop cap was cut from 68px to 48px
+     on 2026-10-02 (owner: "reduce the homepage hero by ~1/3") — a deliberate
+     deviation from spec §3's 64–72px desktop rule; see the container note
+     below for the rationale. */
+  --fs-hero: clamp(2.625rem, 0.9rem + 4.2vw, 3rem); /* 42 → 48 */
   --fs-h1: clamp(2.5rem, 1.67rem + 3.7vw, 3.5rem); /* 40 → 56 */
   --fs-h2: clamp(2rem, 1.6rem + 1.8vw, 2.75rem); /* 32 → 44 */
   --fs-h3: clamp(1.5rem, 1.33rem + 0.75vw, 1.75rem); /* 24 → 28 */
@@ -181,22 +181,15 @@
   --fs-list-title: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem); /* 20 → 24 */
 
   /* Container-driven hero size.
-     The spec mandates five exact hero lines (spec §7), but a viewport-driven
-     size cannot guarantee them: the text column's width depends on the grid,
-     not on the viewport. `cqw` scales the type with the actual column, so
-     "Manage the process." always fits on one line with headroom at every
-     desktop width.
-
-     Measured widths for that line in Manrope 500 at -0.02em tracking:
-       594px @ 64px, 631px @ 68px, 668px @ 72px
-     The text column is 652.7px at a 1200px viewport and 699.3px at 1280px+,
-     so 10cqw lands at 65.3px / 69.9px — inside spec §3's 64–72px range at both
-     ends, with 39–51px of slack on the widest line.
-
-     Do not raise this past 10.6cqw: the widest line would then exceed the
-     column and wrap, breaking a mandated break.
+     The spec mandates five exact hero lines (spec §7) — those five breaks are
+     STILL KEPT (see Hero.astro / home.css); only the SIZE changed. On
+     2026-10-02 the owner asked to cut the homepage hero's height by ~1/3, so
+     the desktop cap drops from 72px to 48px — spec §3's 64–72px range is
+     deliberately set aside, because the five mandated breaks were already
+     driving the band to 838px at 1440px, which read as too tall. 42px stays
+     the mobile floor.
      Browsers without container query units fall back to --fs-hero. */
-  --fs-hero-container: clamp(2.625rem, 10cqw, 4.5rem);
+  --fs-hero-container: clamp(2.625rem, 10cqw, 3rem);
 
   --lh-hero: 1.02; /* spec: 0.98–1.05 */
   --lh-display: 1.05;

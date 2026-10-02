@@ -39,23 +39,33 @@
    · the desktop band keeps its 680px hero height with the copy vertically
      centred (the rest of the site's background hero, /insights, is
      padding-tall — a deliberate difference, not drift);
-   · the H1 keeps the display face, the 500 weight and the 64–72px size, and
+   · the H1 keeps the display face and the 500 weight, sized to a 48px desktop
+     cap (cut from spec §3's 64–72px on 2026-10-02 to shorten the band), and
      the three stanzas stay typographically separate (§7 forbids collapsing
      them). The old split-column frame is gone — with the photograph behind
-     the copy there are no columns left, and the stanza line breaks (always
-     the binding constraint; see the old compliance note in Hero.astro's
-     history) are set by the <br>s in the slot markup.
+     the copy there are no columns left. Each stanza's lines render as
+     separate `.bg-hero__line` spans: they stack on small screens and join
+     back into one line at desktop width (see the rules below).
    =========================================================================== */
 
-/* The inner becomes the size container that drives --fs-hero-container: the
-   copy now spans the full container width, and 10cqw of that width clamps to
-   the same 72px ceiling the old 699px column settled just under. */
+/* The inner becomes the size container that drives --fs-hero-container. The
+   band no longer pins a 680px minimum — since 2026-10-02 it is padding-tall,
+   with 460px kept only as a floor (the owner cut the hero by ~1/3). */
 @media (min-width: 1200px) {
   .bg-hero--home .bg-hero__inner {
     container-type: inline-size;
-    min-height: 680px;
+    min-height: 460px;
     align-content: center;
   }
+}
+
+/* Squeeze the vertical rhythm. The photograph is a backdrop, not a figure,
+   so the homepage hero does not need the generous padding the copy-forward
+   /insights hero keeps. This is what brings the band down from 838px to
+   ~570px at 1440px (owner, 2026-10-02). */
+.bg-hero--home .bg-hero__inner {
+  gap: var(--sp-3);
+  padding-block: clamp(24px, 2vw, 32px) clamp(32px, 2.4vw, 40px);
 }
 
 .bg-hero--home .bg-hero__title {
@@ -89,6 +99,32 @@
   margin-block-start: 0.44em;
 }
 
+/* Each mandated line is its own block on small screens — the five spec §7
+   breaks hold there. The old hard <br>s became these spans on 2026-10-02 so
+   the desktop can join a stanza's lines back into one WITHOUT touching the
+   copy in home.js (the data stays "two lines", the presentation decides). */
+.bg-hero--home .bg-hero__line {
+  display: block;
+}
+
+/* Desktop: a stanza's lines join on one line — "Find the right suppliers."
+   and "Get your products moving." each read as a single line (owner,
+   2026-10-02). The ::before restores the inter-word space the <br>s never
+   needed. It runs as a CONTAINER query, not a media query: the inner is only
+   a size container at ≥1200px (see the rule above), so the join applies
+   exactly where the desktop typography applies and tablets/phones keep the
+   five breaks. Browsers without container queries ignore the block and keep
+   the stacked form — a safe, progressive fallback. */
+@container (min-width: 720px) {
+  .bg-hero--home .bg-hero__line {
+    display: inline;
+  }
+
+  .bg-hero--home .bg-hero__line + .bg-hero__line::before {
+    content: ' ';
+  }
+}
+
 .bg-hero--home .bg-hero__lead {
   max-width: 540px;
   font-size: var(--fs-body);
@@ -96,7 +132,7 @@
 }
 
 .bg-hero--home .bg-hero__actions {
-  margin-block-start: clamp(var(--sp-5), 2.6vw, var(--sp-7));
+  margin-block-start: var(--sp-4);
 }
 
 /* ===========================================================================
