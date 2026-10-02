@@ -36,9 +36,6 @@
    never the core `.bg-hero*` rules themselves.
 
    What the variation keeps from the spec §7 build:
-   · the desktop band keeps its 680px hero height with the copy vertically
-     centred (the rest of the site's background hero, /insights, is
-     padding-tall — a deliberate difference, not drift);
    · the H1 keeps the display face and the 500 weight, sized to a 48px desktop
      cap (cut from spec §3's 64–72px on 2026-10-02 to shorten the band), and
      the three stanzas stay typographically separate (§7 forbids collapsing
@@ -46,26 +43,22 @@
      the copy there are no columns left. Each stanza's lines render as
      separate `.bg-hero__line` spans: they stack on small screens and join
      back into one line at desktop width (see the rules below).
+
+   Height and vertical padding are NOT this variation's job any more. On
+   2026-10-02 the owner cut the homepage hero by ~1/3 and then asked the other
+   background pages to match, so the compact rhythm (tight padding-block + a
+   460px floor + centred copy) moved up into the core `.bg-hero__inner` in
+   components.css. This sheet keeps only the homepage's typographic variation.
    =========================================================================== */
 
 /* The inner becomes the size container that drives --fs-hero-container. The
-   band no longer pins a 680px minimum — since 2026-10-02 it is padding-tall,
-   with 460px kept only as a floor (the owner cut the hero by ~1/3). */
+   460px floor and the centred copy now live in the core `.bg-hero__inner`
+   (components.css); this modifier keeps only the container type that the
+   `@container` line-join below keys off. */
 @media (min-width: 1200px) {
   .bg-hero--home .bg-hero__inner {
     container-type: inline-size;
-    min-height: 460px;
-    align-content: center;
   }
-}
-
-/* Squeeze the vertical rhythm. The photograph is a backdrop, not a figure,
-   so the homepage hero does not need the generous padding the copy-forward
-   /insights hero keeps. This is what brings the band down from 838px to
-   ~570px at 1440px (owner, 2026-10-02). */
-.bg-hero--home .bg-hero__inner {
-  gap: var(--sp-3);
-  padding-block: clamp(24px, 2vw, 32px) clamp(32px, 2.4vw, 40px);
 }
 
 .bg-hero--home .bg-hero__title {

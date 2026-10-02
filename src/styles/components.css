@@ -1272,8 +1272,9 @@ body.is-menu-open .sticky-cta {
    from a page sheet.
 
    ── SIZE STAYS HERO-SIZED ─────────────────────────────────────────────────
-   The hero is padding-tall (or, on `/`, its modifier's min-height), never a
-   viewport-height banner; ix-geo.mjs measures that /insights stays that way.
+   Every background hero shares one compact rhythm (a tight padding-block plus
+   a 460px floor — see `.bg-hero__inner` below), never a viewport-height
+   banner; ix-geo.mjs measures that /insights stays that way.
 
    ── THE SCRIM ─────────────────────────────────────────────────────────────
    Text over a photograph is only as legible as the photograph allows. One
@@ -1344,9 +1345,18 @@ body.is-menu-open .sticky-cta {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: var(--sp-4);
-  align-content: start;
-  padding-block: clamp(40px, 5vw, 72px) clamp(56px, 6.5vw, 104px);
+  gap: var(--sp-3);
+  /* ONE compact rhythm for every background hero. The owner cut the homepage
+     hero by ~1/3 on 2026-10-02, then asked the other background pages
+     (/insights, /services, /industries, /how-it-works, /about) to match — so
+     the tight padding that was first the homepage's own `.bg-hero--home`
+     override now lives HERE, in the core, and every background hero shares it.
+     The 460px floor + centred copy is the same shared minimum: a hero whose
+     copy is short sits on 460px centred, one whose copy is longer simply grows
+     (padding-tall at heart, never a fixed viewport banner). */
+  align-content: center;
+  min-height: 460px;
+  padding-block: clamp(24px, 2vw, 32px) clamp(32px, 2.4vw, 40px);
 }
 
 /* The core `.breadcrumb` carries its own `margin-block-end`; the grid gap
