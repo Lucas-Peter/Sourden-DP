@@ -1,146 +1,84 @@
 ---
 /**
- * /about — About SOURDEN  (About brief §01–§18)
+ * /about — About SOURDEN  (content simplification, 2026-10-02)
  * ---------------------------------------------------------------------------
- * This route used to render a reservation page. It is now the real thing: the
- * BRAND POSITIONING AND TRUST page — what Sourden is, why it exists, what
- * problem it is built around, who it is for, and what it will not claim.
+ * This route is the company About page: why Sourden exists, the gap it fills,
+ * how it works, who it works with, how fees are handled, and how to get in
+ * touch. The owner's simplification brief asked for a concise, credible page —
+ * not a second Services, FAQ or How-It-Works page — and this replaced an
+ * eighteen-section brand-positioning deep dive.
  *
- * STRUCTURE (brief)
- *   01 Hero                        §01  eyebrow, H1, copy, tagline, two actions
- *   02 Why Sourden exists          §02  the ecosystem, and who it is hard for
- *   03 The gap                     §03  buying directly / large org / Sourden
- *   04 What Sourden believes       §04  the statement, then the argument
- *   05 Sourcing without barriers   §05  INDIVIDUAL → … → SCALE
- *   06 Source at your scale        §06  five stages, and the MOQ position
- *   07 Who we are built for        §07  five groups, hand-off to /industries
- *   08 What we actually do         §08  requirement → … → destination (ink)
- *   09 What we don't claim         §09  four limits, stated plainly
- *   10 How we work                 §10  six stages, numbered, link to process
- *   11 The Sourden standard        §11  four principles
- *   12 China is not one supply     §12  the supplier landscape is regional
- *      chain
- *   13 Experience without the show §13  the promise, after the description
- *   14 What makes a good partner   §14  buyer ↔ Sourden ↔ supplier
- *   15 Our services                §15  the five services, hand-off to /services
- *   16 About the business          §16  what the business does, no numbers
- *   17 FAQ                         §17  eight questions
- *   18 Final CTA                   §18  one primary action
+ * STRUCTURE (brief §13)
+ *   01 Hero                    eyebrow, H1, copy, tagline, two actions, image
+ *   02 Why Sourden             prose
+ *   03 The Gap We Solve        prose
+ *   04 Our Approach            a six-word → chain
+ *   05 What We Actually Do     a five-node ↓ chain (ink band)
+ *   06 Who We Work With        five audience groups
+ *   07 How Our Fees Work       prose + fee statement + link
+ *   08 Get In Touch            email + WhatsApp
+ *   —  "View FAQ" text link    one centred link, not a section
+ *   09 Final CTA               one primary action
+ *
+ * REMOVED SECTIONS — and why the removal is total, not just the copy
+ *   The old page's statement sections (§04, §13), its growth progression (§05,
+ *   `HiGrowth`), its scale stages (§06), its four-limit list (§09), its process
+ *   stages (§10, `HiStages`), its standard (§11), its landscape prose (§12), its
+ *   relationship chain (§14), its five-service list (§15, `HiLinkRows`), its
+ *   business prose (§16) and its full FAQ (§17) are gone. `HiGrowth`,
+ *   `HiStages` and `HiLinkRows` remain — `/how-it-works` uses them and imports
+ *   the same stylesheet — so only `AboutStatement` (this page's alone) was
+ *   deleted with its `.ab-statement*` rules.
  *
  * WHAT THIS PAGE DELIBERATELY DOES NOT DO
- *   · It does not repeat `/services`. §15 gives each service one line and hands
- *     the reader on; the five descriptions in `services.js` stay on the pages
- *     that explain them, and the §15 sentences are a different, shorter set.
- *   · It does not repeat `/how-it-works`. §10 names the six stages in five
- *     words each and links there; the page that explains what happens inside
- *     each stage is still the process page.
- *   · It does not attack anyone. §03 puts three ways of working side by side
- *     with the same weight and no ranking, because the brief forbids
- *     criticising sourcing agents, procurement companies and competitors.
- *   · It does not present Sourden as a manufacturer. §08 is a chain Sourden
- *     coordinates, and the diagram runs from the customer's requirement to the
- *     customer's destination with Sourden as one link in it.
- *   · It does not invent a company fact. No founding year, founder, team size,
- *     office, country count, order volume, customer number, revenue,
- *     certification, award, partnership, client logo, testimonial or case
- *     study appears on it — the brief forbids all of them by name, and §16
- *     describes the business through what it does instead.
- *   · It does not redesign anything. Header, footer, buttons, rows, media, the
- *     hero, the check-list shape, the review grid, the rail and the FAQ are all
- *     the existing site's. Only two devices are new, and both are one page's
- *     composition of existing elements (`.ab-statement`, `.ab-flow`).
- *
- * INDEXABILITY
- *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
- *   in `reservedTopLevel` (src/data/routes.js) was removed in the same change —
- *   that list is what drives the noindex/sitemap split, so forgetting it would
- *   have left a finished, content-rich page excluded from search.
- *
- * STRUCTURED DATA
- *   WebPage + BreadcrumbList + one Service node per service §15 lists, built
- *   from the same records the section renders, so a structured-data claim can
- *   never describe a service the page does not show.
- *
- *   No FAQPage node: the brief asks for FAQ structured data "if supported by
- *   the existing project", and it is not — `schema.js` has no FAQ builder and
- *   no page emits one. Adding it here alone would have made `/about` the only
- *   page on the site with it, so it is left as a deliberate follow-up (add the
- *   builder to `schema.js`, apply it to all four FAQ-bearing sections at once).
+ *   · It does not publish fixed commission percentages or fixed/minimum fees.
+ *   · It does not invent a founding year, founder, team size, offices,
+ *     supplier or customer numbers, countries served, order volume, revenue,
+ *     certifications, awards, testimonials or success rates.
+ *   · It does not claim to eliminate sourcing risk or always find the lowest
+ *     price.
+ *   · It does not display a Facebook link (no official page yet).
  *
  * IMPORT ORDER IS LOAD-BEARING
- *   Layout first, then the shared sections, then the detail-page sections, then
- *   this page's own sheet — otherwise these rules lose every same-specificity
- *   conflict against the shared core. `npm run audit` fails the build if that
- *   regresses.
- *
- *   This page imports `services-shared.css`, `service-detail.css` AND
- *   `how-it-works.css`, because it composes devices those sheets own (the hero
- *   and FAQ; the editorial prose and review grid; the stages, growth and rows
- *   lists). The file names say "services" and "how-it-works" because those
- *   pages were each device's first consumer; the devices themselves are generic
- *   editorial sections, and the brief asks for exactly this — reuse, and no
- *   second visual language. See `src/styles/index.css` → "SHARING A DEVICE
- *   BETWEEN TWO PAGES", which now lists four pages sharing these two sheets.
+ *   Layout first, then the shared sections, then this page's own sheet —
+ *   otherwise these rules lose every same-specificity conflict against the
+ *   shared core. `npm run audit` fails the build if that regresses. The devices
+ *   reused here (prose, review grid) live in `service-detail.css`; this page's
+ *   own sheet adds the chain and the contact block.
  *
  * WHY A SECTION DISPATCHER
- *   The brief numbers eighteen sections and gives each one's copy verbatim. A
- *   dispatcher means the page's order, tones and content live in the data file
- *   and nothing about the composition is buried in markup — the same
- *   architecture `/services`, the five detail pages, `/industries` and
- *   `/how-it-works` use, so a section can be reordered or inserted without
- *   touching a template. An unknown `type` throws at build time rather than
- *   silently dropping a section.
+ *   Order, tones and content live in the data file; nothing about the
+ *   composition is buried in markup. Same architecture `/services`, the five
+ *   detail pages, `/industries` and `/how-it-works` use. An unknown `type`
+ *   throws at build time rather than silently dropping a section.
  * ---------------------------------------------------------------------------
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import '../styles/services-shared.css';
 import '../styles/service-detail.css';
-import '../styles/how-it-works.css';
 import '../styles/about.css';
 
+import AboutContact from '../components/about/AboutContact.astro';
 import AboutFlow from '../components/about/AboutFlow.astro';
-import AboutStatement from '../components/about/AboutStatement.astro';
-import FinalCTA from '../components/FinalCTA.astro';
-import HiGrowth from '../components/how-it-works/HiGrowth.astro';
-import HiLinkRows from '../components/how-it-works/HiLinkRows.astro';
-import HiStages from '../components/how-it-works/HiStages.astro';
 import ServiceProse from '../components/services/ServiceProse.astro';
 import ServiceReviewGrid from '../components/services/ServiceReviewGrid.astro';
-import ServicesFaq from '../components/services/ServicesFaq.astro';
+import FinalCTA from '../components/FinalCTA.astro';
 import BackgroundHero from '../components/BackgroundHero.astro';
+import ArrowLink from '../components/ArrowLink.astro';
 
-import {
-  breadcrumbs,
-  faqFoot,
-  faqIntro,
-  faqItems,
-  finalCta,
-  hero,
-  meta,
-  relatedServices,
-  sections,
-} from '../data/about-page.js';
-import { breadcrumbItems, breadcrumbSchema, faqPageSchema, serviceSchema, webPageSchema } from '../data/schema.js';
+import { breadcrumbs, finalCta, hero, meta, sections } from '../data/about-page.js';
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../data/schema.js';
 
 const path = '/about';
 
 /**
- * One graph for the page: the page itself, its breadcrumb, and a Service node
- * for each of the five services §15 lists.
- *
- * `serviceSchema` is the site's existing builder and emits no price, rating or
- * availability — none of those can be evidenced. `/services`, `/industries` and
- * `/how-it-works` declare the same five nodes the same way.
+ * One graph for the page: the page itself and its breadcrumb. The old page also
+ * declared a Service node per §15 row and a FAQPage node for §17; both sections
+ * are gone, so their structured data went with them — a claim must never
+ * describe a service or question the page does not show.
  */
 const schema = [
   webPageSchema({ title: meta.title, description: meta.description, path }),
   breadcrumbSchema(breadcrumbItems(breadcrumbs)),
-  ...relatedServices.map((service) =>
-    serviceSchema({ name: service.title, description: service.description, href: service.href })
-  ),
-  /* Built from the same `faqItems` <ServicesFaq> renders below, so the node can
-     never describe a question a visitor cannot see. */
-  faqPageSchema(faqItems),
 ];
 
 /**
@@ -148,9 +86,7 @@ const schema = [
  *
  * Derived from the index rather than written by hand, so inserting a section
  * cannot produce a duplicate id. Numbered from `index + 2` because the array
- * starts at the brief's §02 — §01 is the hero, which owns its own id — so the
- * ids line up with the brief's numbering and a reader can go straight from
- * "§07" in the brief to `id="ab-07"` in the build.
+ * starts at the brief's §02 — §01 is the hero, which owns its own id.
  */
 const sectionId = (index) => `ab-${String(index + 2).padStart(2, '0')}`;
 ---
@@ -174,8 +110,9 @@ const sectionId = (index) => `ab-${String(index + 2).padStart(2, '0')}`;
 
       switch (section.type) {
         case 'prose':
-          /* §02, §12, §16. The shared editorial prose device: heading on the
-             left, paragraphs on the right, an optional brass closing line. */
+          /* §02, §03, §07. The shared editorial prose device: heading on the
+             left, paragraphs on the right, an optional brass closing line and
+             an optional closing link. */
           return (
             <ServiceProse
               eyebrow={section.eyebrow}
@@ -188,18 +125,18 @@ const sectionId = (index) => `ab-${String(index + 2).padStart(2, '0')}`;
             />
           );
 
-        case 'statement':
-          /* §04, §13. The same grid, with the section's one display line —
-             before the copy in §04, after it in §13. The position comes from
-             the data, because the two briefs put the sentence in different
-             places. */
+        case 'flow':
+          /* §04 (horizontal →) and §05 (vertical ↓). Same device, two
+             directions — see the component for why the direction is the brief's
+             decision rather than a layout preference. */
           return (
-            <AboutStatement
+            <AboutFlow
               eyebrow={section.eyebrow}
               title={section.title}
-              statement={section.statement}
-              statementPosition={section.statementPosition}
               paragraphs={section.paragraphs}
+              orientation={section.orientation}
+              marker={section.marker}
+              nodes={section.nodes}
               foot={section.foot}
               tone={section.tone}
               titleId={titleId}
@@ -207,104 +144,33 @@ const sectionId = (index) => `ab-${String(index + 2).padStart(2, '0')}`;
           );
 
         case 'reviewGrid':
-          /* §03, §07, §11. N titled items with a sentence each, as a two-column
-             editorial list. §07 is the one that also carries a closing link. */
+          /* §06. N titled items with a sentence each, as a two-column
+             editorial list. */
           return (
             <ServiceReviewGrid
               eyebrow={section.eyebrow}
               title={section.title}
               description={section.description}
               items={section.items}
-              note={section.note}
-              foot={section.foot}
               tone={section.tone}
               titleId={titleId}
             />
           );
 
-        case 'stages':
-          /* §06 (five, unnumbered) and §10 (six, numbered). The difference
-             between the two is a data shape, not a layout — §10 is a sequence
-             with a first step, §06 is where a buyer currently is. */
+        case 'contact':
+          /* §08. The email + WhatsApp block. The values come from `site.js`,
+             not from the page data — see the component. */
           return (
-            <HiStages
+            <AboutContact
               eyebrow={section.eyebrow}
               title={section.title}
               description={section.description}
-              paragraphs={section.paragraphs}
-              items={section.items}
-              numbered={section.numbered}
-              note={section.note}
-              foot={section.foot}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'growth':
-          /* §05. Copy above the progression, copy below it — the second block
-             is why `HiGrowth` learned `closingParagraphs`. */
-          return (
-            <HiGrowth
-              eyebrow={section.eyebrow}
-              title={section.title}
-              paragraphs={section.paragraphs}
-              progression={section.progression}
-              closingParagraphs={section.closingParagraphs}
-              emphasis={section.emphasis}
-              foot={section.foot}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'flow':
-          /* §08 (vertical, on the ink band) and §14 (horizontal). Same device,
-             two directions — see the component for why the direction is the
-             brief's decision rather than a layout preference. */
-          return (
-            <AboutFlow
-              eyebrow={section.eyebrow}
-              title={section.title}
-              paragraphs={section.paragraphs}
-              orientation={section.orientation}
-              nodes={section.nodes}
-              marker={section.marker}
-              note={section.note}
-              foot={section.foot}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'linkRows':
-          /* §09 (four statements, no destinations) and §15 (the five services,
-             numbered, one destination each). The rows device takes both: what
-             differs is whether a row carries a number and whether it is itself
-             the link.
-             `note` is what carries §09's closing line ("Clear information is
-             more useful than false certainty."). It is passed explicitly
-             rather than spread, because the device's prop list is the contract
-             — a field the component does not accept would be dropped silently,
-             and that is exactly how this sentence went missing the first
-             time. */
-          return (
-            <HiLinkRows
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              items={section.items}
-              numbered={section.numbered}
-              note={section.note}
-              foot={section.foot}
               tone={section.tone}
               titleId={titleId}
             />
           );
 
         default:
-          /* A typo in a `type` string must not render nothing and pass the
-             build — the section would simply vanish from the page. */
           throw new Error(
             `[/about] Unknown section type "${section.type}" at index ${index}. ` +
               `See the section vocabulary in src/data/about-page.js.`
@@ -313,13 +179,11 @@ const sectionId = (index) => `ab-${String(index + 2).padStart(2, '0')}`;
     })
   }
 
-  <ServicesFaq
-    eyebrow={faqIntro.eyebrow}
-    title={faqIntro.title}
-    items={faqItems}
-    foot={faqFoot}
-    titleId="ab-17"
-  />
+  {/* The brief's §11: no full FAQ, just one text link near the bottom. It is a
+      <div>, not a <section>, so the page keeps its eight-section structure. */}
+  <div class="container ab-faq-link">
+    <ArrowLink href="/faq" label="Have more questions? View FAQ" brass />
+  </div>
 
   <FinalCTA
     eyebrow={finalCta.eyebrow}
