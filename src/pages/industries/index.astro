@@ -83,7 +83,7 @@ import ServiceProcess from '../../components/services/ServiceProcess.astro';
 import ServiceProse from '../../components/services/ServiceProse.astro';
 import ServiceReviewGrid from '../../components/services/ServiceReviewGrid.astro';
 import ServicesFaq from '../../components/services/ServicesFaq.astro';
-import ServicesHero from '../../components/services/ServicesHero.astro';
+import BackgroundHero from '../../components/BackgroundHero.astro';
 
 import {
   breadcrumbs,
@@ -133,7 +133,7 @@ const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
 ---
 
 <BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
-  <ServicesHero
+  <BackgroundHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
     title={hero.title}
@@ -141,7 +141,6 @@ const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
     primaryCta={hero.primaryCta}
     secondaryCta={hero.secondaryCta}
     imageKey={hero.image.key}
-    imageCaption={hero.image.caption}
     titleId="ind-01"
   />
 
