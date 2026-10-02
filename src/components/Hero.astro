@@ -8,21 +8,25 @@
  * homepage adopted the shape); what lives here is only what is the
  * homepage's own:
  *
- *   · the three stanzas and their exact line breaks, passed as a `title`
- *     slot because the H1 is structure, not a string (spec §7 forbids
- *     collapsing them; read end to end they produce the spec §26 sentence);
- *   · the `.bg-hero--home` modifier, whose rules in home.css keep the
- *     desktop band at its 680px hero height, set the display face and the
- *     64–72px size of the H1, and space the stanzas.
- *
- * CHANGED FORM, SAME COMPLIANCE NOTE — the spec draws this section as a
- * split ("Left: 5 columns / Right: 7 columns") while also mandating a 64–72px
- * hero and five exact lines; those were already irreconcilable (the old
- * split-column build measured it: the widest mandated line is 594px at 64px,
- * wider than any 5-column block in this grid). The line breaks won then and
- * they win now. With the photograph moved behind the copy there is no column
- * split left to honour — the stanza breaks and the 64–72px range are what §7
- * still mandates, and both are kept.
+   *   · the three stanzas and their line breaks, passed as a `title` slot
+   *     because the H1 is structure, not a string (spec §7 forbids collapsing
+   *     them; read end to end they produce the spec §26 sentence). Each
+   *     stanza's lines are spans that stack on small screens and join onto one
+   *     line at desktop width (see home.css);
+   *   · the `.bg-hero--home` modifier, whose rules in home.css set the desktop
+   *     band height, the display face and the H1 size (48px cap since
+   *     2026-10-02), and space the stanzas.
+   *
+   * CHANGED FORM, SAME COMPLIANCE NOTE — the spec draws this section as a
+   * split ("Left: 5 columns / Right: 7 columns") while also mandating a 64–72px
+   * hero and five exact lines; those were already irreconcilable (the old
+   * split-column build measured it: the widest mandated line is 594px at 64px,
+   * wider than any 5-column block in this grid). The stanza separation won then
+   * and it wins now. With the photograph moved behind the copy there is no
+   * column split left to honour. The 64–72px range was set aside on 2026-10-02
+   * (48px cap) to shorten the band, and the five hard <br> breaks became spans
+   * that only stack on small screens — desktop joins each stanza onto one line.
+   * Both are deliberate, owner-requested deviations from §7.
  *
  * The image caption went with the old frame: a photograph behind the copy has
  * no figure to caption, and the slot's `alt` is empty for the same reason —
@@ -45,11 +49,8 @@ import { hero } from '../data/home.js';
     {
       hero.stanzas.map((stanza) => (
         <span class="bg-hero__stanza">
-          {stanza.lines.map((line, index) => (
-            <>
-              {line}
-              {index < stanza.lines.length - 1 && <br />}
-            </>
+          {stanza.lines.map((line) => (
+            <span class="bg-hero__line">{line}</span>
           ))}
         </span>
       ))
