@@ -325,23 +325,40 @@ unlinked until it has a real subject.
 
 ---
 
-### Insights hub — no slots
+### Insights hub — one slot
 
-**`/insights` carries no image at all.** Its brief gives the hero four elements —
-eyebrow, H1, supporting text and two actions — and closes with "Do not make the
-hero overly large", so the hero is a single-column text block. `ServicesHero`
-takes an optional `imageKey` and this page simply does not pass one.
+| File | Source size | Ratio |
+| --- | --- | --- |
+| `insights-hero.svg` → `insights-hero.webp` | **1920 × 1080** | 16:9 |
 
-The slot above (`insights-hero.svg`) existed and was **deleted rather than left
-unused**. An orphaned entry in `media.js` still generates a placeholder file, and
-`check:remote` then reports a file the repository does not need — the manifest
-would be describing an image that no page renders.
+**The site's only full-bleed background hero.** The photograph sits behind the
+hub's copy (`InsightsHero.astro`); a left-weighted scrim of the hero ivory
+(`--scrim-hero`, tokens) keeps the overlaid text legible and fades out before
+the objects on the right. 16:9 rather than the site's 4:3 hero frame because
+`object-fit: cover` re-crops it into a wide band — a wide source loses less.
 
-**The twelve article cards carry no image either, and that is the brief's own
-preference:** a clean text card beats a poor stock photograph (§7). `imageKey` is
-`null` on every article in `src/data/insights-articles.js`, where the field is
-documented as reserved-but-unused — giving one a real photograph later is a data
-edit and nothing else. A gate asserts the hub renders zero images in `main`.
+The copy overlaid on it carries the page's meaning, so the slot's `alt` is
+**empty on purpose** (decorative image; same call as `ogDefault`).
+
+- **Insights hero** — a sourcing research desk, not a single product: samples,
+  material swatches, kraft packaging, a notebook, measuring tools and supplier
+  comparison documents whose pages carry only blurred, illegible grey marking,
+  a dark-screened laptop angled away at the back. Objects right of centre; the
+  left of the frame stays empty calm surface, because the copy is overlaid
+  there. Banned: readable text, logos, Chinese characters, people, question
+  marks, icons, UI elements, holograms, generic stock office, and the
+  site-wide clichés.
+
+The slot previously lived here as a 1600 × 1200 split-column frame and was
+**deleted** (2026-09) when the hub went text-only; it came back on 2026-10-02
+in this background form at the owner's request. History in `media.js`.
+
+**The twelve article cards still carry no image, and that remains the brief's
+own preference:** a clean text card beats a poor stock photograph (§7).
+`imageKey` is `null` on every article in `src/data/insights-articles.js`, where
+the field is documented as reserved-but-unused — giving one a real photograph
+later is a data edit and nothing else. The gate asserts the hub renders exactly
+ONE image in `main` — this hero — and no card images.
 
 ---
 
