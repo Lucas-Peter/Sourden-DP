@@ -121,9 +121,14 @@ export const breadcrumbs = [{ label: 'Insights' }];
 /* ===========================================================================
    §2 — HERO
    ---------------------------------------------------------------------------
-   No image, and therefore no `imageKey` slot in `media.js` either — the slot was
-   deleted rather than left unused, because an orphan slot keeps generating a
-   placeholder into `public/images/` that nothing on the site references.
+   The data is unchanged since the page shipped: the brief's four elements plus
+   the §11 secondary action. What changed on 2026-10-02 is the PRESENTATION —
+   the owner asked the hero photograph back as a full-bleed background with
+   this copy overlaid on it, a named override of §2's "Do not make the hero
+   overly large". The slot (`insightsHero`) had been deleted rather than left
+   unused when the hero went text-only; its re-addition, and the full history,
+   live in `media.js`. The device itself is `InsightsHero.astro` — not
+   `ServicesHero`, whose split-column shape this page no longer renders.
    =========================================================================== */
 
 export const hero = {

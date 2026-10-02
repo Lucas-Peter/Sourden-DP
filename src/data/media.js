@@ -39,18 +39,42 @@ export const IMAGE_DIR = '/images';
 
 export const images = {
   /* ---------------------------------------------------------------- hero -- */
+  /* `/` hero — a FULL-BLEED BACKGROUND frame (2026-10-02).
+   *
+   * The homepage hero used to be the site's split-column shape: 4:3 frame in
+   * the right columns, caption under it. The owner moved both `/` and
+   * `/insights` to the background shape that day (the device is now the
+   * shared `BackgroundHero.astro`), and a background frame needs a different
+   * photograph: a centred 4:3 still life loses its top and bottom to the wide
+   * band and puts its subject under the copy. The slot kept its name and its
+   * file name — same slot, same category, new shape — so the upload is an
+   * overwrite with no orphan to delete.
+   *
+   * 16:9 (1920 × 1080), like `insightsHero`: object-fit: cover behind a wide
+   * band, so a wide source loses less to the crop. Composition: the object
+   * cluster sits in the RIGHT two thirds; the LEFT third is empty table for
+   * the overlaid copy (the scrim is left-weighted from 768 up). On phones the
+   * crop anchors at 80% to keep the cluster in view — see `.bg-hero__backdrop
+   * img` in components.css. Category for this slot: Consumer Electronics &
+   * Accessories — compartmented trays of connector housings, cable coils and
+   * packing cartons on a sample bench. Never a woodworking or craft scene:
+   * no timber, no wooden bench, no wood offcuts.
+   */
   heroSourcing: {
     file: 'hero-sourcing.webp',
-    width: 1600,
-    height: 1200,
-    ratio: '4:3',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
     label: 'SOURCING IMAGE',
-    alt: 'Hands lifting a moulded plastic connector shell from a compartmented tray of parts, with coiled power cables and a plain cardboard carton on the assembly table.',
+    /* alt is EMPTY on purpose. The photograph is a decorative background:
+       the hero's copy is overlaid on it and carries the meaning (same call
+       as `insightsHero` and `ogDefault`). */
+    alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'Preferred subjects: factory production, quality inspection, product detail, packaging, warehouse, machinery, materials, or worker hands handling products. Avoid Great Wall / flag / panda / globe / handshake / shipping-container clichés and artificially perfect AI factory scenes. Category for this slot: Consumer Electronics & Accessories — cables, moulded housings and connector shells on a laminate assembly table. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
+      'Preferred subjects: factory production, quality inspection, product detail, packaging, warehouse, machinery, materials. Avoid Great Wall / flag / panda / globe / handshake / shipping-container clichés and artificially perfect AI factory scenes. This slot: one compact sample-bench cluster (trays, cables, carton, rule, tape, blank tags) in the right two thirds of a 16:9 frame, empty table left, no people, no hands.',
     cropNote:
-      'Shown in a 5-column frame with a fixed 520px height, so the sides are cropped — keep the subject in the middle ~70% and the outer 15% each side clear of anything that matters. The 4:3 source ratio is required, not optional.',
+      'Rendered as a full-bleed background (object-fit: cover) behind the homepage hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the objects right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
 
   /* --------------------------------------------------- sourcing request -- */
@@ -250,10 +274,10 @@ export const images = {
     height: 1200,
     ratio: '4:3',
     label: 'HOW IT WORKS',
-    alt: 'A worker sealing a plain cardboard carton on a wooden pallet, with a roll of packing tape and folded corrugated pads on the floor beside it.',
+    alt: 'A sourcing workflow laid out on a bright worktable: folded textile samples, a woven basket, a ceramic bowl, a tape dispenser, a magnifier and a steel rule, sealed bags of packed garments and plain cardboard shipping cartons.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of sourcing work in progress: product samples being reviewed and compared, a pre-shipment inspection, goods being packed or palletized, or supplier documentation worked through beside the goods it describes. The brief lists those seven subjects (samples, factory production, inspection, packaging, warehouse preparation, supplier communication, shipment preparation) and asks for ONE strong image rather than a collage. Favour working hands and real materials over polished products and finished rooms. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors. Category for this slot: packaging and shipment preparation — plain unprinted cartons being sealed on a pallet. A wooden pallet is fine here because it is shipping infrastructure rather than the product; a woodworking or craft scene still is not.',
+      'One documentary frame of the whole sourcing journey on a single worktable: product samples and textiles at left, inspection and measurement tools in the middle, packed goods and shipping cartons weighted right, generous ivory negative space around the arrangement. No people, no screens, no readable text. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
@@ -281,10 +305,10 @@ export const images = {
     height: 1200,
     ratio: '4:3',
     label: 'ABOUT SOURDEN',
-    alt: 'A worker seen from behind at a long bench, lining up and checking a row of plain pump bottles, cream jars and brushes, with shelving of boxes behind.',
+    alt: 'A buyer’s sample-comparison bench: a frosted cream jar, a white pump bottle and an aluminium tube standing side by side on a light-wood table with blank swatch cards, a steel ruler and a coiled measuring tape, a bright workshop softly out of focus behind.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of sourcing work being done by hand: samples compared against a specification, an inspection in progress, materials or packaging being handled, or goods checked in a warehouse. The person matters only as the person doing the work — no posed portrait, no facing-the-camera smile, no team lineup. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and artificially perfect AI factory floors. Category for this slot: Beauty & Personal Care — plain unbranded pump bottles, cream jars and brushes being lined up and checked. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
+      'One documentary frame of the buyer’s desk: three supplier versions of one cosmetic product (frosted cream jar, white pump bottle, aluminium tube) compared side by side on a light-wood table with blank swatch cards, a steel ruler and a measuring tape, weighted right of centre, a bright workshop softly out of focus behind. Category: Beauty & Personal Care. No posed people, no screens, no readable text, no logos. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and rustic timber-workshop drift. v5 (2026-10-02) replaced the earlier fabric-and-clipboard desk, which read as decoration rather than sourcing work.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
@@ -316,10 +340,10 @@ export const images = {
     height: 1200,
     ratio: '4:3',
     label: 'FAQ',
-    alt: 'A row of the same ceramic vessel in several different glazes on a work surface, with a hand lifting one to compare it beside a steel rule and blank sheets.',
+    alt: 'A calm, organised sourcing still life on a warm ivory surface: a speckled stoneware carafe and two matching cups beside an open kraft box, a closed notebook with a steel ruler, blank specification sheets, a ceramic lid and a cork stopper, arranged on the right of the frame with clear empty space on the left.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of a sourcing decision being worked through by hand: several suppliers\u2019 samples or units of the same product laid out together for comparison, samples checked against a printed specification or requirement sheet, quotations or documents worked through beside the goods they describe, or a pre-shipment inspection in progress. Two or three real objects being compared reads better than one polished product. Banned: question marks, speech bubbles, lightbulbs, headsets, call-centre or customer-support imagery, icon grids, and the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom, artificially perfect AI factory floors). Category for this slot: Home & Living — the same cylindrical ceramic vessel in several competing glazes. Never a woodworking or craft scene: no timber, no wooden blanks, no bamboo.',
+      'One premium minimal editorial still life: a tidy sourcing workspace — Home & Living product samples (a speckled stoneware carafe and two matching cups), an open kraft packaging box, a blank closed notebook, blank specification sheets, a steel ruler and two loose components (a ceramic lid, a cork stopper) — spaced with generous gaps on a warm ivory seamless surface, the whole arrangement on the RIGHT two thirds of the frame and the left third completely empty. No people, no hands, no screens, no readable text, no logos, no question-mark graphics, no icons, no lightbulbs, no headsets. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): cluttered desks, and rustic timber-workshop drift — no timber, no wooden blanks, no bamboo. v5 (2026-10-02) replaced the ceramic-comparison-with-hand frame per Songlin\u2019s minimal-editorial brief.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters. Where several items are being compared, keep them all inside that middle band — a comparison cropped down to one item loses the point of the frame.',
   },
@@ -454,45 +478,79 @@ export const images = {
   },
 
   /* --------------------------------------------------------- case studies -- */
-  caseStudyChristmasTree: {
-    file: 'case-study-christmas-tree.webp',
+  caseStudyWorldCupJerseys: {
+    file: 'case-study-world-cup-jerseys.webp',
     width: 1400,
     height: 1050,
     ratio: '4:3',
     label: 'CASE STUDY IMAGE',
-    alt: 'Photograph of a decorated commercial Christmas tree with warm string lights in a hotel lobby.',
+    alt: 'Photograph of a curated collection of generic football jerseys in several colours arranged with a football, representing a seasonal sportswear sourcing project.',
     role: /** @type {ImageRole} */ ('case-study'),
     artDirection:
-      'Documentary photograph of the project type (a decorated commercial Christmas tree). Asserts no customer, figure or outcome. Replace once the real project photograph is available and cleared for publication.',
+      'Documentary photograph of the scenario type (seasonal sportswear sourcing). Asserts no customer, figure or outcome.',
   },
-  caseStudySportsJerseys: {
-    file: 'case-study-sports-jerseys.webp',
+  caseStudyCustomLogoProducts: {
+    file: 'case-study-custom-logo.webp',
     width: 1200,
     height: 800,
     ratio: '3:2',
     label: 'CASE STUDY IMAGE',
-    alt: 'Photograph of blank sports jerseys hanging side by side on a garment rail.',
+    alt: 'Photograph of a blank unbranded baseball cap resting on a laminate bench, waiting for custom branding.',
     role: /** @type {ImageRole} */ ('case-study'),
     artDirection:
-      'Documentary photograph of the project type (plain blank sports jerseys). Asserts no customer, figure or outcome. Replace once the real project photograph is available and cleared for publication.',
+      'Documentary photograph of the scenario type (standard products waiting for custom branding and packaging). Asserts no customer, figure or outcome.',
+  },
+  caseStudyMultiProductShipment: {
+    file: 'case-study-shipment.webp',
+    width: 1200,
+    height: 800,
+    ratio: '3:2',
+    label: 'CASE STUDY IMAGE',
+    alt: 'Photograph of sealed shipping cartons strapped together on a warehouse floor, prepared for one combined shipment.',
+    role: /** @type {ImageRole} */ ('case-study'),
+    artDirection:
+      'Documentary photograph of the scenario type (multiple products consolidated into one organized shipment). Asserts no customer, figure or outcome.',
   },
 
   /* ------------------------------------------------------------ insights -- */
-  /* THE `/insights` HUB HAS NO IMAGE SLOT AT ALL — and the slot it used to have
-     was DELETED, not left unused.
+  /* `insightsHero` — the /insights hub hero, a FULL-BLEED BACKGROUND frame.
    *
-   * `insightsHero` (1600 × 1200) lived here and the hub hero rendered it. The
-   * page's presentation has since been reduced to a compact hero, the article
-   * directory and two closing bands, and the hero now carries only §2's four
-   * elements — eyebrow, H1, supporting line, CTA — which is what §2's own
-   * "Do not make the hero overly large" asks for.
+   * HISTORY, because this slot has died once already. The original
+   * `insightsHero` (1600 × 1200, split-column) was deleted rather than left
+   * unused when the hub was reduced to a compact text hero — an orphan slot
+   * keeps generating a placeholder nothing references, and `check:remote` then
+   * asks for an upload no page renders. On 2026-10-02 Songlin asked the hero
+   * back in a DIFFERENT form: the photograph as a full-bleed background with
+   * the copy overlaid on it. That reverses the brief §2 reading ("Do not make
+   * the hero overly large") BY NAME, on the owner's call — the compact
+   * text-only hero remains what every other page ships, and this page is the
+   * deliberate exception. `InsightsHero.astro` renders it; `ServicesHero` no
+   * longer appears on this page at all.
    *
-   * An orphan slot is not free. `npm run placeholders` keeps writing its file
-   * into `public/images/`, and `check:remote` then asks for an upload of a file
-   * nothing on the site references — so the slot, its file and its `IMAGES.md`
-   * row went together. If a hero frame is ever wanted again, this comment is
-   * the record of what the slot was: alt, ratio and the §7 banned list.
+   * 16:9 (1920 × 1080), NOT the site's 4:3 hero frame: the image is
+   * object-fit: cover behind a wide band, so a wide source loses less to the
+   * crop. Category: mixed research desk (not one product family) — samples,
+   * swatches, kraft packaging, blank comparison documents, measuring tools,
+   * laptop dark and angled away. Never a woodworking or craft scene: no
+   * timber, no wooden blanks, no bamboo. No readable text anywhere; the
+   * documents carry only blurred, illegible grey marking.
    */
+  insightsHero: {
+    file: 'insights-hero.webp',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
+    label: 'INSIGHTS',
+    /* alt is EMPTY on purpose. The photograph is decorative: the hero's copy
+       is overlaid on it and carries the meaning, so an empty alt is the
+       accessible rendering (same call as `ogDefault`). */
+    alt: '',
+    role: /** @type {ImageRole} */ ('hero'),
+    artDirection:
+      'One premium editorial still life of a sourcing research desk in warm ivory, beige and charcoal: ceramic mug, glass bottle and folded fabric swatch beside a fan of blank material-swatch cards, a kraft envelope, a linen notebook, two documents whose pages carry only blurred illegible grey marking, a steel rule and a caliper, with a dark-screened laptop angled away at the back. Objects weighted right of centre; the left of the frame is empty calm surface, because the page\u2019s copy is overlaid there over a light scrim. No people, no readable text, no logos, no Chinese characters, no UI elements, no question marks, no icons.',
+    cropNote:
+      'Rendered as a full-bleed background (object-fit: cover) behind the hub hero band, so the frame is cropped again on display: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides. Keep the objects in the middle vertical band and right of centre; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
+  },
 
   /* The three `insight*` slots below belong to the HOMEPAGE's §18 cards, and
      the hub's directory still carries no images: brief §6 lists the card image

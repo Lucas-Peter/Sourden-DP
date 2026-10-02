@@ -1,3 +1,6 @@
+import { services } from './services.js';
+import { industries } from './industries.js';
+
 /**
  * SOURDEN — SITE CONFIG
  * ---------------------------------------------------------------------------
@@ -89,14 +92,48 @@ export const site = {
 };
 
 /* ---------------------------------------------------------------------------
+   NAV CTA — the header's far-right button and the mobile menu's CTA.
+   Deliberately DISTINCT from `primaryCta`: that one still points at the
+   /sourcing-request form and stays the single destination for every other
+   "Start a Sourcing Request" control on the site. The nav button is a
+   WhatsApp chat link instead (owner-requested), so it derives its href from
+   `site.whatsapp` rather than from `primaryCta`.
+   --------------------------------------------------------------------------- */
+export const navCta = {
+  label: 'Start Free Request on WhatsApp',
+  href: site.whatsapp.href,
+};
+
+/* ---------------------------------------------------------------------------
    HEADER NAVIGATION — spec §6
    Deliberately excludes phone, WhatsApp, login, cart, currency selector and
    language selector. Do not add them without an explicit requirement.
+
+   Services and Industries carry a `children` list so the header can render a
+   second level under them. The children are DERIVED from `services.js` and
+   `industries.js` — the same registries the footer columns already read — so
+   a service or category added there appears in the header drop-down, the
+   homepage section and the footer at once. An item with no `children` renders
+   as a plain link.
    --------------------------------------------------------------------------- */
 
 export const nav = [
-  { label: 'Services', href: '/services' },
-  { label: 'Industries', href: '/industries' },
+  {
+    label: 'Services',
+    href: '/services',
+    children: services.map((service) => ({
+      label: service.shortTitle,
+      href: service.href,
+    })),
+  },
+  {
+    label: 'Industries',
+    href: '/industries',
+    children: industries.map((industry) => ({
+      label: industry.title,
+      href: industry.href,
+    })),
+  },
   { label: 'How It Works', href: '/how-it-works' },
   { label: 'About', href: '/about' },
   { label: 'Insights', href: '/insights' },

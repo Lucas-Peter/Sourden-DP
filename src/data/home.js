@@ -47,10 +47,14 @@ export const hero = {
     href: '/how-it-works',
   },
 
+  /**
+   * The hero's full-bleed background photograph. No `caption`: a photograph
+   * behind the copy has no figure to caption (the caption went with the old
+   * split-column frame), and the slot's `alt` is empty because the image is
+   * decorative there — see `media.js`.
+   */
   image: {
     key: 'heroSourcing',
-    /** Optional tiny editorial caption (spec §7). */
-    caption: 'Sourcing in China',
   },
 };
 

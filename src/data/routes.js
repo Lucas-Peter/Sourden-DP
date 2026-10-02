@@ -65,7 +65,10 @@
 
 import { services } from './services.js';
 import { industries } from './industries.js';
-import { allCaseStudies } from './caseStudies.js';
+/* `caseStudies.js` is NOT imported here on purpose: its three entries are a
+   homepage-only section with no routes of their own (2026-10-02 decision).
+   The /case-studies hub and its /case-studies/<slug> detail pages were removed
+   entirely — page files deleted, nothing reserved, nothing indexed. */
 /* The Insights HUB's article library, not `insights.js` — that file holds the
    homepage's three cards, worded by the homepage brief. The two are separate on
    purpose; see the header of `insights-articles.js`. */
@@ -96,23 +99,6 @@ export const reservationNotice = {
 
 /** @type {ReservationPage[]} */
 export const reservedTopLevel = [
-  {
-    path: '/case-studies',
-    label: 'Case Studies',
-    seoTitle: 'Case Studies | Sourden',
-    seoDescription:
-      'Sourcing projects handled by Sourden — real requirements, supplier research, quality control and shipping.',
-    eyebrow: 'CASE STUDIES',
-    h1: 'Real sourcing. Real requirements.',
-    summary:
-      'Every sourcing project starts with a specific requirement. Each case is published here once the requirement, process and outcome are confirmed.',
-    planned: [
-      'The original requirement and its constraints',
-      'How suppliers were researched and compared',
-      'What was verified before the order was placed',
-      'How the order was managed, checked and shipped',
-    ],
-  },
   /* The two legal documents. Unlike every other entry in this list, these keep
      their entry after the page is finished: it is what renders while the copy
      does not exist, and `noindexPaths` below filters them out by asking
@@ -161,9 +147,6 @@ export const detailRoutePaths = [
   ...services.map((item) => item.href),
   ...industries.map((item) => item.href),
   ...insightArticles.map((item) => `/insights/${item.slug}`),
-  ...allCaseStudies
-    .filter((item) => item.slug)
-    .map((item) => `/case-studies/${item.slug}`),
   /**
    * A detail page that has actually been written is a real, indexable page, so
    * it is subtracted here and re-enters sitemap.xml. `builtDetailPaths` is
@@ -227,14 +210,6 @@ export const detailRouteGroups = {
     parent: { label: 'Insights', href: '/insights' },
     item,
   })),
-  'case-studies': allCaseStudies
-    .filter((item) => item.slug)
-    .map((item) => ({
-      slug: item.slug,
-      kind: 'caseStudy',
-      parent: { label: 'Case Studies', href: '/case-studies' },
-      item,
-    })),
 };
 
 /* ---------------------------------------------------------------------------
@@ -286,31 +261,18 @@ const detailCopy = {
       'Where Sourden can help, and where it cannot',
     ],
   },
-  caseStudy: {
-    eyebrow: 'CASE STUDIES',
-    planned: [
-      'The original requirement and its constraints',
-      'How suppliers were researched and compared',
-      'What was verified before the order was placed',
-      'How the order was managed, checked and shipped',
-    ],
-  },
 };
 
 /**
  * Build the full prop set for a reserved detail route.
- * @param {'service'|'industry'|'insight'|'caseStudy'} kind
+ * @param {'service'|'industry'|'insight'} kind
  * @param {Record<string, any>} item
  * @param {{ label: string, href: string }} parent
  */
 export function reservationForDetail(kind, item, parent) {
   const copy = detailCopy[kind];
   const path =
-    kind === 'service'
-      ? item.href
-      : kind === 'industry'
-        ? item.href
-        : `/${kind === 'insight' ? 'insights' : 'case-studies'}/${item.slug}`;
+    kind === 'service' ? item.href : kind === 'industry' ? item.href : `/insights/${item.slug}`;
 
   const summary =
     kind === 'service'
@@ -322,12 +284,10 @@ export function reservationForDetail(kind, item, parent) {
           // under whichever name it picks, instead of a silent `undefined`
           // landing in the meta description of a real page.
           (item.description ?? item.excerpt)
-        : kind === 'industry'
-          ? // `summaryNoun` exists because a few category titles do not slot
-            // into this sentence naturally ("sources sports & outdoors").
-            // Categories that read fine omit it and fall back to the title.
-            `Sourden sources ${item.summaryNoun ?? item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`
-          : 'This case is published only once the real requirement, process and outcome are confirmed. Details are being prepared.';
+        : // `summaryNoun` exists because a few category titles do not slot
+          // into this sentence naturally ("sources sports & outdoors").
+          // Categories that read fine omit it and fall back to the title.
+          `Sourden sources ${item.summaryNoun ?? item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`;
 
   /* The eyebrow is the article's CATEGORY TAG (`SOURCING GUIDE`), read from the
      category registry rather than from the article record — the record stores a
