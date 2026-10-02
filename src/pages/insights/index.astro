@@ -18,8 +18,11 @@
  *   kept because §15 asks the page to link to all five service detail pages and
  *   it is where those links live. `src/data/insights-page.js` holds the full
  *   list, with what each removal means and where the brief's copy for it still
- *   is. The hero has no image for the same reason — see `media.js`, where the
- *   slot was deleted rather than left unused.
+ *   is. The hero has carried a photograph since 2026-10-02 — as a full-bleed
+ *   background with the copy overlaid. That shape was this page's own
+ *   component until the homepage adopted it the same day, at which point it
+ *   was promoted to the shared `BackgroundHero.astro`; see the slot's history
+ *   note in `media.js`.
  *
  * WHAT THIS PAGE DELIBERATELY DOES NOT DO
  *   · It does not build a single article. §13 is explicit: the purpose of this
@@ -70,9 +73,9 @@ import '../../styles/how-it-works.css';
 import '../../styles/insights.css';
 
 import FinalCTA from '../../components/FinalCTA.astro';
+import BackgroundHero from '../../components/BackgroundHero.astro';
 import HiLinkRows from '../../components/how-it-works/HiLinkRows.astro';
 import InsightsDirectory from '../../components/insights/InsightsDirectory.astro';
-import ServicesHero from '../../components/services/ServicesHero.astro';
 
 import { breadcrumbs, finalCta, hero, meta, sections } from '../../data/insights-page.js';
 import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
@@ -95,15 +98,19 @@ const schema = [
 ---
 
 <BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
-  {/* No `imageKey` — §2 ends with "Do not make the hero overly large", and this
-      page's presentation carries no frame. The hero collapses to one column. */}
-  <ServicesHero
+  {/* A full-bleed hero: the photograph behind the copy, the copy overlaid.
+      A named 2026-10-02 override of §2's "Do not make the hero overly large"
+      — same four elements plus the §11 secondary, one band tall, never a
+      banner. The device is the shared BackgroundHero (promoted here when the
+      homepage took the same shape). */}
+  <BackgroundHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
     title={hero.title}
     description={hero.description}
     primaryCta={hero.primaryCta}
     secondaryCta={hero.secondaryCta}
+    imageKey="insightsHero"
     titleId="in-hero-title"
   />
 
