@@ -1,0 +1,81 @@
+---
+/**
+ * AboutContact — the /about page's contact block (brief §08 "GET IN TOUCH")
+ * ---------------------------------------------------------------------------
+ * Two contact channels — email and WhatsApp — each shown as a label over a
+ * clickable value. This is a NEW device for the simplification pass: the old
+ * page had no contact section, and the brief asks for the official details to
+ * be "displayed clearly" and "visually clean and consistent with the existing
+ * design system".
+ *
+ * ── WHY EMAIL + WHATSAPP, AND NOTHING ELSE ────────────────────────────────
+ * The brief lists exactly two channels and forbids Facebook ("Do NOT display
+ * Facebook at this time", "Do not show an empty Facebook icon", "Do not create
+ * a placeholder link"). So there are two rows and no third.
+ *
+ * ── WHY THE VALUES COME FROM `site.js`, NOT FROM PROPS ─────────────────────
+ * The email address and WhatsApp number are the site's PUBLISHED contact facts,
+ * declared once in `site.js` (spec §34 / "CONFIRMED CONTACT FACTS"). Reading
+ * them here — rather than passing them through the page data — means this block
+ * and the footer can never disagree, and `site.whatsapp.href` is the derived
+ * `wa.me` link whose digits are computed from the display string. Typing the
+ * number again would be the exact drift `site.js` exists to prevent.
+ *
+ * ── WHY WHATSAPP IS A CONTACT CHANNEL, NOT A SOCIAL LINK ───────────────────
+ * Spec §20 forbids social links (it exists to stop the site linking to empty
+ * profiles). WhatsApp here is a chat channel, not a social account, which is
+ * the same call the footer makes. It opens in a new tab with
+ * `rel="noopener noreferrer"`, matching the footer.
+ *
+ * ── THE LABELS ARE <span>, NOT <h3> ────────────────────────────────────────
+ * "Email" and "WhatsApp" are labels for the values beneath them, not topics of
+ * the section. Promoting them to headings would put two navigation points into
+ * the document outline that a reader does not need. The uppercase treatment
+ * comes from the stylesheet, like every other label on the site.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import { site } from '../../data/site.js';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  tone: 'ivory' | 'white';
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId: string;
+}
+
+const { eyebrow, title, description, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} ab-contact`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="ab-contact__grid">
+      <div class="ab-contact__head">
+        <SectionHeader id={titleId} eyebrow={eyebrow} title={title} lead={description} />
+      </div>
+
+      <div class="ab-contact__body">
+        <ul class="ab-contact__list" data-reveal-group>
+          <li class="ab-contact__item">
+            <span class="ab-contact__label">Email</span>
+            <a class="ab-contact__value" href={`mailto:${site.email}`}>{site.email}</a>
+          </li>
+
+          <li class="ab-contact__item">
+            <span class="ab-contact__label">WhatsApp</span>
+            <a
+              class="ab-contact__value"
+              href={site.whatsapp.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {site.whatsapp.display}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
