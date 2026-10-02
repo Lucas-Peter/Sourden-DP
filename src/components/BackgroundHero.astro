@@ -56,6 +56,16 @@ interface Props {
       it (the homepage's three-stanza H1 takes that path). */
   title?: string;
   description: string;
+  /**
+   * Optional brand line under the description.
+   *
+   * Added for `/about` (2026-10-02), whose brief §01 lists a "Secondary line"
+   * separate from the hero paragraph. It is optional and unrendered by default,
+   * so every other consumer emits no empty element. The value `/about` passes
+   * is `site.tagline`, not a typed string, so the hero and the footer's copy of
+   * the same line can never disagree — same contract `ServicesHero` held.
+   */
+  tagline?: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   /** Key from the image manifest in src/data/media.js — unknown keys throw. */
@@ -72,6 +82,7 @@ const {
   eyebrow,
   title,
   description,
+  tagline,
   primaryCta,
   secondaryCta,
   imageKey,
@@ -106,6 +117,8 @@ const image = img(imageKey);
     </h1>
 
     <p class="bg-hero__lead">{description}</p>
+
+    {tagline && <p class="bg-hero__tagline">{tagline}</p>}
 
     <div class="bg-hero__actions">
       <Button href={primaryCta.href} label={primaryCta.label} />
