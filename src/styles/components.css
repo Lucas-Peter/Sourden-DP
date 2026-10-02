@@ -1370,6 +1370,20 @@ body.is-menu-open .sticky-cta {
   line-height: var(--lh-snug);
 }
 
+/* The optional brand line under the lead — /about §01's "Secondary line".
+   Rendered ONLY when a page passes `tagline`. Mirrors `.footer-brand__tagline`
+   on purpose: the same sentence appears in the footer, and it should look like
+   the same sentence when a page prints it in its hero. Brass reads on the ink
+   footer, but this hero's ground is ivory, so it takes `--brass-ink`. */
+.bg-hero__tagline {
+  margin-block-start: var(--sp-2);
+  color: var(--brass-ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+}
+
 .bg-hero__actions {
   display: flex;
   flex-wrap: wrap;

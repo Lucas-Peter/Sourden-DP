@@ -226,9 +226,13 @@
   --sp-8: 4rem; /* 64px */
   --sp-9: 6rem; /* 96px */
 
-  --section-y: clamp(72px, 8.5vw, 120px); /* standard section spacing */
-  --section-y-major: clamp(88px, 10vw, 144px); /* major section spacing */
-  --section-y-tight: clamp(56px, 6vw, 88px);
+  /* 2026-10-02: the owner found adjacent sections read as too far apart — every
+     section carries this as its own top AND bottom padding, so two neighbours
+     stack the value twice. Cut ~27% from each step (120→88, 144→104, 88→64)
+     to tighten the rhythm without flattening the spec §25 alternation. */
+  --section-y: clamp(56px, 6.5vw, 88px); /* standard section spacing */
+  --section-y-major: clamp(64px, 7.5vw, 104px); /* major section spacing */
+  --section-y-tight: clamp(40px, 4.5vw, 64px);
 
   --header-h: 68px; /* switches to the desktop value from 768px — see below */
   --btn-h: 52px; /* spec §22 — primary button */
