@@ -47,7 +47,7 @@ export const hero = {
   eyebrow: 'OUR SERVICES',
   title: 'From supplier discovery to final shipment.',
   description:
-    'Sourden helps businesses source products from China through one coordinated process — from finding suitable suppliers and comparing options to purchasing, quality control and shipping.',
+    'SOURDEN helps you source from China through supplier research, verification, purchasing, quality control and shipping — coordinated through one partner.',
   primaryCta: { ...primaryCta },
   secondaryCta: { label: 'How It Works', href: '/how-it-works' },
   image: {
@@ -68,41 +68,32 @@ export const hero = {
    =========================================================================== */
 
 export const processIntro = {
-  eyebrow: 'THE SOURCING PROCESS',
-  title: 'One process. From finding to shipping.',
-  description:
-    "Sourcing doesn't stop when you find a supplier. Each stage affects the next. Sourden coordinates the process from initial supplier research through purchasing, quality control and shipment.",
+  eyebrow: 'HOW THE SERVICES CONNECT',
+  title: 'One process. One point of coordination.',
+  note: 'Not every project needs every service. You can use SOURDEN for the full process or for specific stages where you need support.',
 };
 
-/** @type {Array<{ slug: string, verb: string, description: string }>} */
+/** @type {Array<{ slug: string, verb: string }>} */
 const processStageCopy = [
   {
     slug: 'product-sourcing',
     verb: 'Find',
-    description: 'Research suitable suppliers and sourcing options based on your requirements.',
   },
   {
     slug: 'supplier-verification',
     verb: 'Verify',
-    description:
-      'Evaluate supplier capability, product fit, pricing, MOQ, lead times and other relevant factors.',
   },
   {
     slug: 'purchasing-order-management',
     verb: 'Purchase',
-    description: 'Coordinate quotations, purchasing, supplier communication and production progress.',
   },
   {
     slug: 'quality-control',
-    verb: 'Inspect',
-    description:
-      'Arrange product checks before shipment to identify issues and confirm the order against agreed requirements.',
+    verb: 'Check',
   },
   {
     slug: 'shipping-from-china',
     verb: 'Ship',
-    description:
-      'Coordinate shipping from China and connect the sourcing process with an appropriate logistics solution.',
   },
 ];
 
@@ -120,272 +111,61 @@ export const overviewIntro = {
   title: 'The services behind a complete sourcing process.',
   description:
     'You can work with us across the full process or start with the specific sourcing support you need.',
-  /** Spec §22 — the page is the hub for the category pages. */
-  foot: { label: 'Browse what we source', href: '/industries' },
+  /** §22 — the page is the hub for the category pages. */
+  foot: { label: 'Explore What We Source', href: '/industries' },
 };
 
 /**
- * Only the parts that differ from the registry are declared here.
+ * Only the parts that differ from the registry are declared here — in this
+ * simplified form, just the one-line description and the image slot.
  * `number`, `title`, `href`, the eyebrow and the CTA label are derived.
  *
- * @type {Array<{ slug: string, heading: string, description: string, keyAreas: string[], imageKey: string, imageCaption: string }>}
+ * @type {Array<{ slug: string, description: string, imageKey: string, imageCaption: string }>}
  */
 const overviewSectionCopy = [
   {
     slug: 'product-sourcing',
-    heading: 'Find products and suppliers that fit your requirements.',
     description:
-      'We research suitable suppliers based on your product specifications, target pricing, quantity, market and sourcing goals — rather than simply sending you a list of supplier links.',
-    keyAreas: [
-      'Product research',
-      'Supplier research',
-      'Product specifications',
-      'Target pricing',
-      'MOQ considerations',
-      'Supplier comparison',
-      'Sample sourcing',
-      'Custom product requirements',
-    ],
+      'Find suitable suppliers based on your product requirements, specifications, target pricing, quantity and sourcing goals.',
     imageKey: 'serviceProductSourcing',
     imageCaption: 'PRODUCT SAMPLES',
   },
   {
     slug: 'supplier-verification',
-    heading: 'Look beyond the supplier listing.',
     description:
-      'Finding a supplier is only the beginning. We help evaluate whether a supplier is suitable for your product, order size and requirements before you move forward.',
-    keyAreas: [
-      'Supplier capability',
-      'Product fit',
-      'MOQ',
-      'Pricing',
-      'Lead times',
-      'Production capability',
-      'Communication',
-      'Relevant supplier information',
-    ],
+      'Review supplier capabilities, product fit, MOQ, pricing, lead times and other key factors before you move forward.',
     imageKey: 'serviceSupplierVerification',
     imageCaption: 'SUPPLIER ASSESSMENT',
   },
   {
     slug: 'purchasing-order-management',
-    heading: 'Keep the order moving after the supplier is chosen.',
     description:
-      "We coordinate quotations, purchasing, supplier communication, production progress and order details so you don't have to manage every step directly from overseas.",
-    keyAreas: [
-      'Quotation coordination',
-      'Purchase orders',
-      'Supplier communication',
-      'Production follow-up',
-      'Order progress',
-      'Specification confirmation',
-      'Packaging coordination',
-      'Pre-shipment coordination',
-    ],
+      'Coordinate quotations, purchasing, supplier communication, production progress and order details.',
     imageKey: 'servicePurchasingManagement',
     imageCaption: 'ORDER & PACKAGING',
   },
   {
     slug: 'quality-control',
-    heading: 'Check the order before it leaves China.',
     description:
-      'We can arrange product checks before shipment to identify issues and confirm that the order matches the agreed requirements.',
-    keyAreas: [
-      'Product inspection',
-      'Quantity checks',
-      'Appearance checks',
-      'Specifications',
-      'Packaging',
-      'Defect identification',
-      'Photo/video evidence where appropriate',
-      'Pre-shipment checks',
-    ],
+      'Arrange product checks before shipment to identify issues and confirm that the order meets agreed requirements.',
     imageKey: 'serviceQualityControl',
     imageCaption: 'PRE-SHIPMENT CHECK',
   },
   {
     slug: 'shipping-from-china',
-    heading: 'Connect sourcing with the right shipping solution.',
     description:
-      'Once your goods are ready, we coordinate shipping from China and help connect the sourcing process with a practical logistics solution for your destination and shipment.',
-    keyAreas: [
-      'International shipping coordination',
-      'Air freight',
-      'Sea freight',
-      'Courier / express',
-      'LCL / FCL where appropriate',
-      'Shipment preparation',
-      'Documentation coordination',
-      'Destination considerations',
-    ],
+      'Coordinate shipping from China and connect the sourcing process with an appropriate logistics solution.',
     imageKey: 'serviceShippingFromChina',
     imageCaption: 'SHIPMENT PREPARATION',
   },
 ];
 
 /* ===========================================================================
-   HOW THE SERVICES WORK TOGETHER — spec §12
-   ---------------------------------------------------------------------------
-   Two paths, neither presented as better than the other. The short path must
-   not read as the entry-level option — that is why its flow ends on
-   "You decide how to proceed." rather than stopping short of a conclusion.
-   =========================================================================== */
-
-export const pathsIntro = {
-  eyebrow: 'ONE PARTNER. THE WHOLE PROCESS.',
-  title: 'Use one service or connect the whole process.',
-  description:
-    'Not every sourcing project needs the same level of support. You can start with a specific requirement or work with Sourden across the full sourcing process.',
-};
-
-export const paths = [
-  {
-    number: '01',
-    label: 'Start with one need',
-    flow: ['Product Sourcing', 'Supplier Verification'],
-    closing: 'You decide how to proceed.',
-    description:
-      'Already know what you need? Start with the specific sourcing support that makes sense for your project.',
-  },
-  {
-    number: '02',
-    label: 'Manage the full process',
-    flow: ['Product Sourcing', 'Supplier Verification', 'Purchasing', 'Quality Control', 'Shipping'],
-    closing: null,
-    description:
-      'Need someone to coordinate the process from supplier research through shipment? We can work across the full sourcing cycle.',
-  },
-];
-
-/* ===========================================================================
-   WHO WE WORK WITH — spec §13
-   ---------------------------------------------------------------------------
-   Five groups. The fifth is deliberately a consumer: Sourden's primary focus
-   is businesses, and the note below says so, so the section never reads as a
-   consumer shopping service.
-   =========================================================================== */
-
-export const audienceIntro = {
-  eyebrow: 'WHO WE WORK WITH',
-  title: 'Sourcing support for different stages and needs.',
-  description:
-    "You don't need a large purchasing team or huge order volumes to start sourcing from China.",
-  /**
-   * Positioning line required by spec §13. It sits with the eyebrow rather than
-   * under the heading, because as a footnote it read as a disclaimer instead of
-   * the framing statement it is.
-   */
-  note: 'Our primary focus is supporting businesses. Individual consumers are welcome too.',
-};
-
-export const audienceGroups = [
-  {
-    number: '01',
-    title: 'Small Wholesalers',
-    description:
-      'Looking for reliable products without committing to unnecessarily large order volumes.',
-  },
-  {
-    number: '02',
-    title: 'Independent Retailers',
-    description: "Need a better source but don't have a dedicated purchasing team.",
-  },
-  {
-    number: '03',
-    title: 'Local Shops',
-    description: 'Want access to Chinese suppliers without navigating the sourcing process alone.',
-  },
-  {
-    number: '04',
-    title: 'Growing Brands',
-    description: 'Building a more reliable supply chain as your business grows.',
-  },
-  {
-    number: '05',
-    title: 'Individual Consumers',
-    description:
-      'Looking for a specific product, custom item or sourcing solution for personal use.',
-  },
-];
-
-/* ===========================================================================
-   SOURCE AT YOUR SCALE — spec §14
-   ---------------------------------------------------------------------------
-   MOQ WORDING IS LOAD-BEARING. The only truthful statement available is that
-   SOURDEN does not impose its own MOQ. It must never become "No MOQ from
-   Chinese factories", "MOQ: 0" or anything implying every factory takes small
-   orders. See the same rule documented in `src/data/audiences.js`.
-   =========================================================================== */
-
-export const scale = {
-  eyebrow: 'SOURCE AT YOUR SCALE',
-  title: 'Start with the quantity that makes sense for you.',
-  description:
-    "We don't impose our own minimum order quantity. We'll work with you to find sourcing options that fit your current stage and requirements.",
-};
-
-/* ===========================================================================
-   WHAT YOU CAN EXPECT — spec §15
-   ---------------------------------------------------------------------------
-   Five statements, all of them descriptions of how Sourden works. None is a
-   measurable claim, and none may become one.
-   =========================================================================== */
-
-export const expectationsIntro = {
-  eyebrow: 'WHAT YOU CAN EXPECT',
-  title: 'Practical sourcing, without unnecessary complexity.',
-  foot: { label: 'See how it works', href: '/how-it-works' },
-};
-
-export const expectations = [
-  {
-    title: 'Clear Communication',
-    description: 'One point of contact for sourcing coordination and supplier communication.',
-  },
-  {
-    title: 'Practical Research',
-    description: 'Supplier research based on your actual product and business requirements.',
-  },
-  {
-    title: 'Relevant Options',
-    description:
-      'Focus on suppliers and products that fit the project rather than overwhelming you with generic listings.',
-  },
-  {
-    title: 'Process Coordination',
-    description:
-      'Support across purchasing, production follow-up, quality control and shipping where required.',
-  },
-  {
-    title: 'Transparent Next Steps',
-    description:
-      'Clear communication about what we know, what needs to be checked and what happens next.',
-  },
-];
-
-/* ===========================================================================
-   THE SOURDEN APPROACH — spec §16
-   ---------------------------------------------------------------------------
-   Dark editorial band. The second heading line carries the point of the whole
-   section ("It's about finding the right supplier for the job.") and is set in
-   brass, so it reads as the conclusion rather than a subtitle.
-   =========================================================================== */
-
-export const approach = {
-  eyebrow: 'THE SOURDEN APPROACH',
-  title: "Good sourcing isn't about finding the cheapest supplier.",
-  emphasis: "It's about finding the right supplier for the job.",
-  description:
-    "The lowest quotation doesn't always mean the lowest total cost. Product quality, communication, MOQ, lead time, production capability and shipping all matter. Our role is to help you evaluate those factors and make the sourcing process more workable.",
-  foot: { label: 'More about Sourden', href: '/about' },
-};
-
-/* ===========================================================================
    FAQ — spec §17
    ---------------------------------------------------------------------------
    Rendered as a native <details> disclosure group, so it works with no
    JavaScript at all and is keyboard-operable for free. The first item starts
-   open: a list of eight closed rows gives a visitor nothing to read.
+   open: a list of three closed rows gives a visitor nothing to read.
 
    Every answer stays inside what the business can actually state. The MOQ
    answer in particular repeats the §14 wording rule.
@@ -394,49 +174,24 @@ export const approach = {
 export const faqIntro = {
   eyebrow: 'FAQ',
   title: 'Questions about sourcing with Sourden.',
-  cta: { label: 'Start a Sourcing Request', href: primaryCta.href },
+  cta: { label: 'View All FAQs', href: '/faq' },
 };
 
 export const faqItems = [
   {
-    question: 'Do you have a minimum order quantity?',
+    question: 'Can you help with small orders?',
     answer:
-      "Sourden does not impose its own fixed minimum order quantity. The practical MOQ will depend on the supplier, product and requirements, and we'll help you look for sourcing options that fit your situation.",
+      "We don't impose a fixed minimum order quantity. However, individual suppliers may have their own MOQ requirements.",
   },
   {
-    question: "Can you source a product if I don't know the supplier?",
+    question: 'Can I use only one of your services?',
     answer:
-      "Yes. You can start with the product itself. Share what you know about the product, specifications, quantity and destination, and we'll research suitable sourcing options.",
+      'Yes. You can use SOURDEN for the full sourcing process or for specific stages such as supplier sourcing, purchasing, quality control or shipping.',
   },
   {
-    question: 'Can you work with small businesses?',
+    question: 'How do I get started?',
     answer:
-      'Yes. Sourden is built to support small wholesalers, retailers, local shops and growing businesses that may not have their own supplier network in China.',
-  },
-  {
-    question: 'Do you only work with businesses?',
-    answer:
-      'No. While our primary focus is supporting businesses, we also work with individual consumers who need help sourcing specific products or custom items from China.',
-  },
-  {
-    question: 'Can you inspect products before shipping?',
-    answer:
-      'Yes. Quality control can be arranged before shipment to check agreed product requirements, quantity, appearance, packaging and other relevant details.',
-  },
-  {
-    question: 'Can you handle shipping from China?',
-    answer:
-      'Yes. We can coordinate shipping from China and help connect the sourcing process with an appropriate logistics solution based on the shipment and destination.',
-  },
-  {
-    question: 'Can you source custom or private-label products?',
-    answer:
-      'Yes. Depending on the product, we can research suppliers that support customization, branding, packaging or other specific requirements.',
-  },
-  {
-    question: 'How do I start?',
-    answer:
-      "Start by submitting a sourcing request. Tell us what you're looking for, your approximate quantity and destination, and include any product references you have. We'll review the request and come back to you with the next steps.",
+      "Submit a sourcing request with your product requirements, quantity and destination. We'll review the information and follow up on the next steps.",
   },
 ];
 
@@ -449,8 +204,8 @@ export const faqItems = [
 
 export const finalCta = {
   eyebrow: 'START WITH A REQUEST',
-  title: 'Have something specific in mind?',
-  description: "Tell us what you're looking for. We'll take it from there.",
+  title: 'Need help sourcing from China?',
+  description: "Tell us what you need. We'll help you determine the right sourcing approach.",
   cta: { ...primaryCta },
 };
 
@@ -481,7 +236,6 @@ export const processStages = processStageCopy.map((stage) => {
     number: service.number,
     verb: stage.verb,
     title: service.title,
-    description: stage.description,
     href: service.href,
   };
 });
@@ -494,8 +248,8 @@ export const overviewSections = overviewSectionCopy.map((section) => {
     number: service.number,
     title: service.title,
     href: service.href,
-    eyebrow: `${service.number} — ${service.title.toUpperCase()}`,
-    cta: `Explore ${service.title}`,
+    eyebrow: service.number,
+    cta: 'Learn More',
     /**
      * Drives the alternating composition. The image sits on the LEFT for
      * 01 / 03 / 05 and on the RIGHT for 02 / 04, so consecutive sections mirror
