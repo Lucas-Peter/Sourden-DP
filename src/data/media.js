@@ -40,32 +40,30 @@ export const IMAGE_DIR = '/images';
 export const images = {
   /* ---------------------------------------------------------------- hero -- */
   heroSourcing: {
-    file: 'hero-sourcing.svg',
+    file: 'hero-sourcing.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'SOURCING IMAGE',
-    alt: 'Placeholder for a documentary photograph of production or quality inspection inside a Chinese factory.',
+    alt: 'Hands lifting a moulded plastic connector shell from a compartmented tray of parts, with coiled power cables and a plain cardboard carton on the assembly table.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'Preferred subjects: factory production, quality inspection, product detail, packaging, warehouse, machinery, materials, or worker hands handling products. Avoid Great Wall / flag / panda / globe / handshake / shipping-container clichés and artificially perfect AI factory scenes.',
+      'Preferred subjects: factory production, quality inspection, product detail, packaging, warehouse, machinery, materials, or worker hands handling products. Avoid Great Wall / flag / panda / globe / handshake / shipping-container clichés and artificially perfect AI factory scenes. Category for this slot: Consumer Electronics & Accessories — cables, moulded housings and connector shells on a laminate assembly table. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
     cropNote:
       'Shown in a 5-column frame with a fixed 520px height, so the sides are cropped — keep the subject in the middle ~70% and the outer 15% each side clear of anything that matters. The 4:3 source ratio is required, not optional.',
   },
 
   /* --------------------------------------------------- sourcing request -- */
   sourcingRequestHero: {
-    file: 'sourcing-request-hero.svg',
+    file: 'sourcing-request-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'SOURCING BRIEF',
-    alt: 'Placeholder for a documentary photograph of product samples and reference materials being reviewed before sourcing.',
+    alt: 'Two workers laying folded woven fabric and a canvas pouch beside blank requirement sheets on a long bench, with stacked cartons and a rolling trolley behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'A workbench or table with product samples, reference drawings, measuring tools or packaging being handled and compared. It must read as evidence of the sourcing process — not an office scene, not a handshake, not smiling people in suits, and none of the China clichés (Great Wall / flag / panda / container port / globe).',
+      'A workbench or table with product samples, reference drawings, measuring tools or packaging being handled and compared. It must read as evidence of the sourcing process — not an office scene, not a handshake, not smiling people in suits, and none of the China clichés (Great Wall / flag / panda / container port / globe). Category for this slot: Apparel, Footwear & Bags — woven fabric, a canvas pouch and metal zip hardware. Never a woodworking or craft scene: no timber, no wooden blocks, no wooden bench.',
     cropNote:
       'Displayed 4:3 in a single column up to ~46% of the container on desktop, and height-capped at 240px on mobile (spec §48) — so the mobile frame crops the bottom and top of the source. Keep the subject inside the middle ~70%, horizontally and vertically.',
   },
@@ -84,16 +82,15 @@ export const images = {
    * factory). Every slot must show the work the section is describing.
    */
   servicesHero: {
-    file: 'services-hero.svg',
+    file: 'services-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'SOURCING SERVICES',
-    alt: 'Placeholder for a documentary photograph of product samples and supplier documentation being reviewed.',
+    alt: 'A gloved worker comparing machined metal fasteners in compartmented trays on a stainless-steel bench, with a steel rule and a blank check sheet beside them.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'Documentary sourcing imagery: product sample review, supplier or product inspection, packaging review, a manufacturing process, warehouse preparation or material inspection. It has to read as a working scene. Avoid every China cliché (Great Wall / flag / panda / globe / container-port sunsets), generic handshakes, staged corporate meetings and artificially perfect AI factory floors.',
+      'Documentary sourcing imagery: product sample review, supplier or product inspection, packaging review, a manufacturing process, warehouse preparation or material inspection. It has to read as a working scene. Avoid every China cliché (Great Wall / flag / panda / globe / container-port sunsets), generic handshakes, staged corporate meetings and artificially perfect AI factory floors. Category for this slot: Industrial Products — machined metal fasteners and rubber gaskets on a stainless-steel bench. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
     cropNote:
       'Shown 4:3 in the right-hand column (5 of 12 on desktop), height-capped and placed below the text on mobile. Keep the subject inside the middle 70% horizontally and vertically — `object-fit: cover` crops symmetrically from the centre.',
   },
@@ -110,134 +107,124 @@ export const images = {
    * meeting, artificial map graphics, AI-perfect factory floors. Each slot must
    * show the work its own service describes. */
   serviceProductSourcingHero: {
-    file: 'service-product-sourcing-hero.svg',
+    file: 'service-product-sourcing-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'PRODUCT SOURCING',
-    alt: 'Placeholder for a documentary photograph of product samples and reference materials being compared during supplier research.',
+    alt: 'A single woven webbing strap closed with a machined aluminium buckle lying alone on a bare stainless-steel bench, with one slim steel rule beside it and a factory interior dissolving into a soft blur behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'Product sourcing in progress: samples laid out against reference material, specifications or drawings, several candidate products being compared, or hands examining a sample on a real work surface. Must read as evidence of the research, not a catalogue flat-lay or a studio product shot. No handshake, no meeting room, no China clichés.',
+      'SHIPPED FRAME v2 (2026-10-01, Sports & Outdoors): ONE subject only with a shallow depth of field, a single webbing strap with an aluminium buckle alone on a stainless-steel bench and every background detail blurred out. (v1 was rejected as too cluttered: rows of samples, stacked cartons on racks.) Category is fixed to Sports & Outdoors — never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts. Product sourcing in progress: samples laid out against reference material, specifications or drawings, several candidate products being compared, or hands examining a sample on a real work surface. Must read as evidence of the research, not a catalogue flat-lay or a studio product shot. No handshake, no meeting room, no China clichés.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
   serviceSupplierVerificationHero: {
-    file: 'service-supplier-verification-hero.svg',
+    file: 'service-supplier-verification-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'SUPPLIER VERIFICATION',
-    alt: 'Placeholder for a documentary photograph of a supplier facility walk-through or production capability review.',
+    alt: 'A pair of cotton-gloved hands holding up a single brushed stainless-steel bowl to the light to check its rim, alone on a stainless-steel bench, with a moulding machine blurred behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'A factory or supplier facility actually being looked at: a production floor during a walk-through, a worker inspecting output, materials or components being reviewed, or specification documents worked through on site next to the goods they describe. Must read as someone assessing the supplier, not a tour. No certificate, accreditation mark or laboratory report — Sourden issues none. No handshake, no meeting room, no China clichés, no AI-perfect factory floor.',
+      'SHIPPED FRAME v2 (2026-10-01, Pet Supplies): ONE subject only with a shallow depth of field, gloved hands holding a single stainless-steel bowl up to the light over a bare bench, the machine blurred behind. (v1 was rejected as too cluttered: a conveyor of identical bowls, bins and cartons.) Category is fixed to Pet Supplies, and nothing in frame may imply a certificate, award or accreditation — Sourden issues none — and no live animals appear. A factory or supplier facility actually being looked at: a production floor during a walk-through, a worker inspecting output, materials or components being reviewed, or specification documents worked through on site next to the goods they describe. Must read as someone assessing the supplier, not a tour. No certificate, accreditation mark or laboratory report — Sourden issues none. No handshake, no meeting room, no China clichés, no AI-perfect factory floor.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
   servicePurchasingManagementHero: {
-    file: 'service-purchasing-management-hero.svg',
+    file: 'service-purchasing-management-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'PURCHASING MANAGEMENT',
-    alt: 'Placeholder for a documentary photograph of order documents beside goods in production or preparation for shipment.',
+    alt: 'A single brushed stainless-steel insulated flask standing upright inside one open plain cardboard carton on a bare packing table, with the folded lid flaps beside it and a warehouse aisle blurred behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'An order in progress: goods being prepared or packed, production follow-up on the floor, a warehouse with staged cartons, or order and specification documents lying beside the goods they describe. Paperwork must be generic and unreadable — never photograph invented figures, invoices or order numbers. No handshake, no meeting room, no China clichés, no AI-perfect factory floor.',
+      'SHIPPED FRAME v2 (2026-10-01, Consumer Products): ONE subject only with a shallow depth of field, a single insulated flask inside one open plain carton on a bare table, the warehouse aisle blurred behind. (v1 was rejected as too cluttered: rows of mugs, tape and loose paperwork in one frame.) Category is fixed to Consumer Products — never a woodworking or craft scene: no timber, no wooden bench. An order in progress: goods being prepared or packed, production follow-up on the floor, a warehouse with staged cartons, or order and specification documents lying beside the goods they describe. Paperwork must be generic and unreadable — never photograph invented figures, invoices or order numbers. No handshake, no meeting room, no China clichés, no AI-perfect factory floor.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
   serviceQualityControlHero: {
-    file: 'service-quality-control-hero.svg',
+    file: 'service-quality-control-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'QUALITY CONTROL',
-    alt: 'Placeholder for a documentary photograph of products being measured, counted or packed during a pre-shipment inspection.',
+    alt: 'A single pair of folded black over-ear headphones lying alone on a bare stainless-steel inspection bench with a vernier caliper resting across its headband, and an inspection area blurred behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'A pre-shipment check in progress: calipers, a tape or scale against a product, goods being counted or laid out in rows, cartons being opened and checked, or an inspection record being filled in beside the goods. The brief bans staged laboratory imagery unless genuinely relevant — this is a warehouse and a workbench, not a clean room. No handshake, no meeting room, no China clichés.',
+      'SHIPPED FRAME v2 (2026-10-01, Electronics & Accessories): ONE subject only with a shallow depth of field, a single folded pair of headphones with a caliper resting on it on a bare bench, the inspection area blurred behind. (v1 was rejected as too cluttered: rows of cables, trays and bins. The engraved scale on the caliper itself is a legitimate part of the tool, not invented text.) Category is fixed to Electronics & Accessories; this is a warehouse inspection bench, not a clean-room laboratory. A pre-shipment check in progress: calipers, a tape or scale against a product, goods being counted or laid out in rows, cartons being opened and checked, or an inspection record being filled in beside the goods. The brief bans staged laboratory imagery unless genuinely relevant — this is a warehouse and a workbench, not a clean room. No handshake, no meeting room, no China clichés.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
   serviceShippingFromChinaHero: {
-    file: 'service-shipping-from-china-hero.svg',
+    file: 'service-shipping-from-china-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'SHIPPING FROM CHINA',
-    alt: 'Placeholder for a documentary photograph of packed cartons and palletized goods being prepared for freight.',
+    alt: 'One plain cardboard carton sealed with clear tape standing alone on a bare warehouse floor, with a stretch-wrapped pallet and a roller shutter door blurred behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'Freight preparation rather than freight romance: packed cartons stacked and labelled, goods palletized and wrapped, a loading bay during loading, or a warehouse aisle of staged shipments. The brief bans cliché cargo-container hero shots (container stacks at sunset, a lone container against a sky) — keep it inside the warehouse where the work is visible. No China clichés.',
+      'SHIPPED FRAME v2 (2026-10-01, Home & Living): ONE subject only, a single taped carton standing alone on a bare warehouse floor with the wrapped pallet and shutter door blurred behind. (v1 was rejected as too cluttered: pallet truck, straw-packed plates and textile rolls all in one frame.) Category is fixed to Home & Living and the frame stays indoors. Freight preparation rather than freight romance: packed cartons stacked and labelled, goods palletized and wrapped, a loading bay during loading, or a warehouse aisle of staged shipments. The brief bans cliché cargo-container hero shots (container stacks at sunset, a lone container against a sky) — keep it inside the warehouse where the work is visible. No China clichés.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
   serviceProductSourcing: {
-    file: 'service-product-sourcing.svg',
+    file: 'service-product-sourcing.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'PRODUCT SOURCING',
-    alt: 'Placeholder for a photograph of product samples under review during supplier research.',
+    alt: 'A buyer and a supplier representative comparing physical product samples across a work table, one sample held up to the light.',
     role: /** @type {ImageRole} */ ('service'),
-    placeholder: true,
     artDirection:
-      'Product samples, sourcing research or a supplier sample being examined — hands, samples and reference material on a work surface. Not a catalogue flat-lay, not a studio product shot.',
+      'Documentary photo — two people comparing product samples across a work table, faces out of frame, background softly blurred. Papers illegible. Not an illustration.',
   },
   serviceSupplierVerification: {
-    file: 'service-supplier-verification.svg',
+    file: 'service-supplier-verification.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'SUPPLIER VERIFICATION',
-    alt: 'Placeholder for a photograph of a supplier assessment or factory capability review.',
+    alt: 'An assessor walking through a factory floor with a clipboard, machinery softly out of focus behind her.',
     role: /** @type {ImageRole} */ ('service'),
-    placeholder: true,
     artDirection:
-      'A factory walk-through, production capability check, material or component review, or documentation being worked through on site. Nothing that implies a certificate, accreditation mark or laboratory report — Sourden issues none.',
+      'Documentary photo — a factory walk-through with a clipboard, seen from behind, face turned away. Nothing implying a certificate, accreditation mark or lab report. Not an illustration.',
   },
   servicePurchasingManagement: {
-    file: 'service-purchasing-management.svg',
+    file: 'service-purchasing-management.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'PURCHASING MANAGEMENT',
-    alt: 'Placeholder for a photograph of order documents, product preparation or packaging coordination.',
+    alt: 'A hand ticking off a blank order sheet beside a closed carton on a bright packing table.',
     role: /** @type {ImageRole} */ ('service'),
-    placeholder: true,
     artDirection:
-      'Order and specification documents beside the goods they describe, product preparation, production follow-up or packing work in progress. Paperwork should be generic and unreadable rather than filled with invented figures.',
+      'Documentary photo — order follow-up at a bright packing table: pen, blank papers and a closed carton. Papers blank, no invented figures. Not an illustration.',
   },
   serviceQualityControl: {
-    file: 'service-quality-control.svg',
+    file: 'service-quality-control.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'QUALITY CONTROL',
-    alt: 'Placeholder for a photograph of a pre-shipment product inspection and quantity check.',
+    alt: 'Close view of an inspector measuring a small metal component with a digital caliper, identical parts lined up beside.',
     role: /** @type {ImageRole} */ ('service'),
-    placeholder: true,
     artDirection:
-      'Real product inspection: measuring, checking quantities against a count, appearance checks, packaging inspection or QC notes being recorded. Hands and product, not a laboratory. Avoid any imagery that falsely suggests third-party certification or accredited testing.',
+      'Documentary photo — hands measuring a component with a caliper at a QC station. No third-party certification mark or accredited lab report. Not an illustration.',
   },
   serviceShippingFromChina: {
-    file: 'service-shipping-from-china.svg',
+    file: 'service-shipping-from-china.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'SHIPPING FROM CHINA',
-    alt: 'Placeholder for a photograph of cartons being packed and prepared for shipment.',
+    alt: 'A worker sealing a plain cardboard carton with a tape dispenser on a packing table, more cartons blurred behind.',
     role: /** @type {ImageRole} */ ('service'),
-    placeholder: true,
     artDirection:
-      'Packaging, warehouse dispatch, cartons being labelled and staged, or pallet preparation. Realistic logistics, not a container-port stock shot with a sunset, a giant ship or a globe.',
+      'Documentary photo — cartons being sealed and staged for dispatch in a bright warehouse. Blank cartons, no labels or barcodes, no container-port stock shot. Not an illustration.',
   },
 
   /* ------------------------------------------------------- how it works -- */
@@ -258,16 +245,15 @@ export const images = {
    * and the China shorthand (Great Wall, flag, panda, container-port sunsets),
    * plus artificially perfect AI factory floors. */
   howItWorksHero: {
-    file: 'how-it-works-hero.svg',
+    file: 'how-it-works-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'HOW IT WORKS',
-    alt: 'Placeholder for a documentary photograph of products being checked and prepared during a sourcing project.',
+    alt: 'A worker sealing a plain cardboard carton on a wooden pallet, with a roll of packing tape and folded corrugated pads on the floor beside it.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'One documentary frame of sourcing work in progress: product samples being reviewed and compared, a pre-shipment inspection, goods being packed or palletized, or supplier documentation worked through beside the goods it describes. The brief lists those seven subjects (samples, factory production, inspection, packaging, warehouse preparation, supplier communication, shipment preparation) and asks for ONE strong image rather than a collage. Favour working hands and real materials over polished products and finished rooms. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors.',
+      'One documentary frame of sourcing work in progress: product samples being reviewed and compared, a pre-shipment inspection, goods being packed or palletized, or supplier documentation worked through beside the goods it describes. The brief lists those seven subjects (samples, factory production, inspection, packaging, warehouse preparation, supplier communication, shipment preparation) and asks for ONE strong image rather than a collage. Favour working hands and real materials over polished products and finished rooms. Banned: multi-image collages, generic handshakes, staged meeting rooms, corporate boardroom scenes, and every China cliché (Great Wall, national flag, panda, container-port sunset, globe), as well as artificially perfect AI factory floors. Category for this slot: packaging and shipment preparation — plain unprinted cartons being sealed on a pallet. A wooden pallet is fine here because it is shipping infrastructure rather than the product; a woodworking or craft scene still is not.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
@@ -290,16 +276,15 @@ export const images = {
    * every other hero, so it can share the hero frame without a second crop
    * rule. */
   aboutHero: {
-    file: 'about-hero.svg',
+    file: 'about-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'ABOUT SOURDEN',
-    alt: 'Placeholder for a documentary photograph of sourcing work in progress — goods or samples being reviewed by hand in a working environment.',
+    alt: 'A worker seen from behind at a long bench, lining up and checking a row of plain pump bottles, cream jars and brushes, with shelving of boxes behind.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'One documentary frame of sourcing work being done by hand: samples compared against a specification, an inspection in progress, materials or packaging being handled, or goods checked in a warehouse. The person matters only as the person doing the work — no posed portrait, no facing-the-camera smile, no team lineup. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and artificially perfect AI factory floors.',
+      'One documentary frame of sourcing work being done by hand: samples compared against a specification, an inspection in progress, materials or packaging being handled, or goods checked in a warehouse. The person matters only as the person doing the work — no posed portrait, no facing-the-camera smile, no team lineup. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and artificially perfect AI factory floors. Category for this slot: Beauty & Personal Care — plain unbranded pump bottles, cream jars and brushes being lined up and checked. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
@@ -326,16 +311,15 @@ export const images = {
    * samples and inspection), so the frame that matches the content is a
    * comparison in progress rather than a generic factory shot. */
   faqHero: {
-    file: 'faq-hero.svg',
+    file: 'faq-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'FAQ',
-    alt: 'Placeholder for a documentary photograph of supplier options and product samples being compared against a specification on a work surface.',
+    alt: 'A row of the same ceramic vessel in several different glazes on a work surface, with a hand lifting one to compare it beside a steel rule and blank sheets.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'One documentary frame of a sourcing decision being worked through by hand: several suppliers\u2019 samples or units of the same product laid out together for comparison, samples checked against a printed specification or requirement sheet, quotations or documents worked through beside the goods they describe, or a pre-shipment inspection in progress. Two or three real objects being compared reads better than one polished product. Banned: question marks, speech bubbles, lightbulbs, headsets, call-centre or customer-support imagery, icon grids, and the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom, artificially perfect AI factory floors).',
+      'One documentary frame of a sourcing decision being worked through by hand: several suppliers\u2019 samples or units of the same product laid out together for comparison, samples checked against a printed specification or requirement sheet, quotations or documents worked through beside the goods they describe, or a pre-shipment inspection in progress. Two or three real objects being compared reads better than one polished product. Banned: question marks, speech bubbles, lightbulbs, headsets, call-centre or customer-support imagery, icon grids, and the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom, artificially perfect AI factory floors). Category for this slot: Home & Living — the same cylindrical ceramic vessel in several competing glazes. Never a woodworking or craft scene: no timber, no wooden blanks, no bamboo.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters. Where several items are being compared, keep them all inside that middle band — a comparison cropped down to one item loses the point of the frame.',
   },
@@ -357,144 +341,140 @@ export const images = {
    * still not a collage — the brief bans artificial product collages, generic
    * world maps, landmarks, flags, handshakes and AI-looking factory imagery. */
   industriesHero: {
-    file: 'industries-hero.svg',
+    file: 'industries-hero.webp',
     width: 1600,
     height: 1200,
     ratio: '4:3',
     label: 'WHAT WE SOURCE',
-    alt: 'Placeholder for a documentary photograph of product samples from several different categories being reviewed together on a work surface.',
+    alt: 'A tray of moulded plastic housings, folded textiles, a plain cardboard carton, a glass jar and machined metal fittings gathered on a packing table.',
     role: /** @type {ImageRole} */ ('hero'),
-    placeholder: true,
     artDirection:
-      'Breadth shown honestly: several DIFFERENT kinds of product being handled together in a real working context — samples on a bench, goods from different categories staged for inspection, or a production or packing area where more than one product line is visible. Mixed materials and unfinished packs are better than polished hero products. Banned: artificial collages, a neat grid of unrelated products on white, generic world maps, the Great Wall, a flag, a panda, handshakes, staged meeting rooms and artificially perfect AI factory floors.',
+      'Breadth shown honestly: several DIFFERENT kinds of product being handled together in a real working context — samples on a bench, goods from different categories staged for inspection, or a production or packing area where more than one product line is visible. Mixed materials and unfinished packs are better than polished hero products. Banned: artificial collages, a neat grid of unrelated products on white, generic world maps, the Great Wall, a flag, a panda, handshakes, staged meeting rooms and artificially perfect AI factory floors. Category for this slot: deliberately mixed — a moulded plastic tray, folded textiles, a kraft carton, a glass jar and machined metal fittings. Never a woodworking or craft scene: no timber, no wood offcuts, no wood chips.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
   industryConsumerProducts: {
-    file: 'industry-consumer-products.svg',
+    file: 'industry-consumer-products.webp',
     width: 1200,
     height: 1500,
     ratio: '4:5',
     label: 'CONSUMER PRODUCTS',
-    alt: 'Placeholder for a photograph of consumer goods production or finished consumer products.',
+    alt: 'Three white enamel mugs in a row on a stainless-steel bench, blurred cartons and daylight windows behind.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
-    artDirection: 'Finished consumer goods in a production or packing environment. Portrait crop.',
+    artDirection:
+      'Category for this slot: Consumer Products. A single calm row of finished goods on an inspection bench, shallow depth of field, subject centred in the middle band so it survives the wide grid crop. No timber, no wood, no rustic workshop.',
   },
   industryBeautyPersonalCare: {
-    file: 'industry-beauty-personal-care.svg',
+    file: 'industry-beauty-personal-care.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'BEAUTY & PERSONAL CARE',
-    alt: 'Placeholder for a photograph of beauty or personal care product filling and packaging.',
+    alt: 'A frosted pump bottle held by a gloved hand over a stainless bowl, the filling area soft behind.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
-    artDirection: 'Filling line, component trays or packaging of beauty/personal-care products.',
+    artDirection:
+      'Category for this slot: Beauty & Personal Care. One product on a filling or inspection bench, shallow depth of field, subject centred. No timber, no wood.',
   },
   industryHomeLiving: {
-    file: 'industry-home-living.svg',
+    file: 'industry-home-living.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'HOME & LIVING',
-    alt: 'Placeholder for a photograph of homeware materials, assembly or finishing.',
+    alt: 'A folded oatmeal woven throw with fringed edges resting on a light workbench, shelving soft behind.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
-    artDirection: 'Materials, assembly bench or finishing of homewares and textiles.',
+    artDirection:
+      'Category for this slot: Home & Living. One folded textile centred on a bench, shallow depth of field. No timber, no wood.',
   },
   industryPackaging: {
-    file: 'industry-packaging.svg',
+    file: 'industry-packaging.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'PACKAGING',
-    alt: 'Placeholder for a photograph of packaging production, printing or stacked cartons.',
+    alt: 'Hands folding a plain kraft carton on a bench, a die-cutting press soft in the background.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
-    artDirection: 'Printing, die-cutting or neatly stacked retail packaging.',
+    artDirection:
+      'Category for this slot: Packaging. One plain unprinted carton being folded at the bench, shallow depth of field, subject centred. No timber, no wood.',
   },
   industryElectronicsAccessories: {
-    file: 'industry-electronics-accessories.svg',
+    file: 'industry-electronics-accessories.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'ELECTRONICS & ACCESSORIES',
-    alt: 'Placeholder for a photograph of electronics assembly or a functional test station.',
+    alt: 'A matte-black power bank lying on a light bench with a coiled white USB-C cable beside it, the room behind out of focus.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
-    artDirection: 'Assembly bench, cable/component trays or a functional test jig.',
+    artDirection:
+      'Category for this slot: Electronics & Accessories. One product on a test bench with a single cable, shallow depth of field, subject centred in the middle band. No timber, no wood.',
   },
   industryIndustrialProducts: {
-    file: 'industry-industrial-products.svg',
+    file: 'industry-industrial-products.webp',
     width: 1200,
     height: 1500,
     ratio: '4:5',
     label: 'INDUSTRIAL PRODUCTS',
-    alt: 'Placeholder for a photograph of machinery, metalwork or industrial component production.',
+    alt: 'A grey cast-metal enclosure with a carry handle, hex screws and a steel latch on a stainless bench, the workshop soft behind.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
-    artDirection: 'Machinery, tooling or metal/industrial component production. Portrait crop.',
+    artDirection:
+      'Category for this slot: Industrial Products. One rugged component centred on an inspection bench, shallow depth of field, subject in the middle band so it survives the wide grid crop. No timber, no wood.',
   },
   industrySportsOutdoors: {
-    file: 'industry-sports-outdoors.svg',
+    file: 'industry-sports-outdoors.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'SPORTS & OUTDOORS',
-    alt: 'Placeholder for a photograph of sports or outdoor equipment production.',
+    alt: 'A rolled foam camping mat strapped tight with a buckle, its valve cap resting on top, against a blurred workshop wall.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
     artDirection:
-      'Assembly, stitching testing or packing of sports and outdoor equipment — gear, not lifestyle models.',
+      'Category for this slot: Sports & Outdoors. One piece of gear on a bench, shallow depth of field, subject centred. Gear only, no lifestyle models, no timber, no wood.',
   },
   industryPetSupplies: {
-    file: 'industry-pet-supplies.svg',
+    file: 'industry-pet-supplies.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'PET SUPPLIES',
-    alt: 'Placeholder for a photograph of pet product manufacturing or packaging.',
+    alt: 'A round plush grey dog bed centred on a stainless bench, the workshop behind out of focus.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
     artDirection:
-      'Moulding, assembly or retail packaging of pet products. No live animals or studio pet portraits.',
+      'Category for this slot: Pet Supplies. One product centred on a bench, shallow depth of field. No live animals, no studio pet portraits, no timber, no wood.',
   },
   industryApparelFootwearBags: {
-    file: 'industry-apparel-footwear-bags.svg',
+    file: 'industry-apparel-footwear-bags.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'APPAREL, FOOTWEAR & BAGS',
-    alt: 'Placeholder for a photograph of apparel, footwear or bag production.',
+    alt: 'A neatly folded heathered knit sweater on a light bench, the workshop soft behind.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
     artDirection:
-      'Cutting tables, stitching lines or finishing of apparel, footwear or bags. Flat-lay or production floor, not on-model studio shots.',
+      'Category for this slot: Apparel, Footwear & Bags. One folded garment centred on a bench, shallow depth of field, subject in the middle band so it survives the wide grid crop. Flat-lay only, never on-model, no timber, no wood.',
   },
 
   /* --------------------------------------------------------- case studies -- */
   caseStudyChristmasTree: {
-    file: 'case-study-christmas-tree.svg',
+    file: 'case-study-christmas-tree.webp',
     width: 1400,
     height: 1050,
     ratio: '4:3',
     label: 'CASE STUDY IMAGE',
-    alt: 'Placeholder for a photograph of the custom commercial Christmas tree project.',
+    alt: 'Photograph of a decorated commercial Christmas tree with warm string lights in a hotel lobby.',
     role: /** @type {ImageRole} */ ('case-study'),
-    placeholder: true,
-    artDirection: 'Only to be replaced once the real project photograph is available and cleared for publication.',
+    artDirection:
+      'Documentary photograph of the project type (a decorated commercial Christmas tree). Asserts no customer, figure or outcome. Replace once the real project photograph is available and cleared for publication.',
   },
   caseStudySportsJerseys: {
-    file: 'case-study-sports-jerseys.svg',
+    file: 'case-study-sports-jerseys.webp',
     width: 1200,
     height: 800,
     ratio: '3:2',
     label: 'CASE STUDY IMAGE',
-    alt: 'Placeholder for a photograph of the sports jersey project.',
+    alt: 'Photograph of blank sports jerseys hanging side by side on a garment rail.',
     role: /** @type {ImageRole} */ ('case-study'),
-    placeholder: true,
-    artDirection: 'Only to be replaced once the real project photograph is available and cleared for publication.',
+    artDirection:
+      'Documentary photograph of the project type (plain blank sports jerseys). Asserts no customer, figure or outcome. Replace once the real project photograph is available and cleared for publication.',
   },
 
   /* ------------------------------------------------------------ insights -- */
@@ -521,51 +501,50 @@ export const images = {
      `/insights` renders a frame today — the article directory is text-only on
      purpose. See `insights-articles.js`. */
   insightSupplierResearch: {
-    file: 'insight-supplier-research.svg',
+    file: 'insight-supplier-research.webp',
     width: 1400,
     height: 933,
     ratio: '3:2',
     label: 'INSIGHTS IMAGE',
-    alt: 'Placeholder for a photograph illustrating supplier research and comparison.',
+    alt: 'A machined aluminium housing with a steel rule resting across it on a stainless-steel bench, the workshop blurred behind.',
     role: /** @type {ImageRole} */ ('insight'),
-    placeholder: true,
-    artDirection: 'Supplier research, sampling or side-by-side product comparison.',
+    artDirection:
+      'Documentary photo — ONE subject (a machined aluminium housing with a steel rule) on a stainless-steel bench, shallow depth of field. Category for this slot: Industrial Products. Never a woodworking or craft scene: no timber, no wooden bench.',
   },
   insightSupplierVerification: {
-    file: 'insight-supplier-verification.svg',
+    file: 'insight-supplier-verification.webp',
     width: 1200,
     height: 800,
     ratio: '3:2',
     label: 'INSIGHTS IMAGE',
-    alt: 'Placeholder for a photograph illustrating supplier verification and factory assessment.',
+    alt: 'A green printed circuit board and a brass magnifying loupe on a laminate bench, two workers out of focus behind.',
     role: /** @type {ImageRole} */ ('insight'),
-    placeholder: true,
-    artDirection: 'Factory walk-through, capability check or inspection documentation.',
+    artDirection:
+      'Documentary photo — ONE subject (a printed circuit board module and a loupe) on a laminate bench, shallow depth of field. Category for this slot: Electronics & Accessories. Never a woodworking or craft scene: no timber, no wooden bench.',
   },
   insightTradingCompany: {
-    file: 'insight-trading-company.svg',
+    file: 'insight-trading-company.webp',
     width: 1200,
     height: 800,
     ratio: '3:2',
     label: 'INSIGHTS IMAGE',
-    alt: 'Placeholder for a photograph illustrating the difference between a manufacturer and a trading company.',
+    alt: 'A folded heathered knit sweater lying alone on a laminate bench, a sewing workshop floor blurred behind.',
     role: /** @type {ImageRole} */ ('insight'),
-    placeholder: true,
-    artDirection: 'Manufacturer production line versus a trading office or warehousing operation.',
+    artDirection:
+      'Documentary photo — ONE subject (a folded knit sweater) on a laminate bench, shallow depth of field. Category for this slot: Apparel, Footwear & Bags. Never a woodworking or craft scene: no timber, no wooden bench.',
   },
 
   /* -------------------------------------------------------------- social -- */
   ogDefault: {
-    file: 'og-default.svg',
+    file: 'og-default.png',
     width: 1200,
     height: 630,
     ratio: '1200:630',
     label: 'SOURDEN — CHINA SOURCING. DONE.',
     alt: '',
     role: /** @type {ImageRole} */ ('social'),
-    placeholder: true,
     artDirection:
-      'Open Graph cards must be raster (JPG/PNG/WebP) — most platforms do not render SVG. Replace with a 1200×630 export before launch.',
+      'Raster export (PNG) of the brand share card, set in the site\u2019s own Manrope/Inter on the hero surface with the brass seam and the China Sourcing. Done. tagline. Platforms do not render SVG, so this slot must stay raster. Rebuild from _img/og-build.cjs (puppeteer + the bundled variable fonts), never regenerate it with an image model.',
   },
 };
 
