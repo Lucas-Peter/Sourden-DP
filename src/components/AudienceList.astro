@@ -1,19 +1,19 @@
 ---
 /**
- * AudienceList — spec §13 + §14 + §15
+ * AudienceList — spec §13 + §14
  * "SOURCING WITHOUT THE BARRIERS." — the most important section on the page.
  *
- * Three blocks, in order:
+ * Two blocks, in order:
  *   a) heading (anchored left) + large statement (given prominence right)
  *   b) five audience groups as editorial rows, ~140px with thin separators
- *   c) the no-fixed-MOQ block (§14) and the "Start where you are." progression
- *      (§15)
+ *   c) the no-fixed-MOQ block (§14)
  *
- * Generic cards are explicitly forbidden here — these are rows.
+ * The §15 growth progression was removed (2026-10-02 content-density pass);
+ * the MOQ block is now the section's close. Generic cards are forbidden here —
+ * these are rows.
  */
 import SectionHeader from './SectionHeader.astro';
 import ScaleBlock from './ScaleBlock.astro';
-import GrowBlock from './GrowBlock.astro';
 import { audienceIntro, audienceGroups } from '../data/audiences.js';
 ---
 
@@ -47,6 +47,5 @@ import { audienceIntro, audienceGroups } from '../data/audiences.js';
     </ol>
 
     <ScaleBlock />
-    <GrowBlock />
   </div>
 </section>
