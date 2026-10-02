@@ -448,7 +448,10 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
    a promotional badge.
 
    Heading left in 5 columns, body right in 7 — wider than the 5/6 used by the
-   prose sections because this section carries one paragraph, not three.
+   prose sections because this section carries one paragraph, not three. The
+   growth path and its closing note render INSIDE the body column (owner,
+   2026-10-02): the path sequences the copy it sits under, so it belongs in
+   that column, not full-width beneath the block.
    =========================================================================== */
 
 .ind-scale__block {
@@ -516,7 +519,9 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
-  margin: clamp(var(--sp-7), 5vw, var(--sp-8)) 0 0;
+  /* Inside the body column now: the big separation it needed as a full-width
+     band is gone — this only has to clear the brass `emphasis` above it. */
+  margin: clamp(var(--sp-5), 3vw, var(--sp-6)) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -564,7 +569,7 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
 
 .ind-scale__note {
   max-width: 62ch;
-  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  margin-block-start: var(--sp-5);
   padding-block-start: var(--sp-4);
   border-top: var(--rule) solid var(--divider-light);
   color: var(--muted);
