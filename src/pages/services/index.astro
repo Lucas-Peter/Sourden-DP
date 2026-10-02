@@ -57,7 +57,7 @@ import ServicesApproach from '../../components/services/ServicesApproach.astro';
 import ServicesAudience from '../../components/services/ServicesAudience.astro';
 import ServicesExpectations from '../../components/services/ServicesExpectations.astro';
 import ServicesFaq from '../../components/services/ServicesFaq.astro';
-import ServicesHero from '../../components/services/ServicesHero.astro';
+import BackgroundHero from '../../components/BackgroundHero.astro';
 import ServicesOverview from '../../components/services/ServicesOverview.astro';
 import ServicePaths from '../../components/services/ServicePaths.astro';
 import SourcingProcess from '../../components/services/SourcingProcess.astro';
@@ -111,7 +111,7 @@ const schema = [
   path={path}
   schema={schema}
 >
-  <ServicesHero
+  <BackgroundHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
     title={hero.title}
@@ -119,7 +119,6 @@ const schema = [
     primaryCta={hero.primaryCta}
     secondaryCta={hero.secondaryCta}
     imageKey={hero.image.key}
-    imageCaption={hero.image.caption}
     titleId="sec-hero-title"
   />
 
