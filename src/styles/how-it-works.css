@@ -459,10 +459,9 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
    Without it these paragraphs are indistinguishable from the paragraph above
    the path: same face, same measure, same colour, same column. The section then
    reads as one column that jogs left after the rail, which is exactly how it
-   looked before this rule existed. `/industries` §08 closes with the same kind
-   of copy and already separates it with a hairline (`.ind-scale__note`), so the
-   rule is this site's own grammar for "the copy that closes the section" — not
-   a decoration invented for this page. Full width, the way `.section-foot`'s is:
+   looked before this rule existed. The same hairline is the site's own grammar
+   for "the copy that closes the section" (`.sec-note` draws one on the detail
+   pages) — not a decoration invented for this page. Full width, the way `.section-foot`'s is:
    the band is the section's, not the paragraph's.
 
    Rendered only when a page passes `closingParagraphs`; `/how-it-works` §12
@@ -501,9 +500,8 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
 }
 
 .hi-growth--inbody .hi-growth__closing {
-  /* Same reasoning as `.ind-scale__note` on /industries: the hairline still
-     marks the closing copy as the section's band, but the space above it
-     only has to clear the path now. */
+  /* The hairline still marks the closing copy as the section's band, but the
+     space above it only has to clear the path now. */
   margin-block-start: var(--sp-5);
 }
 

@@ -5,19 +5,14 @@
    `src/pages/industries/index.astro`, so no other route ships this file.
 
    WHAT IS NOT IN THIS FILE
-   · `.sec-hero*`, `.sec-stages` / `.sec-stage*` and `.sec-faq*` — the hero, the
-     five-stage rail and the FAQ. This page renders all three with the same
-     components `/services` and the five detail pages use, so the rules stay in
-     `services-shared.css` and are imported, not copied. See `index.css` →
-     "SHARING A DEVICE BETWEEN TWO PAGES" for why a shared sheet is the right
-     home even though the file name says "services": the components are generic
-     editorial devices whose first consumer happened to be the services pages.
-   · `.sec-prose*`, `.sec-review*`, `.sec-checklist*`, `.sec-split*`, `.sec-chain*`
-     and the dark-ground corrections — imported from `service-detail.css` for
-     the same reason. This page renders §02/§04/§09 as prose, §05 as a review
-     grid and §10 as the rail; all four are the detail pages' components with
-     this page's copy.
-     The one thing this page adds on top of them is `.ind-process` below.
+   · `.sec-prose*` and the dark-ground corrections — imported from
+     `service-detail.css`. This page renders §03/§04 as prose. The hero is the
+     background `<BackgroundHero>` (core `components.css`); the rail, the FAQ,
+     the review grid and the sequence were removed in the 2026-10-02 pass, so
+     this page no longer imports `services-shared.css` and no longer renders the
+     `.sec-stages` / `.sec-faq*` devices.
+   · The `.ind-process` rail rule below is now for the NINE child pages, not the
+     hub — see §05 in this file.
    · The page rhythm (`.section`, `.section--ivory`, `.section--white`,
      `.section--dark`, `.container`, `.section-head`, `.section-foot`, `.rows`)
      — shared core, loaded by every route. Nothing here redefines any of it:
@@ -36,9 +31,10 @@
    reader would notice.
 
    SECTION INDEX
-     01 Category directory       04 Scale + growth path
-     02 Sequence                 05 The rail on this page
-     03 Rows                     06 Print
+     01 Category directory       04 The scale statement
+     02 Sequence                 05 The rail on the category pages
+     03 Rows                     06 The FAQ text link
+                                 07 Print
    =========================================================================== */
 
 
@@ -103,66 +99,23 @@
   line-height: 1.62;
 }
 
-.ind-directory__label {
+.ind-directory__cta {
   margin-block-start: var(--sp-5);
-  color: var(--muted);
-  font-family: var(--font-body);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-caps-wide);
-  line-height: 1.3;
-  text-transform: uppercase;
 }
 
-.ind-directory__types {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--sp-2) var(--sp-5);
-  margin: var(--sp-3) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 768px) {
-  .ind-directory__types {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.ind-directory__type {
-  position: relative;
-  padding-inline-start: var(--sp-4);
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.5;
-}
-
-/* A brass hairline rather than a bullet — the marker the whole site uses for
-   list structure. */
-.ind-directory__type::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.68em;
-  width: 6px;
-  height: var(--rule);
-  background-color: var(--brass);
-}
-
-/* The one category the brief equips with a caveat (Electronics & Accessories).
-   Set apart by a hairline so it cannot be read as another product type. */
-.ind-directory__note {
-  max-width: 56ch;
-  margin-block-start: var(--sp-5);
-  padding-block-start: var(--sp-3);
+/* The scope note — ordinary supporting text under the nine entries, not a new
+   card or section. It is the page's one honest statement that the nine are
+   the categories SOURDEN sources most often / has supplier networks in, not
+   the business's boundary, so it is set quiet (muted, small body) with a
+   hairline above to separate it from the list. */
+.ind-directory__scope {
+  max-width: 62ch;
+  margin-block-start: clamp(var(--sp-6), 4vw, var(--sp-7));
+  padding-block-start: var(--sp-5);
   border-top: var(--rule) solid var(--divider-light);
   color: var(--muted);
   font-size: var(--fs-body-sm);
   line-height: 1.62;
-}
-
-.ind-directory__cta {
-  margin-block-start: var(--sp-5);
 }
 
 @media (min-width: 1200px) {
@@ -186,12 +139,6 @@
   .ind-directory__detail {
     grid-column: 3;
     grid-row: 1;
-  }
-
-  /* The type list keeps two columns — eight items in one column would make
-     every entry tall enough to break the directory's scan. */
-  .ind-directory__types {
-    gap: var(--sp-2) var(--sp-6);
   }
 }
 
@@ -440,18 +387,21 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
 
 
 /* ===========================================================================
-   04 — SCALE + GROWTH PATH  (brief §08)
+   04 — THE SCALE STATEMENT  (松霖 §2 / brief §08, simplified)
    ---------------------------------------------------------------------------
    A brass rule, not a box — the same treatment `/services` gives its own MOQ
    statement, because it is the same statement: Sourden imposes no fixed MOQ.
    The block that says so has to read as a principle the business holds, not as
    a promotional badge.
 
-   Heading left in 5 columns, body right in 7 — wider than the 5/6 used by the
-   prose sections because this section carries one paragraph, not three. The
-   growth path and its closing note render INSIDE the body column (owner,
-   2026-10-02): the path sequences the copy it sits under, so it belongs in
-   that column, not full-width beneath the block.
+   It is now three lines: an eyebrow ("NO FIXED MOQ FROM SOURDEN"), one short
+   statement ("Source at your scale.") and one quiet qualifier. The growth path
+   (FIRST ORDER → TEST → … → SCALE) and the long paragraph were removed
+   (2026-10-02): the brief drops the growth diagram and 松霖 asked for a short
+   statement, not a long explanation.
+
+   Eyebrow left in 5 columns, statement right in 7 — the same split the prose
+   sections use, because the statement belongs beside its label, not beneath it.
    =========================================================================== */
 
 .ind-scale__block {
@@ -463,32 +413,26 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
   margin-block-end: var(--sp-5);
 }
 
-.ind-scale__title {
-  max-width: 24ch;
-  font-size: var(--fs-h2);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-heading);
+/* The one short statement. Brass-ink, lead size, medium — prominent enough to
+   be the section's whole point, but not a heading: the brief §14 gives this
+   page four H2s and this block is not one of them. */
+.ind-scale__statement {
+  max-width: 34ch;
+  color: var(--brass-ink);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
   letter-spacing: var(--ls-display);
 }
 
-.ind-scale__para {
+/* The qualifier — the line without which the statement becomes the claim the
+   site must never make ("every supplier accepts small orders"). Set quiet. */
+.ind-scale__qualifier {
   max-width: 58ch;
   margin-block-start: var(--sp-4);
   color: var(--muted);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-}
-
-/* The qualifier. Brass, because it is the section's own conclusion rather than
-   a third paragraph — see the component for why it carries the section's
-   honesty. */
-.ind-scale__emphasis {
-  max-width: 54ch;
-  margin-block-start: var(--sp-5);
-  color: var(--brass-ink);
-  font-size: var(--fs-body);
-  font-weight: var(--fw-medium);
-  line-height: var(--lh-body);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
 }
 
 @media (min-width: 1200px) {
@@ -507,103 +451,30 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
   .ind-scale__body {
     grid-column: 2;
   }
-
-  .ind-scale__title {
-    margin-block-start: 0;
-  }
-}
-
-/* --- the growth path ------------------------------------------------------ */
-
-.ind-scale__path {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-  /* Inside the body column now: the big separation it needed as a full-width
-     band is gone — this only has to clear the brass `emphasis` above it. */
-  margin: clamp(var(--sp-5), 3vw, var(--sp-6)) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ind-scale__stage {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  min-width: 0;
-}
-
-/* Uppercase in CSS, not in the data — the same call the rail's verbs make. */
-.ind-scale__stage-label {
-  font-family: var(--font-display);
-  font-size: var(--fs-body-sm);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-caps-wide);
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-/* `display: inline-block` is required for the rotation to apply; the arrow is a
-   text glyph, not an icon font or an SVG. */
-.ind-scale__arrow {
-  display: inline-block;
-  flex: none;
-  color: var(--brass);
-  font-size: var(--fs-body-sm);
-  transform: rotate(90deg);
-}
-
-@media (min-width: 768px) {
-  .ind-scale__path {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: var(--sp-3);
-    row-gap: var(--sp-2);
-  }
-
-  .ind-scale__arrow {
-    transform: none;
-  }
-}
-
-.ind-scale__note {
-  max-width: 62ch;
-  margin-block-start: var(--sp-5);
-  padding-block-start: var(--sp-4);
-  border-top: var(--rule) solid var(--divider-light);
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.68;
 }
 
 
 /* ===========================================================================
-   05 — THE RAIL ON THE INDUSTRIES PAGES  (hub §10, child pages §7)
+   05 — THE RAIL ON THE CATEGORY PAGES  (child pages §7)
    ---------------------------------------------------------------------------
-   These pages render the same rail as `/services` and the five detail pages, so
-   its rules live in `services-shared.css` (geometry) and `service-detail.css`
-   (the ink-band corrections). The one thing they have to add is the height of
-   the rail's labels.
-
-   TWO CONSUMERS, ONE RULE
-     · `/industries` §10 — five stages, named as phrases.
-     · `/industries/<slug>` §7 (the nine category pages) — the SAME six stages
-       on all nine, also named as phrases, and one column narrower each because
-       there are six of them. `IndustryDetailPage` passes the class for exactly
-       that reason.
-   Both need the floor; neither needs a second copy of it.
+   The nine `/industries/<slug>` pages render the same rail as `/services` and
+   the five detail pages, so its rules live in `services-shared.css` (geometry)
+   and `service-detail.css` (the ink-band corrections). The one thing they have
+   to add is the height of the rail's labels.
 
    WHY
-   The detail pages name their steps in one word each (UNDERSTAND, RESEARCH),
-   so every label fits on one line and the five descriptions start at the same
-   height. These pages' briefs name the steps as phrases — "Tell Us
-   What You Need", "Verify & Compare" — and at 1200px a rail column is ~224px
-   wide, which fits "Verify & Compare" and wraps "Tell Us What You Need" onto a
-   second line. (At six columns it is ~183px, so most of them wrap.) Without a
-   floor, a wrapped label pushes its description ~17px below the others, and a
-   rail whose dots promise a shared row but whose copy does not sit on one has
-   come apart at exactly the point it is meant to prove.
+   The service detail pages name their steps in one word each (UNDERSTAND,
+   RESEARCH), so every label fits on one line and the five descriptions start at
+   the same height. The category pages name the steps as phrases — "Tell Us
+   What You Need", "Verify & Compare" — and at 1200px a rail column is ~183px
+   wide, so most of them wrap. Without a floor, a wrapped label pushes its
+   description ~17px below the others, and a rail whose dots promise a shared
+   row but whose copy does not sit on one has come apart at exactly the point it
+   is meant to prove.
+
+   (The hub `/industries` no longer renders the rail — it was removed in the
+   2026-10-02 content-simplification pass, the process living on `/how-it-works`
+   instead — so this rule now serves the nine child pages alone.)
 
    Reserving two lines is the same fix `.sec-stage__title` already applies on
    `/services` for the same reason, and it is scoped to `.ind-` because a page
@@ -616,18 +487,28 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
 
 
 /* ===========================================================================
-   06 — PRINT
+   06 — THE "VIEW FAQ" TEXT LINK  (brief §09)
+   ---------------------------------------------------------------------------
+   One centred text link, not a section. `.ind-faq-link` is a `.container` in
+   the page shell (no `<section>`), so it has no ground of its own — the body's
+   ivory shows through and the link reads as the tail of the scale statement
+   above it. Mirrors `.hi-faq-link` / `.ab-faq-link`.
+   =========================================================================== */
+
+.ind-faq-link {
+  padding-block: var(--section-y-tight);
+  text-align: center;
+}
+
+
+/* ===========================================================================
+   07 — PRINT
    =========================================================================== */
 
 @media print {
   .ind-directory__item,
   .ind-sequence__item,
-  .ind-rows__row,
-  .ind-scale__stage {
+  .ind-rows__row {
     break-inside: avoid;
-  }
-
-  .ind-scale__arrow {
-    transform: none;
   }
 }
