@@ -23,13 +23,18 @@
    its own task rather than inside a page build.
 
    WHAT IS IN THIS FILE
-   Only the four devices this page introduces, all prefixed `.hi-`:
+   Only the devices this page introduces, all prefixed `.hi-`:
      01 The rail on this page      (§02)
-     02 Stage lists                (§06, §11)
-     03 Link rows                  (§10, §14)
-     04 Growth                     (§12)
-     05 The example panel          (§13)
+     02 Stage lists                (§04)
+     03 Link rows                  (§05)
+     04 Growth                     (still here — `/about` §05 reuses `HiGrowth`
+                                   and imports this sheet for it)
+     05 The "View FAQ" text link   (the brief's §09)
      06 Print
+
+   The example panel (§13) was removed with its section, so its `.hi-example*`
+   rules are gone. The growth rules stay even though `/how-it-works` no longer
+   renders them, because `/about` still does.
 
    HOUSE RULES
    ───────────────────────────────────────────────────────────────────────────
@@ -380,6 +385,14 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
   .hi-growth__path {
     justify-content: space-between;
   }
+
+  /* The /about §05 variation packs instead of spreading: inside the body
+     column the six-word row is most of the column's width already, so the
+     spread (which exists to keep a short row from hugging an empty container)
+     would only add a trail. */
+  .hi-growth--inbody .hi-growth__path {
+    justify-content: flex-start;
+  }
 }
 
 /* --- the growth path ------------------------------------------------------ */
@@ -473,112 +486,62 @@ a.hi-rows__body:focus-visible .hi-rows__arrow {
   line-height: var(--lh-body);
 }
 
+/* --- the /about §05 variation (`pathInBody`) ------------------------------ */
+
+/* THE PATH UNDER THE COPY, NOT UNDER BOTH COLUMNS
+   `/about`'s owner asked (2026-10-02) for the same treatment `/industries`
+   §08 received that day: the progression sequences the copy it sits under,
+   so it belongs in the body column. The component moves the markup; this
+   modifier only fixes what the default layout assumed. `/how-it-works` §12
+   passes no prop and matches none of these rules. */
+.hi-growth--inbody .hi-growth__path {
+  /* The big top margin clears a full-width band; inside the column it only
+     has to clear the paragraph above it. */
+  margin: clamp(var(--sp-5), 3vw, var(--sp-6)) 0 0;
+}
+
+.hi-growth--inbody .hi-growth__closing {
+  /* Same reasoning as `.ind-scale__note` on /industries: the hairline still
+     marks the closing copy as the section's band, but the space above it
+     only has to clear the path now. */
+  margin-block-start: var(--sp-5);
+}
+
+
+/* The closing caveat on this page. `.sec-note` supplies the treatment (a
+   hairline above, quieter type); the sentence is longer than the detail
+   pages' one-liners, so the measure is widened from its 62ch default. */
+.hi-stages__note {
+  max-width: 74ch;
+}
+
 
 /* ===========================================================================
-   05 — THE EXAMPLE PANEL  (brief §13)
+   05 — THE "VIEW FAQ" TEXT LINK  (brief §09)
    ---------------------------------------------------------------------------
-   The page's one worked illustration, and the only framed block on it. The
-   frame is not decoration: the brief forbids passing this off as a real
-   customer case, so the panel has to look like an illustration INSIDE the page
-   rather than like a published project. See the component for the second half
-   of that mechanism (the scenario is written in the second person).
-
-   Ground is `--white` on the section's ivory, so the frame has something to
-   separate — a hairline border on the same ivory would be a line drawn for no
-   reason.
+   The brief allows at most a single text link where the full FAQ used to sit.
+   It is a <div>, not a <section> — the page keeps its six-section structure —
+   so this rule only centres it and gives it room before the closing band. The
+   ground is the body's ivory, which the preceding section also uses, so the
+   link reads as the tail of that section rather than as a new one.
    =========================================================================== */
 
-.hi-example__head {
-  margin-block-end: clamp(var(--sp-7), 5vw, var(--sp-8));
-}
-
-.hi-example__panel {
-  padding: clamp(var(--sp-5), 4vw, var(--sp-7));
-  background-color: var(--white);
-  border: var(--rule) solid var(--divider-light);
-}
-
-.hi-example__marker {
-  margin-block-end: var(--sp-5);
-}
-
-/* The premise the six stages depend on, so it is set as a statement rather
-   than as a line of introduction. */
-.hi-example__scenario {
-  max-width: 46ch;
-  font-family: var(--font-display);
-  font-size: var(--fs-lead);
-  font-weight: var(--fw-medium);
-  line-height: var(--lh-snug);
-  letter-spacing: var(--ls-display);
-}
-
-.hi-example__steps {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin: clamp(var(--sp-6), 4vw, var(--sp-7)) 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: var(--rule) solid var(--divider-light);
-}
-
-.hi-example__step {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: var(--sp-1);
-  padding-block: var(--sp-4);
-  border-bottom: var(--rule) solid var(--divider-light);
-}
-
-/* The panel's own frame closes the list, so the last stage does not draw a
-   second line a few pixels above it. */
-.hi-example__step:last-child {
-  border-bottom: none;
-}
-
-@media (min-width: 768px) {
-  .hi-example__step {
-    grid-template-columns: 132px minmax(0, 1fr);
-    column-gap: var(--sp-5);
-    align-items: baseline;
-  }
-}
-
-.hi-example__step-label {
-  font-size: var(--fs-label);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-caps);
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.hi-example__step-desc {
-  max-width: 58ch;
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.62;
-}
-
-/* The two closing caveats on this page. `.sec-note` supplies the treatment (a
-   hairline above, quieter type); these sentences are longer than the detail
-   pages' one-liners, so the measure is widened from its 62ch default. */
-.hi-stages__note,
-.hi-example__note {
-  max-width: 74ch;
+.hi-faq-link {
+  padding-block: var(--section-y-tight);
+  text-align: center;
 }
 
 
 /* ===========================================================================
    06 — PRINT
    ---------------------------------------------------------------------------
-   Process stages, rows and the example's steps are units: a page break through
-   the middle of one splits a label from the sentence it labels.
+   Process stages and rows are units: a page break through the middle of one
+   splits a label from the sentence it labels.
    =========================================================================== */
 
 @media print {
   .hi-stages__item,
-  .hi-rows__row,
-  .hi-example__step {
+  .hi-rows__row {
     break-inside: avoid;
   }
 
