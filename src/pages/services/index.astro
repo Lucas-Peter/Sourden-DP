@@ -6,17 +6,12 @@
  * describes: what Sourden can actually help with, presented as one connected
  * process (Find → Verify → Purchase → Inspect → Ship) rather than a menu.
  *
- * STRUCTURE (services brief)
- *   01 Hero                    §4   eyebrow, H1, copy, two actions, image
- *   02 The sourcing process    §5   five connected stages, each linking out
- *   03 Services overview       §6–11 five alternating service sections
- *   04 One service or all five §12  two paths, neither favoured
- *   05 Who we work with        §13  five groups
- *      Source at your scale    §14  Sourden's own MOQ position
- *   06 What you can expect     §15  five ways of working
- *   07 The Sourden approach    §16  dark editorial band
- *   08 FAQ                     §17  eight questions, native disclosures
- *   09 Final CTA               §18  one primary action
+ * STRUCTURE (services brief, content-simplified 2026-10-02)
+ *   01 Hero                    §4   eyebrow, H1, copy, two actions
+ *   02 Five core services      §6–11 five alternating service sections
+ *   03 How the services connect §5  five connected stages, each linking out
+ *   04 FAQ                     §17  three questions, native disclosures
+ *   05 Final CTA               §18  one primary action
  *
  * WHAT THIS PAGE DELIBERATELY DOES NOT DO
  *   · It does not build the five individual service pages. They stay reserved
@@ -53,13 +48,9 @@ import '../../styles/services-shared.css';
 import '../../styles/services.css';
 
 import FinalCTA from '../../components/FinalCTA.astro';
-import ServicesApproach from '../../components/services/ServicesApproach.astro';
-import ServicesAudience from '../../components/services/ServicesAudience.astro';
-import ServicesExpectations from '../../components/services/ServicesExpectations.astro';
 import ServicesFaq from '../../components/services/ServicesFaq.astro';
 import BackgroundHero from '../../components/BackgroundHero.astro';
 import ServicesOverview from '../../components/services/ServicesOverview.astro';
-import ServicePaths from '../../components/services/ServicePaths.astro';
 import SourcingProcess from '../../components/services/SourcingProcess.astro';
 
 import {
@@ -122,17 +113,9 @@ const schema = [
     titleId="sec-hero-title"
   />
 
-  <SourcingProcess />
-
   <ServicesOverview />
 
-  <ServicePaths />
-
-  <ServicesAudience />
-
-  <ServicesExpectations />
-
-  <ServicesApproach />
+  <SourcingProcess />
 
   <ServicesFaq
     eyebrow={faqIntro.eyebrow}
