@@ -1,0 +1,115 @@
+---
+/**
+ * BackgroundHero — the full-bleed photograph hero with the copy overlaid
+ * ---------------------------------------------------------------------------
+ * Eyebrow, H1, supporting paragraph, one primary and one secondary action,
+ * and an optional breadcrumb trail — laid over a FULL-BLEED photograph, not
+ * beside it. The site's second hero shape, shared by `/` and `/insights`.
+ *
+ * ── WHY THIS IS A SHARED COMPONENT (promoted 2026-10-02) ──────────────────
+ * The shape was born as `/insights`' own component (`InsightsHero.astro`),
+ * because one consumer did not justify core machinery and bolting a
+ * `background` variant onto `ServicesHero` would have put eleven pages' hero
+ * one conditional away from a shape none of them render. When the homepage
+ * adopted the same shape the same day, the promotion rule recorded in
+ * insights.css applied: the component and its `.bg-hero*` rules moved into
+ * the shared core (components.css), and `InsightsHero.astro` was deleted.
+ * Page-specific variation goes through a modifier class (`class` prop, e.g.
+ * the homepage's `bg-hero--home`) styled in that page's own sheet — never by
+ * restyling these core rules from a page sheet.
+ *
+ * ── WHY THE IMAGE IS `alt=""` ─────────────────────────────────────────────
+ * The photograph is decorative. The copy overlaid on it carries the page's
+ * meaning; describing the desk would only add noise before the H1 for a
+ * screen-reader user. Same call as the OG card (`ogDefault`) and as
+ * `insightsHero` before it. Width and height are still emitted — the
+ * layout-shift contract does not care whether the image is decorative.
+ *
+ * ── THE H1: PROP OR SLOT ──────────────────────────────────────────────────
+ * Most pages pass `title` (one string). The homepage's H1 is three
+ * typographically separated stanzas with mandated line breaks, so it passes a
+ * `slot="title"` instead and the prop is its fallback — one element, no
+ * conditional rendering, and the page owns its stanza markup in its own
+ * sheet.
+ *
+ * ── THE SCRIM ─────────────────────────────────────────────────────────────
+ * Text over a photograph is only as legible as the photograph allows. The
+ * scrim is a wash of the hero ivory (`--scrim-hero`, tokens) composed in
+ * components.css: on phones it wipes bottom-up (the copy spans the full
+ * width there); from 768 up it is left-weighted — strongest where the copy
+ * sits, clear before the objects on the right, so the picture still reads as
+ * a picture. The backdrop keeps the object cluster in view on phones by
+ * anchoring the crop at 80% (see the rule in components.css).
+ * ---------------------------------------------------------------------------
+ */
+import Breadcrumbs from './Breadcrumbs.astro';
+import Button from './Button.astro';
+import ArrowLink from './ArrowLink.astro';
+import { img } from '../data/media.js';
+
+interface Props {
+  /** Trail BELOW "Home" — <Breadcrumbs> prepends it. Always end with the
+      current page and leave `href` off that last item. Omit on `/`. */
+  breadcrumbs?: Array<{ label: string; href?: string }>;
+  eyebrow: string;
+  /** The page's single H1, when it is one string. A `slot="title"` overrides
+      it (the homepage's three-stanza H1 takes that path). */
+  title?: string;
+  description: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  /** Key from the image manifest in src/data/media.js — unknown keys throw. */
+  imageKey: string;
+  /** Page modifier hook — e.g. the homepage's `bg-hero--home`, styled in
+      home.css. Page sheets style the MODIFIER, never these core rules. */
+  class?: string;
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId?: string;
+}
+
+const {
+  breadcrumbs,
+  eyebrow,
+  title,
+  description,
+  primaryCta,
+  secondaryCta,
+  imageKey,
+  class: className,
+  titleId = 'bg-hero-title',
+} = Astro.props;
+
+const image = img(imageKey);
+---
+
+<section class:list={['bg-hero', className]} aria-labelledby={titleId}>
+  <div class="bg-hero__backdrop" aria-hidden="true">
+    <img
+      src={image.src}
+      alt=""
+      width={image.width}
+      height={image.height}
+      loading="eager"
+      decoding="sync"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="bg-hero__scrim" aria-hidden="true"></div>
+
+  <div class="container bg-hero__inner">
+    {breadcrumbs && <Breadcrumbs items={breadcrumbs} class="bg-hero__breadcrumbs" />}
+
+    <p class="eyebrow">{eyebrow}</p>
+
+    <h1 class="bg-hero__title" id={titleId}>
+      <slot name="title">{title}</slot>
+    </h1>
+
+    <p class="bg-hero__lead">{description}</p>
+
+    <div class="bg-hero__actions">
+      <Button href={primaryCta.href} label={primaryCta.label} />
+      <ArrowLink href={secondaryCta.href} label={secondaryCta.label} />
+    </div>
+  </div>
+</section>

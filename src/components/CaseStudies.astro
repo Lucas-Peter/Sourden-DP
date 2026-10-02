@@ -1,18 +1,18 @@
 ---
 /**
- * CaseStudies — spec §17
+ * CaseStudies — homepage section (spec §17 discipline, 2026-10-02 layout)
  * A PROOF section, not a marketing-statistics section.
  *
  * Layout: one large featured case + two smaller entries in an editorial
  * composition — never a standard 3-card grid.
  *
- * The visible notice plus the per-card status chips exist so a visitor can
- * never mistake a placeholder for real evidence (spec §39, §43).
+ * HOMEPAGE-ONLY: no /case-studies pages exist, so no entry links anywhere and
+ * there is no "View All" link. Entries are scenarios, never dressed up as
+ * customer projects (spec §39, §43).
  */
 import SectionHeader from './SectionHeader.astro';
 import CaseStudyFeature from './CaseStudyFeature.astro';
 import CaseStudyCard from './CaseStudyCard.astro';
-import ArrowLink from './ArrowLink.astro';
 import {
   caseStudiesIntro,
   featuredCaseStudy,
@@ -29,7 +29,7 @@ import {
         title={caseStudiesIntro.title}
         lead={caseStudiesIntro.supporting}
       />
-      <p class="case-studies__notice">{caseStudiesIntro.placeholderNotice}</p>
+      <p class="case-studies__notice">{caseStudiesIntro.notice}</p>
     </div>
 
     <div class="case-studies__grid">
@@ -38,10 +38,6 @@ import {
       <div class="case-secondary-col" data-reveal-group>
         {secondaryCaseStudies.map((study) => <CaseStudyCard study={study} />)}
       </div>
-    </div>
-
-    <div class="section-foot">
-      <ArrowLink href="/case-studies" label="View All Case Studies" />
     </div>
   </div>
 </section>

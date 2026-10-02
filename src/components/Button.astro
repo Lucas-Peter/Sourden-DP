@@ -15,6 +15,8 @@ interface Props {
   /** `sm` is the compact header variant. */
   size?: 'md' | 'sm';
   arrow?: boolean;
+  /** External destinations (WhatsApp, etc.) open in a new tab, safely. */
+  external?: boolean;
   class?: string;
 }
 
@@ -24,6 +26,7 @@ const {
   variant = 'primary',
   size = 'md',
   arrow = false,
+  external = false,
   class: className = '',
 } = Astro.props;
 
@@ -37,7 +40,7 @@ const classes = [
   .join(' ');
 ---
 
-<a class={classes} href={href}>
+<a class={classes} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>
   <span>{label}</span>
   {arrow && <span class="btn__arrow" aria-hidden="true">→</span>}
 </a>

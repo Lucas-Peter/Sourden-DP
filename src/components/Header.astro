@@ -4,12 +4,14 @@
  * Sticky. Desktop: wordmark + inline nav + CTA. Mobile: wordmark + toggle.
  * Desktop height ~80px, mobile 68px — both driven by tokens.
  *
- * Deliberately absent (spec §6): phone, WhatsApp, login, cart, currency
- * selector, language selector.
+ * The far-right CTA is a WhatsApp chat link (`navCta`), an owner-requested
+ * deviation from spec §6's "no WhatsApp in the header". Everything else spec
+ * §6 asked to leave out — phone, login, cart, currency/language selectors —
+ * is still absent.
  */
 import Button from './Button.astro';
 import MobileMenu from './MobileMenu.astro';
-import { nav, primaryCta } from '../data/site.js';
+import { nav, navCta } from '../data/site.js';
 
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
@@ -22,17 +24,53 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
     <nav class="site-nav" aria-label="Primary">
       <ul class="site-nav__list">
         {
-          nav.map((item) => (
-            <li>
-              <a
-                class="site-nav__link"
-                href={item.href}
-                aria-current={isCurrent(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
+          nav.map((item) =>
+            item.children && item.children.length ? (
+              <li class="site-nav__item has-children">
+                <a
+                  class={[
+                    'site-nav__link',
+                    isCurrent(item.href) ? 'is-current' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  href={item.href}
+                  aria-haspopup="true"
+                >
+                  <span>{item.label}</span>
+                  <span class="site-nav__chevron" aria-hidden="true"></span>
+                </a>
+
+                <div class="site-nav__sub">
+                  <ul class="site-nav__sub-list">
+                    {
+                      item.children.map((child) => (
+                        <li class="site-nav__sub-item">
+                          <a
+                            class="site-nav__sub-link"
+                            href={child.href}
+                            aria-current={isCurrent(child.href) ? 'page' : undefined}
+                          >
+                            {child.label}
+                          </a>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              </li>
+            ) : (
+              <li class="site-nav__item">
+                <a
+                  class="site-nav__link"
+                  href={item.href}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            )
+          )
         }
       </ul>
     </nav>
@@ -40,9 +78,10 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
     <div class="site-header__actions">
       <Button
         class="site-header__cta"
-        href={primaryCta.href}
-        label={primaryCta.label}
+        href={navCta.href}
+        label={navCta.label}
         size="sm"
+        external
       />
 
       <button
@@ -147,4 +186,50 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
       if (event.matches) setOpen(false);
     });
   }
+
+  /* 3. Second-level navigation — the mobile accordion only. A toggle button
+     controls a panel by `aria-controls`, and the panel is shown with the
+     `hidden` attribute (no author `display` on it, so `[hidden]` keeps its
+     native effect). The desktop dropdown is CSS-only (hover / focus-within)
+     and carries no `data-nav-toggle`, so this script never touches it. */
+  var navToggles = Array.prototype.slice.call(document.querySelectorAll('[data-nav-toggle]'));
+
+  var closeSub = function (trigger) {
+    var id = trigger.getAttribute('aria-controls');
+    var panelEl = id ? document.getElementById(id) : null;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (panelEl) panelEl.hidden = true;
+  };
+
+  var closeAllSubs = function () {
+    navToggles.forEach(closeSub);
+  };
+
+  navToggles.forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      var id = trigger.getAttribute('aria-controls');
+      var panelEl = id ? document.getElementById(id) : null;
+      if (!panelEl) return;
+      var willOpen = trigger.getAttribute('aria-expanded') !== 'true';
+      closeAllSubs();
+      if (willOpen) {
+        trigger.setAttribute('aria-expanded', 'true');
+        panelEl.hidden = false;
+      }
+    });
+  });
+
+  /* A click anywhere outside a nav item closes every open sub-level. The
+     mobile panel's own handler still closes the panel itself on a link. */
+  document.addEventListener('click', function (event) {
+    if (event.target.closest('[data-nav-item]')) return;
+    closeAllSubs();
+  });
+
+  /* Escape closes any open sub-level. (The mobile panel closes itself through
+     the handler above, which runs on the same key.) */
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape') return;
+    closeAllSubs();
+  });
 </script>

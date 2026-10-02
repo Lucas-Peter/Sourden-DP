@@ -1,36 +1,73 @@
 ---
 /**
  * MobileMenu — spec §6 / §21 / §28
- * Clean full-width navigation panel. No phone number, no WhatsApp, no login,
- * no cart, no currency or language selector (spec §6).
+ * Clean full-width navigation panel. No phone number, no login, no cart, no
+ * currency or language selector (spec §6). The closing CTA is a WhatsApp chat
+ * link (owner-requested deviation, matching the desktop header button).
  *
  * The panel is hidden with `visibility: hidden` rather than `display: none`,
  * so the open/close transition runs while its links stay out of the tab order.
  * The toggle button lives in Header.astro; this file is the panel only.
  */
 import Button from './Button.astro';
-import { nav, primaryCta } from '../data/site.js';
+import { nav, navCta } from '../data/site.js';
+
+/** Stable id for a second-level panel in the mobile menu, keyed by label. */
+const submenuId = (label: string) =>
+  `mobile-menu-sub-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
 
 <div class="mobile-menu" id="mobile-menu" data-menu-panel>
   <nav aria-label="Mobile">
     <ul class="mobile-menu__list">
       {
-        nav.map((item) => (
-          <li class="mobile-menu__item">
-            <a class="mobile-menu__link" href={item.href}>
-              <span>{item.label}</span>
-              <span class="mobile-menu__arrow" aria-hidden="true">
-                →
-              </span>
-            </a>
-          </li>
-        ))
+        nav.map((item) =>
+          item.children && item.children.length ? (
+            <li class="mobile-menu__item has-children" data-nav-item>
+              <div class="mobile-menu__row">
+                <a class="mobile-menu__link has-children" href={item.href}>
+                  <span>{item.label}</span>
+                </a>
+                <button
+                  class="mobile-menu__trigger"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls={submenuId(item.label)}
+                  aria-label={`Toggle ${item.label} submenu`}
+                  data-nav-toggle
+                >
+                  <span class="mobile-menu__chevron" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <ul class="mobile-menu__sub" id={submenuId(item.label)} data-nav-sub hidden>
+                {
+                  item.children.map((child) => (
+                    <li class="mobile-menu__sub-item">
+                      <a class="mobile-menu__sub-link" href={child.href}>
+                        {child.label}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </li>
+          ) : (
+            <li class="mobile-menu__item">
+              <a class="mobile-menu__link" href={item.href}>
+                <span>{item.label}</span>
+                <span class="mobile-menu__arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          )
+        )
       }
     </ul>
   </nav>
 
   <div class="mobile-menu__cta">
-    <Button href={primaryCta.href} label={primaryCta.label} />
+    <Button href={navCta.href} label={navCta.label} external />
   </div>
 </div>
