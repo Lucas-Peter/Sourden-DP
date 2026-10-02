@@ -13,9 +13,10 @@
    *     them; read end to end they produce the spec §26 sentence). Each
    *     stanza's lines are spans that stack on small screens and join onto one
    *     line at desktop width (see home.css);
-   *   · the `.bg-hero--home` modifier, whose rules in home.css set the desktop
-   *     band height, the display face and the H1 size (48px cap since
-   *     2026-10-02), and space the stanzas.
+   *   · the `.bg-hero--home` modifier, whose rules in home.css set the display
+   *     face and the H1 size (48px cap since 2026-10-02) and space the stanzas
+   *     (band height now lives in the core `.bg-hero__inner`, shared by every
+   *     background hero since 2026-10-02);
    *
    * CHANGED FORM, SAME COMPLIANCE NOTE — the spec draws this section as a
    * split ("Left: 5 columns / Right: 7 columns") while also mandating a 64–72px
