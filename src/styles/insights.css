@@ -14,9 +14,14 @@
      layout through a wrapper, so a collision would apply in one build and not
      the next. Everything here is `.in-`, and nothing here touches `.section`,
      `.eyebrow`, `.arrow-link`, `.media` or `.num`.
-   · It does not restyle the site's buttons, hero or section headers. The hero
-     is `ServicesHero` (`.sec-hero`, in `services-shared.css`, with the image
-     omitted) and the closing band is `HiLinkRows`, imported as-is.
+   · It does not restyle the site's buttons or section headers. The closing
+     band is `HiLinkRows`, imported as-is. The hero was `ServicesHero` until
+     2026-10-02, when the page asked for a full-bleed background hero with the
+     copy overlaid; that was THIS page's own device (`InsightsHero.astro` +
+     `.in-hero*`) until the homepage took the same shape the same day — at
+     which point the promotion rule below applied, and the component and its
+     rules moved to the shared core (`BackgroundHero.astro` + `.bg-hero*` in
+     `components.css`). This sheet no longer styles the hero at all.
 
    ── WHAT WENT OUT OF THIS FILE ─────────────────────────────────────────────
    `.in-feature*` styled §3's featured band and `.in-filter*` styled §4's

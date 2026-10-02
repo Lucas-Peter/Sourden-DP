@@ -26,156 +26,77 @@
 
 
 /* ===========================================================================
-   02 — HERO  (spec §7)
+   02 — HERO  (spec §7, in the site's background form)
+   ---------------------------------------------------------------------------
+   Since 2026-10-02 the homepage hero is the shared full-bleed photograph
+   device: `BackgroundHero.astro` + the `.bg-hero*` rules in components.css.
+   The device owns the layers, the scrim and the copy stack; this sheet owns
+   ONLY the homepage's variation, through the `.bg-hero--home` modifier the
+   component renders from its `class` prop. Page sheets style the modifier —
+   never the core `.bg-hero*` rules themselves.
+
+   What the variation keeps from the spec §7 build:
+   · the desktop band keeps its 680px hero height with the copy vertically
+     centred (the rest of the site's background hero, /insights, is
+     padding-tall — a deliberate difference, not drift);
+   · the H1 keeps the display face, the 500 weight and the 64–72px size, and
+     the three stanzas stay typographically separate (§7 forbids collapsing
+     them). The old split-column frame is gone — with the photograph behind
+     the copy there are no columns left, and the stanza line breaks (always
+     the binding constraint; see the old compliance note in Hero.astro's
+     history) are set by the <br>s in the slot markup.
    =========================================================================== */
 
-.hero {
-  background-color: var(--surface-hero);
-  color: var(--ink);
-  /* The brass seam. The sticky header directly above carries the SAME
-     background value, so at rest this line is the only thing separating the
-     two — it is what makes the band read as a cover rather than as a
-     continuation of the header. */
-  border-top: var(--hero-rule) solid var(--brass);
-  padding-block: clamp(40px, 5.5vw, 80px);
-}
-
+/* The inner becomes the size container that drives --fs-hero-container: the
+   copy now spans the full container width, and 10cqw of that width clamps to
+   the same 72px ceiling the old 699px column settled just under. */
 @media (min-width: 1200px) {
-  .hero {
-    display: flex;
-    align-items: center;
-    min-height: 680px;
-  }
-
-  .hero > .container {
-    width: 100%;
-  }
-}
-
-/* Column geometry.
-   COMPLIANCE NOTE — the spec asks for "Left: 5 columns / Right: 7 columns"
-   while also mandating a 64–72px hero and five exact lines (spec §7). Those two
-   requirements are mathematically incompatible, and the line breaks win because
-   §7 states them as explicit text and forbids collapsing them.
-
-   Measured in Manrope 500 with the hero's letter-spacing (-0.02em), the widest
-   mandated line "Manage the process." is 594px at 64px and 668px at 72px. In
-   this grid a 5-column block is 492.7px wide — narrower than that line even at
-   56px (520px) — so no font size in the spec's range can honour both rules.
-
-   The text block is therefore widened to 7 columns (699px) so every mandated
-   line renders exactly; the image takes the remaining 5 (493px). The image's
-   4:3 aspect ratio and caption are unchanged, which is what §23 actually
-   depends on. Only the column split and the image's rendered width differ.
-
-   This also keeps the hero type inside the mandated range: with
-   --fs-hero-container at 10cqw of the 652.7–699.3px column the H1 settles at
-   65–70px. A 6/6 split would drop it to 56px — below the 64px floor.
-
-   Both spans are variables — set --hero-text-span: 5 to restore the literal
-   split, accepting that "Manage the process." will then wrap to two lines. */
-.hero__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(var(--sp-6), 4vw, var(--sp-8));
-  align-items: center;
-}
-
-@media (min-width: 1200px) {
-  .hero__grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--grid-gap);
-    --hero-text-span: 7;
-    --hero-media-span: 5;
-  }
-
-  .hero__content {
-    grid-column: 1 / span var(--hero-text-span, 7);
-  }
-
-  .hero__media-col {
-    grid-column: span var(--hero-media-span, 5) / -1;
-  }
-}
-
-/* The containment context that drives --fs-hero-container. Applied only where
-   container query units are actually supported, so unsupported browsers keep
-   the plain viewport-based fallback and are never left without a font size. */
-@supports (font-size: 1cqw) {
-  .hero__content {
+  .bg-hero--home .bg-hero__inner {
     container-type: inline-size;
+    min-height: 680px;
+    align-content: center;
   }
 }
 
-.hero__eyebrow {
-  margin-block-end: clamp(var(--sp-4), 1.6vw, var(--sp-6));
-}
-
-.hero__title {
+.bg-hero--home .bg-hero__title {
   font-family: var(--font-display);
-  /* Fallback first: viewport-driven, conservative enough that the mandated
-     line breaks hold. Then, where container query units exist, scale the type
-     to the text column itself so the breaks hold at every desktop width. */
+  /* Fallback first: viewport-driven. Then, where container query units exist,
+     scale to the copy block itself so the mandated line breaks hold at every
+     desktop width. */
   font-size: var(--fs-hero);
   /* spec §3: 500–600. 500 at display scale reads more editorial and premium
      than 600 without losing authority. */
   font-weight: var(--fw-medium);
   line-height: var(--lh-hero);
-  letter-spacing: var(--ls-tight);
-  text-wrap: pretty;
+  /* The stanza breaks own the width; the shared 22ch cap is for wrapped
+     titles and must not fight the <br>s. */
+  max-width: none;
 }
 
 @supports (font-size: 1cqw) {
-  .hero__title {
+  .bg-hero--home .bg-hero__title {
     font-size: var(--fs-hero-container);
   }
 }
 
 /* The three stanzas stay visually separate — they must never collapse into
    one paragraph (spec §7). */
-.hero__stanza {
+.bg-hero--home .bg-hero__stanza {
   display: block;
 }
 
-.hero__stanza + .hero__stanza {
+.bg-hero--home .bg-hero__stanza + .bg-hero__stanza {
   margin-block-start: 0.44em;
 }
 
-.hero__description {
+.bg-hero--home .bg-hero__lead {
   max-width: 540px;
-  margin-block-start: clamp(var(--sp-5), 2.4vw, var(--sp-7));
-  color: var(--muted);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
 }
 
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-5) var(--sp-6);
+.bg-hero--home .bg-hero__actions {
   margin-block-start: clamp(var(--sp-5), 2.6vw, var(--sp-7));
-}
-
-.hero__media-figure {
-  display: grid;
-  gap: var(--sp-3);
-}
-
-.hero__media {
-  height: clamp(360px, 90vw, 450px);
-}
-
-@media (min-width: 768px) {
-  .hero__media {
-    height: clamp(380px, 46vw, 480px);
-  }
-}
-
-@media (min-width: 1200px) {
-  .hero__media {
-    height: 520px;
-  }
 }
 
 /* ===========================================================================
@@ -993,13 +914,13 @@
   }
 }
 
-.case-feature__link {
+.case-feature {
   display: grid;
   gap: var(--sp-5);
 }
 
 @media (min-width: 768px) {
-  .case-feature__link {
+  .case-feature {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -1019,17 +940,12 @@
   text-transform: uppercase;
 }
 
-.case-feature__market,
 .case-secondary__title {
   letter-spacing: var(--ls-display);
 }
 
-.case-feature__market {
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-}
-
-.case-feature__scope {
+.case-feature__scope,
+.case-secondary__scope {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2) var(--sp-4);
@@ -1040,13 +956,16 @@
   text-transform: uppercase;
 }
 
-/* Secondary entries */
-.case-secondary {
-  display: grid;
-  gap: var(--sp-4);
+.case-feature__summary,
+.case-secondary__summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
 }
 
-.case-secondary__link {
+/* Secondary entries */
+.case-secondary {
   display: grid;
   gap: var(--sp-4);
 }
@@ -1063,28 +982,6 @@
   font-weight: var(--fw-semibold);
   line-height: 1.26;
   text-transform: uppercase;
-}
-
-.case-secondary__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-3);
-  color: var(--muted);
-  font-size: var(--fs-label);
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-}
-
-/* Reserved, non-linked slot — case study 03 must never be invented. */
-.case-secondary--reserved {
-  opacity: 1;
-}
-
-.case-secondary__reserved-body {
-  display: grid;
-  gap: var(--sp-3);
-  justify-items: start;
 }
 
 /* ===========================================================================

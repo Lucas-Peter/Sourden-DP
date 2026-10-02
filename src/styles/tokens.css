@@ -84,6 +84,15 @@
      it reads as a cover, which is what the hero is for. */
   --surface-hero: #EFEBE1;
 
+  /* The background heroes (`/` and `/insights`) lay their photograph
+     full-bleed behind the page copy, so the copy needs a light ground to stay
+     legible without hiding the photo. This is `--surface-hero` itself at
+     alpha — the same warm ivory, written as rgba because a gradient stop
+     cannot take opacity from an opaque token and `color-mix()` is past the
+     site's browser floor (Chrome 87 / FF 78 / Safari 14). Consumed by
+     `.bg-hero__scrim` (components.css). */
+  --scrim-hero: rgba(239, 235, 225, 0.88);
+
   --ivory: #F6F5F1; /* main editorial background */
   --white: #FFFFFF; /* alternating sections */
 

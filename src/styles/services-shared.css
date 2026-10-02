@@ -85,8 +85,11 @@
 }
 
 /* ---- no image: one column at every width -------------------------------
-   `/insights` is the only consumer that passes no `imageKey`, and this is what
-   makes that safe rather than a hole where the figure used to be.
+   No page passes no `imageKey` today — `/insights`, the consumer this was
+   written for, left for its own background hero (`InsightsHero.astro`) on
+   2026-10-02 — but the capability stays with the component: a page that
+   renders `ServicesHero` without an image must not fall into a hole where
+   the figure used to be.
 
    Two classes on purpose. `.sec-hero--solo .sec-hero__grid` outranks the
    single-class `.sec-hero__grid` above on its own terms, so the rule holds

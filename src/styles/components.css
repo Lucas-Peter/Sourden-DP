@@ -584,7 +584,9 @@
 
 .site-nav__link {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
   padding-block: 6px;
   color: var(--ink);
   font-size: var(--fs-body-sm);
@@ -608,6 +610,104 @@
 .site-nav__link:focus-visible::after,
 .site-nav__link[aria-current='page']::after {
   transform: scaleX(1);
+}
+
+/* --- dropdown (second level, desktop) ------------------------------------
+   Services and Industries open a panel under their top-level link on hover
+   and on keyboard focus. The top-level item stays a real link — clicking it
+   navigates to the hub page — and the panel is opened purely by CSS
+   (:hover / :focus-within), so no script touches it. The panel is kept in
+   the tab order by hiding it with `opacity` + `pointer-events` rather than
+   `visibility`, so a keyboard user can still reach the child links and the
+   panel reveals itself as focus enters it.
+   ------------------------------------------------------------------------ */
+
+.site-nav__item {
+  position: relative;
+}
+
+/* The top-level link carries the chevron. Its "current section" state is a
+   class, not `aria-current` — a page can carry only one `aria-current`, and
+   that is reserved for the child link matching the current URL. */
+.site-nav__link.is-current::after {
+  transform: scaleX(1);
+}
+
+.site-nav__chevron {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.site-nav__item.has-children:hover .site-nav__chevron,
+.site-nav__item.has-children:focus-within .site-nav__chevron {
+  transform: rotate(-135deg) translateY(-1px);
+}
+
+/* A transparent bridge fills the gap between the link and the panel so the
+   pointer can cross it without leaving the item's hover area. */
+.site-nav__item.has-children::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline: 0;
+  block-size: var(--sp-3);
+}
+
+.site-nav__sub {
+  position: absolute;
+  top: calc(100% + var(--sp-3));
+  inset-inline-start: 0;
+  min-width: 248px;
+  padding-block: var(--sp-2);
+  background-color: var(--white);
+  border: var(--rule) solid var(--stone);
+  border-radius: var(--radius);
+  z-index: var(--z-header);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.site-nav__item.has-children:hover .site-nav__sub,
+.site-nav__item.has-children:focus-within .site-nav__sub {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.site-nav__sub-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__sub-link {
+  display: block;
+  padding: var(--sp-2) var(--sp-4);
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.site-nav__sub-link:hover,
+.site-nav__sub-link:focus-visible {
+  background-color: var(--ivory);
+}
+
+.site-nav__sub-link[aria-current='page'] {
+  color: var(--brass-ink);
 }
 
 .site-header__actions {
@@ -745,6 +845,72 @@
 .mobile-menu__link:hover .mobile-menu__arrow,
 .mobile-menu__link:focus-visible .mobile-menu__arrow {
   transform: translateX(4px);
+}
+
+/* --- accordion (second level, mobile) ------------------------------------
+   Services and Industries become expandable groups. The row splits into a
+   link (tap the label to visit the hub page) and a chevron button (tap to
+   expand the children), so the hub page and the detail pages each stay one
+   tap away. The chevron replaces the plain "→" arrow because a vertical
+   panel needs a down/up affordance.
+   ------------------------------------------------------------------------ */
+
+.mobile-menu__row {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu__link.has-children {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.mobile-menu__trigger {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  /* Widen the tap target to the right without shifting the label. */
+  margin-inline-end: -12px;
+}
+
+.mobile-menu__chevron {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--brass-ink);
+  border-bottom: 1.5px solid var(--brass-ink);
+  transform: rotate(45deg);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.mobile-menu__trigger[aria-expanded='true'] .mobile-menu__chevron {
+  transform: rotate(-135deg);
+}
+
+.mobile-menu__sub {
+  margin: 0;
+  padding: 0 0 var(--sp-3);
+  list-style: none;
+  border-top: var(--rule) solid var(--stone);
+}
+
+.mobile-menu__sub-link {
+  display: block;
+  padding: var(--sp-3) var(--sp-4) var(--sp-3) var(--sp-5);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.mobile-menu__sub-link:hover,
+.mobile-menu__sub-link:focus-visible {
+  color: var(--brass-ink);
 }
 
 .mobile-menu__cta {
@@ -1084,4 +1250,130 @@ body.is-menu-open .sticky-cta {
   .to-top--above-bar {
     bottom: calc(var(--sticky-cta-h) + var(--sp-3) + env(safe-area-inset-bottom, 0px));
   }
+}
+
+/* ===========================================================================
+   BACKGROUND HERO — the full-bleed photograph with the copy overlaid
+   ---------------------------------------------------------------------------
+   The site's second hero shape, shared by `/` and `/insights` (2026-10-02).
+   The image and its scrim are absolutely positioned layers of the section;
+   the copy is the normal flow above them (`.bg-hero__inner` is positioned,
+   which lifts it over the two layers inside the section's own
+   `isolation: isolate` context — no z-index arms race with the rest of the
+   page).
+
+   HISTORY: this device was born as `/insights`' own (`InsightsHero.astro` +
+   `.in-hero*` in insights.css), because one consumer did not justify a core
+   component. The homepage adopted the same shape the same day, and per the
+   promotion rule recorded in insights.css ("the moment a second consumer
+   arrives") the component and its rules moved here — renamed `.bg-hero*`,
+   page-specific variation goes through a page modifier class
+   (`.bg-hero--home`, styled in home.css), never by restyling these rules
+   from a page sheet.
+
+   ── SIZE STAYS HERO-SIZED ─────────────────────────────────────────────────
+   The hero is padding-tall (or, on `/`, its modifier's min-height), never a
+   viewport-height banner; ix-geo.mjs measures that /insights stays that way.
+
+   ── THE SCRIM ─────────────────────────────────────────────────────────────
+   Text over a photograph is only as legible as the photograph allows. One
+   token (`--scrim-hero` — the hero ivory at alpha, tokens.css) makes both
+   gradients: mobile washes bottom-up because the copy spans the full width
+   there; from 768 up the wash is left-weighted, strongest under the copy and
+   clear before the objects on the right, so the picture still reads as a
+   picture.
+   =========================================================================== */
+
+.bg-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--surface-hero); /* the ground while the photo loads */
+  border-top: var(--hero-rule) solid var(--brass);
+}
+
+/* Both layers behind the copy. `inset: 0` pins them to the section box —
+   the section's height comes from the copy, never from the image. */
+.bg-hero__backdrop,
+.bg-hero__backdrop img,
+.bg-hero__scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.bg-hero__backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* PHONES CROP THE WIDE FRAME TO ITS RIGHT SIDE, ON PURPOSE. A phone band
+     is a narrow vertical window over a 16:9 source, so cover keeps only
+     about the middle third of the width. Both photographs put their object
+     cluster right of centre and their empty ivory left (the copy's side on
+     desktop), so a centred crop fills the phone with the EMPTY half and the
+     visitor sees no products at all. Anchoring the crop at 80% keeps the
+     cluster in view; from 768 up the band is wide enough to show the whole
+     composition, so the centring returns. */
+  object-position: 80% center;
+}
+
+@media (min-width: 768px) {
+  .bg-hero__backdrop img {
+    object-position: center;
+  }
+
+  .bg-hero__scrim {
+    background: linear-gradient(
+      to right,
+      var(--scrim-hero) 0%,
+      var(--scrim-hero) 38%,
+      transparent 72%
+    );
+  }
+}
+
+.bg-hero__scrim {
+  background: linear-gradient(
+    to bottom,
+    var(--scrim-hero) 0%,
+    var(--scrim-hero) 55%,
+    transparent 100%
+  );
+}
+
+.bg-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  padding-block: clamp(40px, 5vw, 72px) clamp(56px, 6.5vw, 104px);
+}
+
+/* The core `.breadcrumb` carries its own `margin-block-end`; the grid gap
+   already spaces it from the eyebrow, so the two would add. */
+.bg-hero__breadcrumbs {
+  margin-block-end: 0;
+}
+
+.bg-hero__title {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+  max-width: 22ch;
+}
+
+.bg-hero__lead {
+  max-width: 50ch;
+  color: var(--muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+}
+
+.bg-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-6);
+  margin-block-start: var(--sp-3);
 }
