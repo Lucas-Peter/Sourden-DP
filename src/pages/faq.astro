@@ -63,7 +63,7 @@
  *
  *   `service-detail.css` IS REQUIRED, despite its name. It is the sheet that
  *   styles the shared SECTION DEVICES — `.sec-note`, `.sec-prose`, `.sec-review`,
- *   `.sec-checklist`, `.sec-split`, `.sec-chain`, `.sec-process-dark` — which is why all
+ *   `.sec-checklist`, `.sec-split`, `.sec-related`, `.sec-process-dark` — which is why all
  *   nine other pages that render one of them import it (`/services`, the five
  *   `/services/<slug>` pages, `/industries`, `/how-it-works`, `/about`). §12 of
  *   this page renders `ServiceProse`, so omitting the sheet made that band fall
@@ -120,7 +120,7 @@ const schema = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey={hero.image.key} schema={schema}>
   <ServicesHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}

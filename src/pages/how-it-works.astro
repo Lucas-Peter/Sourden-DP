@@ -91,7 +91,7 @@ const schema = [
 const sectionId = (index) => `hi-${String(index + 2).padStart(2, '0')}`;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} path={path} schema={schema}>
+<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey={hero.image.key} schema={schema}>
   <BackgroundHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
