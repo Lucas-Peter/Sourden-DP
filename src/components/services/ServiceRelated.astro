@@ -1,0 +1,49 @@
+---
+/**
+ * ServiceRelated — the four neighbouring service links
+ * ---------------------------------------------------------------------------
+ * The detail pages' "Related Services" section: four links to the other four
+ * services, the page's own service excluded. It replaces the old five-stage
+ * chain rail — the brief now asks for a plain hand-off list rather than a
+ * process sequence, and a client may start at any stage (cross-page
+ * requirement §1), so nothing here marks a "previous" or "next" service.
+ *
+ * WHY LINKS COME IN AS DATA
+ *   The component never names a service. The caller passes the four links from
+ *   `relatedServices(slug)` in `service-links.js`, so page 1 and page 5 show
+ *   the same four neighbours and a rename in `services.js` follows everywhere.
+ *
+ * WHY A LIST, NOT A RAIL
+ *   Four equal links are scanned as a menu, not read as a sequence. The same
+ *   two-column ruled list the review grid and check-list use keeps the device
+ *   inside the page's established editorial grammar.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  links: Array<{ label: string; href: string }>;
+  tone: 'ivory' | 'white' | 'ink';
+  /** Unique per page: the <section> is labelled by this id. */
+  titleId: string;
+}
+
+const { eyebrow, title, links, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} sec-related`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} class="sec-related__head" />
+
+    <ul class="sec-related__list" data-reveal-group>
+      {links.map((link) => (
+        <li class="sec-related__item">
+          <ArrowLink href={link.href} label={link.label} brass />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

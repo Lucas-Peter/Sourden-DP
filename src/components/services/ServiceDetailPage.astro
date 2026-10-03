@@ -37,17 +37,16 @@ import '../../styles/service-detail.css';
 import FinalCTA from '../FinalCTA.astro';
 import ServicesFaq from './ServicesFaq.astro';
 import ServicesHero from './ServicesHero.astro';
-import ServiceChain from './ServiceChain.astro';
 import ServiceCheckList from './ServiceCheckList.astro';
 import ServiceProcess from './ServiceProcess.astro';
 import ServiceProse from './ServiceProse.astro';
+import ServiceRelated from './ServiceRelated.astro';
 import ServiceReviewGrid from './ServiceReviewGrid.astro';
-import ServiceSplit from './ServiceSplit.astro';
 
 import {
-  chainFor,
   detailBreadcrumbs,
   primaryCta,
+  relatedServices,
   secondaryCta,
   serviceForSlug,
 } from '../../data/service-detail.js';
@@ -186,31 +185,15 @@ const sectionId = (index) => `sec-${page.slug}-${String(index + 1).padStart(2, '
             />
           );
 
-        case 'split':
+        case 'relatedServices':
+          /* The links are never written into a page file: the four neighbours
+             come from `relatedServices(slug)`, which reads the registry and
+             excludes this page's own service. */
           return (
-            <ServiceSplit
+            <ServiceRelated
               eyebrow={section.eyebrow}
               title={section.title}
-              description={section.description}
-              columns={section.columns}
-              links={section.links}
-              note={section.note}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'chain':
-          /* The chain is never written into a page file: the stages, their
-             order and their labels come from the service registry, and the
-             current stage is derived from this page's own slug. */
-          return (
-            <ServiceChain
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              stages={chainFor(page.slug)}
-              note={section.note}
+              links={relatedServices(page.slug)}
               tone={section.tone}
               titleId={titleId}
             />
@@ -222,6 +205,7 @@ const sectionId = (index) => `sec-${page.slug}-${String(index + 1).padStart(2, '
               eyebrow={section.eyebrow}
               title={section.title}
               items={section.items}
+              foot={section.foot}
               titleId={titleId}
             />
           );
