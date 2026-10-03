@@ -1,108 +1,99 @@
 ---
 /**
- * /insights — the SOURDEN content library
+ * /industries — Industries & Product Categories  (Industries brief §01–§16)
  * ---------------------------------------------------------------------------
- * This route used to render a reservation page. It is now the hub: a compact
- * hero, the directory of the twelve planned articles, the five service links,
- * and the closing band.
+ * This route is the site's product-category hub: it answers "what can SOURDEN
+ * source from China?" with a nine-entry directory and routes the visitor to the
+ * nine `/industries/<slug>` pages, which carry the deeper per-category content.
  *
- * STRUCTURE
- *   01 Hero                     §2   eyebrow, H1, supporting text, two actions
- *   02 Article directory        §5   the grid, its count line and its paging
- *   03 Connection to services   §10  the five services, from the registry
- *   04 Final CTA                §11  closing band, one action
- *
- * IT CARRIED SEVEN BANDS AND NOW CARRIES FOUR
- *   The presentation was simplified to the shape this directory was designed
- *   for. §3's featured band, §4's category chips, §8 and §9 are gone; §10 is
- *   kept because §15 asks the page to link to all five service detail pages and
- *   it is where those links live. `src/data/insights-page.js` holds the full
- *   list, with what each removal means and where the brief's copy for it still
- *   is. The hero has carried a photograph since 2026-10-02 — as a full-bleed
- *   background with the copy overlaid. That shape was this page's own
- *   component until the homepage adopted it the same day, at which point it
- *   was promoted to the shared `BackgroundHero.astro`; see the slot's history
- *   note in `media.js`.
+ * STRUCTURE (2026-10-02, content-simplification pass)
+ *   01 Hero                        eyebrow, H1, one-line copy, two actions
+ *   02 Category directory          nine entries + the scope note
+ *   03 Not sure where it fits?     the "tell us anyway" exit
+ *   04 Our approach                short prose + "How It Works →"
+ *   05 Who we source for           the five buyer types
+ *   06 No fixed MOQ                one statement + one qualifier
+ *   —  "Have questions? View FAQ"  one centred text link, not a section
+ *   +   Final CTA                  one primary action
  *
  * WHAT THIS PAGE DELIBERATELY DOES NOT DO
- *   · It does not build a single article. §13 is explicit: the purpose of this
- *     task is the hub, and the twelve `/insights/<slug>` routes stay reserved —
- *     they resolve, they render the reservation shell, and they carry `noindex`
- *     until their copy exists. Every link to them is live today, so writing an
- *     article later rewrites no link.
- *   · It does not create category pages. §9: "Do not create unnecessary
- *     separate category pages at this stage." The categories are printed on the
- *     cards as tags.
- *   · It does not invent metadata. No dates, authors, reading times, view
- *     counts, "Coming soon" or empty-state messages — §6, §13 and §14 forbid
- *     every one of them by name.
- *   · It does not redesign anything. The hero, the ruled-row list, the buttons,
- *     the arrow links, the reveal device and the closing band are all the
- *     existing site's; only the composition and the card are new, and the card
- *     borrows the homepage's card language without its stylesheet.
- *   · It does not touch the header or the footer (§19.12).
+ *   · It does not reproduce the nine category pages. Each directory entry is
+ *     name + one concise description + "Learn More"; the product-type lists,
+ *     per-category caveats and process detail live on the child pages.
+ *   · It does not duplicate the five-step rail (→ /how-it-works), the five
+ *     service descriptions (→ /services), the FAQ (→ /faq), the five strategies
+ *     or the growth path. Those were removed in this pass — the hub is
+ *     navigation, not a second About / Services / How-It-Works page.
+ *   · It adds no claim the business cannot evidence (see the claims rule in
+ *     `src/data/industries-page.js`).
  *
  * INDEXABILITY
- *   This page is real, so it is indexable and appears in sitemap.xml. Its entry
- *   in `reservedTopLevel` (src/data/routes.js) was deleted when it was
- *   published — that list is what drives the noindex/sitemap split, so
- *   forgetting it would have left a finished, content-rich page excluded from
- *   search. The twelve article routes stay in `detailRoutePaths` and remain
- *   noindex.
+ *   This page is real, so it is indexable and appears in sitemap.xml.
  *
  * IMPORT ORDER IS LOAD-BEARING
- *   Layout first, then the shared sheets, then this page's own — otherwise the
- *   page rules lose every same-specificity conflict against the shared core and
- *   `npm run audit` fails the build. `how-it-works.css` is here for the ruled
- *   rows (`.hi-rows*`) §10 renders; its file name says "how-it-works" because
- *   that page was the device's first consumer, exactly as `/industries` and
- *   `/about` already document for the same sheet.
+ *   Layout first, then the shared sections, then this page's own sheet —
+ *   otherwise these rules lose every same-specificity conflict against the
+ *   shared core. `npm run audit` fails the build if that regresses.
+ *
+ *   This page imports `service-detail.css` for the prose device (`.sec-prose*`)
+ *   rather than carrying its own copy. It no longer imports `services-shared.css`:
+ *   the rail and the FAQ — that sheet's only consumers here — were removed in
+ *   this pass, and the hero is the background `<BackgroundHero>` (core
+ *   `components.css`), not the old `.sec-hero`. See `src/styles/index.css`.
  *
  * WHY A SECTION DISPATCHER
- *   A dispatcher keeps the order, the tones and the content in
- *   `insights-page.js` and nothing about the composition in markup — the
- *   architecture `/industries` and the five service detail pages use — so a
- *   band can be reordered or inserted without touching a template. An unknown
- *   `type` throws rather than rendering nothing, because a typo in a data file
- *   must not quietly delete a section from the page.
+ *   A dispatcher means the page's order, tones and content live in the data
+ *   file and nothing about the composition is buried in markup — the same
+ *   architecture the five service-detail pages use, so a section can be
+ *   reordered or inserted without touching a template.
  * ---------------------------------------------------------------------------
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import '../../styles/services-shared.css';
-import '../../styles/how-it-works.css';
-import '../../styles/insights.css';
+import '../../styles/service-detail.css';
+import '../../styles/industries.css';
 
 import FinalCTA from '../../components/FinalCTA.astro';
+import IndustryDirectory from '../../components/industries/IndustryDirectory.astro';
+import IndustryRows from '../../components/industries/IndustryRows.astro';
+import IndustryScale from '../../components/industries/IndustryScale.astro';
+import ServiceProse from '../../components/services/ServiceProse.astro';
 import BackgroundHero from '../../components/BackgroundHero.astro';
-import HiLinkRows from '../../components/how-it-works/HiLinkRows.astro';
-import InsightsDirectory from '../../components/insights/InsightsDirectory.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
 
-import { breadcrumbs, finalCta, hero, meta, sections } from '../../data/insights-page.js';
+import {
+  breadcrumbs,
+  finalCta,
+  hero,
+  meta,
+  sections,
+} from '../../data/industries-page.js';
 import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
 
-const path = '/insights';
+const path = '/industries';
 
 /**
- * One graph for the page: the page itself and its breadcrumb.
- *
- * No `ItemList` of the twelve articles, deliberately. Structured data exists to
- * describe pages a search engine can usefully visit, and every one of those
- * twelve routes is a `noindex` reservation shell today — declaring them as a
- * list of articles would be asserting content that does not exist, which is the
- * same fabrication the brief forbids in prose.
+ * One graph for the page: the page itself and its breadcrumb. There are no
+ * Service or FAQPage nodes — the related-services band and the FAQ were removed
+ * in this pass, so the structured data must not describe content the page does
+ * not show (a Service node for a service the page no longer lists would be a
+ * structured-data claim about a different page).
  */
 const schema = [
   webPageSchema({ title: meta.title, description: meta.description, path }),
   breadcrumbSchema(breadcrumbItems(breadcrumbs)),
 ];
+
+/**
+ * Every section needs a unique id for `aria-labelledby`.
+ *
+ * Derived from the index rather than written by hand, so inserting a section
+ * cannot produce a duplicate id. Numbered from `index + 2` because the array
+ * starts at the brief's §02 — §01 is the hero, which owns its own id.
+ */
+const sectionId = (index) => `ind-${String(index + 2).padStart(2, '0')}`;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey="insightsHero" schema={schema}>
-  {/* A full-bleed hero: the photograph behind the copy, the copy overlaid.
-      A named 2026-10-02 override of §2's "Do not make the hero overly large"
-      — same four elements plus the §11 secondary, one band tall, never a
-      banner. The device is the shared BackgroundHero (promoted here when the
-      homepage took the same shape). */}
+<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey={hero.image.key} schema={schema}>
   <BackgroundHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
@@ -110,46 +101,84 @@ const schema = [
     description={hero.description}
     primaryCta={hero.primaryCta}
     secondaryCta={hero.secondaryCta}
-    imageKey="insightsHero"
-    titleId="in-hero-title"
+    imageKey={hero.image.key}
+    titleId="ind-01"
   />
 
   {
-    sections.map((section) => {
+    sections.map((section, index) => {
+      const titleId = sectionId(index);
+
       switch (section.type) {
-        case 'directory':
+        case 'prose':
           return (
-            <InsightsDirectory
-              directory={section.directory}
+            <ServiceProse
+              eyebrow={section.eyebrow}
+              title={section.title}
+              paragraphs={section.paragraphs}
+              emphasis={section.emphasis}
               tone={section.tone}
-              titleId={section.titleId}
+              foot={section.foot}
+              links={section.links}
+              titleId={titleId}
             />
           );
 
-        case 'linkRows':
-          /* §10: the five services in registry order, numbered. `numbered` is
-             the list-level flag that reserves the number column — the same
-             split `IndustryRows` and `HiLinkRows` document in their headers. */
+        case 'directory':
+          /* The page's centrepiece. Its nine entries are merged from
+             `industries.js` in the data file — nothing about a category name,
+             number or route is typed into this template. */
           return (
-            <HiLinkRows
+            <IndustryDirectory
+              eyebrow={section.eyebrow}
+              title={section.title}
+              items={section.items}
+              scopeNote={section.scopeNote}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
+        case 'people':
+          return (
+            <IndustryRows
               eyebrow={section.eyebrow}
               title={section.title}
               description={section.description}
               items={section.items}
-              numbered={section.numbered}
+              foot={section.foot}
               tone={section.tone}
-              titleId={section.titleId}
+              titleId={titleId}
+            />
+          );
+
+        case 'scale':
+          return (
+            <IndustryScale
+              eyebrow={section.eyebrow}
+              statement={section.statement}
+              qualifier={section.qualifier}
+              tone={section.tone}
+              titleId={titleId}
             />
           );
 
         default:
+          /* A typo in a `type` string must not render nothing and pass the
+             build — the section would simply vanish from the page. */
           throw new Error(
-            `[/insights] Unknown section type "${section.type}". ` +
-              `See the section vocabulary in src/data/insights-page.js.`
+            `[/industries] Unknown section type "${section.type}" at index ${index}. ` +
+              `See the section vocabulary in src/data/industries-page.js.`
           );
       }
     })
   }
+
+  {/* Brief §09: the full FAQ lives at /faq; one centred text link is enough.
+      A <div>, not a <section>, so the page keeps its six-section structure. */}
+  <div class="container ind-faq-link">
+    <ArrowLink href="/faq" label="Have questions? View FAQ" brass />
+  </div>
 
   <FinalCTA
     eyebrow={finalCta.eyebrow}
