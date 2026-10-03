@@ -16,15 +16,15 @@
  * fails the build if it regresses.
  *
  * ── WHY IT IMPORTS THE SERVICES SHEETS ────────────────────────────────────
- * The hero, the dense check-list, the review grid, the numbered rail and the
- * FAQ are the SAME devices the services pages render — the file names say
- * "services" because the services pages were those devices' first consumer.
- * The brief for these pages says to "use the existing website template, shared
- * header, footer, typography, spacing, components, buttons, responsive
- * behavior, and visual system" and not to create a second visual language, so
- * these are imported rather than re-implemented. `industries.css` supplies the
- * two devices the hub already owns (`.ind-rows`, `.ind-sequence`), and
- * `industry-detail.css` carries the one device these pages add.
+ * The hero, the dense check-list and the FAQ are the SAME devices the services
+ * pages render — the file names say "services" because the services pages were
+ * those devices' first consumer. The brief for these pages says to "use the
+ * existing website template, shared header, footer, typography, spacing,
+ * components, buttons, responsive behavior, and visual system" and not to
+ * create a second visual language, so these are imported rather than
+ * re-implemented. `industries.css` supplies the two devices the hub owns
+ * (`.ind-rows`, `.ind-scale`), and `industry-detail.css` carries the two
+ * devices these pages add (`.ind-source`, `.ind-approach`).
  *
  * ── WHY A SECTION DISPATCHER ──────────────────────────────────────────────
  * The nine pages have the same section vocabulary in the same order with
@@ -53,18 +53,16 @@ import '../../styles/industries.css';
 import '../../styles/industry-detail.css';
 
 import FinalCTA from '../FinalCTA.astro';
-import IndustryNav from './IndustryNav.astro';
+import IndustryApproach from './IndustryApproach.astro';
 import IndustryRows from './IndustryRows.astro';
-import IndustrySequence from './IndustrySequence.astro';
+import IndustryScale from './IndustryScale.astro';
+import IndustrySource from './IndustrySource.astro';
 import ServicesFaq from '../services/ServicesFaq.astro';
 import ServicesHero from '../services/ServicesHero.astro';
 import ServiceCheckList from '../services/ServiceCheckList.astro';
-import ServiceProcess from '../services/ServiceProcess.astro';
-import ServiceReviewGrid from '../services/ServiceReviewGrid.astro';
 
 import {
   industryBreadcrumbs,
-  industryNavFor,
   primaryCta,
   relatedServices,
   secondaryCta,
@@ -118,11 +116,11 @@ const faqSection = page.sections.find((section) => section.type === 'faq');
 
 /**
  * One graph for the page: the page itself, its breadcrumb, a Service node for
- * each of the five services the Related Services band links to, and the FAQ.
+ * each of the four services the Related Services band links to, and the FAQ.
  *
  * The Service nodes are built from the same merged records that band renders,
  * so a structured-data claim can never describe a service the page does not
- * show. `/industries` declares the same five nodes the same way.
+ * show. `/industries` declares the same services the same way.
  */
 const schema = [
   webPageSchema({ title: page.meta.title, description: page.meta.description, path }),
@@ -165,6 +163,21 @@ const sectionId = (index) => `id-${page.slug}-${String(index + 1).padStart(2, '0
       const titleId = sectionId(index);
 
       switch (section.type) {
+        case 'source':
+          return (
+            <IndustrySource
+              eyebrow={section.eyebrow}
+              title={section.title}
+              description={section.description}
+              items={section.items}
+              note={section.note}
+              imageKey={section.image.key}
+              imageCaption={section.image.caption}
+              tone={section.tone}
+              titleId={titleId}
+            />
+          );
+
         case 'checkList':
           return (
             <ServiceCheckList
@@ -179,58 +192,21 @@ const sectionId = (index) => `id-${page.slug}-${String(index + 1).padStart(2, '0
             />
           );
 
-        case 'reviewGrid':
+        case 'approach':
           return (
-            <ServiceReviewGrid
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              items={section.items}
-              note={section.note}
-              foot={section.foot}
-              tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'sequence':
-          return (
-            <IndustrySequence
+            <IndustryApproach
               eyebrow={section.eyebrow}
               title={section.title}
               description={section.description}
               steps={section.steps}
-              foot={section.foot}
               tone={section.tone}
-              titleId={titleId}
-            />
-          );
-
-        case 'process':
-          /* The rail always owns the ink band. Its stages are numbered from the
-             array order by the component itself, and it lays out one column per
-             stage — the brief's process has six where every other rail on the
-             site has five.
-             `ind-process` is the class `/industries` §10 passes for the same
-             reason: `.ind-process .sec-stage__verb` reserves the second line a
-             wrapped stage label needs, so the six descriptions that follow keep
-             one shared top edge. Without it the six labels measure 33px and
-             17px and the whole band staircases. */
-          return (
-            <ServiceProcess
-              class="ind-process"
-              eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              steps={section.steps}
-              note={section.note}
-              foot={section.foot}
               titleId={titleId}
             />
           );
 
         case 'rows':
-          /* The same device `/industries` §11 uses for the five services. */
+          /* The same device `/industries` §05 uses for its five audiences and
+             the services band. */
           return (
             <IndustryRows
               eyebrow={section.eyebrow}
@@ -244,15 +220,14 @@ const sectionId = (index) => `id-${page.slug}-${String(index + 1).padStart(2, '0
             />
           );
 
-        case 'nav':
-          /* The nine categories, from the registry — a page never passes a
-             category name of its own. Only this page's own slug is read. */
+        case 'moq':
+          /* The MOQ position — a statement, not a section with a heading, so
+             <IndustryScale> labels itself with `aria-label` from the eyebrow. */
           return (
-            <IndustryNav
+            <IndustryScale
               eyebrow={section.eyebrow}
-              title={section.title}
-              description={section.description}
-              items={industryNavFor(page.slug)}
+              statement={section.statement}
+              qualifier={section.qualifier}
               tone={section.tone}
               titleId={titleId}
             />

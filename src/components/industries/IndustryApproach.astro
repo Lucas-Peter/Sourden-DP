@@ -1,0 +1,67 @@
+---
+/**
+ * IndustryApproach — "Our Approach" as a short horizontal six-stage flow
+ * ---------------------------------------------------------------------------
+ * The category pages used to state their process twice: a long per-category
+ * "How We Approach" sequence AND a six-stage ink rail. The 2026-10-03 pass
+ * removes both and replaces them with this one light flow — six stages, read
+ * left to right, each a label plus one short sentence. The ink rail now lives
+ * only on `/how-it-works`.
+ *
+ * ── WHY ONE FLOW, NOT TWO DEVICES ─────────────────────────────────────────
+ * The brief's "less explanation, more direct path" applies to the process as
+ * much as to the product lists. A category page does not need to teach the
+ * process twice; it needs to name the six stages and move on.
+ *
+ * ── WHY THE STAGES ARE NUMBERED ───────────────────────────────────────────
+ * The flow is horizontal, so left-to-right order is already the sequence — but
+ * numbers survive the wrapping layouts (three columns on tablet, one on
+ * phone), where a bare label loses its position in the chain. Numbers are
+ * derived from the array order, never typed, so re-ordering the copy renumbers
+ * the page.
+ *
+ * ── WHY THE LABELS ARE <h3> ───────────────────────────────────────────────
+ * These six are the section's topics, not decoration. An h3 each puts them in
+ * the document outline, so the flow can be read as a six-item list by anything
+ * that does not render the layout.
+ *
+ * Styles live in `industry-detail.css` (`.ind-approach*`).
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  steps: Array<{ label: string; description: string }>;
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, description, steps, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} ind-approach`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader
+      id={titleId}
+      eyebrow={eyebrow}
+      title={title}
+      lead={description}
+      class="ind-approach__head"
+    />
+
+    <ol class="ind-approach__list" data-reveal-group>
+      {steps.map((step, index) => (
+        <li class="ind-approach__step">
+          <span class="num ind-approach__num">{String(index + 1).padStart(2, '0')}</span>
+
+          <h3 class="ind-approach__label">{step.label}</h3>
+
+          <p class="ind-approach__desc">{step.description}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

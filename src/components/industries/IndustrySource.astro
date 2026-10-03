@@ -1,0 +1,84 @@
+---
+/**
+ * IndustrySource — "What We Can Source": a category list beside one big image
+ * ---------------------------------------------------------------------------
+ * The category pages' core module (brief §2, strengthened in the 2026-10-03
+ * pass). Left ~45%: the eyebrow, heading, lead, the product categories as a
+ * dense list and a closing note. Right ~55%: one large product-range
+ * photograph. Desktop is text left / image right; mobile is image first, text
+ * after — which is the DOM order, so no CSS reordering and the reading order
+ * stays correct for keyboard and screen-reader users.
+ *
+ * ── WHY ONE LARGE IMAGE AND NOT NINE ──────────────────────────────────────
+ * The brief asks for "more visual proof" and a "large industry product
+ * combination" image, not a product grid. Nine thumbnails would read as an
+ * ecommerce category page; one editorial range shot says "this is the category"
+ * without turning the page into a shop.
+ *
+ * ── WHY THE IMAGE IS FIRST IN THE DOM ─────────────────────────────────────
+ * Same call `ServicesHero` makes: mobile order is image → heading → list,
+ * which is the source order. Desktop moves the image into the right-hand
+ * column with grid placement only.
+ *
+ * ── THE NOTE IS A CAVEAT, NOT A SECOND PARAGRAPH ───────────────────────────
+ * `note` is the brief's own "these are examples, not a fixed catalog" line —
+ * it sits outside the list because it qualifies the list, not the items.
+ *
+ * Styles live in `industry-detail.css` (`.ind-source*`).
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import Media from '../Media.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  items: string[];
+  /** Closing caveat about the list, not one of the items. */
+  note?: string;
+  /** Key from the image manifest in `src/data/media.js` — unknown keys throw. */
+  imageKey: string;
+  /** Caption under the image. Required whenever the image is present. */
+  imageCaption?: string;
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, description, items, note, imageKey, imageCaption, tone, titleId } =
+  Astro.props;
+---
+
+<section class={`section section--${tone} ind-source`} aria-labelledby={titleId}>
+  <div class="container">
+    <div class="ind-source__grid">
+      {/* Image first in the DOM so it reads first on mobile; desktop moves it
+          right with grid placement only (see industry-detail.css). */}
+      <figure class="ind-source__figure">
+        <Media imageKey={imageKey} ratio="4x3" class="ind-source__media" />
+        {imageCaption && <figcaption class="media-caption ind-source__caption">{imageCaption}</figcaption>}
+      </figure>
+
+      <div class="ind-source__body">
+        <SectionHeader
+          id={titleId}
+          eyebrow={eyebrow}
+          title={title}
+          lead={description}
+          class="ind-source__head"
+        />
+
+        {/* Items carry no headings: they are category fragments, and a list of
+            eight <h3>s for "Hair accessories" would flood the outline with
+            entries that are list items, not sections. */}
+        <ul class="ind-source__list" data-reveal-group>
+          {items.map((item) => (
+            <li class="ind-source__item">{item}</li>
+          ))}
+        </ul>
+
+        {note && <p class="sec-note ind-source__note">{note}</p>}
+      </div>
+    </div>
+  </div>
+</section>
