@@ -33,6 +33,9 @@
  * ---------------------------------------------------------------------------
  */
 
+import { readFileSync, existsSync } from 'node:fs';
+import path from 'node:path';
+
 export const IMAGE_DIR = '/images';
 
 /** @typedef {'hero'|'service'|'industry'|'case-study'|'insight'|'social'} ImageRole */
@@ -752,5 +755,73 @@ export function img(key) {
     alt: asset.alt,
     placeholder: Boolean(asset.placeholder),
   };
+}
+
+/**
+ * Widths `scripts/gen-srcset.mjs` is CAPABLE of emitting. The script only
+ * writes those that are smaller than the real file, and records the actual
+ * list in `scripts/.srcset-manifest.json`. `srcsetFor` reads that manifest when
+ * present, so the `srcset` it emits can never reference a variant that does not
+ * exist — even if a slot's declared `width` has drifted from the real file.
+ * This list is only the fallback used when the manifest is absent (e.g. a
+ * component rendered before `prebuild` has run).
+ */
+export const VARIANT_WIDTHS = [640, 960, 1280, 1600];
+
+/**
+ * Lazily read the variant manifest written by `scripts/gen-srcset.mjs`. Cached
+ * after first load. Returns null when absent so callers fall back to
+ * `VARIANT_WIDTHS` filtered by the slot's declared width.
+ */
+let _srcsetManifest = undefined; // undefined = not yet loaded; null = loaded, absent
+function srcsetManifest() {
+  if (_srcsetManifest !== undefined) return _srcsetManifest;
+  try {
+    // Resolved from process.cwd() (the project root) rather than
+    // import.meta.url: Astro/Vite rewrites import.meta.url during the SSG
+    // build, which would break a path relative to this source file. cwd is the
+    // package directory for every npm script and for the Cloudflare build.
+    const manifestPath = path.resolve(process.cwd(), '.srcset-manifest.json');
+    _srcsetManifest = existsSync(manifestPath)
+      ? JSON.parse(readFileSync(manifestPath, 'utf8'))
+      : null;
+  } catch {
+    _srcsetManifest = null;
+  }
+  return _srcsetManifest;
+}
+
+/**
+ * Build a `srcset` string for a manifest slot: every width-bounded variant
+ * below the slot's intrinsic width, then the original at its full width. Pair
+ * with a `sizes` attribute so the browser downloads the smallest file that
+ * fills the rendered box (a 390px phone pulls the 640w variant instead of the
+ * ~1920w original). Throws on unknown keys, like `img`.
+ *
+ * @param {keyof typeof images} key
+ * @returns {string}
+ */
+export function srcsetFor(key) {
+  const asset = images[key];
+  if (!asset) {
+    throw new Error(
+      `[media.js] Unknown image key "${key}". Add it to the images manifest before referencing it.`
+    );
+  }
+  const base = asset.file.replace(/\.webp$/, '');
+
+  const manifest = srcsetManifest();
+  let variantWidths;
+  let intrinsic = asset.width;
+  if (manifest && manifest[asset.file]) {
+    variantWidths = manifest[asset.file].widths;
+    intrinsic = manifest[asset.file].intrinsic || asset.width;
+  } else {
+    variantWidths = VARIANT_WIDTHS.filter((w) => w < asset.width);
+  }
+
+  const parts = variantWidths.map((w) => `${IMAGE_DIR}/${base}@${w}w.webp ${w}w`);
+  parts.push(`${IMAGE_DIR}/${asset.file} ${intrinsic}w`);
+  return parts.join(', ');
 }
 
