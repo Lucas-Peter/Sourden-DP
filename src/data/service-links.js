@@ -8,14 +8,14 @@
  *
  * ── WHY THIS IS A SEPARATE FILE FROM `service-detail.js` ───────────────────
  * `service-detail.js` imports the five page files in order to build
- * `detailPages`. A page file that needs a derived label therefore has to reach
+ * `detailPages`. A page file that needs a derived link therefore has to reach
  * back for it — and if that helper lived in `service-detail.js`, the two would
  * import each other. ES modules tolerate the cycle by handing the importer a
- * partially-initialised namespace, but `CHAIN_LABELS` is a `const` declared
- * after the page imports, so a page file calling `chainLabel()` at module top
- * level would hit the temporal dead zone and throw
- * `Cannot access 'CHAIN_LABELS' before initialization` — at build time, with a
- * message that points at the wrong file.
+ * partially-initialised namespace, but `relatedServices()` is declared after
+ * the page imports, so a page file calling it at module top level would hit
+ * the temporal dead zone and throw
+ * `Cannot access 'relatedServices' before initialization` — at build time,
+ * with a message that points at the wrong file.
  *
  * Moving the registry-derived helpers down here breaks the cycle: page files
  * import this module, `service-detail.js` re-exports from it, and neither
@@ -38,29 +38,6 @@ export { primaryCta };
  * Declared once so the five pages cannot disagree about it.
  */
 export const secondaryCta = { label: 'View All Services', href: '/services' };
-
-/**
- * The process chain's vocabulary.
- *
- * This is a THIRD naming of the same five services, and it needs its own
- * declaration for a reason: the brief writes the chain as the short process
- * words (PRODUCT SOURCING → SUPPLIER VERIFICATION → PURCHASING → QUALITY
- * CONTROL → SHIPPING), which are neither the display titles in `services.js`
- * ("Purchasing Management") nor the footer's `shortTitle`. Left to each page,
- * page 1 would say SHIPPING and page 5 could say FREIGHT, in a section whose
- * entire job is to show that these five are one sequence.
- *
- * Keyed by slug, so a service that is renamed in `services.js` keeps its chain
- * label and a renamed slug fails the build rather than silently dropping out of
- * the chain.
- */
-const CHAIN_LABELS = {
-  'product-sourcing': 'Product Sourcing',
-  'supplier-verification': 'Supplier Verification',
-  'purchasing-order-management': 'Purchasing',
-  'quality-control': 'Quality Control',
-  'shipping-from-china': 'Shipping',
-};
 
 /**
  * Look up a service, or fail the build.
@@ -92,59 +69,13 @@ export function serviceForSlug(slug) {
 }
 
 /**
- * The five services in process order.
- *
- * The order is not re-declared: `services.js` already lists them 01–05 in the
- * order the process runs (Find → Verify → Purchase → Inspect → Ship), and that
- * order is what the homepage, the footer column and `/services` all render. A
- * second ordering here is exactly how two lists drift.
- */
-export const serviceChain = services.map((service) => ({
-  number: service.number,
-  label: CHAIN_LABELS[service.slug] ?? service.title,
-  href: service.href,
-}));
-
-/**
- * The chain with one stage marked as the page the visitor is on.
- *
- * The current stage is not a link to itself. It keeps `aria-current="page"` so
- * assistive technology announces "current page" rather than reading it as
- * another destination.
- *
- * @param {string} currentSlug
- */
-export function chainFor(currentSlug) {
-  requireService(currentSlug);
-  return serviceChain.map((stage) => ({
-    ...stage,
-    current: stage.href === `/services/${currentSlug}`,
-  }));
-}
-
-/**
- * The chain word for one service — the uppercase device vocabulary, not the
- * display title.
- *
- * Used where a page has to NAME another service inside its own prose or in a
- * comparison column ("PRODUCT SOURCING" / "SUPPLIER VERIFICATION"). Deriving it
- * here rather than typing it means the same rename that updates the chain rail
- * updates these labels too.
- *
- * @param {string} slug
- */
-export function chainLabel(slug) {
-  return CHAIN_LABELS[slug] ?? requireService(slug).title;
-}
-
-/**
  * A cross-service link, labelled and pointed by the registry.
  *
- * The brief hands each page a hand-written label for its neighbouring services
- * ("Purchasing & Order Management →"). Typed into five page files, those labels
- * are five more places the service display name can drift — and service 03 has
+ * The brief hands a page a hand-written label for a neighbouring service
+ * ("Purchasing & Order Management →"). Typed into several files, those labels
+ * are more places the service display name can drift — and service 03 has
  * already been renamed once (`Purchasing & Order Management` →
- * `Purchasing Management`). So a page file asks for the link and the registry
+ * `Purchasing Management`). So a page asks for the link and the registry
  * supplies both halves.
  *
  * @param {string} slug
@@ -153,6 +84,25 @@ export function chainLabel(slug) {
 export function serviceLink(slug) {
   const service = requireService(slug);
   return { label: service.title, href: service.href };
+}
+
+/**
+ * The four services OTHER than the page being read, in process order.
+ *
+ * The detail pages' "Related Services" section hands the reader to the four
+ * neighbouring services. Derived from the registry rather than typed per page,
+ * so a page can never mis-name a neighbour or leave one out — and the four
+ * links on page 1 are the same four on page 5, just with the current service
+ * removed.
+ *
+ * @param {string} currentSlug
+ * @returns {{ label: string, href: string }[]}
+ */
+export function relatedServices(currentSlug) {
+  requireService(currentSlug);
+  return services
+    .filter((service) => service.slug !== currentSlug)
+    .map((service) => ({ label: service.title, href: service.href }));
 }
 
 /**

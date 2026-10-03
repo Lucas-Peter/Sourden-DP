@@ -1,31 +1,28 @@
 /**
  * SOURDEN — /services/quality-control
  * ---------------------------------------------------------------------------
- * Every editable word on the Quality Control detail page. Part of the
- * five-page architecture documented in `service-detail.js` and based on the
- * five-page brief (PAGE 4).
+ * Every editable word on the Quality Control detail page. Part of the five-page
+ * architecture documented in `service-detail.js`, with copy mandated verbatim
+ * by the five-page brief (PAGE 4).
  *
- * ── THE SECTION THIS PAGE IS REALLY ABOUT ──────────────────────────────────
- * §05 is the "can and cannot" comparison, and it is the load-bearing section of
- * the page: the brief requires it to stay factual and understated, and §02
- * separately forbids claiming that inspection can detect every possible defect.
- * The five "cannot guarantee" items are therefore as prominent as the six "can
- * help" items — same component, same weight, two columns. A page that listed
- * only the left column would be the kind of claim this site does not make.
+ * ── THE UNIFIED STRUCTURE (2026-10-03) ─────────────────────────────────────
+ * Same eight-section sequence as the other four pages, service-specific copy.
+ * The older "can help / cannot guarantee" comparison was folded into a single
+ * What You Can Expect note; the brief's own caveat stays verbatim there.
  *
- * ── COPY THE BRIEF DID NOT SUPPLY ──────────────────────────────────────────
- * Marked 〔added〕 below. The brief gave headings for §02, §05 and §06 but no
- * eyebrows for §03–§07, no sentences for §03, §04 and §07, and no FAQ answers
- * (only eight questions). Eyebrows for §02 (the service name) and §04
- * (`HOW IT WORKS`) follow page 1's established pattern.
+ * ── WHAT IS NOT IN THIS FILE ───────────────────────────────────────────────
+ *   · Service names, numbers, URLs — merged from `services.js`.
+ *   · The primary and secondary CTAs — declared once in `service-links.js`.
+ *   · The four Related Services links — derived by `relatedServices(slug)`.
  *
  * ── CLAIMS RULE (cross-page requirement §4) ────────────────────────────────
  * No inspection statistic, no defect rate, no pass rate, no certification and
- * no guarantee — the brief permits none of them, and §05 exists precisely to
- * say so in the page's own words.
+ * no guarantee. The FAQ answers "no" plainly to the guarantee question, and the
+ * What You Can Expect note says an inspection cannot detect every defect.
  *
- * ── TONE PER SECTION ───────────────────────────────────────────────────────
- * Hero ivory, process band ink, FAQ ivory, the rest alternating.
+ * ── COPY THE BRIEF DID NOT SUPPLY ──────────────────────────────────────────
+ * Marked 〔added〕: the headings for What We Handle, How It Works, Related
+ * Services, the FAQ band, and the closing band's eyebrow.
  * ---------------------------------------------------------------------------
  */
 
@@ -36,9 +33,9 @@ export const slug = 'quality-control';
    =========================================================================== */
 
 export const meta = {
-  title: 'China Product Quality Control & Inspection | SOURDEN',
+  title: 'China Quality Control & Pre-Shipment Inspection | SOURDEN',
   description:
-    'SOURDEN can arrange product quality checks in China before shipment, including quantity, appearance, specifications and packaging checks.',
+    'SOURDEN can arrange product checks in China before shipment, including quantity, specifications, appearance, packaging and other agreed requirements.',
 };
 
 /* ===========================================================================
@@ -47,13 +44,11 @@ export const meta = {
 
 export const hero = {
   eyebrow: 'QUALITY CONTROL',
-  title: 'Check your order before it leaves China.',
+  title: 'Check the order before it leaves China.',
   description:
     'We can arrange product checks before shipment to identify issues and confirm that the order matches the agreed requirements.',
-  /** Image direction (brief): real product inspection, measuring products,
-   *  checking cartons, factory QC, inspection documentation or product samples.
-   *  The brief bans staged laboratory imagery unless it is genuinely relevant.
-   *  Art direction and crop note live with the slot in `media.js`. */
+  /** Documentary photograph — inspection table, measuring tools, samples.
+      Art direction and crop note live with the slot in `media.js`. */
   image: {
     key: 'serviceQualityControlHero',
     caption: 'PRE-SHIPMENT PRODUCT CHECK',
@@ -69,18 +64,11 @@ export const sections = [
   {
     type: 'prose',
     tone: 'white',
-    eyebrow: 'QUALITY CONTROL',
-    title: 'Problems are easier to address before the goods leave China.',
-    /**
-     * The brief's instruction on this section is that it must not claim
-     * inspection can detect every possible defect — so the second paragraph
-     * lists what a check can actually surface (visible issues, quantity
-     * discrepancies, specification differences, packaging problems) and stops
-     * there.
-     */
+    eyebrow: 'WHAT WE DO',
+    title: 'A check before shipment can reveal problems earlier.',
     paragraphs: [
-      'A quality issue discovered after the goods arrive at their destination can be difficult and expensive to resolve.',
-      'Pre-shipment checks provide an opportunity to identify visible issues, quantity discrepancies, specification differences or packaging problems before the shipment leaves China.',
+      'Once products have been manufactured, discovering a problem after the goods arrive can be more difficult and costly to resolve.',
+      'Where appropriate, we can arrange checks before shipment so potential issues can be identified while the goods are still in China.',
     ],
   },
 
@@ -88,18 +76,34 @@ export const sections = [
   {
     type: 'reviewGrid',
     tone: 'ivory',
-    /** The brief's section label, used as the eyebrow. */
-    eyebrow: 'WHAT CAN BE CHECKED',
-    /** 〔added〕 — the brief named the section but gave no sentence for it. */
+    eyebrow: 'WHAT WE HANDLE',
+    /** 〔added〕 — the brief gives the checks but no heading for the section. */
     title: 'The checks an inspection can cover.',
-    /** Six items — three per column at desktop. */
     items: [
-      { title: 'Quantity', description: 'Check whether the shipment quantity matches the agreed order.' },
-      { title: 'Appearance', description: 'Check visible appearance and workmanship against agreed requirements.' },
-      { title: 'Specifications', description: 'Check relevant dimensions, materials, colors, functions or other agreed specifications where practical.' },
-      { title: 'Packaging', description: 'Check packaging, labels, cartons and other agreed packaging requirements.' },
-      { title: 'Defects', description: 'Identify visible defects or discrepancies according to the agreed inspection criteria.' },
-      { title: 'Photos & Evidence', description: 'Provide photographs or other inspection evidence where appropriate.' },
+      {
+        title: 'Quantity',
+        description: 'Check whether the quantity appears to match the agreed order.',
+      },
+      {
+        title: 'Product Specifications',
+        description: 'Check relevant dimensions, materials, colors, models or other agreed specifications.',
+      },
+      {
+        title: 'Appearance',
+        description: 'Look for visible defects, damage, inconsistencies or other agreed appearance requirements.',
+      },
+      {
+        title: 'Function',
+        description: 'Where applicable, perform basic functional checks based on the product and agreed requirements.',
+      },
+      {
+        title: 'Packaging',
+        description: 'Check packaging condition, labeling and other agreed packaging requirements.',
+      },
+      {
+        title: 'Inspection Findings',
+        description: 'Document relevant findings and provide inspection information such as photos when applicable.',
+      },
     ],
   },
 
@@ -108,59 +112,31 @@ export const sections = [
     type: 'process',
     tone: 'ink',
     eyebrow: 'HOW IT WORKS',
-    /** 〔added〕 — the brief gave the five steps but no heading for the band. */
+    /** 〔added〕 — the brief gives the five steps but no heading for the band. */
     title: 'From agreed criteria to a decision before shipment.',
     /** Numbers derive from array order (01…05), never typed. */
     steps: [
-      { label: 'Define', description: 'Confirm what needs to be checked and the agreed requirements.' },
-      { label: 'Arrange', description: 'Coordinate the inspection with the supplier.' },
-      { label: 'Inspect', description: 'Carry out the agreed product checks before shipment.' },
-      { label: 'Report', description: 'Document relevant findings and provide available evidence.' },
-      { label: 'Decide', description: 'Review the findings and determine the next step before shipment.' },
+      { label: 'Define the Requirements', description: 'We confirm what should be checked before the inspection.' },
+      { label: 'Coordinate the Inspection', description: 'We arrange the inspection with the supplier or relevant inspection resource.' },
+      { label: 'Check the Products', description: 'The agreed product and order requirements are checked.' },
+      { label: 'Review Findings', description: 'Relevant findings are documented and shared for review.' },
+      { label: 'Decide the Next Step', description: 'If an issue is identified, you can decide whether to request correction, rework or another appropriate action.' },
     ],
   },
 
   /* ---------------------------------------------------------------- 05 --- */
   {
-    type: 'split',
+    type: 'checkList',
     tone: 'white',
-    /** 〔added〕 eyebrow. */
-    eyebrow: 'THE LIMITS',
-    title: 'A practical check — not a guarantee.',
-    /**
-     * The brief's copy for this section sits in the lead rather than after the
-     * columns: it is the framing that makes the two lists readable, and a
-     * caveat placed under the lists reads as a footnote instead of a premise.
-     */
-    description:
-      'Quality control is designed to identify issues based on agreed inspection criteria. It can reduce the chance of receiving an order with obvious discrepancies, but no inspection process can guarantee that every possible issue will be identified.',
-    /**
-     * Two columns, same component, same weight. The right-hand list is the
-     * reason this section exists — the brief asks for it explicitly and asks
-     * for the section to stay understated.
-     */
-    columns: [
-      {
-        label: 'QUALITY CONTROL CAN HELP',
-        items: [
-          'Identify visible defects',
-          'Confirm quantities',
-          'Check agreed specifications',
-          'Review packaging',
-          'Provide inspection evidence',
-          'Identify discrepancies before shipment',
-        ],
-      },
-      {
-        label: 'QUALITY CONTROL CANNOT GUARANTEE',
-        items: [
-          'Zero defects',
-          'Perfect long-term product performance',
-          'Every hidden manufacturing issue',
-          'Every issue that may occur after inspection',
-          'Future product performance',
-        ],
-      },
+    eyebrow: 'WHEN YOU NEED THIS',
+    title: 'Consider quality control when the order matters.',
+    items: [
+      'You are placing a larger order.',
+      'You are working with a new supplier.',
+      'The product has important specifications.',
+      'The product is customized.',
+      'Packaging or labeling must meet specific requirements.',
+      'You want to identify obvious issues before shipment.',
     ],
   },
 
@@ -168,85 +144,55 @@ export const sections = [
   {
     type: 'checkList',
     tone: 'ivory',
-    /** 〔added〕 eyebrow. */
-    eyebrow: 'WHEN IT HELPS',
-    /** The brief's section label, written as a sentence. */
-    title: 'When to consider quality control.',
+    eyebrow: 'WHAT YOU CAN EXPECT',
+    title: 'Visibility before shipment.',
     items: [
-      'First order from a new supplier',
-      'Large orders',
-      'Custom products',
-      'Private-label products',
-      'Products with detailed specifications',
-      'Products where appearance matters',
-      'Orders with strict packaging requirements',
-      'Orders where returning goods would be difficult or expensive',
+      'Agreed inspection points',
+      'Quantity checks',
+      'Specification checks',
+      'Appearance checks',
+      'Packaging checks',
+      'Inspection findings and photos when applicable',
     ],
+    note: 'Quality inspection can help identify problems, but no inspection can guarantee that every defect will be detected.',
   },
 
   /* ---------------------------------------------------------------- 07 --- */
   {
-    type: 'chain',
+    type: 'relatedServices',
     tone: 'white',
-    /** The brief's section label, used as the eyebrow. */
-    eyebrow: 'CONNECTED SERVICES',
-    /** 〔added〕 — the brief gave the rail but no sentence heading. */
-    title: 'Inspection is the stage before shipment.',
-    description:
-      'A check is most useful when it is connected to what comes before and after it — the supplier, the purchase and the shipment it clears the way for.',
-    /** Stages come from `chainFor(slug)`; this page never names a service. */
+    eyebrow: 'RELATED SERVICES',
+    /** 〔added〕 — the brief gives the links but no heading for the section. */
+    title: 'Need support beyond quality control?',
   },
 
   /* ---------------------------------------------------------------- 08 --- */
   {
     type: 'faq',
     eyebrow: 'FAQ',
+    /** 〔added〕 — the brief gives the questions but no heading for the band. */
     title: 'Questions about quality control.',
-    /**
-     * The brief lists eight questions and requires that answers avoid absolute
-     * guarantees. Q6 therefore answers "no", and Q7 describes a process rather
-     * than promising an outcome.
-     */
     items: [
       {
-        question: 'What does your quality control service check?',
+        question: 'Do you inspect every product?',
         answer:
-          'Depending on what is agreed, checks can cover quantity, visible appearance and workmanship, specifications, packaging and visible defects. The criteria are confirmed with you before the inspection.',
+          'The inspection scope depends on the order and the requirements agreed for the project. We can determine the appropriate inspection approach based on the product.',
       },
       {
-        question: 'Can you inspect products before shipment?',
+        question: 'What can you check?',
         answer:
-          'Yes. Pre-shipment inspection is the main purpose of this service — it is the point at which a discrepancy can still be acted on before the goods leave China.',
-      },
-      {
-        question: 'Can you inspect a supplier I already use?',
-        answer: 'Yes. The supplier does not need to have been sourced through Sourden.',
-      },
-      {
-        question: 'Can you check quantity and packaging?',
-        answer:
-          'Yes. Quantity and packaging are among the standard checks, including cartons, labels and other agreed packaging requirements.',
+          'Depending on the product, checks may include quantity, specifications, appearance, function, packaging and other agreed requirements.',
       },
       {
         question: 'Can you provide inspection photos?',
-        answer:
-          'Photographs and other available evidence are provided where appropriate, so you can see what the inspection recorded.',
+        answer: 'Photos can be included when appropriate to the inspection arrangement and requirements.',
       },
       {
         question: 'Does inspection guarantee product quality?',
-        answer:
-          'No. Inspection identifies issues against agreed criteria. It cannot guarantee zero defects, and it cannot predict how a product will perform over time.',
-      },
-      {
-        question: 'What happens if an issue is found?',
-        answer:
-          'The findings are documented and shared so the next step can be decided before shipment — which may mean discussing corrections or replacements with the supplier, or reviewing the order.',
-      },
-      {
-        question: 'Can you arrange shipping after inspection?',
-        answer: 'Yes. Shipping can be coordinated as the next stage once the goods are checked.',
+        answer: 'No. Inspection can help identify issues before shipment, but it cannot guarantee that every defect will be detected.',
       },
     ],
+    foot: { label: 'View All FAQs', href: '/faq' },
   },
 ];
 
@@ -255,10 +201,10 @@ export const sections = [
    =========================================================================== */
 
 export const finalCta = {
+  /** 〔added〕 — the brief gives the heading and text but no eyebrow. */
   eyebrow: 'START WITH A REQUEST',
   title: 'Want your order checked before shipment?',
-  description:
-    "Tell us what you're buying and what needs to be checked. We'll help determine the appropriate inspection requirements.",
+  description: 'Tell us about the product and the requirements you want checked.',
 };
 
 /* ===========================================================================

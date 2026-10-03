@@ -2,38 +2,32 @@
  * SOURDEN — /services/purchasing-order-management
  * ---------------------------------------------------------------------------
  * Every editable word on the Purchasing Management detail page. Part of the
- * five-page architecture documented in `service-detail.js` and based on the
- * five-page brief (PAGE 3).
+ * five-page architecture documented in `service-detail.js`, with copy mandated
+ * verbatim by the five-page brief (PAGE 3).
  *
  * ── THE ONE PLACE THIS PAGE DELIBERATELY DIFFERS FROM THE BRIEF ────────────
- * The brief writes the service name as "Purchasing & Order Management" — in the
- * hero eyebrow and in the link label on other pages. The site was renamed to
- * **Purchasing Management** before this page was written, because the longer
- * name wrapped at 390px, pushed the arrow to the end of the line and broke the
- * five-arrow alignment on `/services`. The slug, the URL and the SEO title are
- * unchanged; only the display layer follows the rename.
+ * The brief writes the hero eyebrow as "PURCHASING & ORDER MANAGEMENT". The
+ * site's display name is **Purchasing Management** — the longer name wrapped at
+ * 390px and broke the arrow alignment on `/services`, so the site was renamed
+ * and only the display layer follows it. The SEO title keeps the long wording,
+ * because a title tag is a search string, not a display name.
  *
- *   · Hero eyebrow      → `PURCHASING MANAGEMENT` (the site's display name)
- *   · SEO title         → the brief's string, verbatim. A title tag is a search
- *                         string, not a display name, and it carries the
- *                         "order management" wording a buyer actually types.
- *   · Cross-service links → labelled by the registry, so they read
- *                         "Purchasing Management" here and everywhere else.
+ * ── THE UNIFIED STRUCTURE (2026-10-03) ─────────────────────────────────────
+ * Same eight-section sequence as the other four pages, service-specific copy.
  *
- * ── COPY THE BRIEF DID NOT SUPPLY ──────────────────────────────────────────
- * Marked 〔added〕 below. The brief gave labels and body copy for §02, §05, §07
- * and §08 but no eyebrows for §03–§06, no sentence headings for §03, §04 and
- * §07, and no FAQ answers. Chapter 3's eyebrows for §02 (the service name) and
- * §04 (`HOW IT WORKS`) are the pattern page 1 established, not additions.
+ * ── WHAT IS NOT IN THIS FILE ───────────────────────────────────────────────
+ *   · Service names, numbers, URLs — merged from `services.js`.
+ *   · The primary and secondary CTAs — declared once in `service-links.js`.
+ *   · The four Related Services links — derived by `relatedServices(slug)`.
  *
  * ── CLAIMS RULE (cross-page requirement §4) ────────────────────────────────
- * The brief's specific instruction for this page is to avoid promising
- * real-time tracking or guaranteed production schedules. Nothing here asserts a
- * client count, an order volume, a success rate or a certification, and no
- * answer in the FAQ promises a date.
+ * No client count, order volume, success rate or certification; nothing
+ * promises a production date or real-time tracking. The What You Can Expect
+ * note keeps approval responsibility with the buyer.
  *
- * ── TONE PER SECTION ───────────────────────────────────────────────────────
- * Hero ivory, process band ink, FAQ ivory, the rest alternating.
+ * ── COPY THE BRIEF DID NOT SUPPLY ──────────────────────────────────────────
+ * Marked 〔added〕: the headings for What We Handle, How It Works, Related
+ * Services, the FAQ band, and the closing band's eyebrow.
  * ---------------------------------------------------------------------------
  */
 
@@ -44,9 +38,9 @@ export const slug = 'purchasing-order-management';
    =========================================================================== */
 
 export const meta = {
-  title: 'China Purchasing & Order Management | SOURDEN',
+  title: 'Purchasing & Order Management in China | SOURDEN',
   description:
-    'SOURDEN coordinates purchasing, supplier communication, production follow-up and order management for products sourced from China.',
+    'SOURDEN coordinates purchasing and supplier communication in China, from quotation confirmation and order placement to production follow-up and order management.',
 };
 
 /* ===========================================================================
@@ -54,13 +48,14 @@ export const meta = {
    =========================================================================== */
 
 export const hero = {
+  /* The site's display name, not the brief's "PURCHASING & ORDER MANAGEMENT" —
+     see the header note. */
   eyebrow: 'PURCHASING MANAGEMENT',
-  title: 'Keep your China orders moving.',
+  title: 'Let us manage the order with your supplier.',
   description:
-    "Once the supplier is chosen, we can coordinate purchasing, supplier communication, production progress and order details so you don't have to manage every step from overseas.",
-  /** Image direction (brief): production follow-up, order documents, warehouse,
-   *  packaging, goods preparation, factory communication. Art direction and
-   *  crop note live with the slot in `media.js`. */
+    "Once you've chosen a supplier, SOURDEN can coordinate purchasing, supplier communication, production follow-up and order details from China.",
+  /** Documentary photograph — order documents, packaging, coordination workspace.
+      Art direction and crop note live with the slot in `media.js`. */
   image: {
     key: 'servicePurchasingManagementHero',
     caption: 'PRODUCTION FOLLOW-UP',
@@ -76,11 +71,11 @@ export const sections = [
   {
     type: 'prose',
     tone: 'white',
-    eyebrow: 'PURCHASING MANAGEMENT',
-    title: 'Choosing the supplier is not the end of the process.',
+    eyebrow: 'WHAT WE DO',
+    title: 'One partner between you and the supplier.',
     paragraphs: [
-      'Once a supplier has been selected, the order still needs to be coordinated. Specifications need to be confirmed, purchasing details need to be communicated, production needs to be followed up and shipment preparation needs to be organized.',
-      'Sourden can act as the coordination point between you and the supplier throughout this process.',
+      'Managing a China order can involve repeated communication, changing details, production follow-up and coordination between different parties.',
+      "We help organize that process so you don't have to manage every supplier interaction yourself.",
     ],
   },
 
@@ -88,24 +83,34 @@ export const sections = [
   {
     type: 'reviewGrid',
     tone: 'ivory',
-    /** The brief's section label, used as the eyebrow. */
     eyebrow: 'WHAT WE HANDLE',
-    /** 〔added〕 — the brief named the section but gave no sentence for it. */
+    /** 〔added〕 — the brief gives the tasks but no heading for the section. */
     title: 'The parts of the order we take on.',
-    /**
-     * Eight items — four per column at desktop. Each is a coordination task,
-     * phrased as something followed up or confirmed, never as something
-     * guaranteed to complete on a given day.
-     */
     items: [
-      { title: 'Quotation Coordination', description: 'Confirm product details, quantities and supplier quotations.' },
-      { title: 'Purchase Coordination', description: 'Coordinate purchasing based on the agreed order requirements.' },
-      { title: 'Supplier Communication', description: 'Communicate with suppliers regarding product and order details.' },
-      { title: 'Production Follow-Up', description: 'Follow up on production progress and relevant timing.' },
-      { title: 'Specification Confirmation', description: 'Confirm agreed product specifications, packaging and other order details.' },
-      { title: 'Packaging Coordination', description: 'Coordinate packaging requirements where applicable.' },
-      { title: 'Order Progress', description: 'Keep track of important order milestones and communicate relevant updates.' },
-      { title: 'Pre-Shipment Coordination', description: 'Coordinate the information and preparation needed before goods are shipped.' },
+      {
+        title: 'Quotation Confirmation',
+        description: 'Confirm product details, quantities, pricing and other order information before purchasing.',
+      },
+      {
+        title: 'Supplier Communication',
+        description: 'Communicate with suppliers regarding product and order requirements.',
+      },
+      {
+        title: 'Order Placement',
+        description: 'Coordinate the purchasing process once the order details have been confirmed.',
+      },
+      {
+        title: 'Production Follow-Up',
+        description: 'Follow up with suppliers on production progress and relevant order updates.',
+      },
+      {
+        title: 'Packaging & Labeling',
+        description: 'Coordinate agreed packaging, labeling or other order requirements when applicable.',
+      },
+      {
+        title: 'Issue Coordination',
+        description: 'Help communicate with the supplier when questions or issues arise during the order process.',
+      },
     ],
   },
 
@@ -114,27 +119,30 @@ export const sections = [
     type: 'process',
     tone: 'ink',
     eyebrow: 'HOW IT WORKS',
-    /** 〔added〕 — the brief gave the five steps but no heading for the band. */
+    /** 〔added〕 — the brief gives the five steps but no heading for the band. */
     title: 'From confirmation through to shipment.',
     /** Numbers derive from array order (01…05), never typed. */
     steps: [
-      { label: 'Confirm', description: 'Confirm supplier, product specifications, quantity and pricing.' },
-      { label: 'Purchase', description: 'Coordinate the purchase order with the supplier.' },
-      { label: 'Follow Up', description: 'Track production progress and communicate relevant updates.' },
-      { label: 'Check', description: 'Coordinate quality control or other pre-shipment requirements where needed.' },
-      { label: 'Prepare', description: 'Coordinate shipment preparation and move the order into the shipping stage.' },
+      { label: 'Confirm', description: 'Confirm the supplier, product specifications, quantity and quotation.' },
+      { label: 'Place the Order', description: 'Coordinate the order with the supplier.' },
+      { label: 'Follow Up', description: 'Monitor production progress and communicate relevant updates.' },
+      { label: 'Confirm Before Shipment', description: 'Coordinate agreed product, quantity, packaging or quality requirements before shipment.' },
+      { label: 'Ship', description: 'Once the order is ready, coordinate the next shipping step.' },
     ],
   },
 
   /* ---------------------------------------------------------------- 05 --- */
   {
-    type: 'prose',
+    type: 'checkList',
     tone: 'white',
-    /** The brief's section label, used as the eyebrow. */
-    eyebrow: 'ONE POINT OF CONTACT',
-    title: 'One point of contact across the order.',
-    paragraphs: [
-      'Managing suppliers from overseas can create unnecessary communication and coordination work. Sourden provides one point of contact for the sourcing process, helping keep supplier communication, purchasing and order progress organized.',
+    eyebrow: 'WHEN YOU NEED THIS',
+    title: 'You already have a supplier. You just need someone to manage the process.',
+    items: [
+      'You already have a supplier in China.',
+      "You don't want to communicate with the supplier directly.",
+      'You need help following up production.',
+      'You have multiple order details that need coordination.',
+      'You need someone in China to help manage the purchasing process.',
     ],
   },
 
@@ -142,86 +150,54 @@ export const sections = [
   {
     type: 'checkList',
     tone: 'ivory',
-    /** 〔added〕 eyebrow. */
-    eyebrow: 'WHEN IT HELPS',
-    /** The brief's section label, written as a sentence. */
-    title: 'When this service is useful.',
+    eyebrow: 'WHAT YOU CAN EXPECT',
+    title: 'Less supplier communication for you.',
     items: [
-      'You already have a supplier',
-      'You have multiple suppliers',
-      'You are placing repeat orders',
-      "You don't have a China-based purchasing team",
-      'You need someone to communicate with suppliers locally',
-      'You need production follow-up',
-      'You want purchasing connected with QC and shipping',
+      'Order detail coordination',
+      'Supplier communication',
+      'Purchasing coordination',
+      'Production follow-up',
+      'Packaging and labeling follow-up when applicable',
+      'Communication around order issues',
     ],
+    note: 'You remain responsible for approving the product, specifications, quotation and order. SOURDEN coordinates the sourcing work around those decisions.',
   },
 
   /* ---------------------------------------------------------------- 07 --- */
   {
-    type: 'chain',
+    type: 'relatedServices',
     tone: 'white',
-    /** The brief's section label, used as the eyebrow. */
-    eyebrow: 'CONNECTED SERVICES',
-    /** 〔added〕 — the brief gave the links but no sentence heading. */
-    title: 'Purchasing sits between verification and inspection.',
-    description:
-      'Purchasing is often one part of a larger sourcing process. Sourden can coordinate the stages before and after the purchase where required.',
-    /**
-     * The five stages come from `chainFor(slug)`; the page never names another
-     * service. The brief lists four destinations for this section, and the rail
-     * shows exactly those four as links — the fifth stage is this page, marked
-     * current rather than linked to itself.
-     */
+    eyebrow: 'RELATED SERVICES',
+    /** 〔added〕 — the brief gives the links but no heading for the section. */
+    title: 'Need support beyond purchasing?',
   },
 
   /* ---------------------------------------------------------------- 08 --- */
   {
     type: 'faq',
     eyebrow: 'FAQ',
+    /** 〔added〕 — the brief gives the questions but no heading for the band. */
     title: 'Questions about purchasing and order management.',
-    /**
-     * The brief lists the seven questions and requires that nothing promises
-     * real-time tracking or a guaranteed production schedule. Every date-shaped
-     * answer below is therefore about what is communicated, not when.
-     */
     items: [
       {
-        question: 'Can you purchase from a supplier I already use?',
+        question: 'Can you work with a supplier I already have?',
         answer:
-          'Yes. If you already have a supplier, we can work with them directly and coordinate the order from there.',
+          "Yes. You don't have to use SOURDEN to find the supplier. If you already have a suitable supplier, we can discuss helping with purchasing and order coordination.",
       },
       {
-        question: 'Can you communicate directly with my supplier?',
-        answer:
-          'Yes. Supplier communication is one of the main parts of this service — product details, order requirements, production progress and shipment preparation.',
+        question: 'Can you follow up production?',
+        answer: 'Yes. We can communicate with the supplier and follow up on production progress and relevant order details.',
       },
       {
-        question: 'Can you manage repeat orders?',
-        answer:
-          'Yes. Repeat orders are usually simpler because the product, specifications and supplier are already established.',
+        question: 'Can you handle packaging or labeling requirements?',
+        answer: 'Yes, when the supplier is able to provide the requested packaging or labeling, we can help coordinate those requirements.',
       },
       {
-        question: 'Can you follow production progress?',
-        answer:
-          'Yes. We follow up on production progress and pass on relevant updates. Updates depend on what the supplier reports, so this is not real-time tracking.',
-      },
-      {
-        question: 'Can you handle several suppliers in one order?',
-        answer:
-          'Depending on the order, several suppliers can be coordinated. It is worth telling us at the start so the requirements and the preparation can be planned together.',
-      },
-      {
-        question: 'Can you arrange quality control before shipment?',
-        answer:
-          'Yes. Product checks can be coordinated before shipment where you need them.',
-      },
-      {
-        question: 'Can you also arrange shipping?',
-        answer:
-          'Yes. Shipment preparation and shipping can be coordinated as the next stage of the order.',
+        question: 'Who approves the final order?',
+        answer: 'You do. We coordinate the process, but you remain responsible for approving the product, specifications, quotation and order.',
       },
     ],
+    foot: { label: 'View All FAQs', href: '/faq' },
   },
 ];
 
@@ -230,9 +206,10 @@ export const sections = [
    =========================================================================== */
 
 export const finalCta = {
+  /** 〔added〕 — the brief gives the heading and text but no eyebrow. */
   eyebrow: 'START WITH A REQUEST',
-  title: 'Need someone to coordinate your China order?',
-  description: "Tell us what you're purchasing, where the supplier is and what support you need.",
+  title: 'Already have a supplier?',
+  description: "Tell us what you need managed, and we'll help determine how we can support the order.",
 };
 
 /* ===========================================================================

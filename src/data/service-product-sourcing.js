@@ -2,36 +2,39 @@
  * SOURDEN — /services/product-sourcing
  * ---------------------------------------------------------------------------
  * Every editable word on the Product Sourcing detail page. Part of the five-page
- * architecture documented in `service-detail.js` and required verbatim by the
- * five-page brief (PAGE 1).
+ * architecture documented in `service-detail.js`, with copy mandated verbatim
+ * by the five-page brief (PAGE 1).
  *
- * WHAT IS NOT IN THIS FILE
+ * ── THE UNIFIED STRUCTURE (2026-10-03) ─────────────────────────────────────
+ * All five pages now share one section sequence — What We Do → What We Handle →
+ * How It Works → When You Need This → What You Can Expect → Related Services →
+ * FAQ — each filled with service-specific copy. The older "what we source",
+ * "starting a request", MOQ-prose and process-chain sections were removed
+ * because they repeated `/services`, `/industries` and `/how-it-works`.
+ *
+ * ── WHAT IS NOT IN THIS FILE ───────────────────────────────────────────────
  *   · Service names, numbers, URLs — merged from `services.js` by
- *     `detailBreadcrumbs()` and `chainFor()`.
+ *     `detailBreadcrumbs()`.
  *   · The primary CTA ("Start a Sourcing Request" → `/sourcing-request`) and
  *     the secondary CTA ("View All Services" → `/services`) — declared once in
- *     `service-detail.js`, because cross-page requirement §2 fixes both.
- *   · The nine category names in §03 — merged from `industries.js`, see the
- *     note on that section below.
- *   · The chain labels in §08 — declared once in `service-detail.js`.
+ *     `service-links.js`, because cross-page requirement §2 fixes both.
+ *   · The four Related Services links — derived by `relatedServices(slug)`,
+ *     which reads the registry and excludes this page.
  *
  * ── CLAIMS RULE (cross-page requirement §4) ────────────────────────────────
  * Nothing here asserts a client or supplier count, years in business, a success
  * rate, an inspection statistic, a testimonial, a certification, a case study,
  * a logo or an award. No guaranteed quality, no risk-free sourcing, no "100%
- * reliable suppliers", no "cheapest supplier", no guaranteed delivery, no zero
- * risk. The MOQ wording is the §07 rule: Sourden does not impose its OWN
- * minimum order quantity — it is NOT a claim that Chinese factories have none.
+ * reliable suppliers", no "cheapest supplier", no guaranteed delivery. The one
+ * MOQ wording is the §07 rule: SOURDEN does not impose its OWN minimum — it is
+ * NOT a claim that Chinese factories have none.
  *
  * ── TONE PER SECTION ───────────────────────────────────────────────────────
  * Stated on every section so the page's ivory → white → … → ink rhythm is
- * visible here rather than buried in a stylesheet. The hero is always ivory,
- * the process band always ink and the FAQ always ivory (those three devices own
- * their own ground — see `service-detail.js`). The order below alternates.
+ * visible here rather than buried in a stylesheet. Hero ivory, process band ink,
+ * FAQ ivory — those three devices own their own ground; the rest alternate.
  * ---------------------------------------------------------------------------
  */
-
-import { industries } from './industries.js';
 
 export const slug = 'product-sourcing';
 
@@ -42,7 +45,7 @@ export const slug = 'product-sourcing';
 export const meta = {
   title: 'Product Sourcing from China | SOURDEN',
   description:
-    'SOURDEN helps businesses source products from China through supplier research, product comparison, quotation and sourcing coordination.',
+    'SOURDEN helps businesses and buyers source products from China by researching suitable suppliers, comparing options and matching products to their requirements.',
 };
 
 /* ===========================================================================
@@ -53,13 +56,9 @@ export const hero = {
   eyebrow: 'PRODUCT SOURCING',
   title: 'Find the right products and suppliers in China.',
   description:
-    'We research suitable products and suppliers based on your specifications, target pricing, quantity, destination and business requirements — so you can move from an idea to practical sourcing options.',
-  /**
-   * Image direction (brief): a documentary photograph of product sourcing,
-   * supplier samples, product inspection, factory materials, product
-   * development, or someone reviewing products. NOT a generic handshake.
-   * The art direction and crop note live with the slot in `media.js`.
-   */
+    "Tell us what you need, and we'll research suitable sourcing options based on your product requirements, quantity, target pricing and other priorities.",
+  /** Documentary photograph — samples, comparison materials, sourcing workspace.
+      Art direction and crop note live with the slot in `media.js`. */
   image: {
     key: 'serviceProductSourcingHero',
     caption: 'SAMPLE & SPECIFICATION REVIEW',
@@ -75,209 +74,141 @@ export const sections = [
   {
     type: 'prose',
     tone: 'white',
-    eyebrow: 'PRODUCT SOURCING',
-    title: 'Finding a supplier is only the beginning.',
+    eyebrow: 'WHAT WE DO',
+    title: 'From product requirements to suitable sourcing options.',
     paragraphs: [
-      'Product sourcing is about more than finding a product that looks right online. The supplier, specifications, pricing, quantity, customization requirements and production capabilities all affect whether a sourcing option actually works for your business.',
-      'Sourden researches and compares suitable sourcing options based on the requirements you provide, helping you move from a product idea to suppliers you can evaluate and work with.',
+      'Finding a product in China is only the beginning. The right supplier also needs to fit your specifications, quantity, quality expectations, target pricing and sourcing goals.',
+      'We research and compare suitable options so you can make a more informed decision before moving forward.',
     ],
   },
 
   /* ---------------------------------------------------------------- 03 --- */
   {
-    type: 'checkList',
+    type: 'reviewGrid',
     tone: 'ivory',
-    eyebrow: 'WHAT WE SOURCE',
-    title: 'From standard products to specific requirements.',
-    description:
-      'We work across a wide range of product categories and can research both standard products and more specific sourcing requirements.',
-    /**
-     * NINE CATEGORIES, MERGED FROM `industries.js`.
-     *
-     * The brief lists them with the same nine names in the same order, with one
-     * exception: it writes the last one as "Clothing, Shoes & Bags" where the
-     * rest of the site (homepage grid, footer column, `/industries`) says
-     * "Apparel, Footwear & Bags". Two names for one category on two pages of
-     * one site is exactly the drift this project merges data to avoid, and the
-     * category registry is the older, published name. Flagged to the business —
-     * if "Clothing, Shoes & Bags" is preferred, rename it in `industries.js`
-     * and every surface follows.
-     *
-     * Deriving also keeps this page's promise honest: the copy above says
-     * Sourden works beyond the list, and the note below invites a specific
-     * enquiry. This is a set of entry points, not a catalogue.
-     */
-    items: industries.map((category) => category.title),
-    note: 'Looking for something specific? Tell us what you need.',
-    foot: { label: 'Start a Sourcing Request', href: '/sourcing-request' },
+    eyebrow: 'WHAT WE HANDLE',
+    title: 'What we look at when sourcing a product.',
+    items: [
+      {
+        title: 'Product Requirements',
+        description: 'We work from your product specifications, materials, dimensions, functions, colors, packaging and other requirements.',
+      },
+      {
+        title: 'Supplier Research',
+        description: 'We research suppliers that appear suitable for the product and requirements you provide.',
+      },
+      {
+        title: 'Product & Price Comparison',
+        description: 'We compare available products, specifications, quotations, MOQ and other relevant factors.',
+      },
+      {
+        title: 'Customization',
+        description: 'When required, we look for suppliers that can support custom specifications, branding, packaging or other modifications.',
+      },
+      {
+        title: 'Samples',
+        description: 'When a sample is appropriate, we can coordinate sample requests before a larger order.',
+      },
+      {
+        title: 'Sourcing Options',
+        description: 'We organize the relevant information so you can review and compare the available options.',
+      },
+    ],
   },
 
   /* ---------------------------------------------------------------- 04 --- */
   {
-    type: 'reviewGrid',
-    tone: 'white',
-    eyebrow: 'OUR SOURCING CRITERIA',
-    title: 'The right supplier depends on more than price.',
-    description: 'When researching suppliers, we consider the factors that matter to the specific project.',
-    /**
-     * The brief's instruction on this section is that it must NOT imply every
-     * factor can always be independently verified. So these are written as the
-     * questions we ask of a supplier, never as things already confirmed — which
-     * is also why no item says "verified", "checked" or "confirmed".
-     */
-    items: [
-      {
-        title: 'Product Fit',
-        description: 'Does the supplier offer the product, specifications or customization requirements you need?',
-      },
-      {
-        title: 'Target Pricing',
-        description: "How does the supplier's quotation compare with your target price and expected order volume?",
-      },
-      {
-        title: 'MOQ',
-        description: 'What minimum order quantity does the supplier require, and does it fit your current stage?',
-      },
-      {
-        title: 'Production Capability',
-        description:
-          'Can the supplier support the product type, specifications, quantity and production requirements?',
-      },
-      {
-        title: 'Lead Time',
-        description: 'What production and preparation timeline should you expect?',
-      },
-      {
-        title: 'Communication',
-        description:
-          'Can the supplier communicate clearly about specifications, pricing, production and order details?',
-      },
-      {
-        title: 'Customization',
-        description:
-          'If you need private labeling, packaging, materials, dimensions or other changes, can the supplier support them?',
-      },
+    type: 'process',
+    tone: 'ink',
+    eyebrow: 'HOW IT WORKS',
+    title: 'A practical sourcing process.',
+    /** Numbers derive from array order (01…05), never typed. */
+    steps: [
+      { label: 'Understand', description: 'You tell us what you want to source, including specifications, quantity, target pricing and destination.' },
+      { label: 'Research', description: 'We research suppliers and products that match your requirements.' },
+      { label: 'Compare', description: 'We compare relevant sourcing options, including product fit, pricing, MOQ and lead times.' },
+      { label: 'Confirm', description: 'You review the options and decide which direction you want to take.' },
+      { label: 'Move Forward', description: 'If you proceed, we can help with purchasing, quality control and shipping as needed.' },
     ],
   },
 
   /* ---------------------------------------------------------------- 05 --- */
   {
-    type: 'process',
-    tone: 'ink',
-    eyebrow: 'HOW IT WORKS',
-    title: 'From product idea to sourcing options.',
-    /**
-     * Numbers are derived from the array order (01…05), never typed — a step
-     * cannot be numbered wrongly or duplicated.
-     */
-    steps: [
-      { label: 'Understand', description: 'We review your product requirements, quantity, target price, destination and other relevant information.' },
-      { label: 'Research', description: 'We research suppliers and products that match the project requirements.' },
-      { label: 'Compare', description: 'We compare relevant options based on product fit, pricing, MOQ, capabilities and other practical factors.' },
-      { label: 'Quote', description: 'We collect and organize supplier quotations and relevant sourcing information.' },
-      { label: 'Move Forward', description: 'You decide which option makes sense, and we can continue with verification, purchasing and the next stages of the process.' },
+    type: 'checkList',
+    tone: 'white',
+    eyebrow: 'WHEN YOU NEED THIS',
+    title: "You know what you want to buy, but don't know where to start.",
+    description:
+      "Product sourcing is useful when you have a product idea, specification or existing product reference but don't have the supplier network or time to research the China market yourself.",
+    items: [
+      'You have a product idea but no supplier.',
+      'You found a product but want alternative suppliers.',
+      'You need a manufacturer for a customized product.',
+      'You want to compare several sourcing options before ordering.',
     ],
   },
 
   /* ---------------------------------------------------------------- 06 --- */
   {
     type: 'checkList',
-    tone: 'white',
-    eyebrow: 'STARTING A REQUEST',
-    title: 'The more specific the brief, the better.',
+    tone: 'ivory',
+    eyebrow: 'WHAT YOU CAN EXPECT',
+    title: 'Clearer options before you commit.',
     description:
-      "You don't need to know the supplier or the exact sourcing solution. Start with what you know.",
+      'Our role is to help you understand the available sourcing options and the factors that matter before you place an order.',
     items: [
-      'Product name or description',
-      'Product images or reference links',
-      'Specifications or dimensions',
-      'Material requirements',
-      'Estimated quantity',
-      'Target price, if available',
-      'Customization or branding requirements',
-      'Destination country and city',
-      'Expected order frequency, if known',
+      'Relevant supplier options',
+      'Product and specification information',
+      'Quotation comparisons',
+      'MOQ and lead-time information',
+      'Customization information when applicable',
+      'Guidance on the next sourcing step',
     ],
-    note: "Don't have all the information yet? That's okay. Start with the basics and we can clarify the requirements with you.",
-    foot: { label: 'Start a Sourcing Request', href: '/sourcing-request' },
   },
 
   /* ---------------------------------------------------------------- 07 --- */
   {
-    type: 'prose',
-    tone: 'ivory',
-    eyebrow: 'SOURCE AT YOUR SCALE',
-    title: 'Start with the quantity that makes sense for your business.',
-    /**
-     * MOQ WORDING IS LOAD-BEARING. The only truthful statement available is
-     * that Sourden does not impose its OWN minimum. It must never become "no
-     * MOQ from Chinese factories", "MOQ: 0", or anything implying every Chinese
-     * supplier accepts small quantities — the brief says so explicitly for this
-     * section. Same rule as `audiences.js` and `services-page.js`.
-     */
-    paragraphs: [
-      "Sourden does not impose its own fixed minimum order quantity. The practical MOQ will depend on the product and supplier, but we'll work with you to identify sourcing options that fit your current requirements.",
-    ],
+    type: 'relatedServices',
+    tone: 'white',
+    eyebrow: 'RELATED SERVICES',
+    title: 'Need support beyond product sourcing?',
+    /** The four links are derived by `relatedServices(slug)` in the shell. */
   },
 
   /* ---------------------------------------------------------------- 08 --- */
   {
-    type: 'chain',
-    tone: 'white',
-    eyebrow: 'AFTER SOURCING',
-    title: 'Sourcing can continue beyond the first quotation.',
-    description:
-      'Once suitable sourcing options have been identified, you can choose to continue with supplier verification, purchasing, quality control and shipping through Sourden.',
-    /**
-     * The five stages are built by `chainFor(slug)` from `services.js`, so this
-     * page never names another service and the current stage is marked for it.
-     * The section deliberately does not present the chain as a required
-     * sequence (cross-page requirement §1): a client may start at any stage.
-     */
-  },
-
-  /* ---------------------------------------------------------------- 09 --- */
-  {
     type: 'faq',
     eyebrow: 'FAQ',
+    /** 〔added〕 — the brief gives the questions but no heading for the band. */
     title: 'Questions about product sourcing.',
     items: [
       {
-        question: 'Can you source a product if I only have a picture?',
+        question: 'Can you source a product from a photo?',
         answer:
-          'Yes. Product images, links or basic descriptions can be useful starting points. The more information you can provide about specifications, quantity and destination, the more precise the sourcing research can be.',
+          'Yes. A product photo, existing product, reference link or detailed description can be a useful starting point. The more specifications you can provide, the more accurately we can research suitable options.',
       },
       {
-        question: 'Do I need to know the supplier before contacting you?',
+        question: 'Can you find customized products?',
         answer:
-          'No. You can start with the product itself. We can research suitable suppliers based on your requirements.',
+          'Yes. We can research suppliers that may support custom specifications, branding, packaging or other modifications. Custom requirements can affect MOQ, pricing and production time.',
       },
       {
-        question: 'Can you source custom products?',
+        question: 'Can I start with a small order?',
         answer:
-          'Yes. Depending on the product, we can research suppliers that support customization, private labeling, packaging and other specific requirements.',
+          'Yes. SOURDEN does not impose a fixed MOQ. However, individual suppliers may have their own minimum order requirements.',
       },
       {
-        question: 'Can you source products with a small order quantity?',
+        question: 'Can you source products that are not listed on your website?',
         answer:
-          "Sourden does not impose its own fixed MOQ. However, the practical MOQ depends on the product and supplier. We'll look for options that fit your requirements where possible.",
-      },
-      {
-        question: 'Can you help compare multiple suppliers?',
-        answer:
-          'Yes. Supplier comparison can include product fit, pricing, MOQ, lead time, capabilities and other relevant sourcing factors.',
-      },
-      {
-        question: 'What happens after you find a supplier?',
-        answer:
-          'Depending on your needs, we can continue with supplier verification, purchasing, quality control and shipping.',
+          'Yes. The product categories shown on our website are examples of areas we commonly source. You can submit a request for products outside those categories as well.',
       },
     ],
+    foot: { label: 'View All FAQs', href: '/faq' },
   },
 ];
 
 /* ===========================================================================
-   10 — FINAL CTA
+   09 — FINAL CTA
    ---------------------------------------------------------------------------
    One primary action (the site-wide `primaryCta`). The copy differs from the
    `/services` page's closing band on purpose: a visitor who has just read one
@@ -287,17 +218,12 @@ export const sections = [
 
 export const finalCta = {
   eyebrow: 'START WITH A REQUEST',
-  title: 'Have a product in mind?',
-  description: "Tell us what you're looking for. We'll research the sourcing options and take it from there.",
+  title: 'Looking for a product in China?',
+  description: "Tell us what you're looking for, and we'll help you determine the right sourcing approach.",
 };
 
 /* ===========================================================================
    THE PAGE OBJECT
-   ---------------------------------------------------------------------------
-   What `ServiceDetailPage` consumes and what `detailPages` in
-   `service-detail.js` registers. Assembled here so the shape the shell expects
-   is stated next to the copy that fills it, and so the parts above stay
-   individually importable by tooling.
    =========================================================================== */
 
 export const productSourcing = { slug, meta, hero, sections, finalCta };

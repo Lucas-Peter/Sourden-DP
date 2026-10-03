@@ -14,15 +14,16 @@
  *
  * ── THE SECTION VOCABULARY ─────────────────────────────────────────────────
  *   hero        eyebrow, H1, lead, two actions, one documentary image
- *   prose       a heading and one or two paragraphs (optional emphasis line)
- *   reviewGrid  N named factors, each with a sentence — the "what we look at"
- *               shape (4–8 items, two columns at desktop)
- *   checkList   N short items, no descriptions — the "what we can source" /
- *               "what you need to provide" / "shipping cost factors" shape
- *   process     five numbered stages on the rail (label + sentence)
- *   split       two labelled columns, each with a note, a paragraph, a bullet
- *               list or a link — the comparison / can-and-cannot shape
- *   chain       the five services in process order, the current one marked
+ *   prose       a heading and one or two paragraphs — the "what we do" shape
+ *   reviewGrid  N named factors, each with a sentence — the "what we handle"
+ *               shape (six items, two columns at desktop)
+ *   process     five numbered stages on the rail (label + sentence) — the
+ *               "how it works" shape
+ *   checkList   N short items, no descriptions — the "when you need this" and
+ *               "what you can expect" shapes (an optional lead, an optional
+ *               closing note)
+ *   relatedServices  the four neighbouring services, linked (this page's own
+ *               service excluded) — derived by `relatedServices()`
  *   faq         the disclosure group
  *   cta         the closing band (top level, see below)
  *
@@ -40,9 +41,11 @@
  *     up with four different labels.
  *   · The secondary CTA ("View All Services →" → `/services`) — same for all
  *     five, so it is declared once in `service-links.js`.
- *   · The process chain's labels — declared once in `service-links.js`.
- *   · A hand-typed label for a NEIGHBOURING service — ask
- *     `serviceLink(slug)` / `chainLabel(slug)` instead.
+ *   · The related-services links — derived by `relatedServices(slug)`, so a
+ *     page never names a neighbour or leaves one out.
+ *   · A hand-typed label or link for a NEIGHBOURING service — ask
+ *     `relatedServices(slug)` (the four-link list) or `serviceLink(slug)`
+ *     (a single link) instead.
  *
  * ── CLAIMS RULE (cross-page requirement §4) ────────────────────────────────
  * Nothing in a page file may assert a client count, a supplier count, years in
@@ -75,12 +78,10 @@ import { shippingFromChina } from './service-shipping-from-china.js';
    =========================================================================== */
 
 export {
-  chainFor,
-  chainLabel,
   detailBreadcrumbs,
   primaryCta,
+  relatedServices,
   secondaryCta,
-  serviceChain,
   serviceForSlug,
   serviceLink,
   requireService,
