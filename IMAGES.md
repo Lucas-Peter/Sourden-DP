@@ -215,6 +215,39 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 
 ---
 
+### Industries category pages — nine source-range slots
+
+| File | Label | Source size | Ratio | Used by |
+| --- | --- | --- | --- | --- |
+| `source-consumer-products.webp` | Consumer Products — sourced range | **1200 × 900** | 4:3 | `/industries/consumer-products` |
+| `source-beauty-personal-care.webp` | Beauty & Personal Care — sourced range | **1200 × 900** | 4:3 | `/industries/beauty-personal-care` |
+| `source-home-living.webp` | Home & Living — sourced range | **1200 × 900** | 4:3 | `/industries/home-living` |
+| `source-packaging.webp` | Packaging — sourced range | **1200 × 900** | 4:3 | `/industries/packaging` |
+| `source-electronics-accessories.webp` | Electronics & Accessories — sourced range | **1200 × 900** | 4:3 | `/industries/electronics-accessories` |
+| `source-industrial-products.webp` | Industrial Products — sourced range | **1200 × 900** | 4:3 | `/industries/industrial-products` |
+| `source-sports-outdoors.webp` | Sports & Outdoors — sourced range | **1200 × 900** | 4:3 | `/industries/sports-outdoors` |
+| `source-pet-supplies.webp` | Pet Supplies — sourced range | **1200 × 900** | 4:3 | `/industries/pet-supplies` |
+| `source-apparel-footwear-bags.webp` | Apparel, Footwear & Bags — sourced range | **1200 × 900** | 4:3 | `/industries/apparel-footwear-bags` |
+
+Each of these sits in the right-hand column of its category page's "What We
+Can Source" module (added 2026-10-03), beside the product-category list. It is a
+**range** image — several different items from the category gathered in one
+premium editorial frame — not a single product and not a grid. Keep it 4:3,
+shallow depth of field, mixed materials, no real brand logos, no China shorthand
+(Great Wall / flag / panda / container sunset), and no artificially-perfect AI
+render. Category is fixed per slot; never drift into woodworking or craft
+imagery (no timber, no wood).
+
+All nine went live as AI-generated documentary photographs on 2026-10-03
+(38–75 KB each, quality 82, single calm group of four items, 50mm, shallow
+depth of field, warm neutral grade).
+
+Target under 120 KB each. The category-page hero images above (`industry-*.svg`)
+are separate slots — the hero is a single production still, the source range is
+a group of finished products.
+
+---
+
 ### How It Works page — one slot
 
 | File | Label | Source size | Ratio | Used by |
