@@ -782,8 +782,9 @@
    ---------------------------------------------------------------------------
    Both sections are ink, and they are adjacent on purpose: they read as one
    closing band, the statement first and two quiet links underneath a hairline.
-   The bottom padding belongs to the footer, which is also ink, so the band
-   runs unbroken from the statement into the footer.
+   The band boundary between the slate closing section and the footer's deeper
+   ink is visible, so the navigation owes its own bottom headroom rather than
+   sitting flush against the edge.
    =========================================================================== */
 
 .sr-statement {
@@ -810,7 +811,10 @@
 }
 
 .sr-outro {
-  padding-block: 0;
+  /* The footer's own ink starts right below this band and the boundary is
+     visible, so the links need bottom headroom of their own — without it they
+     sit flush against the edge and the band reads as clipped. */
+  padding-block: 0 clamp(var(--sp-6), 4vw, var(--sp-8));
 }
 
 .sr-outro__inner {
