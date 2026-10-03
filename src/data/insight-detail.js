@@ -57,6 +57,9 @@ import { page as howToFindReliableSuppliersInChina } from './insight-how-to-find
 /* The body of article 02 — same shape, its own words. */
 import { page as howToVerifyAChineseSupplierBeforeYouOrder } from './insight-how-to-verify-a-chinese-supplier-before-you-order.js';
 
+/* The body of article 03 — same shape, its own words. */
+import { page as chinaSupplierVsTradingCompany } from './insight-china-supplier-vs-trading-company.js';
+
 /**
  * One line per written article, keyed by the slug used in `insights-articles.js`.
  *
@@ -68,6 +71,7 @@ import { page as howToVerifyAChineseSupplierBeforeYouOrder } from './insight-how
 export const insightDetailPages = {
   'how-to-find-reliable-suppliers-in-china': howToFindReliableSuppliersInChina,
   'how-to-verify-a-chinese-supplier-before-you-order': howToVerifyAChineseSupplierBeforeYouOrder,
+  'china-supplier-vs-trading-company': chinaSupplierVsTradingCompany,
 };
 
 /* ---------------------------------------------------------------------------
