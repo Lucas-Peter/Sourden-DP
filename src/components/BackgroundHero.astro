@@ -45,7 +45,7 @@
 import Breadcrumbs from './Breadcrumbs.astro';
 import Button from './Button.astro';
 import ArrowLink from './ArrowLink.astro';
-import { img } from '../data/media.js';
+import { img, srcsetFor } from '../data/media.js';
 
 interface Props {
   /** Trail BELOW "Home" — <Breadcrumbs> prepends it. Always end with the
@@ -91,12 +91,15 @@ const {
 } = Astro.props;
 
 const image = img(imageKey);
+const srcset = srcsetFor(imageKey);
 ---
 
 <section class:list={['bg-hero', className]} aria-labelledby={titleId}>
   <div class="bg-hero__backdrop" aria-hidden="true">
     <img
       src={image.src}
+      srcset={srcset}
+      sizes="100vw"
       alt=""
       width={image.width}
       height={image.height}

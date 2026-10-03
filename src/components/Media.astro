@@ -13,7 +13,7 @@
  * Replace a placeholder by editing `src/data/media.js` — never by changing
  * markup. See IMAGES.md.
  */
-import { img } from '../data/media.js';
+import { img, srcsetFor } from '../data/media.js';
 
 interface Props {
   /** Key from the image manifest in src/data/media.js — unknown keys throw. */
@@ -24,6 +24,14 @@ interface Props {
   zoom?: boolean;
   /** Above-the-fold images: load eagerly with high fetch priority. */
   priority?: boolean;
+  /**
+   * `sizes` for the responsive `srcset`. Tune this to the box the image
+   * actually fills so the browser pulls the smallest variant that fits. Mobile
+   * (`100vw`) is what matters most for speed; the default assumes a
+   * full-content-width image on desktop and full-viewport on mobile. Heroes
+   * pass narrower values (see `ServicesHero` / `SourcingRequestHero`).
+   */
+  sizes?: string;
   class?: string;
 }
 
@@ -32,10 +40,12 @@ const {
   ratio,
   zoom = false,
   priority = false,
+  sizes = '(min-width: 1180px) 1180px, 100vw',
   class: className = '',
 } = Astro.props;
 
 const image = img(imageKey);
+const srcset = srcsetFor(imageKey);
 
 const classes = [
   'media',
@@ -50,6 +60,8 @@ const classes = [
 <div class={classes}>
   <img
     src={image.src}
+    srcset={srcset}
+    sizes={sizes}
     width={image.width}
     height={image.height}
     alt={image.alt}

@@ -34,7 +34,12 @@ import { breadcrumbs, hero } from '../data/sourcing-request.js';
       </div>
 
       <div class="sr-hero__media">
-        <Media imageKey="sourcingRequestHero" ratio="4x3" priority />
+        <Media
+          imageKey="sourcingRequestHero"
+          ratio="4x3"
+          priority
+          sizes="(min-width: 1180px) 520px, (min-width: 768px) 46vw, 100vw"
+        />
         <p class="media-caption sr-hero__caption">{hero.imageCaption}</p>
       </div>
     </div>
