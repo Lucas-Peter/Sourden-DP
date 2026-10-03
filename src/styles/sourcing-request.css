@@ -352,7 +352,7 @@
   line-height: var(--lh-snug);
 }
 
-/* The error line is always in the DOM (FormField/FileUploadField mount it
+/* The error line is always in the DOM (FormField mounts it
    empty and hidden) so the accessible description never shifts underneath a
    screen reader mid-sentence. */
 .sr-field__error {
