@@ -1,25 +1,23 @@
 /* ===========================================================================
    SOURDEN — 07e INDUSTRY CATEGORY PAGES
    ---------------------------------------------------------------------------
-   The one section only the nine `/industries/<slug>` pages render: the
-   "EXPLORE MORE / Other sourcing categories" index (child brief §16). Imported
-   by `src/components/industries/IndustryDetailPage.astro`, so no other route
+   The two sections only the nine `/industries/<slug>` pages render: "What We
+   Can Source" (a category list beside one large range image) and "Our
+   Approach" (a short horizontal six-stage flow). Imported by
+   `src/components/industries/IndustryDetailPage.astro`, so no other route
    ships this file.
 
    WHAT IS NOT IN THIS FILE — AND WHY THAT IS THE POINT
-   · `.sec-hero*`, `.sec-stages` / `.sec-stage*`, `.sec-faq*` — the hero, the
-     numbered rail and the FAQ. These pages render all three with the same
-     components `/services`, the five service detail pages and `/industries`
-     already use, so the rules stay in `services-shared.css` and are imported,
-     not copied.
-   · `.sec-checklist*`, `.sec-review*` and the dark-ground corrections — imported
-     from `service-detail.css` for the same reason. "What We Can Source", "What
-     We Can Help With", "Sourcing Considerations" and "Who This Category Can
-     Work For" are the dense check-list device; "What Buyers Usually Need" is the
-     review grid. Both are the detail pages' components with these pages' copy.
-   · `.ind-rows*`, `.ind-sequence*` — the rows device and the descending
-     sequence. Those already live in `industries.css`, which this shell imports;
-     a second copy here is how two sheets start to disagree about one device.
+   · `.sec-hero*`, `.sec-faq*` — the hero and the FAQ. These pages render both
+     with the same components the services pages already use, so the rules stay
+     in `services-shared.css` and are imported, not copied.
+   · `.sec-checklist*` and the dark-ground corrections — imported from
+     `service-detail.css` for the same reason. "What Buyers Usually Need",
+     "Sourcing Considerations" and "Who We Source For" are the dense check-list
+     device.
+   · `.ind-rows*`, `.ind-scale*` — the rows device and the scale statement.
+     Those already live in `industries.css`, which this shell imports; a second
+     copy here is how two sheets start to disagree about one device.
    · The page rhythm (`.section`, `.section--ivory`, `.section--white`,
      `.section--dark`, `.container`, `.section-head`, `.section-foot`, `.num`)
      — shared core, loaded by every route. Nothing here redefines any of it:
@@ -30,124 +28,182 @@
 
    PREFIX
    `.ind-` — the industries vocabulary. This file continues the family
-   `industries.css` started rather than opening a fourth prefix for one section.
+   `industries.css` started rather than opening a new prefix for two sections.
 
    SECTION INDEX
-     01 Explore more  (brief §16)
+     01 What We Can Source  (the category list + range image)
+     02 Our Approach        (the six-stage flow)
    =========================================================================== */
 
 
 /* ===========================================================================
-   01 — EXPLORE MORE  (brief §16, "Industry page navigation")
+   01 — WHAT WE CAN SOURCE  (brief §2, strengthened 2026-10-03)
    ---------------------------------------------------------------------------
-   Nine ruled entries in a column grid: number | category name, eight of them
-   links and the ninth the page the visitor is already on.
+   The category pages' core module. Left ~45%: eyebrow, heading, lead, the
+   product categories as a dense two-column list and the closing note. Right
+   ~55%: one large product-range photograph.
 
-   ── THE NUMBER COLUMN IS UNCONDITIONAL, AND THAT IS DELIBERATE ─────────────
-   `.ind-rows` needs a `--numbered` modifier because it has two consumers, one
-   numbered and one not — and forgetting that modifier is how two grid items
-   land in the same cell while the DOM still looks perfect. Here every entry
-   carries its registry number, so the track is always reserved and there is no
-   flag to forget. The number is an index (`01`…`09`, from `industries.js`), not
-   a list position, which is why the markup is a `<ul>`.
+   WHY THE IMAGE IS FIRST IN THE DOM
+   Mobile order is image → heading → list, which is the source order; desktop
+   moves the image into the right-hand column with grid placement only. The
+   same call `ServicesHero` makes for its own figure.
 
-   ── THREE COLUMNS, NOT ONE ─────────────────────────────────────────────────
-   Nine full-width rows would make this band as tall as the section above it and
-   the brief asks for it NOT to be visually dominant. Three columns at desktop,
-   two from 768px, one below — the same breakpoints the rest of the site uses,
-   so nothing new is introduced.
-
-   ── THE CURRENT PAGE USES THE SITE'S EXISTING "YOU ARE HERE" TREATMENT ────
-   `color: var(--brass-ink)` is what `.sec-chain__stage--current` and the header's
-   `[aria-current='page']` underline already use. A new visual signal here would
-   be a fourth way of saying the same thing on one site.
+   WHY `align-items: center`
+   The image is the proof beside the list, not a header above it. Centring the
+   two against each other is what keeps the band reading as one split panel
+   rather than a list with an image dropped at the top.
    =========================================================================== */
 
-.ind-nav__head {
-  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
-}
-
-.ind-nav__list {
+.ind-source__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+/* The list sits in the text pane, so it is deliberately denser than the
+   check-list device: two columns at 768px, one below. Items carry no headings
+   — they are category fragments. */
+.ind-source__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-3) var(--sp-5);
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: var(--rule) solid var(--divider-light);
 }
 
-.ind-nav__item {
-  border-bottom: var(--rule) solid var(--divider-light);
-  min-width: 0;
-}
-
-/* `align-items: baseline` so the number sits on the label's baseline rather
-   than on the top of its box — the `.num` element is `display: block`, so
-   without it the index would ride high above its own category name. */
-.ind-nav__link {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: baseline;
-  gap: var(--sp-3);
-  padding-block: var(--sp-4);
-  min-width: 0;
-}
-
-/* The arrow lives inside the label's flex row rather than in a third grid
-   track: the current entry carries no arrow, and a third track would give it a
-   wider label column than the eight around it, so the nine labels would stop
-   lining up. */
-.ind-nav__body {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5em;
-  min-width: 0;
-}
-
-.ind-nav__label {
+.ind-source__item {
+  position: relative;
+  padding-inline-start: var(--sp-4);
+  color: var(--ink);
   font-size: var(--fs-body);
-  font-weight: var(--fw-medium);
-  line-height: 1.4;
-  letter-spacing: var(--ls-display);
-  transition: color var(--dur) var(--ease-out);
+  line-height: 1.5;
 }
 
-/* The only coloured marks in this band: the arrow on a destination, and the
-   brass label of the page the visitor is on. */
-.ind-nav__arrow {
-  flex: none;
-  color: var(--brass-ink);
-  font-size: 0.8em;
-  transition: transform var(--dur) var(--ease-out);
+/* The brass dash is the same marker `.sec-checklist__item` uses, so the
+   category list reads as the same vocabulary as the other lists on the page. */
+.ind-source__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: var(--rule);
+  background-color: var(--brass);
 }
 
-a.ind-nav__link:hover .ind-nav__label,
-a.ind-nav__link:focus-visible .ind-nav__label {
-  color: var(--brass-ink);
+.ind-source__note {
+  margin-block-start: var(--sp-5);
 }
 
-a.ind-nav__link:hover .ind-nav__arrow,
-a.ind-nav__link:focus-visible .ind-nav__arrow {
-  transform: translateX(5px);
-}
-
-/* The current page: the site's existing "you are here" colour, one weight up,
-   and NOT a link — it keeps `aria-current="page"` so it is announced rather
-   than offered as a destination. */
-.ind-nav__link--current .ind-nav__label {
-  color: var(--brass-ink);
-  font-weight: var(--fw-semibold);
+.ind-source__caption {
+  margin-block-start: var(--sp-3);
 }
 
 @media (min-width: 768px) {
-  .ind-nav__list {
+  .ind-source__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--grid-gap);
   }
 }
 
 @media (min-width: 1200px) {
-  .ind-nav__list {
+  .ind-source__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--grid-gap);
+    align-items: center;
+  }
+
+  /* Image first in the DOM, moved right by placement only. */
+  .ind-source__figure {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ind-source__body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+
+/* ===========================================================================
+   02 — OUR APPROACH  (brief, the short six-stage flow)
+   ---------------------------------------------------------------------------
+   Six stages read left to right, each a number, a label and one short
+   sentence. Six columns at desktop, three from 768px, one below — the same
+   breakpoints the rest of the site uses, so nothing new is introduced.
+
+   WHY THE STAGES ARE NUMBERED
+   The flow is horizontal, so left-to-right order is already the sequence — but
+   numbers survive the wrapped layouts (three columns, then one), where a bare
+   label loses its position in the chain. Numbers are derived from the array
+   order by the component, never typed.
+   =========================================================================== */
+
+.ind-approach__head {
+  margin-block-end: clamp(var(--sp-6), 4vw, var(--sp-7));
+}
+
+.ind-approach__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-5) var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ind-approach__step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-2);
+  align-content: start;
+  min-width: 0;
+}
+
+.ind-approach__num {
+  margin-block-end: var(--sp-2);
+}
+
+/* The label is the stage name in title case in the data, uppercased here — the
+   same rule as the (removed) sequence device: uppercase is a presentation
+   decision, never typed into the data. */
+.ind-approach__label {
+  color: var(--ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.ind-approach__desc {
+  max-width: 34ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .ind-approach__list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .ind-approach__list {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+
+/* ===========================================================================
+   03 — PRINT
+   =========================================================================== */
+
+@media print {
+  .ind-source__figure,
+  .ind-approach__step {
+    break-inside: avoid;
   }
 }

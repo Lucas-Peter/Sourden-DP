@@ -11,8 +11,6 @@
      the review grid and the sequence were removed in the 2026-10-02 pass, so
      this page no longer imports `services-shared.css` and no longer renders the
      `.sec-stages` / `.sec-faq*` devices.
-   · The `.ind-process` rail rule below is now for the NINE child pages, not the
-     hub — see §05 in this file.
    · The page rhythm (`.section`, `.section--ivory`, `.section--white`,
      `.section--dark`, `.container`, `.section-head`, `.section-foot`, `.rows`)
      — shared core, loaded by every route. Nothing here redefines any of it:
@@ -31,10 +29,9 @@
    reader would notice.
 
    SECTION INDEX
-     01 Category directory       04 The scale statement
-     02 Sequence                 05 The rail on the category pages
-     03 Rows                     06 The FAQ text link
-                                 07 Print
+     01 Category directory       03 The scale statement
+     02 Rows                     04 The FAQ text link
+                                 05 Print
    =========================================================================== */
 
 
@@ -144,122 +141,12 @@
 
 
 /* ===========================================================================
-   02 — SEQUENCE  (brief §06)
+   02 — ROWS  (brief §05 and §11)
    ---------------------------------------------------------------------------
-   Five stages read top to bottom, each with a `↓` in the gap above it.
-   Heading left in 5 columns, flow right in 6 — the same editorial split §02,
-   §04 and §09 use, so the page keeps one grid rather than inventing a second.
-   =========================================================================== */
-
-.ind-sequence__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(var(--sp-6), 4vw, var(--sp-7));
-}
-
-@media (min-width: 1200px) {
-  .ind-sequence__grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--grid-gap);
-    align-items: start;
-  }
-
-  .ind-sequence__head {
-    grid-column: 1 / span 5;
-  }
-
-  .ind-sequence__list {
-    grid-column: 7 / span 6;
-  }
-}
-
-.ind-sequence__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* Deliberately NO row-gap: the arrow occupies the item's first grid row, and
-   an item without one must collapse to a zero-height row rather than being
-   pushed down by the gap. The arrow carries its own bottom margin instead, so
-   the five labels stay on the same rhythm as each other. */
-.ind-sequence__item {
-  display: grid;
-  grid-template-columns: 168px minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: var(--sp-4);
-  padding-block: var(--sp-4);
-}
-
-.ind-sequence__arrow {
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: start;
-  margin-block-end: var(--sp-2);
-  color: var(--brass);
-  font-size: var(--fs-body-sm);
-  line-height: 1;
-}
-
-.ind-sequence__label {
-  grid-column: 1;
-  grid-row: 2;
-  color: var(--brass-ink);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-caps-wide);
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.ind-sequence__desc {
-  grid-column: 2;
-  grid-row: 2;
-  max-width: 46ch;
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.6;
-}
-
-/* The label column is a fixed 168px so the five sentences start on one edge.
-   Below 768px that column would leave the sentences unreadably narrow, so the
-   pair stacks — label above sentence, which is how the rest of the site
-   handles a label and its copy on a phone. */
-@media (max-width: 767px) {
-  .ind-sequence__item {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .ind-sequence__label,
-  .ind-sequence__desc {
-    grid-column: 1;
-  }
-
-  .ind-sequence__label {
-    grid-row: 2;
-  }
-
-  .ind-sequence__desc {
-    grid-row: 3;
-    margin-block-start: var(--sp-2);
-  }
-
-  .ind-sequence__item {
-    grid-template-rows: auto auto auto;
-  }
-}
-
-.ind-sequence__foot {
-  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
-}
-
-
-/* ===========================================================================
-   03 — ROWS  (brief §07 and §11)
-   ---------------------------------------------------------------------------
-   One device, two sections: "Who we source for" (five audiences, no numbers,
-   not links) and "Related services" (five services, numbered, the whole row a
-   link). Both are ruled rows of a title and a sentence.
+   One device, two consumers: "Who we source for" (five audiences, no numbers,
+   not links — the hub) and "Related services" (four services, numbered, the
+   whole row a link — the category pages). Both are ruled rows of a title and a
+   sentence.
 
    `--numbered` adds the number column and nothing else — the two lists must
    look like the same device, because they are.
@@ -455,39 +342,7 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
 
 
 /* ===========================================================================
-   05 — THE RAIL ON THE CATEGORY PAGES  (child pages §7)
-   ---------------------------------------------------------------------------
-   The nine `/industries/<slug>` pages render the same rail as `/services` and
-   the five detail pages, so its rules live in `services-shared.css` (geometry)
-   and `service-detail.css` (the ink-band corrections). The one thing they have
-   to add is the height of the rail's labels.
-
-   WHY
-   The service detail pages name their steps in one word each (UNDERSTAND,
-   RESEARCH), so every label fits on one line and the five descriptions start at
-   the same height. The category pages name the steps as phrases — "Tell Us
-   What You Need", "Verify & Compare" — and at 1200px a rail column is ~183px
-   wide, so most of them wrap. Without a floor, a wrapped label pushes its
-   description ~17px below the others, and a rail whose dots promise a shared
-   row but whose copy does not sit on one has come apart at exactly the point it
-   is meant to prove.
-
-   (The hub `/industries` no longer renders the rail — it was removed in the
-   2026-10-02 content-simplification pass, the process living on `/how-it-works`
-   instead — so this rule now serves the nine child pages alone.)
-
-   Reserving two lines is the same fix `.sec-stage__title` already applies on
-   `/services` for the same reason, and it is scoped to `.ind-` because a page
-   whose labels are single words should not pay for the space.
-   =========================================================================== */
-
-.ind-process .sec-stage__verb {
-  min-height: 2.6em; /* 2 lines × the 1.3 line-height on `.sec-stage__verb` */
-}
-
-
-/* ===========================================================================
-   06 — THE "VIEW FAQ" TEXT LINK  (brief §09)
+   04 — THE "VIEW FAQ" TEXT LINK  (brief §09)
    ---------------------------------------------------------------------------
    One centred text link, not a section. `.ind-faq-link` is a `.container` in
    the page shell (no `<section>`), so it has no ground of its own — the body's
@@ -502,12 +357,11 @@ a.ind-rows__body:focus-visible .ind-rows__arrow {
 
 
 /* ===========================================================================
-   07 — PRINT
+   05 — PRINT
    =========================================================================== */
 
 @media print {
   .ind-directory__item,
-  .ind-sequence__item,
   .ind-rows__row {
     break-inside: avoid;
   }
