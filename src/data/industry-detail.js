@@ -19,43 +19,36 @@
  * markup and no new CSS.
  *
  * ── THE SECTION VOCABULARY ─────────────────────────────────────────────────
- * Mapped to the brief's eleven numbered sections. The hero, the FAQ and the
- * closing CTA are NOT in the `sections` array — they are fixed devices that own
- * their own place on the page, exactly as on the service pages; the FAQ is a
- * section type here only so it keeps the brief's order.
+ * The hero, the FAQ and the closing CTA are NOT in the `sections` array — they
+ * are fixed devices that own their own place on the page, exactly as on the
+ * service pages; the FAQ is a section type here only so it keeps the brief's
+ * order.
  *
+ *   source      eyebrow, H2, lead, N product categories + one large range image
+ *               → "What We Can Source"
  *   checkList   eyebrow, H2, lead, N short fragments, optional note and foot
- *               → §2 "What We Can Source", §5 "What We Can Help With",
- *                 §6 "Sourcing Considerations", §9 "Who This Category Can
- *                 Work For"
- *   reviewGrid  eyebrow, H2, N named topics, each with a sentence
- *               → §3 "What Buyers Usually Need"
- *   sequence    eyebrow, H2, N unnumbered stages read downwards
- *               → §4 "How We Approach This Category"
- *   process     eyebrow, H2, N numbered stages on the ink rail
- *               → §7 "Typical Sourcing Process"
- *   rows        eyebrow, H2, N rows, optionally numbered and optionally links
- *               → §8 "Related Services"
- *   nav         eyebrow, H2, the nine categories with this page marked
- *               → §16 "Industry page navigation"
- *   faq         eyebrow, H2, the disclosure group  → §10
+ *               → "What Buyers Usually Need", "Sourcing Considerations",
+ *                 "Who We Source For"
+ *   approach    eyebrow, H2, six stages as a short horizontal flow
+ *               → "Our Approach"
+ *   rows        eyebrow, H2, N rows, numbered and linked
+ *               → "Related Services"
+ *   moq         one statement + one qualifier, no heading
+ *               → "No Fixed MOQ"
+ *   faq         eyebrow, H2, the disclosure group
  *
  * Each section is `{ type, tone, … }`. `tone` is required on every section this
- * file does not fix: `'ivory' | 'white' | 'ink'`. The hero is always ivory and
- * the rail is always ink, because those two devices own their own ground;
- * everything else states its tone so the page's rhythm is visible in the data
- * rather than buried in a stylesheet.
+ * file does not fix: `'ivory' | 'white'`. The hero is always ivory; everything
+ * else states its tone so the page's rhythm is visible in the data rather than
+ * buried in a stylesheet.
  *
  * ── WHY THE SECTIONS ARE IN THIS ORDER ────────────────────────────────────
- * The brief's order is kept, with one deliberate insertion: the internal
- * navigation (§16) sits between §9 and the FAQ rather than after the closing
- * CTA, so the FAQ and the request band still close the page. Putting a
- * cross-link band between the last objection-handler and the final action is
- * how a page loses its ending.
+ * The brief's order is kept: What We Can Source → What Buyers Usually Need →
+ * Our Approach → Sourcing Considerations → Related Services → Who We Source
+ * For → No Fixed MOQ, with the FAQ and the request band closing the page.
  *
  * ── WHAT A PAGE FILE MUST NOT DECLARE ─────────────────────────────────────
- *   · The category's name, number, slug or href — read from `industries.js`
- *     through `industryForSlug()` / `industryNavFor()`.
+ *   · The category's name, number, slug or href — read from `industries.js`.
  *   · Service names, numbers or hrefs — read from `services.js` through
  *     `relatedServices`.
  *   · The primary CTA. Every page's primary action is `primaryCta` from
@@ -110,7 +103,6 @@ import { apparelFootwearBags } from './industry-apparel-footwear-bags.js';
 export {
   industryBreadcrumbs,
   industryForSlug,
-  industryNavFor,
   primaryCta,
   relatedServices,
   requireIndustry,

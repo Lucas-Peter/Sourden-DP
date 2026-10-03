@@ -487,6 +487,122 @@ export const images = {
       'Category for this slot: Apparel, Footwear & Bags. One folded garment centred on a bench, shallow depth of field, subject in the middle band so it survives the wide grid crop. Flat-lay only, never on-model, no timber, no wood.',
   },
 
+  /* --------------------------------------- industry source range images -- */
+  /*
+   * Nine slots for the nine `/industries/<slug>` pages' "What We Can Source"
+   * module (2026-10-03). Each sits on the RIGHT of that section as one large
+   * product-RANGE image — several items from the category gathered in one
+   * editorial frame — the visual proof beside the product-category list.
+   *
+   * All nine went live as AI-generated documentary photographs on 2026-10-03
+   * (1200x900 WebP, one calm group of 4-6 category-typical items, 50mm,
+   * shallow depth of field, warm neutral grade, no wood). The frame must stay
+   * a premium editorial
+   * product photograph, 4:3 or close, with NO real brand
+   * logos, NO China shorthand (Great Wall / flag / panda / container sunset)
+   * and NO artificially-perfect AI product render. Category is fixed per slot
+   * and must NOT drift into woodworking/craft imagery (no timber, no wood).
+   */
+  sourceConsumerProducts: {
+    file: 'source-consumer-products.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'CONSUMER PRODUCTS — SOURCED RANGE',
+    alt: 'A stainless insulated bottle, silicone kitchen utensils, a lidded container, a ceramic mug and a folded umbrella arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Consumer Products. Documentary photo — a stainless insulated bottle, silicone kitchen utensils, a lidded container, a ceramic mug and a folded umbrella gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No brand logos, no people, no readable text, no wood.',
+  },
+  sourceBeautyPersonalCare: {
+    file: 'source-beauty-personal-care.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'BEAUTY & PERSONAL CARE — SOURCED RANGE',
+    alt: 'A hair dryer, a flat iron, makeup brushes and a jar of cream arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Beauty & Personal Care. Documentary photo — a hair dryer, a flat iron, makeup brushes and a jar of cream gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No formulation claims, no brand logos, no readable text, no wood.',
+  },
+  sourceHomeLiving: {
+    file: 'source-home-living.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'HOME & LIVING — SOURCED RANGE',
+    alt: 'A table lamp with a pleated shade, a fabric cushion, a glazed ceramic pot and a glass jar arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Home & Living. Documentary photo — a table lamp, a fabric cushion, a glazed ceramic pot and a glass jar gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No brand logos, no people, no readable text, no wood.',
+  },
+  sourcePackaging: {
+    file: 'source-packaging.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'PACKAGING — SOURCED RANGE',
+    alt: 'Blank paper boxes, a glass jar, a paper cup and a bubble mailer arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Packaging. Documentary photo — blank paper boxes, a glass jar, a paper cup and a bubble mailer gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Blank unprinted stock only, no logos, no readable text, no wood.',
+  },
+  sourceElectronicsAccessories: {
+    file: 'source-electronics-accessories.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'ELECTRONICS & ACCESSORIES — SOURCED RANGE',
+    alt: 'A laptop, a smartphone, a smartwatch and a speaker arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Electronics & Accessories. Documentary photo — a laptop, a smartphone, a smartwatch and a speaker gathered in one calm group on a pale seamless surface, screens off, 50mm, shallow depth of field, warm neutral grade. No brand logos, no readable text, no wood.',
+  },
+  sourceIndustrialProducts: {
+    file: 'source-industrial-products.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'INDUSTRIAL PRODUCTS — SOURCED RANGE',
+    alt: 'A machined gear, a ball bearing, a wrench and a brass valve arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Industrial Products. Documentary photo — a machined gear, a ball bearing, a wrench and a brass valve gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Cast part numbers only, no brand logos, no readable spec text, no wood.',
+  },
+  sourceSportsOutdoors: {
+    file: 'source-sports-outdoors.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'SPORTS & OUTDOORS — SOURCED RANGE',
+    alt: 'A rolled yoga mat, a dumbbell, a steel water bottle, a jump rope and a carabiner arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Sports & Outdoors. Documentary photo — a rolled yoga mat, a dumbbell, a steel water bottle, a jump rope and a carabiner gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Gear only, no people, no brand logos, no readable text, no wood.',
+  },
+  sourcePetSupplies: {
+    file: 'source-pet-supplies.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'PET SUPPLIES — SOURCED RANGE',
+    alt: 'A stainless pet bowl, a rubber ball, a flying disc, a nylon leash and a rope toy resting on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Pet Supplies. Documentary photo — a stainless pet bowl, a rubber ball, a flying disc, a nylon leash and a rope toy resting flat in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No live animals, no brand logos, no readable text, no wood.',
+  },
+  sourceApparelFootwearBags: {
+    file: 'source-apparel-footwear-bags.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'APPAREL, FOOTWEAR & BAGS — SOURCED RANGE',
+    alt: 'A leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged together on a pale surface.',
+    role: /** @type {ImageRole} */ ('industry'),
+    artDirection:
+      'Category for this slot: Apparel, Footwear & Bags. Documentary photo — a leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged as one calm flat-lay group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Flat-lay only, never on-model, no brand logos, no readable text, no wood.',
+  },
+
   /* --------------------------------------------------------- case studies -- */
   caseStudyWorldCupJerseys: {
     file: 'case-study-world-cup-jerseys.webp',

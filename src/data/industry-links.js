@@ -24,13 +24,10 @@
  * ── WHAT BELONGS DOWN HERE ─────────────────────────────────────────────────
  * Anything derived from those three registries alone, plus the one piece of
  * shared copy that is not a page's own word: the sentence attached to each of
- * the five services in the "Related Services" band. That sentence used to live
+ * the four services in the "Related Services" band. That sentence used to live
  * in `industries-page.js`; it moved here because the nine child pages render the
- * same five links with the same five sentences, and a second copy of it in nine
+ * same four links with the same four sentences, and a second copy of it in nine
  * page files is nine places for a service description to drift.
- *
- * `industries-page.js` re-exports it, so `/industries` keeps rendering the
- * record it always did and its output is byte-identical.
  *
  * ── WHAT A PAGE FILE MUST NOT DECLARE ─────────────────────────────────────
  *   · A category's name, number, slug or href — read from `industries.js`.
@@ -98,48 +95,30 @@ export function industryBreadcrumbs(slug) {
 }
 
 /* ===========================================================================
-   THE NINE CATEGORIES, WITH THIS PAGE MARKED
+   THE FOUR SERVICES, WITH THE SENTENCE EACH ONE CARRIES
    ---------------------------------------------------------------------------
-   The page's own internal navigation (brief §16). All nine are returned, not
-   the other eight: the brief asks for the other eight as LINKS and for the
-   current page to be "visually distinguished from the other categories", and a
-   list that omits the current page has nothing for the reader to distinguish it
-   from — the reader's own category would simply be missing from a navigation
-   that claims to list the categories.
-   =========================================================================== */
-
-/**
- * @param {string} currentSlug
- * @returns {Array<{ number: string, title: string, href: string, current: boolean }>}
- */
-export function industryNavFor(currentSlug) {
-  requireIndustry(currentSlug);
-  return industries.map((category) => ({
-    number: category.number,
-    title: category.title,
-    href: category.href,
-    /**
-     * Compared by href against the registry's own value, so a page cannot mark
-     * itself current twice or mark a neighbour current by typo.
-     */
-    current: category.slug === currentSlug,
-  }));
-}
-
-/* ===========================================================================
-   THE FIVE SERVICES, WITH THE SENTENCE EACH ONE CARRIES
-   ---------------------------------------------------------------------------
-   Brief §13 links to the five service pages; the row device needs a sentence
-   per row, and the brief supplies the link labels but not the sentences. Those
-   sentences are the ones `/industries` §11 already publishes, so they are
-   declared once here and both consumers read the same record — service 03 in
-   particular is published as "Purchasing Management", and the link label comes
-   from the registry rather than from this file.
+   The category pages' "Related Services" band links four service pages; the
+   row device needs a sentence per row, and the brief supplies the link labels
+   but not the sentences. Those sentences are the ones `/industries` §11
+   already publishes, so they are declared once here and both consumers read
+   the same record — service 03 in particular is published as "Purchasing
+   Management", and the link label comes from the registry rather than from
+   this file.
 
    `requireBlurb` fails the build rather than rendering `undefined` into a row,
-   which is the one failure mode a merged list has: a sixth service added to
+   which is the one failure mode a merged list has: a service added to
    `services.js` without a sentence here would otherwise ship a ROW WITH NO
-   DESCRIPTION on ten pages.
+   DESCRIPTION on the category pages.
+
+   ── WHY FOUR AND NOT FIVE ─────────────────────────────────────────────────
+   The band was trimmed from five services to four in the 2026-10-03 pass:
+   "Shipping from China" is dropped, so the four remaining rows keep their
+   registry numbers 01–04 unbroken. Shipping stays reachable through the
+   "View All Services" foot and the FAQ, and its own concerns (carton size,
+   packing volume) live in each category's "Sourcing Considerations" — so it is
+   represented on the page without a fifth row. The blurb for it is kept below
+   in case a page needs it again; `requireBlurb` stays complete for that
+   reason.
    =========================================================================== */
 
 const SERVICE_BLURBS = {
@@ -150,6 +129,14 @@ const SERVICE_BLURBS = {
   'quality-control': 'Check agreed product requirements before shipment.',
   'shipping-from-china': 'Coordinate the movement of goods from China to their destination.',
 };
+
+/** The four services the category pages' related-services band renders. */
+const RELATED_SERVICE_SLUGS = [
+  'product-sourcing',
+  'supplier-verification',
+  'purchasing-order-management',
+  'quality-control',
+];
 
 /** @param {string} slug */
 function requireBlurb(slug) {
@@ -164,13 +151,15 @@ function requireBlurb(slug) {
 }
 
 /**
- * The five services in process order, each with the sentence the related
+ * The four services in process order, each with the sentence the related
  * services band renders. Order is `services.js`' order — the same order the
  * homepage, the footer and `/services` all use.
  */
-export const relatedServices = services.map((service) => ({
-  number: service.number,
-  title: service.title,
-  href: service.href,
-  description: requireBlurb(service.slug),
-}));
+export const relatedServices = services
+  .filter((service) => RELATED_SERVICE_SLUGS.includes(service.slug))
+  .map((service) => ({
+    number: service.number,
+    title: service.title,
+    href: service.href,
+    description: requireBlurb(service.slug),
+  }));
