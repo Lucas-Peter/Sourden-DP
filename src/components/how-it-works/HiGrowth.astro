@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * §12 "How sourcing changes as you grow": one paragraph, the FIRST ORDER →
  * TEST → REPEAT → GROW → SCALE path, the MOQ statement, and a link onward to
- * what Sourden sources.
+ * what SOURDEN sources.
  *
  * ── WHY THIS IS NOT `IndustryScale` ──────────────────────────────────────
  * `/industries` §08 renders a very similar section, and the two were built
@@ -23,8 +23,8 @@
  * purpose, because it marks the same kind of sentence on both pages.
  *
  * ── WHY THE QUALIFIER IS LOAD-BEARING ────────────────────────────────────
- * "Sourden does not impose its own fixed minimum order quantity" is a claim
- * about Sourden, and on its own it is the sentence this site must never let
+ * "SOURDEN does not impose its own fixed minimum order quantity" is a claim
+ * about SOURDEN, and on its own it is the sentence this site must never let
  * stand unqualified: a reader hears "small orders are fine". The second
  * sentence ("The practical MOQ depends on the product and supplier") is what
  * keeps it true. The same distinction is drawn on the homepage, in
@@ -65,6 +65,17 @@ interface Props {
   closingParagraphs?: string[];
   /** The qualifier that belongs to the section but is not body copy. */
   emphasis?: string;
+  /**
+   * Render the progression and the closing paragraphs INSIDE the body column
+   * (under the copy) instead of full-width beneath the head block.
+   *
+   * Added 2026-10-02 for `/about` §05, whose owner asked for the same
+   * treatment `/industries` §08 got that day: the path sequences the copy it
+   * sits under, so it belongs in that column. `/how-it-works` §12, this
+   * component's first consumer, passes nothing and renders byte-identical
+   * markup — its brief still presents the path as a band under both columns.
+   */
+  pathInBody?: boolean;
   /** Closing link. */
   foot?: { label: string; href: string };
   tone: 'ivory' | 'white';
@@ -78,6 +89,7 @@ const {
   progression,
   closingParagraphs,
   emphasis,
+  pathInBody,
   foot,
   tone,
   titleId,
@@ -86,7 +98,10 @@ const {
 const lastIndex = progression.length - 1;
 ---
 
-<section class={`section section--${tone} hi-growth`} aria-labelledby={titleId}>
+<section
+  class={`section section--${tone} hi-growth${pathInBody ? ' hi-growth--inbody' : ''}`}
+  aria-labelledby={titleId}
+>
   <div class="container">
     <div class="hi-growth__block">
       <p class="eyebrow hi-growth__eyebrow">{eyebrow}</p>
@@ -100,39 +115,67 @@ const lastIndex = progression.length - 1;
         <h2 class="hi-growth__title" id={titleId}>{title}</h2>
 
         {paragraphs.map((paragraph) => <p class="hi-growth__para">{paragraph}</p>)}
+
+        {/* `pathInBody`: the progression and the closing copy move into this
+            column, under the paragraph above them (owner, 2026-10-02 — the
+            same move `/industries` §08 made). They are written out twice below
+            because Astro's frontmatter is plain TS and cannot hold JSX, so the
+            two positions carry their own copy. */}
+        {pathInBody && (
+          <Fragment>
+            <ol class="hi-growth__path">
+              {
+                progression.map((stage, index) => (
+                  <li class="hi-growth__stage">
+                    <span class="hi-growth__stage-label">{stage}</span>
+                    {index < lastIndex && (
+                      <span class="hi-growth__arrow" aria-hidden="true">
+                        →
+                      </span>
+                    )}
+                  </li>
+                ))
+              }
+            </ol>
+
+            {closingParagraphs && closingParagraphs.length > 0 && (
+              <div class="hi-growth__closing">
+                {closingParagraphs.map((paragraph) => (
+                  <p class="hi-growth__para">{paragraph}</p>
+                ))}
+              </div>
+            )}
+          </Fragment>
+        )}
       </div>
     </div>
 
-    {/* An <ol>: the five stages are read in order even though they are not
+    {/* An <ol>: the stages are read in order even though they are not
         numbered on screen — the progression is the content. */}
-    <ol class="hi-growth__path">
-      {
-        progression.map((stage, index) => (
-          <li class="hi-growth__stage">
-            <span class="hi-growth__stage-label">{stage}</span>
+    {!pathInBody && (
+      <ol class="hi-growth__path">
+        {
+          progression.map((stage, index) => (
+            <li class="hi-growth__stage">
+              <span class="hi-growth__stage-label">{stage}</span>
+              {index < lastIndex && (
+                <span class="hi-growth__arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    )}
 
-            {/* The arrow belongs to the gap between two stages, so it is drawn
-                after every stage except the last. It turns a quarter turn on
-                the stacked layout — see the stylesheet. */}
-            {index < lastIndex && (
-              <span class="hi-growth__arrow" aria-hidden="true">
-                →
-              </span>
-            )}
-          </li>
-        ))
-      }
-    </ol>
-
-    {
-      closingParagraphs && closingParagraphs.length > 0 && (
-        <div class="hi-growth__closing">
-          {closingParagraphs.map((paragraph) => (
-            <p class="hi-growth__para">{paragraph}</p>
-          ))}
-        </div>
-      )
-    }
+    {!pathInBody && closingParagraphs && closingParagraphs.length > 0 && (
+      <div class="hi-growth__closing">
+        {closingParagraphs.map((paragraph) => (
+          <p class="hi-growth__para">{paragraph}</p>
+        ))}
+      </div>
+    )}
 
     {emphasis && <p class="hi-growth__emphasis">{emphasis}</p>}
 
