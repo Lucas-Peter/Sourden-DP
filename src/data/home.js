@@ -16,9 +16,9 @@ import { primaryCta } from './site.js';
 
 export const homeMeta = {
   /** spec §26 */
-  title: 'Sourden | China Sourcing. Done.',
+  title: 'SOURDEN | China Sourcing. Done.',
   description:
-    'Sourden helps businesses source products from China with supplier research, verification, purchasing, quality control and shipping.',
+    'SOURDEN helps businesses source products from China with supplier research, verification, purchasing, quality control and shipping.',
 };
 
 export const hero = {
@@ -39,7 +39,7 @@ export const hero = {
 
   /** spec §7 — measure capped at ~540px. */
   description:
-    'Sourden helps businesses source products from China with supplier research, quotation, purchasing, quality control and shipping — handled by one experienced partner.',
+    'SOURDEN helps businesses source products from China with supplier research, quotation, purchasing, quality control and shipping — handled by one experienced partner.',
 
   primaryCta: {
     label: primaryCta.label,

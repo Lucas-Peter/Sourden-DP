@@ -23,7 +23,7 @@
  * ── CLAIMS RULE ────────────────────────────────────────────────────────────
  * Nothing here states a client or supplier count, years in business, a success
  * rate, a certification, a testimonial or a case study; nothing promises
- * guaranteed quality, guaranteed delivery, the lowest price or that Sourden can
+ * guaranteed quality, guaranteed delivery, the lowest price or that SOURDEN can
  * source anything. Consumer Products carries no extra per-category constraint.
  * ---------------------------------------------------------------------------
  */
@@ -56,7 +56,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / CONSUMER PRODUCTS',
   title: 'Everyday products, sourced around your requirements.',
   description:
-    'From simple household goods to everyday consumer products, Sourden helps buyers identify suitable suppliers, compare options and coordinate the sourcing process from China.',
+    'From simple household goods to everyday consumer products, SOURDEN helps buyers identify suitable suppliers, compare options and coordinate the sourcing process from China.',
   image: {
     key: 'industryConsumerProducts',
     caption: 'CONSUMER GOODS IN PRODUCTION AND PACKING',
@@ -158,7 +158,7 @@ export const sections = [
       {
         question: 'Can you help with small quantities?',
         answer:
-          'Sourden does not impose its own minimum order quantity, and finding suppliers whose MOQ fits your stage is part of the work. The practical minimum is set by the supplier and the product: some everyday items are only made in large runs, while others can be produced in smaller batches at a higher unit cost.',
+          'SOURDEN does not impose its own minimum order quantity, and finding suppliers whose MOQ fits your stage is part of the work. The practical minimum is set by the supplier and the product: some everyday items are only made in large runs, while others can be produced in smaller batches at a higher unit cost.',
         link: { label: 'Explore product sourcing', href: '/services/product-sourcing' },
       },
       {

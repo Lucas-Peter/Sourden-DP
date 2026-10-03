@@ -82,8 +82,8 @@ export const page = {
     /* Carried over verbatim from the reserved route in `routes.js`, so the
        page's search metadata does not change on the day it goes live — the same
        thing `/faq` did. */
-    title: 'Privacy Policy | Sourden',
-    description: 'How Sourden collects, uses and stores the information you provide.',
+    title: 'Privacy Policy | SOURDEN',
+    description: 'How SOURDEN collects, uses and stores the information you provide.',
   },
 
   breadcrumbs: [{ label: 'Privacy Policy' }],

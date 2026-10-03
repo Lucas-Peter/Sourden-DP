@@ -45,7 +45,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / PET SUPPLIES',
   title: 'Pet products sourced around your requirements.',
   description:
-    'Sourden helps buyers source everyday pet products and accessories from China, with supplier research, quotation comparison, purchasing and quality coordination.',
+    'SOURDEN helps buyers source everyday pet products and accessories from China, with supplier research, quotation comparison, purchasing and quality coordination.',
   image: {
     key: 'industryPetSupplies',
     caption: 'PET PRODUCTS IN MOULDING, ASSEMBLY AND PACKAGING',

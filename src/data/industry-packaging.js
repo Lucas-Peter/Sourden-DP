@@ -44,7 +44,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / PACKAGING',
   title: 'Packaging sourced around your product and brand.',
   description:
-    'Packaging is often part of the product itself. Sourden helps buyers source packaging based on dimensions, materials, quantities, printing, finishing and application.',
+    'Packaging is often part of the product itself. SOURDEN helps buyers source packaging based on dimensions, materials, quantities, printing, finishing and application.',
   image: {
     key: 'industryPackaging',
     caption: 'PRINTING AND FINISHED RETAIL PACKAGING',

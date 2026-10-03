@@ -223,5 +223,5 @@ export function graph(nodes) {
 }
 
 function seoDescription() {
-  return 'Sourden helps businesses source products from China with supplier research, verification, purchasing, quality control and shipping.';
+  return 'SOURDEN helps businesses source products from China with supplier research, verification, purchasing, quality control and shipping.';
 }

@@ -42,7 +42,7 @@
  * Nothing below asserts a client or supplier count, years in business, a
  * success rate, a certification, a testimonial, a case study or a logo, and
  * nothing promises guaranteed quality, guaranteed compliance, guaranteed
- * delivery, the lowest price or that Sourden can source anything. The register
+ * delivery, the lowest price or that SOURDEN can source anything. The register
  * is the site's: "can", "where appropriate", "depending on the product".
  * ---------------------------------------------------------------------------
  */
@@ -112,7 +112,7 @@ export const relatedServicesSection = {
   eyebrow: 'RELATED SERVICES',
   title: "The sourcing process doesn't stop at finding a supplier.",
   description:
-    'Depending on your project, Sourden can support different parts of the sourcing process — from supplier research and verification to purchasing and quality control.',
+    'Depending on your project, SOURDEN can support different parts of the sourcing process — from supplier research and verification to purchasing and quality control.',
   items: relatedServices,
   foot: { label: 'View All Services', href: '/services' },
 };
@@ -130,7 +130,7 @@ export const relatedServicesSection = {
    ("Small Wholesalers / Independent Retailers / Local Shops / Growing Brands /
    Individual Consumers").
 
-   The old "Learn About Sourden →" foot is gone: the hub's own "Who We Source
+   The old "Learn About SOURDEN →" foot is gone: the hub's own "Who We Source
    For" band already links onward, and a second copy of that link on every
    category page is nine more places for a cross-link to drift.
    =========================================================================== */
@@ -142,7 +142,7 @@ export const audienceSection = {
   eyebrow: 'WHO WE SOURCE FOR',
   title: 'Built for buyers at different stages.',
   description:
-    "You don't need a large purchasing team or huge order volumes to explore sourcing from China. Sourden works with buyers based on their actual requirements and current stage.",
+    "You don't need a large purchasing team or huge order volumes to explore sourcing from China. SOURDEN works with buyers based on their actual requirements and current stage.",
   items: [
     'Small Wholesalers',
     'Independent Retailers',
@@ -158,7 +158,7 @@ export const audienceSection = {
    Rendered by the shared `<IndustryScale>` device (no H2 — it is a statement,
    not a section with a heading). One eyebrow, one statement, one qualifier.
 
-   The qualifier is the load-bearing sentence: Sourden imposes no fixed MOQ of
+   The qualifier is the load-bearing sentence: SOURDEN imposes no fixed MOQ of
    its own, and that is NOT the same as "every supplier accepts small orders".
    =========================================================================== */
 

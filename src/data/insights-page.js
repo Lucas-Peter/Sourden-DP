@@ -110,7 +110,7 @@ export const slug = 'insights';
    =========================================================================== */
 
 export const meta = {
-  title: 'Sourcing Insights and Guides | Sourden',
+  title: 'Sourcing Insights and Guides | SOURDEN',
   description:
     'Practical guides, sourcing knowledge and insights to help you make better decisions when buying from China.',
 };

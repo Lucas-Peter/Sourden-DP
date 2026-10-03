@@ -41,7 +41,7 @@
  * over-claim.
  *
  * ── CLAIMS RULE (brief §"Content Accuracy Requirements") ───────────────────
- * Nothing here may assert that China is the cheapest, that Sourden can source
+ * Nothing here may assert that China is the cheapest, that SOURDEN can source
  * anything, a lowest price, guaranteed quality, that every supplier is
  * verified, that every factory accepts small orders, guaranteed compliance,
  * guaranteed customs clearance or guaranteed delivery. The copy uses the
@@ -49,7 +49,7 @@
  *
  * ── THE MOQ POSITION (brief §08 + 松霖) ────────────────────────────────────
  * "NO FIXED MOQ FROM SOURDEN" / "Source at your scale." is one statement plus
- * one qualifier, and the qualifier is what keeps the statement honest: Sourden
+ * one qualifier, and the qualifier is what keeps the statement honest: SOURDEN
  * imposes no fixed minimum order quantity of its own, and that is NOT the same
  * as "every supplier accepts small orders". The qualifier stays — without it
  * the statement becomes a claim this site must never make.
@@ -267,7 +267,7 @@ export const sections = [
     /** 松霖 §2: a small eyebrow / label, then one short statement. */
     eyebrow: 'NO FIXED MOQ FROM SOURDEN',
     statement: 'Source at your scale.',
-    /** The qualifier that keeps the statement honest — Sourden imposes no
+    /** The qualifier that keeps the statement honest — SOURDEN imposes no
      *  fixed MOQ of its own, which is NOT the same as "every supplier accepts
      *  small orders". One line, not a long explanation. */
     qualifier:

@@ -45,7 +45,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / INDUSTRIAL PRODUCTS',
   title: 'Industrial products sourced to specification.',
   description:
-    'Industrial sourcing often depends on exact specifications, materials, tolerances, quantities and application requirements. Sourden helps buyers identify suitable suppliers and coordinate the sourcing process around those requirements.',
+    'Industrial sourcing often depends on exact specifications, materials, tolerances, quantities and application requirements. SOURDEN helps buyers identify suitable suppliers and coordinate the sourcing process around those requirements.',
   image: {
     key: 'industryIndustrialProducts',
     caption: 'MACHINED COMPONENTS AND INDUSTRIAL PRODUCTION',

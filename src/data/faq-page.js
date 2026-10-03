@@ -111,9 +111,9 @@ export const slug = 'faq';
    =========================================================================== */
 
 export const meta = {
-  title: 'Frequently Asked Questions | Sourden',
+  title: 'Frequently Asked Questions | SOURDEN',
   description:
-    'Common questions about sourcing from China with Sourden, including minimum order quantities, pricing, verification and shipping.',
+    'Common questions about sourcing from China with SOURDEN, including minimum order quantities, pricing, verification and shipping.',
 };
 
 /**

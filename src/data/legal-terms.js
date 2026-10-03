@@ -1,7 +1,7 @@
 /**
  * SOURDEN — /terms-of-service
  * ---------------------------------------------------------------------------
- * The terms that apply when a buyer uses Sourden's services, written from the
+ * The terms that apply when a buyer uses SOURDEN's services, written from the
  * brief `SOURDEN Privacy Policy & Terms of Service.md` (received 2026-09-27).
  *
  * The copy is the brief's own text, transcribed rather than rewritten — see
@@ -69,8 +69,8 @@ const shipping = serviceLink('shipping-from-china');
 export const page = {
   meta: {
     /* Carried over verbatim from the reserved route in `routes.js`. */
-    title: 'Terms of Service | Sourden',
-    description: 'The terms that apply when you use Sourden services.',
+    title: 'Terms of Service | SOURDEN',
+    description: 'The terms that apply when you use SOURDEN services.',
   },
 
   breadcrumbs: [{ label: 'Terms of Service' }],

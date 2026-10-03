@@ -19,7 +19,7 @@
  * saving, a success rate or a guaranteed outcome. The tone is experienced,
  * practical, calm, direct, professional — no superlatives.
  *
- * The MOQ wording (§14) is deliberate: Sourden does not impose its own minimum
+ * The MOQ wording (§14) is deliberate: SOURDEN does not impose its own minimum
  * order quantity. It is NOT a claim that Chinese factories have no MOQ.
  * ---------------------------------------------------------------------------
  */
@@ -173,7 +173,7 @@ const overviewSectionCopy = [
 
 export const faqIntro = {
   eyebrow: 'FAQ',
-  title: 'Questions about sourcing with Sourden.',
+  title: 'Questions about sourcing with SOURDEN.',
   cta: { label: 'View All FAQs', href: '/faq' },
 };
 

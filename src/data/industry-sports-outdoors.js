@@ -45,7 +45,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / SPORTS & OUTDOORS',
   title: 'Sports and outdoor products, sourced for real-world use.',
   description:
-    'From sports accessories to outdoor equipment and recreational products, Sourden helps buyers source products based on intended use, specifications, materials, quantity and target market.',
+    'From sports accessories to outdoor equipment and recreational products, SOURDEN helps buyers source products based on intended use, specifications, materials, quantity and target market.',
   image: {
     key: 'industrySportsOutdoors',
     caption: 'SPORTS AND OUTDOOR GEAR IN PRODUCTION',
@@ -118,7 +118,7 @@ export const sections = [
     description:
       'Intended use is the first specification in this category — it decides the material, the weight and the construction, and it is what makes two suppliers’ descriptions of “the same” product stop matching.',
     items: ['Intended use', 'Material', 'Durability requirements', 'Destination market'],
-    note: 'Where a product may be subject to safety requirements, the applicable requirements depend on the product and on the destination market, and confirming them is the buyer’s. Sourden can pass a requirement to a supplier and have it confirmed back — which is not the same as certifying the product.',
+    note: 'Where a product may be subject to safety requirements, the applicable requirements depend on the product and on the destination market, and confirming them is the buyer’s. SOURDEN can pass a requirement to a supplier and have it confirmed back — which is not the same as certifying the product.',
   },
 
   /* ----------------------------------------------- §8 related services ----- */

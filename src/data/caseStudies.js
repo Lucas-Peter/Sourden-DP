@@ -11,7 +11,7 @@
  *   ✗ customer names        ✗ company logos        ✗ project values
  *   ✗ savings percentages   ✗ delivery improvements ✗ order quantities
  *   ✗ customer testimonials ✗ success rates        ✗ project counts
- * These entries describe the KIND of requirement Sourden handles. They are
+ * These entries describe the KIND of requirement SOURDEN handles. They are
  * not customer projects: no market, no figures, no outcomes, no quotes.
  * ───────────────────────────────────────────────────────────────────────────
  */

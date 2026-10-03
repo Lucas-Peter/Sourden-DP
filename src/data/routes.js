@@ -81,7 +81,7 @@ import { builtLegalPaths } from './legal-page.js';
 /** Page copy shared by every reservation page. */
 export const reservationNotice = {
   label: 'In development',
-  body: 'This page is part of the Sourden website structure and is being written. Everything you need in the meantime is on the homepage, or you can send your sourcing request and we will take it from there.',
+  body: 'This page is part of the SOURDEN website structure and is being written. Everything you need in the meantime is on the homepage, or you can send your sourcing request and we will take it from there.',
 };
 
 /**
@@ -106,12 +106,12 @@ export const reservedTopLevel = [
   {
     path: '/privacy-policy',
     label: 'Privacy Policy',
-    seoTitle: 'Privacy Policy | Sourden',
-    seoDescription: 'How Sourden collects, uses and stores the information you provide.',
+    seoTitle: 'Privacy Policy | SOURDEN',
+    seoDescription: 'How SOURDEN collects, uses and stores the information you provide.',
     eyebrow: 'LEGAL',
     h1: 'Privacy Policy.',
     summary:
-      'This policy is being prepared and will describe what information Sourden collects, why it is collected, how long it is kept and how to request its removal.',
+      'This policy is being prepared and will describe what information SOURDEN collects, why it is collected, how long it is kept and how to request its removal.',
     planned: [
       'What information is collected through sourcing requests and enquiries',
       'How that information is used and who it is shared with',
@@ -122,16 +122,16 @@ export const reservedTopLevel = [
   {
     path: '/terms-of-service',
     label: 'Terms of Service',
-    seoTitle: 'Terms of Service | Sourden',
-    seoDescription: 'The terms that apply when you use Sourden services.',
+    seoTitle: 'Terms of Service | SOURDEN',
+    seoDescription: 'The terms that apply when you use SOURDEN services.',
     eyebrow: 'LEGAL',
     h1: 'Terms of Service.',
     summary:
-      'These terms are being prepared and will set out the basis on which Sourden provides sourcing and procurement coordination services.',
+      'These terms are being prepared and will set out the basis on which SOURDEN provides sourcing and procurement coordination services.',
     planned: [
-      'The scope of services Sourden provides',
+      'The scope of services SOURDEN provides',
       'Quotations, pricing and payment terms',
-      'Responsibilities of Sourden and of the customer',
+      'Responsibilities of SOURDEN and of the customer',
       'Quality control, shipping and dispute handling',
     ],
   },
@@ -258,7 +258,7 @@ const detailCopy = {
       'A practical, step-by-step guide rather than a general overview',
       'What to check, in the order you would actually check it',
       'Common mistakes and how to avoid them',
-      'Where Sourden can help, and where it cannot',
+      'Where SOURDEN can help, and where it cannot',
     ],
   },
 };
@@ -287,7 +287,7 @@ export function reservationForDetail(kind, item, parent) {
         : // `summaryNoun` exists because a few category titles do not slot
           // into this sentence naturally ("sources sports & outdoors").
           // Categories that read fine omit it and fall back to the title.
-          `Sourden sources ${item.summaryNoun ?? item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`;
+          `SOURDEN sources ${item.summaryNoun ?? item.title.toLowerCase()} from China according to your specifications, target market and business needs — from supplier research through to shipping.`;
 
   /* The eyebrow is the article's CATEGORY TAG (`SOURCING GUIDE`), read from the
      category registry rather than from the article record — the record stores a
@@ -298,7 +298,7 @@ export function reservationForDetail(kind, item, parent) {
 
   return {
     path,
-    seoTitle: `${item.title} | Sourden`,
+    seoTitle: `${item.title} | SOURDEN`,
     seoDescription: summary,
     eyebrow,
     h1: item.title,

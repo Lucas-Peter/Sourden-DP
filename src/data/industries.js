@@ -4,7 +4,7 @@
  * Spec §12 (homepage grid) + §20 (footer column) + §33 (reserved routes).
  *
  * IMPORTANT (spec §12): these categories are NOT exclusive. The section's
- * supporting copy states that Sourden works beyond this list, and the bottom
+ * supporting copy states that SOURDEN works beyond this list, and the bottom
  * link invites a specific enquiry. Never present this data as an exhaustive
  * catalogue — it is a set of entry points, not a product catalogue.
  *
@@ -116,7 +116,7 @@ export const industries = [
  * `summaryNoun` — optional, per category.
  *
  * The reserved detail pages compose their meta description from the title:
- *   "Sourden sources <summaryNoun> from China according to your specifications…"
+ *   "SOURDEN sources <summaryNoun> from China according to your specifications…"
  * Most titles slot into that sentence cleanly ("pet supplies", "packaging").
  * A few do not — "sources sports & outdoors" or "sources home & living" reads
  * like a machine spat it out — so those categories declare the noun phrase

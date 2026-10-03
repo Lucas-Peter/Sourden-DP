@@ -23,9 +23,9 @@
 
 /** <head> metadata — spec §5. */
 export const sourcingRequestMeta = {
-  title: 'Start a Sourcing Request | Sourden',
+  title: 'Start a Sourcing Request | SOURDEN',
   description:
-    'Tell Sourden what you’re looking for and we’ll help you source suitable products and suppliers from China.',
+    'Tell SOURDEN what you’re looking for and we’ll help you source suitable products and suppliers from China.',
 };
 
 /** Section 1 — restrained editorial hero (spec §8). */

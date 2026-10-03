@@ -4,12 +4,12 @@
  * Every editable word on the About page. This is a content optimisation and
  * simplification pass (2026-10-02): the page used to be an eighteen-section
  * brand-positioning deep dive, and the owner's brief asked for it to become a
- * concise, credible company page — why Sourden exists, the gap it fills, how
+ * concise, credible company page — why SOURDEN exists, the gap it fills, how
  * it works, who it works with, how fees are handled, and how to get in touch.
  *
  * FINAL STRUCTURE (brief §13)
  *   01 Hero                    eyebrow, H1, copy, tagline, two actions, image
- *   02 Why Sourden             prose — two short paragraphs
+ *   02 Why SOURDEN             prose — two short paragraphs
  *   03 The Gap We Solve        prose — two short paragraphs
  *   04 Our Approach            a six-word → chain, one support line, one link
  *   05 What We Actually Do     a five-node ↓ chain on the ink band
@@ -30,7 +30,7 @@
  *   · It must not publish fixed commission percentages or fixed/minimum fees.
  *
  * ── WHAT THIS PAGE MUST NOT REPEAT (brief §10) ──────────────────────────────
- *   The Sourden Standard, "China is not one supply chain", "experience without
+ *   The SOURDEN Standard, "China is not one supply chain", "experience without
  *   the show", the good-partner breakdown, the full services list, the full
  *   FAQ, the growth progression, the large "sourcing without the barriers"
  *   section, the long MOQ explanation and the repeated process section are all
@@ -80,7 +80,7 @@ export const hero = {
   eyebrow: 'ABOUT SOURDEN',
   title: 'China sourcing, without the barriers.',
   description:
-    'Sourden helps businesses and individual buyers navigate sourcing from China — from finding suitable suppliers to purchasing, quality control and shipping.',
+    'SOURDEN helps businesses and individual buyers navigate sourcing from China — from finding suitable suppliers to purchasing, quality control and shipping.',
   /** The brief's §01 "Secondary statement". Read from `site.js` (spec §41) so
    *  the hero and the footer's copy of the same line can never drift. */
   tagline: site.tagline,
@@ -120,7 +120,7 @@ export const sections = [
     /** The brief's two paragraphs, verbatim. */
     paragraphs: [
       'China offers a vast supplier base, but finding a supplier that actually fits your product, quantity, quality requirements and business goals can take time and local coordination.',
-      "Sourden exists to make that process more accessible to businesses and buyers who don't have their own sourcing team in China.",
+      "SOURDEN exists to make that process more accessible to businesses and buyers who don't have their own sourcing team in China.",
     ],
   },
 
@@ -134,7 +134,7 @@ export const sections = [
     /** The brief's two paragraphs, verbatim. */
     paragraphs: [
       'You may know what you want to buy without knowing where to find it, how to evaluate suppliers, or how to manage the process from China.',
-      'Sourden provides practical sourcing support without requiring you to build a purchasing team of your own.',
+      'SOURDEN provides practical sourcing support without requiring you to build a purchasing team of your own.',
     ],
   },
 
@@ -187,14 +187,14 @@ export const sections = [
     /**
      * The brief's chain, top to bottom: YOU → SOURDEN → SUPPLIER → QUALITY
      * CONTROL → SHIPPING. Five plain labels, no descriptions, because the shape
-     * IS the content — Sourden is one link in a chain it coordinates rather than
+     * IS the content — SOURDEN is one link in a chain it coordinates rather than
      * the owner of it. Vertical, so the descent reads as a spine; the default
      * `↓` mark is the right one.
      */
     orientation: 'vertical',
     nodes: [
       { label: 'You' },
-      { label: 'Sourden' },
+      { label: 'SOURDEN' },
       { label: 'Supplier' },
       { label: 'Quality Control' },
       { label: 'Shipping' },

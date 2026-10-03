@@ -144,7 +144,7 @@ export const sections = [
       'You make the key decisions. SOURDEN manages the sourcing work and coordination around them.',
     /**
      * Two columns at equal weight — the customer's six decisions beside the
-     * seven things Sourden coordinates, so the page cannot read as Sourden
+     * seven things SOURDEN coordinates, so the page cannot read as SOURDEN
      * taking control away from the customer. The labels are CSS-uppercased
      * (`sec-split__label`), so the data writes them in sentence case.
      */
@@ -161,7 +161,7 @@ export const sections = [
         ],
       },
       {
-        label: 'Sourden',
+        label: 'SOURDEN',
         items: [
           'Research suitable suppliers',
           'Compare sourcing options',

@@ -52,7 +52,7 @@ export const hero = {
   /** The registry's name for this category — see the header note above. */
   title: 'Apparel, footwear and bags, sourced to your specifications.',
   description:
-    'Sourden helps buyers source fashion and apparel-related products from China based on materials, dimensions, construction, quantity, customization and target market.',
+    'SOURDEN helps buyers source fashion and apparel-related products from China based on materials, dimensions, construction, quantity, customization and target market.',
   image: {
     key: 'industryApparelFootwearBags',
     caption: 'CUTTING, STITCHING AND FINISHING',

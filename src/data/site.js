@@ -165,10 +165,10 @@ export const footerLegalNav = [
    --------------------------------------------------------------------------- */
 
 export const seoDefaults = {
-  title: 'Sourden | China Sourcing. Done.',
+  title: 'SOURDEN | China Sourcing. Done.',
   description:
-    'Sourden helps businesses source products from China with supplier research, verification, purchasing, quality control and shipping.',
-  /** Appended to child-page titles as "<Page> | Sourden". */
-  titleSuffix: ' | Sourden',
+    'SOURDEN helps businesses source products from China with supplier research, verification, purchasing, quality control and shipping.',
+  /** Appended to child-page titles as "<Page> | SOURDEN". */
+  titleSuffix: ' | SOURDEN',
 };
 

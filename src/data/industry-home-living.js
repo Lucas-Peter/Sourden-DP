@@ -45,7 +45,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / HOME & LIVING',
   title: 'Home and living products, sourced from the right suppliers.',
   description:
-    'From practical household products to decorative and lifestyle items, Sourden helps buyers find suppliers that fit their product, quantity, pricing and packaging requirements.',
+    'From practical household products to decorative and lifestyle items, SOURDEN helps buyers find suppliers that fit their product, quantity, pricing and packaging requirements.',
   image: {
     key: 'industryHomeLiving',
     caption: 'HOMEWARES ON THE ASSEMBLY BENCH',

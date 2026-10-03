@@ -14,7 +14,7 @@
  *   ✗ "MOQ: 0" / "No minimum order."
  *   ✗ Anything implying that every factory accepts small orders.
  *
- * The only thing Sourden can truthfully state is that *Sourden itself* does
+ * The only thing SOURDEN can truthfully state is that *SOURDEN itself* does
  * not impose a fixed MOQ. Factory and product MOQs are set by the supplier and
  * still apply. The approved copy below is worded to carry exactly that
  * meaning — keep it that way.
@@ -61,7 +61,7 @@ export const audienceGroups = [
     title: 'Individual Consumers',
     /**
      * The one audience that is not a business. Keep the wording explicit — the
-     * whole point of listing it is that a private individual can be a Sourden
+     * whole point of listing it is that a private individual can be a SOURDEN
      * customer, which is unusual for this category of service and is therefore
      * worth stating rather than implying.
      */

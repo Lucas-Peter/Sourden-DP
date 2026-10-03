@@ -10,7 +10,7 @@
  * related services, the buyer groups, the MOQ statement, a short FAQ.
  *
  * ── THE PER-CATEGORY CONSTRAINT (brief §5) ─────────────────────────────────
- * "Do not imply that Sourden provides medical approval, cosmetic regulatory
+ * "Do not imply that SOURDEN provides medical approval, cosmetic regulatory
  * approval, or product safety certification."
  *
  * Met in two places: the product groups name no formulation, ingredient or
@@ -48,7 +48,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / BEAUTY & PERSONAL CARE',
   title: 'Beauty and personal care products, sourced with the details in mind.',
   description:
-    'Sourden helps buyers source beauty and personal care products from China based on product specifications, materials, packaging, quantity and market requirements.',
+    'SOURDEN helps buyers source beauty and personal care products from China based on product specifications, materials, packaging, quantity and market requirements.',
   image: {
     key: 'industryBeautyPersonalCare',
     caption: 'FILLING AND PACKAGING OF BEAUTY PRODUCTS',
@@ -127,7 +127,7 @@ export const sections = [
      * that the product is approved anywhere, and this draws where the
      * responsibility for that sits.
      */
-    note: 'Where products are subject to regulatory, safety, labeling or market-specific requirements, buyers should confirm the applicable requirements for their destination market. Sourden can help communicate requirements with suppliers, but does not replace qualified regulatory or legal advice.',
+    note: 'Where products are subject to regulatory, safety, labeling or market-specific requirements, buyers should confirm the applicable requirements for their destination market. SOURDEN can help communicate requirements with suppliers, but does not replace qualified regulatory or legal advice.',
   },
 
   /* ----------------------------------------------- §8 related services ----- */

@@ -45,7 +45,7 @@ export const hero = {
   eyebrow: 'INDUSTRIES / ELECTRONICS & ACCESSORIES',
   title: 'Electronics and accessories, sourced with specifications in focus.',
   description:
-    'Sourcing electronics requires more than comparing prices. Sourden helps buyers communicate technical requirements, compare suppliers and coordinate sourcing based on the intended product and market.',
+    'Sourcing electronics requires more than comparing prices. SOURDEN helps buyers communicate technical requirements, compare suppliers and coordinate sourcing based on the intended product and market.',
   image: {
     key: 'industryElectronicsAccessories',
     caption: 'ASSEMBLY AND TESTING OF ELECTRONIC ACCESSORIES',
