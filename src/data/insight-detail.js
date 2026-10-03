@@ -54,6 +54,9 @@ import { insightArticles } from './insights-articles.js';
    the article rather than as a generic `page`. */
 import { page as howToFindReliableSuppliersInChina } from './insight-how-to-find-reliable-suppliers-in-china.js';
 
+/* The body of article 02 — same shape, its own words. */
+import { page as howToVerifyAChineseSupplierBeforeYouOrder } from './insight-how-to-verify-a-chinese-supplier-before-you-order.js';
+
 /**
  * One line per written article, keyed by the slug used in `insights-articles.js`.
  *
@@ -64,6 +67,7 @@ import { page as howToFindReliableSuppliersInChina } from './insight-how-to-find
  */
 export const insightDetailPages = {
   'how-to-find-reliable-suppliers-in-china': howToFindReliableSuppliersInChina,
+  'how-to-verify-a-chinese-supplier-before-you-order': howToVerifyAChineseSupplierBeforeYouOrder,
 };
 
 /* ---------------------------------------------------------------------------
