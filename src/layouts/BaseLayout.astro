@@ -29,7 +29,7 @@ import StickyMobileCTA from '../components/StickyMobileCTA.astro';
 import BackToTop from '../components/BackToTop.astro';
 
 import { site, seoDefaults } from '../data/site.js';
-import { IMAGE_DIR, images } from '../data/media.js';
+import { IMAGE_DIR, images, img } from '../data/media.js';
 import { organizationSchema, websiteSchema, graph } from '../data/schema.js';
 
 interface Props {
@@ -42,6 +42,17 @@ interface Props {
   ogType?: 'website' | 'article';
   /** Root-relative or absolute social image. */
   ogImage?: string;
+  /**
+   * Preload the page's LCP hero photograph.
+   *
+   * Pass the SAME image key the page hands to `<BackgroundHero imageKey=…>`
+   * (e.g. `hero.image.key` or the literal `"insightsHero"`). The layout resolves
+   * it through `img(key).src` and emits `<link rel="preload" as="image">` in
+   * <head> — one early round-trip ahead of the hero `<img>` itself. The hero
+   * `<img>` already carries `fetchpriority="high"` + `loading="eager"`, so this
+   * link only tightens discovery; it is harmless if omitted.
+   */
+  preloadImageKey?: string;
   /** Emit robots noindex,nofollow. Used by the 404 page. */
   noindex?: boolean;
   /** Extra JSON-LD nodes appended to the site graph. */
@@ -69,6 +80,7 @@ const {
   path,
   ogType = 'website',
   ogImage = `${IMAGE_DIR}/${images.ogDefault.file}`,
+  preloadImageKey,
   noindex = false,
   schema = [],
   hideStickyCta = false,
@@ -96,6 +108,27 @@ const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--
+      Resource preloads — tighten the mobile critical path.
+      · Fonts: the Latin subsets of the two self-hosted families are the only
+        above-the-fold web fonts an English visitor downloads (Fontsource's
+        `unicode-range` keeps cyrillic/greek/vietnamese from loading). Preloading
+        them removes the render-blocking gap between CSS parse and font fetch,
+        so the heading text paints in its real face instead of a fallback swap.
+        `crossorigin` is mandatory — the @font-face fetch is anonymous-CORS, and
+        a preload without it would download the file a second time.
+        NOTE: the `_astro/*.woff2` filenames are content hashes from the pinned
+        @fontsource versions. If `@fontsource/inter` or `@fontsource/manrope` is
+        bumped, re-grep `dist/_astro/*.woff2` for the new `*-latin-wght-normal`
+        names and update these two lines.
+      · Hero: per-page, via `preloadImageKey` — see the prop doc.
+    -->
+    <link rel="preload" as="font" type="font/woff2" href="/_astro/inter-latin-wght-normal.Dx4kXJAl.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/_astro/manrope-latin-wght-normal.DHIcAJRg.woff2" crossorigin />
+    {preloadImageKey && (
+      <link rel="preload" as="image" href={img(preloadImageKey).src} fetchpriority="high" />
+    )}
 
     <title>{title}</title>
     <meta name="description" content={description} />
