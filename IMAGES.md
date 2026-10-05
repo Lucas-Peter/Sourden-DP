@@ -175,7 +175,14 @@ tablet, so keep its subject centred; the sides get cropped hardest there.
 - **Sports & Outdoors** — assembly, stitching or packing of sports and outdoor
   equipment. Gear, not lifestyle models.
 - **Pet Supplies** — moulding, assembly or retail packaging of pet products.
-  No live animals and no studio pet portraits.
+  **Shipped 2026-10-05 as a real photograph, not a brief-conform still life:**
+  Songlin supplied a cat-and-dog frame and had it substituted for the AI bench
+  shot, on both the homepage grid card and the `/industries/pet-supplies` hero.
+  The old `No live animals` line is therefore void on this slot only — it still
+  applies to `sourcePetSupplies` and every other Pet Supplies slot. The frame is
+  a category photograph and asserts nothing about SOURDEN; if it is replaced,
+  keep it a real photograph, keep the animals in the middle band (the homepage
+  card crops to roughly 60% of the width) and keep the file name.
 - **Apparel, Footwear & Bags** — cutting tables, stitching lines or finishing.
   Flat-lay or production floor, not on-model studio shots.
 
