@@ -467,16 +467,27 @@ export const images = {
     artDirection:
       'Category for this slot: Sports & Outdoors. One piece of gear on a bench, shallow depth of field, subject centred. Gear only, no lifestyle models, no timber, no wood.',
   },
+  /*
+   * SHIPPED FRAME (2026-10-05, Songlin): this slot used to be an AI still life —
+   * one plush dog bed on a stainless bench, with `No live animals, no studio pet
+   * portraits` written into its art direction. The owner supplied a real
+   * photograph instead and chose to swap BOTH consumers of this slot, so the
+   * homepage grid's Pet Supplies card carries the same frame as the category
+   * page hero — one file, no orphan. Because the frame is now a real pet
+   * portrait, the old ban is gone and the alt below states what is actually in
+   * the picture (it is the only image on the site whose subject is an animal,
+   * and the only stated as such).
+   */
   industryPetSupplies: {
     file: 'industry-pet-supplies.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'PET SUPPLIES',
-    alt: 'A round plush grey dog bed centred on a stainless bench, the workshop behind out of focus.',
+    alt: 'A tabby cat lying on a light chair beside a grey cushion, with a husky dog sitting behind it with its mouth open and its tongue out.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Pet Supplies. One product centred on a bench, shallow depth of field. No live animals, no studio pet portraits, no timber, no wood.',
+      'Category for this slot: Pet Supplies — shipped 2026-10-05 as a real photograph (Unsplash: Tran Mau Tri Tam), NOT generated. Frame: a tabby cat lying in front of a husky dog with its tongue out, on a white chair against grey cushions, indoor, daylight. It is the brief\'s documentary register applied to the category rather than to a bench still life, and it asserts nothing about SOURDEN, a supplier or an order. If the photography is ever replaced, keep it a real photograph of the category, keep the animals in the middle band (the homepage card crops to roughly 60% of the width) and keep the file name so the swap stays an overwrite.',
   },
   industryApparelFootwearBags: {
     file: 'industry-apparel-footwear-bags.webp',
