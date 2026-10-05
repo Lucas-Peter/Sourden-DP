@@ -60,6 +60,18 @@ import { page as howToVerifyAChineseSupplierBeforeYouOrder } from './insight-how
 /* The body of article 03 — same shape, its own words. */
 import { page as chinaSupplierVsTradingCompany } from './insight-china-supplier-vs-trading-company.js';
 
+/* Articles 04–12 — one import each, transcribed from
+   `SOURDEN_Insights_Articles_4-12.docx`. */
+import { page as whatInformationToGiveAChinaSupplier } from './insight-what-information-to-give-a-china-supplier.js';
+import { page as moqInChinaSourcing } from './insight-moq-in-china-sourcing.js';
+import { page as howToCompareSupplierQuotations } from './insight-how-to-compare-supplier-quotations.js';
+import { page as whyCheckProductsBeforeShipping } from './insight-why-check-products-before-shipping.js';
+import { page as preShipmentInspectionChecklist } from './insight-pre-shipment-inspection-checklist.js';
+import { page as airFreightVsSeaFreightFromChina } from './insight-air-freight-vs-sea-freight-from-china.js';
+import { page as whatAffectsShippingCostFromChina } from './insight-what-affects-shipping-cost-from-china.js';
+import { page as canYouSourceAProductFromAPhoto } from './insight-can-you-source-a-product-from-a-photo.js';
+import { page as productSamplesInChinaSourcing } from './insight-product-samples-in-china-sourcing.js';
+
 /**
  * One line per written article, keyed by the slug used in `insights-articles.js`.
  *
@@ -72,6 +84,15 @@ export const insightDetailPages = {
   'how-to-find-reliable-suppliers-in-china': howToFindReliableSuppliersInChina,
   'how-to-verify-a-chinese-supplier-before-you-order': howToVerifyAChineseSupplierBeforeYouOrder,
   'china-supplier-vs-trading-company': chinaSupplierVsTradingCompany,
+  'what-information-to-give-a-china-supplier': whatInformationToGiveAChinaSupplier,
+  'moq-in-china-sourcing': moqInChinaSourcing,
+  'how-to-compare-supplier-quotations': howToCompareSupplierQuotations,
+  'why-check-products-before-shipping': whyCheckProductsBeforeShipping,
+  'pre-shipment-inspection-checklist': preShipmentInspectionChecklist,
+  'air-freight-vs-sea-freight-from-china': airFreightVsSeaFreightFromChina,
+  'what-affects-shipping-cost-from-china': whatAffectsShippingCostFromChina,
+  'can-you-source-a-product-from-a-photo': canYouSourceAProductFromAPhoto,
+  'product-samples-in-china-sourcing': productSamplesInChinaSourcing,
 };
 
 /* ---------------------------------------------------------------------------
