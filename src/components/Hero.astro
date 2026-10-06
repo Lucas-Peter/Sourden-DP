@@ -50,9 +50,15 @@ import { hero } from '../data/home.js';
     {
       hero.stanzas.map((stanza) => (
         <span class="bg-hero__stanza">
-          {stanza.lines.map((line) => (
-            <span class="bg-hero__line">{line}</span>
-          ))}
+          {stanza.lines.map((line) => {
+            const isAccent = typeof line === 'object';
+            const text = isAccent ? line.text : line;
+            return (
+              <span class="bg-hero__line" class:list={{ 'bg-hero__line--accent': isAccent }}>
+                {text}
+              </span>
+            );
+          })}
         </span>
       ))
     }
