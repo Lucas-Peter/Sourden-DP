@@ -93,6 +93,18 @@
      `.bg-hero__scrim` (components.css). */
   --scrim-hero: rgba(239, 235, 225, 0.88);
 
+  /* The site's photographs are two batches — AI-generated documentary frames
+     and a handful of real Unsplash photos — whose colour temperatures do not
+     quite match. A near-invisible warm veil over every `.media` and the
+     background hero's backdrop pulls the cooler frames back toward the ivory
+     paper so the whole set reads as one photographer, one light. The alpha is
+     low enough that a product's colour stays honest: this is a sourcing site,
+     and a buyer must still judge a finish by eye. `--photo-veil-dark` is the
+     same idea inverted — a faint ink veil that fades in over the hover scale
+     so a picture settles and feels focused instead of floating. */
+  --photo-veil: rgba(239, 235, 225, 0.07);
+  --photo-veil-dark: rgba(17, 19, 21, 0.06);
+
   --ivory: #F6F5F1; /* main editorial background */
   --white: #FFFFFF; /* alternating sections */
 

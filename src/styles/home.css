@@ -100,6 +100,13 @@
   display: block;
 }
 
+/* The one editorial stress in the H1: "suppliers." prints in the brass ink
+   (AA on ivory) as a typographic accent — a single deliberate beat, not a
+   link, not a claim. Rendered when home.js marks a line `accent: true`. */
+.bg-hero--home .bg-hero__line--accent {
+  color: var(--brass-ink);
+}
+
 /* Desktop: a stanza's lines join on one line — "Find the right suppliers."
    and "Get your products moving." each read as a single line (owner,
    2026-10-02). The ::before restores the inter-word space the <br>s never
@@ -249,6 +256,34 @@
   gap: var(--sp-2) var(--sp-5);
   min-height: 108px;
   padding-block: var(--sp-5);
+  position: relative;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+/* Editorial-row hover: the whole row answers the pointer — a faint ground
+   swells in and a brass hairline draws down the left edge. The link already
+   moves its arrow on hover; this turns "one arrow moved" into "this row is
+   live". */
+.service-row__link::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background-color: var(--brass-ink);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.service-row__link:hover,
+.service-row__link:focus-visible {
+  background-color: var(--stone-soft);
+}
+
+.service-row__link:hover::before,
+.service-row__link:focus-visible::before {
+  transform: scaleY(1);
 }
 
 @media (min-width: 1200px) {
@@ -664,6 +699,28 @@
   row-gap: var(--sp-2);
   align-items: baseline;
   padding-block: var(--sp-6);
+  position: relative;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.audience-row::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background-color: var(--brass-ink);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.audience-row:hover {
+  background-color: var(--white);
+}
+
+.audience-row:hover::before {
+  transform: scaleY(1);
 }
 
 .audience-row .num {
@@ -799,6 +856,28 @@
   row-gap: var(--sp-2);
   align-items: baseline;
   padding-block: var(--sp-5);
+  position: relative;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.reason-row::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background-color: var(--brass);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.reason-row:hover {
+  background-color: var(--surface-dark-raised);
+}
+
+.reason-row:hover::before {
+  transform: scaleY(1);
 }
 
 .reason-row .num {

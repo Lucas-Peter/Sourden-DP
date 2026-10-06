@@ -253,6 +253,21 @@
   object-fit: cover;
 }
 
+/* Colour-grade veil — a near-invisible warm wash over every photograph so the
+   mixed AI + real photo set reads as one photographer's light. Drawn on
+   `::after` (after the <img>, so it sits above the picture); the zoom veil
+   below uses `::before` precisely so the two never fight over one
+   pseudo-element. */
+.media::after,
+.bg-hero__backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--photo-veil);
+}
+
 /* Subtle hover scale — spec §23: 1.02–1.04 over 200–300ms. */
 .media--zoom > img,
 .media--zoom > picture > img {
@@ -264,13 +279,40 @@
   transform: scale(1.03);
 }
 
+/* Optical hover — alongside the scale, a faint dark veil fades in so the
+   picture settles and feels focused rather than floating. Rendered on
+   `::before` so it layers above the colour-grade veil (`::after`) on hover. */
+.media--zoom::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-color: var(--photo-veil-dark);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.media--zoom:hover::before,
+.media--zoom:focus-within::before {
+  opacity: 1;
+}
+
 /* `base.css` neutralises transition DURATION under reduced motion, but that
    still leaves the scale itself snapping into place on hover. Movement is what
-   the preference is about, so drop the transform entirely here. */
+   the preference is about, so drop the transform and the dark veil entirely
+   here. */
 @media (prefers-reduced-motion: reduce) {
   .media--zoom:hover > img,
   .media--zoom:hover > picture > img {
     transform: none;
+  }
+
+  .media--zoom::before,
+  .media--zoom:hover::before,
+  .media--zoom:focus-within::before {
+    opacity: 0;
+    transition: none;
   }
 }
 
