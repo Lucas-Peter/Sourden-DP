@@ -1,6 +1,9 @@
-# `functions/` —— 预留的后端目录（V1 未使用）
+# `functions/` —— 历史说明目录（V1 后端已实现，但不在本目录）
 
-本目录是规范（§36）里预留的采购需求表单后端。**V1 完全静态，没有任何 Worker 脚本**，所以这里现在只有一个占位文件。
+本目录是规范（§36）里预留的采购需求表单后端的**设计说明**。V1 后端已经实现，但按
+"方案 A"放在仓库根的 `worker/index.js`（一个真正的 Worker 脚本），而不是本目录 —— 因为
+**Workers 不会自动路由 `functions/` 文件**（详情见下方）。本目录现在只保留这份说明，
+真正的代码在 `worker/index.js`。
 
 规范预期的三个接口是：
 
@@ -106,16 +109,17 @@ Hono 之类的框架来做路由，而不是依赖这个兼容命令。
 
 ---
 
-## 前端已经等着这两个接口了 —— 请照着实现
+## 前端已经在按这个契约发请求
 
-`src/pages/sourcing-request.astro` 的 `/sourcing-request` 页面已经上线，表单会真的
-向下面两个地址发请求。**接口还不存在时，表单会落到"发送失败"状态并给出邮件兜底**，
-不会假装成功 —— 这是有意设计（规范 §23：只有 2xx 才算成功）。
+`src/pages/sourcing-request.astro` 的 `/sourcing-request` 页面已上线，表单会真的向
+`POST /api/inquiry` 发 JSON 请求。**只有 2xx 才算成功**（规范 §23），否则显示"发送失败"
+并给出邮件兜底，不会假装成功。
 
-当前线上行为：Worker 只有静态资源，`not_found_handling = "404-page"`，
-所以 `POST /api/inquiry` 今天返回 404，前端据此显示错误状态。**不会出现假成功。**
+V1 已落地：请求被 `wrangler.toml` 的 `run_worker_first = ["/api/*"]` 路由到 `worker/index.js`，
+不再返回 404。**后端契约必须与下面的真实 payload 形状完全一致** —— 因为它是照
+`src/lib/inquiry.ts` 的 `buildPayload()` 实现的，而不是这份 README 早期草稿里的旧字段。
 
-### `POST /api/upload` —— 单文件，逐个上传
+### `POST /api/upload` —— 单文件，逐个上传（V1 不在范围内：规范明确禁止文件/图片上传）
 
 `multipart/form-data`，两个字段：
 
@@ -131,33 +135,31 @@ Hono 之类的框架来做路由，而不是依赖这个兼容命令。
 限制在 `src/lib/inquiry.ts` 的 `FILE_RULES` 里，**服务端要独立再校验一遍**：
 `.jpg/.jpeg/.png/.webp/.pdf`、最多 10 个、单个最大 10 MB。
 
-### `POST /api/inquiry` —— JSON
+### `POST /api/inquiry` —— JSON（真实契约，照 `src/lib/inquiry.ts` 实现）
 
-只有 **4 个必填项**：`product.name`、`destination.country`、`contact.name`、
-`contact.email`。**空的可选项会被整个省略** —— 所以不要假设某个键一定存在。
+**5 个必填项**：`contact.name`、`contact.email`、`contact.phone`、`contact.country`、
+`message`。`business.type` / `business.stage` 可选，**为空时前端会整个省略 `business`**，
+所以服务端不要假设该键一定存在。`turnstileToken` 在未配置 `PUBLIC_TURNSTILE_SITE_KEY`
+时是 `""`（空字符串，键仍然存在）。
 
 ```json
 {
-  "product": {
-    "name": "custom packaging boxes",
-    "specifications": "…",
-    "customization": "…",
-    "targetPrice": { "amount": 1.2, "currency": "USD" }
+  "contact": {
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "phone": "+1 555 0100",
+    "country": "United States"
   },
-  "files": [{ "name": "ref.png", "size": 4096, "type": "image/png", "key": "…" }],
-  "order":      { "quantity": "…", "frequency": "…", "stage": "…" },
-  "destination":{ "country": "United States", "city": "…" },
-  "business":   { "type": "…", "website": "…" },
-  "contact":    { "name": "…", "email": "…", "whatsapp": "…", "preferredMethod": "email" },
-  "additionalInformation": "…",
+  "business": { "type": "Retailer", "stage": "Ready to order" },
+  "message": "Looking for a wood products manufacturer for custom shelves…",
   "turnstileToken": "…"
 }
 ```
 
-- `targetPrice.amount` 只有填了数字才有；`currency` 单独填了也会有。
-- `files[].key` 是上一步 `/api/upload` 返回的键；没上传文件时 `files` 是 `[]`。
-- `turnstileToken` 在未配置 `PUBLIC_TURNSTILE_SITE_KEY` 时是 `""`。
-- **2xx = 成功，其余一律失败**。请返回 JSON，前端不解析成功响应体。
+- `contact.email` 必须过 `^[^\s@]+@[^\s@]+\.[^\s@]{2,}$` 校验（与前端同一条规则）。
+- 服务端独立再校验一遍这 5 个必填项；缺任一即返回 400。
+- **2xx = 成功，其余一律失败**。前端不解析成功响应体，只认 `response.ok`。
+- 完整实现见 `worker/index.js` 的 `fetch` 处理。
 
 ### 数据流向
 
