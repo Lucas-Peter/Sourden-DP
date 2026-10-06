@@ -1,12 +1,14 @@
 # SOURDEN — image shot list
 
 The photography brief for this site, derived from `src/data/media.js`. That
-manifest is the single source of truth: it drives both the markup and the
-placeholder artwork, so this document is a readable copy of it. If the two ever
-disagree, `media.js` wins.
+manifest is the single source of truth: it drives the markup and the slot list,
+so this document is a readable copy of it. If the two ever disagree, `media.js`
+wins.
 
-Every slot currently renders a **labelled placeholder** (`npm run placeholders`
-regenerates them from the manifest). Nothing here should ship as-is.
+**Every slot is filled with a real photograph or a real brand asset** as of
+2026-10-06 — `placeholder: true` is set on none of them, and `npm run
+placeholders` (`public/images/*.svg`) now has nothing left to generate. The
+entries below are the brief for replacing one, not a to-do list.
 
 ---
 
@@ -49,9 +51,10 @@ symmetrically about its **centre**. A 4:3 image in a 4:5 frame keeps only about
 > on every side as expendable. Nothing that carries meaning — a face, a hand, a
 > product, a logo — should sit there.
 
-The placeholder artwork follows the same rule: its label sits in the centred 54%
-band, sized per artwork so it always survives. A corner marker does not — that
-is exactly the bug this rule exists to prevent.
+The placeholder artwork followed the same rule: its label sat in the centred 54%
+band, sized per artwork so it always survived. A corner marker does not — that
+is exactly the bug this rule exists to prevent. The rule still governs
+replacement photographs, which are cropped the same way.
 
 ---
 
@@ -59,7 +62,7 @@ is exactly the bug this rule exists to prevent.
 
 Legend: **role** · recommended source size · aspect ratio · where it appears
 
-### Hero — `hero-sourcing.svg`
+### Hero — `hero-sourcing.webp`
 
 | | |
 | --- | --- |
@@ -88,17 +91,17 @@ hero each).
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `services-hero.svg` | Sourcing Services | **1600 × 1200** | 4:3 | `/services` hero |
-| `service-product-sourcing.svg` | Product Sourcing | **1200 × 900** | 4:3 | `/services` row |
-| `service-supplier-verification.svg` | Supplier Verification | **1200 × 900** | 4:3 | `/services` row |
-| `service-purchasing-management.svg` | Purchasing Management | **1200 × 900** | 4:3 | `/services` row |
-| `service-quality-control.svg` | Quality Control | **1200 × 900** | 4:3 | `/services` row |
-| `service-shipping-from-china.svg` | Shipping from China | **1200 × 900** | 4:3 | `/services` row |
-| `service-product-sourcing-hero.svg` | Product Sourcing | **1600 × 1200** | 4:3 | detail hero |
-| `service-supplier-verification-hero.svg` | Supplier Verification | **1600 × 1200** | 4:3 | detail hero |
-| `service-purchasing-management-hero.svg` | Purchasing Management | **1600 × 1200** | 4:3 | detail hero |
-| `service-quality-control-hero.svg` | Quality Control | **1600 × 1200** | 4:3 | detail hero |
-| `service-shipping-from-china-hero.svg` | Shipping from China | **1600 × 1200** | 4:3 | detail hero |
+| `services-hero.webp` | Sourcing Services | **1600 × 1200** | 4:3 | `/services` hero |
+| `service-product-sourcing.webp` | Product Sourcing | **1200 × 900** | 4:3 | `/services` row |
+| `service-supplier-verification.webp` | Supplier Verification | **1200 × 900** | 4:3 | `/services` row |
+| `service-purchasing-management.webp` | Purchasing Management | **1200 × 900** | 4:3 | `/services` row |
+| `service-quality-control.webp` | Quality Control | **1200 × 900** | 4:3 | `/services` row |
+| `service-shipping-from-china.webp` | Shipping from China | **1200 × 900** | 4:3 | `/services` row |
+| `service-product-sourcing-hero.webp` | Product Sourcing | **1600 × 1200** | 4:3 | detail hero |
+| `service-supplier-verification-hero.webp` | Supplier Verification | **1600 × 1200** | 4:3 | detail hero |
+| `service-purchasing-management-hero.webp` | Purchasing Management | **1600 × 1200** | 4:3 | detail hero |
+| `service-quality-control-hero.webp` | Quality Control | **1600 × 1200** | 4:3 | detail hero |
+| `service-shipping-from-china-hero.webp` | Shipping from China | **1600 × 1200** | 4:3 | detail hero |
 
 All eleven are 4:3 on purpose. The five row images are shown as **one
 alternating text ↔ image sequence** on `/services`, so a mixed set of ratios
@@ -147,15 +150,15 @@ Target under 120 KB each; the hero under 250 KB.
 
 | File | Label | Source size | Ratio |
 | --- | --- | --- | --- |
-| `industry-consumer-products.svg` | Consumer Products | **1200 × 1500** | 4:5 portrait |
-| `industry-beauty-personal-care.svg` | Beauty & Personal Care | **1200 × 900** | 4:3 |
-| `industry-wood-products.svg` | Wood Products — **placeholder, awaiting a real photograph** | **1200 × 900** | 4:3 |
-| `industry-packaging.svg` | Packaging | **1200 × 900** | 4:3 |
-| `industry-electronics-accessories.svg` | Electronics & Accessories | **1200 × 900** | 4:3 |
-| `industry-industrial-products.svg` | Industrial Products | **1200 × 1500** | 4:5 portrait |
-| `industry-sports-outdoors.svg` | Sports & Outdoors | **1200 × 900** | 4:3 |
-| `industry-pet-supplies.svg` | Pet Supplies | **1200 × 900** | 4:3 |
-| `industry-apparel-footwear-bags.svg` | Apparel, Footwear & Bags | **1200 × 900** | 4:3 |
+| `industry-consumer-products.webp` | Consumer Products | **1200 × 1500** | 4:5 portrait |
+| `industry-beauty-personal-care.webp` | Beauty & Personal Care | **1200 × 900** | 4:3 |
+| `industry-wood-products.webp` | Wood Products — **real photograph** (2026-10-06) | **1200 × 900** | 4:3 |
+| `industry-packaging.webp` | Packaging | **1200 × 900** | 4:3 |
+| `industry-electronics-accessories.webp` | Electronics & Accessories | **1200 × 900** | 4:3 |
+| `industry-industrial-products.webp` | Industrial Products | **1200 × 1500** | 4:5 portrait |
+| `industry-sports-outdoors.webp` | Sports & Outdoors | **1200 × 900** | 4:3 |
+| `industry-pet-supplies.webp` | Pet Supplies | **1200 × 900** | 4:3 |
+| `industry-apparel-footwear-bags.webp` | Apparel, Footwear & Bags | **1200 × 900** | 4:3 |
 
 Two of the nine are portrait because the grid is deliberately asymmetric (spec
 §12) — keep those framings upright. The last slot spans the full grid width on
@@ -195,14 +198,14 @@ Target under 120 KB each.
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `industries-hero.svg` | WHAT WE SOURCE | **1600 × 1200** | 4:3 | `/industries` hero |
+| `industries-hero.webp` | WHAT WE SOURCE | **1600 × 1200** | 4:3 | `/industries` hero |
 
 **This page deliberately has exactly one image.** The nine-entry category
 directory is copy-led — a number, a name, a description, the example product
 types and one action per entry — and it carries no photographs on purpose. Nine
 category photographs in a nine-cell layout is a product grid whatever the
 surrounding copy says, and the brief asks for "an editorial sourcing directory,
-not an ecommerce category page". The nine `industry-*.svg` slots above are the
+not an ecommerce category page". The nine `industry-*.webp` slots above are the
 homepage grid's, not this page's; do not reuse them here.
 
 **Loads eagerly** — it sits beside an H1 with `priority`. WebP at ~75% quality,
@@ -229,7 +232,7 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 | --- | --- | --- | --- | --- |
 | `source-consumer-products.webp` | Consumer Products — sourced range | **1200 × 900** | 4:3 | `/industries/consumer-products` |
 | `source-beauty-personal-care.webp` | Beauty & Personal Care — sourced range | **1200 × 900** | 4:3 | `/industries/beauty-personal-care` |
-| `source-wood-products.svg` | Wood Products — **placeholder, awaiting a real photograph** | **1200 × 900** | 4:3 | `/industries/wood-products` |
+| `source-wood-products.webp` | Wood Products — sourced range — **real photograph** (2026-10-06) | **1200 × 900** | 4:3 | `/industries/wood-products` |
 | `source-packaging.webp` | Packaging — sourced range | **1200 × 900** | 4:3 | `/industries/packaging` |
 | `source-electronics-accessories.webp` | Electronics & Accessories — sourced range | **1200 × 900** | 4:3 | `/industries/electronics-accessories` |
 | `source-industrial-products.webp` | Industrial Products — sourced range | **1200 × 900** | 4:3 | `/industries/industrial-products` |
@@ -250,9 +253,10 @@ All nine went live as AI-generated documentary photographs on 2026-10-03
 (38–75 KB each, quality 82, single calm group of four items, 50mm, shallow
 depth of field, warm neutral grade).
 
-Target under 120 KB each. The category-page hero images above (`industry-*.svg`)
+Target under 120 KB each. The category-page hero images above (`industry-*.webp`)
 are separate slots — the hero is a single production still, the source range is
-a group of finished products.
+a group of finished products. Wood Products is the one exception to the
+"no timber" rule: wood IS that slot's subject (see the nine-slot list above).
 
 ---
 
@@ -260,7 +264,7 @@ a group of finished products.
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `how-it-works-hero.svg` | HOW IT WORKS | **1600 × 1200** | 4:3 | `/how-it-works` hero |
+| `how-it-works-hero.webp` | HOW IT WORKS | **1600 × 1200** | 4:3 | `/how-it-works` hero |
 
 **This page deliberately has exactly one image too.** Every one of its sixteen
 sections is a process description — the five-stage rail, what to include in a
@@ -296,7 +300,7 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `about-hero.svg` | ABOUT SOURDEN | **1600 × 1200** | 4:3 | `/about` hero |
+| `about-hero.webp` | ABOUT SOURDEN | **1600 × 1200** | 4:3 | `/about` hero |
 
 **This slot is a work photograph on purpose, not a founder portrait.** The page
 is the site's brand and trust page, so a portrait — a founder, a team, an office
@@ -320,7 +324,7 @@ under 250 KB.
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `faq-hero.svg` | FAQ | **1600 × 1200** | 4:3 | `/faq` hero |
+| `faq-hero.webp` | FAQ | **1600 × 1200** | 4:3 | `/faq` hero |
 
 **This page names no image in its brief, and it still gets one.** The brief's
 §2 specifies the eyebrow, the H1, the supporting paragraph and two actions and
@@ -349,12 +353,17 @@ under 250 KB.
   bubbles, lightbulbs, headsets, call-centre imagery, icon grids, and the
   site-wide clichés.
 
-### Case studies — two slots
+### Case studies — three slots
 
 | File | Source size | Ratio |
 | --- | --- | --- |
-| `case-study-christmas-tree.svg` | **1400 × 1050** | 4:3 |
-| `case-study-sports-jerseys.svg` | **1200 × 800** | 3:2 |
+| `case-study-world-cup-jerseys.webp` | **1024 × 765** | 4:3 |
+| `case-study-custom-logo.webp` | **1024 × 687** | 3:2 |
+| `case-study-shipment.webp` | **1200 × 800** | 3:2 |
+
+All three shipped as photographs on 2026-10-02. An earlier pair
+(`case-study-christmas-tree.*`, `case-study-sports-jerseys.*`) retired with their
+case studies and the files are gone — do not re-add them.
 
 **Only to be replaced once the real project photograph exists and is cleared for
 publication.** Do not substitute a generic factory shot — a case study image
@@ -370,7 +379,7 @@ unlinked until it has a real subject.
 
 | File | Source size | Ratio |
 | --- | --- | --- |
-| `insights-hero.svg` → `insights-hero.webp` | **1920 × 1080** | 16:9 |
+| `insights-hero.webp` | **1920 × 1080** | 16:9 |
 
 **The site's only full-bleed background hero.** The photograph sits behind the
 hub's copy (`InsightsHero.astro`); a left-weighted scrim of the hero ivory
@@ -410,9 +419,9 @@ changes `/` and never the hub.
 
 | File | Source size | Ratio |
 | --- | --- | --- |
-| `insight-supplier-research.svg` | **1400 × 933** | 3:2 |
-| `insight-supplier-verification.svg` | **1200 × 800** | 3:2 |
-| `insight-trading-company.svg` | **1200 × 800** | 3:2 |
+| `insight-supplier-research.webp` | **1400 × 933** | 3:2 |
+| `insight-supplier-verification.webp` | **1200 × 800** | 3:2 |
+| `insight-trading-company.webp` | **1200 × 800** | 3:2 |
 
 - **Supplier research** — supplier research, sampling, or side-by-side product
   comparison.
@@ -425,7 +434,7 @@ Target under 120 KB each.
 
 ---
 
-### Social — `og-default.svg` ✱ needs work before launch
+### Social — `og-default.png`
 
 | | |
 | --- | --- |
@@ -437,10 +446,11 @@ This one is **not a grey placeholder** — it is a real brand card (ink ground,
 SOURDEN wordmark, "China Sourcing. Done.", brass rule). All typography, no
 photography, no fabricated claims.
 
-> ⚠ **It is currently an SVG, and most social platforms do not render SVG.**
-> Export it as a **PNG or JPG at 1200 × 630** before launch, point
-> `ogDefault.file` in `media.js` at the raster file, remove
-> `placeholder: true`, and re-run `npm run verify`.
+> ✅ **Shipped as `og-default.png` (1200 × 630, ~24 KB).** It used to be an SVG,
+> and most social platforms do not render SVG — that is why the slot is raster.
+> If it is ever redrawn, keep it raster: rebuild from `_img/og-build.cjs`
+> (puppeteer + the bundled variable fonts), never regenerate it with an image
+> model, and keep `ogDefault.file` pointing at a PNG or JPG.
 
 ---
 
@@ -449,9 +459,13 @@ photography, no fabricated claims.
 1. Supply the photograph at or above the listed size, same aspect ratio.
 2. Export WebP at ~75% quality (or AVIF). Keep hero and feature slots under
    ~250 KB, thumbnails under ~120 KB.
-3. Put the file in `public/images/` — the file name may stay or change.
-4. In `src/data/media.js`: point `file` at the new file, update `alt` to
-   describe the actual photograph, and **delete `placeholder: true`**.
+3. Put the file in `public/images/` — the file name may stay or change. The
+   `@640w` / `@960w` / `@1280w` / `@1600w` srcset variants are rebuilt from the
+   new source by `scripts/gen-srcset.mjs` on every build (`prebuild`); never
+   commit them by hand.
+4. In `src/data/media.js`: point `file` at the new file and update `alt` to
+   describe the actual photograph. (If the slot was still a placeholder, also
+   **delete `placeholder: true`** — none are left as of 2026-10-06.)
 5. Run `npm run verify`. The audit confirms the reference resolves and the
    image still declares width and height, so layout shift stays at zero.
 
