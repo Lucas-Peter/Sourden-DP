@@ -149,7 +149,7 @@ Target under 120 KB each; the hero under 250 KB.
 | --- | --- | --- | --- |
 | `industry-consumer-products.svg` | Consumer Products | **1200 × 1500** | 4:5 portrait |
 | `industry-beauty-personal-care.svg` | Beauty & Personal Care | **1200 × 900** | 4:3 |
-| `industry-home-living.svg` | Home & Living | **1200 × 900** | 4:3 |
+| `industry-wood-products.svg` | Wood Products — **placeholder, awaiting a real photograph** | **1200 × 900** | 4:3 |
 | `industry-packaging.svg` | Packaging | **1200 × 900** | 4:3 |
 | `industry-electronics-accessories.svg` | Electronics & Accessories | **1200 × 900** | 4:3 |
 | `industry-industrial-products.svg` | Industrial Products | **1200 × 1500** | 4:5 portrait |
@@ -165,8 +165,9 @@ tablet, so keep its subject centred; the sides get cropped hardest there.
   environment.
 - **Beauty & Personal Care** — a filling line, component trays, or packaging of
   beauty / personal-care products.
-- **Home & Living** — materials, an assembly bench, or finishing of homewares
-  and textiles.
+- **Wood Products** — woodworking / manufacturing, or finished wooden goods
+  (pallets, crates, storage boxes, packaging, furniture components, displays).
+  No coffin as the lead visual, no cemetery, no funeral scene.
 - **Packaging** — printing, die-cutting, or neatly stacked retail packaging.
 - **Electronics & Accessories** — an assembly bench, cable/component trays, or a
   functional test jig.
@@ -228,7 +229,7 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 | --- | --- | --- | --- | --- |
 | `source-consumer-products.webp` | Consumer Products — sourced range | **1200 × 900** | 4:3 | `/industries/consumer-products` |
 | `source-beauty-personal-care.webp` | Beauty & Personal Care — sourced range | **1200 × 900** | 4:3 | `/industries/beauty-personal-care` |
-| `source-home-living.webp` | Home & Living — sourced range | **1200 × 900** | 4:3 | `/industries/home-living` |
+| `source-wood-products.svg` | Wood Products — **placeholder, awaiting a real photograph** | **1200 × 900** | 4:3 | `/industries/wood-products` |
 | `source-packaging.webp` | Packaging — sourced range | **1200 × 900** | 4:3 | `/industries/packaging` |
 | `source-electronics-accessories.webp` | Electronics & Accessories — sourced range | **1200 × 900** | 4:3 | `/industries/electronics-accessories` |
 | `source-industrial-products.webp` | Industrial Products — sourced range | **1200 × 900** | 4:3 | `/industries/industrial-products` |
