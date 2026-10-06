@@ -330,7 +330,7 @@ npx wrangler@latest dev
 | `/services` | 200（不是 307 → `/services/`） |
 | `/services.html`、`/services/` | 307 → `/services` |
 | `/不存在的路径` | 404，且是我们自己的 404 页面 |
-| `/images/*.svg` 的响应头 | `Cache-Control: public, max-age=604800, …` |
+| `/images/*.webp` 的响应头 | `Cache-Control: public, max-age=604800, …` |
 
 只想校验配置、不启动服务器：
 
@@ -512,7 +512,7 @@ TLS 证书自动签发，HTTP 自动重定向到 HTTPS，`public/_headers` 已�
 
 - 首页查看源代码，确认 canonical 与 `og:image` 用的是真实域名。
 - 移动端跑一次 Lighthouse —— 预期无布局偏移（所有图片都声明了尺寸）。
-- 响应头检查：访问 `/images/hero-sourcing.svg`，应能看到
+- 响应头检查：访问 `/images/hero-sourcing.webp`，应能看到
   `Cache-Control: public, max-age=604800, stale-while-revalidate=86400`
   —— 出现即说明 `_headers` 已被 Cloudflare 读取。
 
