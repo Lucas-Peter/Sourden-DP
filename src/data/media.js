@@ -413,16 +413,15 @@ export const images = {
       'Category for this slot: Beauty & Personal Care. One product on a filling or inspection bench, shallow depth of field, subject centred. No timber, no wood.',
   },
   industryWoodProducts: {
-    file: 'industry-wood-products.svg',
+    file: 'industry-wood-products.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'WOOD PRODUCTS',
-    alt: 'A plain wooden pallet and a stack of machined timber components resting on a workbench, the workshop behind out of focus.',
+    alt: 'A worker guiding a hand plane along a long pale timber plank on a workbench, a pile of wood shavings in the foreground, the workshop behind out of focus.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
     artDirection:
-      'Category for this slot: Wood Products. Documentary workshop frame — a pallet and a few timber components on a bench, shallow depth of field, subject centred inside the middle 60%. Unlike every other slot here, wood and timber ARE the subject; the neighbouring slots ban them precisely to keep the nine cards distinct. Banned as the main visual and as the first thing in frame: coffins, caskets, funerary and memorial objects, cemeteries and funeral scenes. Wood Products lists Funeral & Memorial Products among its product types, but that is copy, not the picture — the frame must stay on ordinary workshop work. Also banned: China clichés (flag, Great Wall), factory assembly-line stock, an overly perfect AI-rendered plant, branded logos, readable text.',
+      'Shipped 2026-10-06 as a real photograph, NOT generated: a single craftsman planing a long timber plank with a hand plane, shavings in the foreground, the workshop soft behind. It is the documentary register applied to the category rather than a bench still life, and it asserts nothing about SOURDEN, a supplier or an order. Unlike every other slot here, wood and timber ARE the subject; the neighbouring slots ban them precisely to keep the nine cards distinct. If the photography is ever replaced, keep it a real photograph of the category, keep the plank across the middle band (this slot crops to roughly 60% of the width on the homepage card) and keep the file name so the swap stays an overwrite. Banned as the main visual and as the first thing in frame: coffins, caskets, funerary and memorial objects, cemeteries and funeral scenes — Wood Products lists Funeral & Memorial Products among its product types, but that is copy, not the picture. Also banned: China clichés (flag, Great Wall), factory assembly-line stock, an overly perfect AI-rendered plant, branded logos, readable text.',
   },
   industryPackaging: {
     file: 'industry-packaging.webp',
@@ -541,16 +540,15 @@ export const images = {
       'Category for this slot: Beauty & Personal Care. Documentary photo — a hair dryer, a flat iron, makeup brushes and a jar of cream gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No formulation claims, no brand logos, no readable text, no wood.',
   },
   sourceWoodProducts: {
-    file: 'source-wood-products.svg',
+    file: 'source-wood-products.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'WOOD PRODUCTS — SOURCED RANGE',
-    alt: 'A wooden storage box, a small crate, a turned timber dish and a plain wooden lid arranged together on a pale surface.',
+    alt: 'A flat lay of wooden kitchenware on a pale background — cutting boards, serving trays, small bowls and cups in assorted shapes and sizes, with dried stems at the edges.',
     role: /** @type {ImageRole} */ ('industry'),
-    placeholder: true,
     artDirection:
-      'Category for this slot: Wood Products. Documentary photo — a wooden storage box, a small crate, a turned timber dish and a wooden lid gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Banned as the subject: coffins, caskets, funerary and memorial objects, cemeteries. No brand logos, no people, no readable text.',
+      'Shipped 2026-10-06 as a real photograph, NOT generated: a flat lay of finished wooden kitchenware — a handled cutting board, shallow trays, round and oval bowls, small cups — on a pale seamless surface with a few dried stems at the edges. It shows the range of what the category sources rather than one product. If the photography is ever replaced, keep it a real photograph of finished wooden goods, keep the pieces inside the middle 60% (this slot crops hard) and keep the file name so the swap stays an overwrite. Banned as the subject: coffins, caskets, funerary and memorial objects, cemeteries. No brand logos, no people, no readable text.',
   },
   sourcePackaging: {
     file: 'source-packaging.webp',
