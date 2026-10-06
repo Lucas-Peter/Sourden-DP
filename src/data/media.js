@@ -198,7 +198,7 @@ export const images = {
     alt: 'One plain cardboard carton sealed with clear tape standing alone on a bare warehouse floor, with a stretch-wrapped pallet and a roller shutter door blurred behind.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'SHIPPED FRAME v2 (2026-10-01, Home & Living): ONE subject only, a single taped carton standing alone on a bare warehouse floor with the wrapped pallet and shutter door blurred behind. (v1 was rejected as too cluttered: pallet truck, straw-packed plates and textile rolls all in one frame.) Category is fixed to Home & Living and the frame stays indoors. Freight preparation rather than freight romance: packed cartons stacked and labelled, goods palletized and wrapped, a loading bay during loading, or a warehouse aisle of staged shipments. The brief bans cliché cargo-container hero shots (container stacks at sunset, a lone container against a sky) — keep it inside the warehouse where the work is visible. No China clichés.',
+      'SHIPPED FRAME v2 (2026-10-01, Home & Living — the label this slot carried until that category became Wood Products on 2026-10-06): ONE subject only, a single taped carton standing alone on a bare warehouse floor with the wrapped pallet and shutter door blurred behind. (v1 was rejected as too cluttered: pallet truck, straw-packed plates and textile rolls all in one frame.) The frame is now fixed to shipping from China and it stays indoors. Freight preparation rather than freight romance: packed cartons stacked and labelled, goods palletized and wrapped, a loading bay during loading, or a warehouse aisle of staged shipments. The brief bans cliché cargo-container hero shots (container stacks at sunset, a lone container against a sky) — keep it inside the warehouse where the work is visible. No China clichés.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters.',
   },
@@ -355,7 +355,7 @@ export const images = {
     alt: 'A calm, organised sourcing still life on a warm ivory surface: a speckled stoneware carafe and two matching cups beside an open kraft box, a closed notebook with a steel ruler, blank specification sheets, a ceramic lid and a cork stopper, arranged on the right of the frame with clear empty space on the left.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One premium minimal editorial still life: a tidy sourcing workspace — Home & Living product samples (a speckled stoneware carafe and two matching cups), an open kraft packaging box, a blank closed notebook, blank specification sheets, a steel ruler and two loose components (a ceramic lid, a cork stopper) — spaced with generous gaps on a warm ivory seamless surface, the whole arrangement on the RIGHT two thirds of the frame and the left third completely empty. No people, no hands, no screens, no readable text, no logos, no question-mark graphics, no icons, no lightbulbs, no headsets. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): cluttered desks, and rustic timber-workshop drift — no timber, no wooden blanks, no bamboo. v5 (2026-10-02) replaced the ceramic-comparison-with-hand frame per Songlin\u2019s minimal-editorial brief.',
+      'One premium minimal editorial still life: a tidy sourcing workspace — sourcing-desk objects and homeware samples (a speckled stoneware carafe and two matching cups), an open kraft packaging box, a blank closed notebook, blank specification sheets, a steel ruler and two loose components (a ceramic lid, a cork stopper) — spaced with generous gaps on a warm ivory seamless surface, the whole arrangement on the RIGHT two thirds of the frame and the left third completely empty. No people, no hands, no screens, no readable text, no logos, no question-mark graphics, no icons, no lightbulbs, no headsets. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): cluttered desks, and rustic timber-workshop drift — no timber, no wooden blanks, no bamboo. v5 (2026-10-02) replaced the ceramic-comparison-with-hand frame per Songlin\u2019s minimal-editorial brief.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters. Where several items are being compared, keep them all inside that middle band — a comparison cropped down to one item loses the point of the frame.',
   },
@@ -412,16 +412,17 @@ export const images = {
     artDirection:
       'Category for this slot: Beauty & Personal Care. One product on a filling or inspection bench, shallow depth of field, subject centred. No timber, no wood.',
   },
-  industryHomeLiving: {
-    file: 'industry-home-living.webp',
+  industryWoodProducts: {
+    file: 'industry-wood-products.svg',
     width: 1200,
     height: 900,
     ratio: '4:3',
-    label: 'HOME & LIVING',
-    alt: 'A folded oatmeal woven throw with fringed edges resting on a light workbench, shelving soft behind.',
+    label: 'WOOD PRODUCTS',
+    alt: 'A plain wooden pallet and a stack of machined timber components resting on a workbench, the workshop behind out of focus.',
     role: /** @type {ImageRole} */ ('industry'),
+    placeholder: true,
     artDirection:
-      'Category for this slot: Home & Living. One folded textile centred on a bench, shallow depth of field. No timber, no wood.',
+      'Category for this slot: Wood Products. Documentary workshop frame — a pallet and a few timber components on a bench, shallow depth of field, subject centred inside the middle 60%. Unlike every other slot here, wood and timber ARE the subject; the neighbouring slots ban them precisely to keep the nine cards distinct. Banned as the main visual and as the first thing in frame: coffins, caskets, funerary and memorial objects, cemeteries and funeral scenes. Wood Products lists Funeral & Memorial Products among its product types, but that is copy, not the picture — the frame must stay on ordinary workshop work. Also banned: China clichés (flag, Great Wall), factory assembly-line stock, an overly perfect AI-rendered plant, branded logos, readable text.',
   },
   industryPackaging: {
     file: 'industry-packaging.webp',
@@ -539,16 +540,17 @@ export const images = {
     artDirection:
       'Category for this slot: Beauty & Personal Care. Documentary photo — a hair dryer, a flat iron, makeup brushes and a jar of cream gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No formulation claims, no brand logos, no readable text, no wood.',
   },
-  sourceHomeLiving: {
-    file: 'source-home-living.webp',
+  sourceWoodProducts: {
+    file: 'source-wood-products.svg',
     width: 1200,
     height: 900,
     ratio: '4:3',
-    label: 'HOME & LIVING — SOURCED RANGE',
-    alt: 'A table lamp with a pleated shade, a fabric cushion, a glazed ceramic pot and a glass jar arranged together on a pale surface.',
+    label: 'WOOD PRODUCTS — SOURCED RANGE',
+    alt: 'A wooden storage box, a small crate, a turned timber dish and a plain wooden lid arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
+    placeholder: true,
     artDirection:
-      'Category for this slot: Home & Living. Documentary photo — a table lamp, a fabric cushion, a glazed ceramic pot and a glass jar gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No brand logos, no people, no readable text, no wood.',
+      'Category for this slot: Wood Products. Documentary photo — a wooden storage box, a small crate, a turned timber dish and a wooden lid gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Banned as the subject: coffins, caskets, funerary and memorial objects, cemeteries. No brand logos, no people, no readable text.',
   },
   sourcePackaging: {
     file: 'source-packaging.webp',
@@ -819,6 +821,13 @@ export function srcsetFor(key) {
       `[media.js] Unknown image key "${key}". Add it to the images manifest before referencing it.`
     );
   }
+  // Only a raster asset has width variants. A `.svg` placeholder is one file at
+  // one size, and deriving `@640w.webp` names from it would send the browser to
+  // files that were never written — the slot's srcset is just its own file.
+  if (!asset.file.endsWith('.webp')) {
+    return `${IMAGE_DIR}/${asset.file} ${asset.width}w`;
+  }
+
   const base = asset.file.replace(/\.webp$/, '');
 
   const manifest = srcsetManifest();

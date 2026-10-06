@@ -52,12 +52,12 @@ export const industries = [
   },
   {
     number: '03',
-    title: 'Home & Living',
-    slug: 'home-living',
-    href: '/industries/home-living',
-    imageKey: 'industryHomeLiving',
+    title: 'Wood Products',
+    slug: 'wood-products',
+    href: '/industries/wood-products',
+    imageKey: 'industryWoodProducts',
     /** See the note on `summaryNoun` below. */
-    summaryNoun: 'home and living products',
+    summaryNoun: 'wood products',
     grid: { spanLg: 3, spanMd: 4, feature: false },
   },
   {
@@ -118,7 +118,7 @@ export const industries = [
  * The reserved detail pages compose their meta description from the title:
  *   "SOURDEN sources <summaryNoun> from China according to your specifications…"
  * Most titles slot into that sentence cleanly ("pet supplies", "packaging").
- * A few do not — "sources sports & outdoors" or "sources home & living" reads
+ * A few do not — "sources sports & outdoors" reads
  * like a machine spat it out — so those categories declare the noun phrase
  * explicitly. Omitted entries fall back to the lowercased title.
  */

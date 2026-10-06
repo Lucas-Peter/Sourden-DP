@@ -123,8 +123,8 @@ const categoryDescriptions = {
     'Everyday products for retail, wholesale and direct-to-consumer businesses.',
   'beauty-personal-care':
     'Beauty tools, accessories, personal care products and related consumer goods.',
-  'home-living':
-    'Household, organization, décor, kitchen and everyday home products.',
+  'wood-products':
+    'Wooden products, packaging, storage, furniture components and custom-made items sourced from experienced manufacturers in China.',
   packaging: 'Product packaging, boxes, bags, labels and other packaging solutions.',
   'electronics-accessories':
     'Consumer electronics, accessories, components and related products.',

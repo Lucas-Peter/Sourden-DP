@@ -85,7 +85,7 @@
 
 import { consumerProducts } from './industry-consumer-products.js';
 import { beautyPersonalCare } from './industry-beauty-personal-care.js';
-import { homeLiving } from './industry-home-living.js';
+import { woodProducts } from './industry-wood-products.js';
 import { packaging } from './industry-packaging.js';
 import { electronicsAccessories } from './industry-electronics-accessories.js';
 import { industrialProducts } from './industry-industrial-products.js';
@@ -120,7 +120,7 @@ export {
 export const industryDetailPages = {
   'consumer-products': consumerProducts,
   'beauty-personal-care': beautyPersonalCare,
-  'home-living': homeLiving,
+  'wood-products': woodProducts,
   packaging,
   'electronics-accessories': electronicsAccessories,
   'industrial-products': industrialProducts,
