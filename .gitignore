@@ -25,6 +25,7 @@ dist/
 *.key
 secrets.json
 .dev.vars.*
+!.dev.vars.example
 
 # Editor / OS noise
 .DS_Store

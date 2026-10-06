@@ -1,0 +1,21 @@
+# ---------------------------------------------------------------------------
+# SOURDEN — Cloudflare Worker RUNTIME secrets template (LOCAL `wrangler dev` only)
+# ---------------------------------------------------------------------------
+# Copy to `.dev.vars` for local development. `.dev.vars` is git-ignored, so it
+# never reaches the repository. In PRODUCTION these are set as encrypted
+# Secrets in the Cloudflare dashboard (Worker project → Settings → Variables
+# and Secrets → Add), NOT in this file or anywhere in the repo.
+#
+# These are RUNTIME variables (read by worker/index.js from `env`). They are
+# completely separate from the BUILD-time variables in .env.example.
+# ---------------------------------------------------------------------------
+
+# Resend API key — used by POST /api/inquiry to send the internal notification
+# and the customer confirmation email. Get one at https://resend.com (API Keys).
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
+
+# Cloudflare Turnstile secret key — verifies the widget token server-side.
+# Configure TOGETHER with PUBLIC_TURNSTILE_SITE_KEY (build-time, in .env /
+# Cloudflare Build vars). If you leave this empty, Turnstile verification is
+# skipped: submissions still flow but the form is unprotected.
+TURNSTILE_SECRET_KEY=

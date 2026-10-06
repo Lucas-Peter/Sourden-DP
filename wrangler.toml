@@ -19,6 +19,12 @@
 name = "sourden-dp"
 compatibility_date = "2026-09-18"
 
+# Worker script entry point. V1 implements the sourcing-request API:
+#   POST /api/inquiry  → validate + Turnstile + Resend notification/confirmation
+# See worker/index.js. Static assets are still served by Cloudflare's edge; the
+# Worker is invoked ONLY for /api/* via `run_worker_first` below.
+main = "./worker/index.js"
+
 # Serve the Worker on its *.workers.dev URL as well as any custom domain.
 workers_dev = true
 
@@ -52,34 +58,46 @@ html_handling = "auto-trailing-slash"
 # Cloudflare's generic error page.
 not_found_handling = "404-page"
 
-# NOTE on `binding = "ASSETS"` — deliberately absent. The assets binding only
-# exists to let a Worker SCRIPT read assets, and is only valid alongside a
-# `main` entry point. Adding it while there is no script is a config error.
+# Route /api/* THROUGH the Worker first, so the script handles the inquiry
+# endpoint while every other request goes straight to the static edge cache
+# (free + unlimited, no Worker invocation). The Worker never serves assets, so
+# no `ASSETS` binding is required.
+run_worker_first = ["/api/*"]
+
+# NOTE on `binding = "ASSETS"` — deliberately absent. With run_worker_first
+# scoped to /api/*, the Worker only ever sees API requests and never needs to
+# read static assets, so the binding is unnecessary.
 
 # `_headers` and `_redirects` are supported natively for Workers with static
 # assets, exactly as they were on Pages. Both files live in public/ and are
 # copied into dist/ by the build — see public/_headers and public/_redirects.
 
 # ---------------------------------------------------------------------------
-# RESERVED — future sourcing-request backend (spec §36)
+# V1 sourcing-request backend — IMPLEMENTED (spec §36)
 # ---------------------------------------------------------------------------
-# Everything below is commented out on purpose: uncomment a block only after
-# the matching resource exists, otherwise the deploy fails on an unknown
-# binding.
+# `main` + `run_worker_first = ["/api/*"]` above now route POST /api/inquiry to
+# worker/index.js. The Worker reads its secrets from the runtime environment:
 #
-# Two things must happen BEFORE any binding is useful here:
+#   RESEND_API_KEY       — Cloudflare Secret (encrypted). Sends the notification
+#                          + confirmation email via Resend.
+#   TURNSTILE_SECRET_KEY — Cloudflare Secret (encrypted). Verifies the Turnstile
+#                          token server-side. Leave UNSET to disable protection
+#                          (submissions still delivered, unprotected).
 #
-#   1. Add a Worker script and point `main` at it, e.g.
-#        main = "./worker/index.ts"
-#      A binding with no script to consume it is meaningless, and
-#      `assets.binding = "ASSETS"` only becomes valid once `main` exists.
+# Both are set in the Cloudflare dashboard (Worker → Settings → Variables and
+# Secrets → Add), NOT in this file. See .dev.vars.example for local `wrangler dev`.
 #
-#   2. Note that Workers does NOT auto-route a `functions/` folder the way
-#      Pages did. See functions/README.md for the two supported options.
-#
-# Prerequisites:
-#   npx wrangler d1 create sourden-db
-#   npx wrangler r2 bucket create sourden-uploads
+# The public Turnstile site key is a BUILD-time variable (PUBLIC_TURNSTILE_SITE_KEY)
+# — it lives in .env / Cloudflare Build vars, because import.meta.env is inlined
+# at build time (see .env.example). It must be set TOGETHER with
+# TURNSTILE_SECRET_KEY, otherwise the form sends an empty token and the server
+# rejects it (400).
+
+# ---------------------------------------------------------------------------
+# RESERVED — NOT used in V1 (out of scope). Uncomment only after the matching
+# Cloudflare resource exists; otherwise the deploy fails on an unknown binding.
+# D1 / R2 are intentionally NOT part of V1 (no database, no file uploads).
+# ---------------------------------------------------------------------------
 
 # [[d1_databases]]
 # binding = "DB"
@@ -89,11 +107,3 @@ not_found_handling = "404-page"
 # [[r2_buckets]]
 # binding = "UPLOADS"
 # bucket_name = "sourden-uploads"
-
-# [vars]
-# Non-secret environment values shared by the Worker script.
-# Secrets (TURNSTILE_SECRET_KEY, INQUIRY_NOTIFY_TO) belong in the Cloudflare
-# dashboard as encrypted values, never in this file.
-# NOTE: build-time variables are separate — PUBLIC_SITE_URL must be set in the
-# Worker's BUILD variables, because `import.meta.env` is inlined at build time.
-# PUBLIC_CONTACT_EMAIL = "service@sourden.com"
