@@ -66,18 +66,20 @@ Legend: **role** · recommended source size · aspect ratio · where it appears
 
 | | |
 | --- | --- |
-| Source | **1600 × 1200** (or larger, same ratio) |
-| Ratio | 4:3 — required, not optional |
-| Appears | Homepage hero, 5-column frame, fixed 520px height, above the fold |
+| Source | **1920 × 1080** (or larger, same ratio) |
+| Ratio | 16:9 — required, not optional |
+| Appears | Homepage hero, full-bleed background, above the fold |
 
 Factory production, quality inspection, product detail, packaging, warehouse,
-machinery, materials, or worker hands handling products. Nothing distracts from
-the headline beside it — this image sits next to the largest type on the site, so
-prefer a calm, mid-detail composition over a busy one.
+machinery, materials, or worker hands handling products. The copy is overlaid
+on this image — the subject cluster sits in the right two thirds, the left
+third stays empty for the headline — so prefer a calm, mid-detail composition
+over a busy one.
 
-**Crop:** shown in a 5-column frame at a fixed 520px height, so the sides are
-cropped. Keep the subject in the middle ~70%; the outer 15% each side must be
-clear of anything that matters.
+**Crop:** a full-bleed background (`object-fit: cover`) behind the hero band:
+desktop trims top and bottom into a wide band, phones trim the sides and anchor
+at 80% so the right-hand cluster stays in view. Keep the subject cluster in the
+RIGHT two thirds; the left third stays empty for the overlaid copy.
 
 **Loads eagerly** with `fetchpriority="high"` — export WebP at ~75% quality,
 target under 250 KB.
@@ -91,7 +93,7 @@ hero each).
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `services-hero.webp` | Sourcing Services | **1600 × 1200** | 4:3 | `/services` hero |
+| `services-hero.webp` | Sourcing Services | **1920 × 1080** | 16:9 | `/services` hero |
 | `service-product-sourcing.webp` | Product Sourcing | **1200 × 900** | 4:3 | `/services` row |
 | `service-supplier-verification.webp` | Supplier Verification | **1200 × 900** | 4:3 | `/services` row |
 | `service-purchasing-management.webp` | Purchasing Management | **1200 × 900** | 4:3 | `/services` row |
@@ -103,10 +105,13 @@ hero each).
 | `service-quality-control-hero.webp` | Quality Control | **1600 × 1200** | 4:3 | detail hero |
 | `service-shipping-from-china-hero.webp` | Shipping from China | **1600 × 1200** | 4:3 | detail hero |
 
-All eleven are 4:3 on purpose. The five row images are shown as **one
-alternating text ↔ image sequence** on `/services`, so a mixed set of ratios
-would make the column widths jump from row to row. Keep the hero framing calm —
-it sits beside the H1.
+The five row images and the five detail heroes are 4:3 on purpose. The five
+row images are shown as **one alternating text ↔ image sequence** on
+`/services`, so a mixed set of ratios would make the column widths jump from
+row to row. `services-hero` is the exception — it moved to the full-bleed
+background shape (16:9, copy overlaid) on 2026-10-02, alongside the homepage,
+`/industries`, `/how-it-works` and `/about` heroes. Keep the detail-hero
+framing calm — it sits beside the H1.
 
 **Loads eagerly** — the six hero slots (`services-hero` and the five
 `*-hero`) sit beside an H1 with `priority`, so export them WebP at ~75% quality,
@@ -198,7 +203,7 @@ Target under 120 KB each.
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `industries-hero.webp` | WHAT WE SOURCE | **1600 × 1200** | 4:3 | `/industries` hero |
+| `industries-hero.webp` | WHAT WE SOURCE | **1920 × 1080** | 16:9 | `/industries` hero |
 
 **This page deliberately has exactly one image.** The nine-entry category
 directory is copy-led — a number, a name, a description, the example product
@@ -220,9 +225,10 @@ under 250 KB.
   a world map, the Great Wall, a flag, a panda, a generic handshake, a staged
   meeting room, or an artificially perfect AI factory floor.
 
-Crop safety is tighter here than elsewhere: `object-fit: cover` crops
-symmetrically from the centre, so keep the subject inside the **middle 70%**
-both ways and leave the outer 15% on each side clear of anything that matters.
+Crop safety is tighter here than elsewhere: it is a full-bleed background
+(`object-fit: cover`) with the copy overlaid on the left, so keep the subject
+cluster in the RIGHT two thirds and leave the left third clear of anything that
+matters. Phones trim the sides and anchor at 80% so the cluster stays in view.
 
 ---
 
@@ -264,7 +270,7 @@ a group of finished products. Wood Products is the one exception to the
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `how-it-works-hero.webp` | HOW IT WORKS | **1600 × 1200** | 4:3 | `/how-it-works` hero |
+| `how-it-works-hero.webp` | HOW IT WORKS | **1920 × 1080** | 16:9 | `/how-it-works` hero |
 
 **This page deliberately has exactly one image too.** Every one of its sixteen
 sections is a process description — the five-stage rail, what to include in a
@@ -290,9 +296,10 @@ under 250 KB.
   a cargo plane, a world map, the Great Wall, a flag, a panda, and an
   artificially perfect AI factory floor.
 
-Crop safety is the same rule as everywhere else: `object-fit: cover` crops
-symmetrically from the centre, so keep the subject inside the **middle 70%**
-both ways and leave the outer 15% on each side clear of anything that matters.
+Crop safety is the background-hero rule: `object-fit: cover` re-crops the 16:9
+source into a wide band with the copy overlaid on the left, so keep the subject
+cluster in the RIGHT two thirds and leave the left third clear of anything that
+matters. Phones trim the sides and anchor at 80% so the cluster stays in view.
 
 ---
 
@@ -300,7 +307,7 @@ both ways and leave the outer 15% on each side clear of anything that matters.
 
 | File | Label | Source size | Ratio | Used by |
 | --- | --- | --- | --- | --- |
-| `about-hero.webp` | ABOUT SOURDEN | **1600 × 1200** | 4:3 | `/about` hero |
+| `about-hero.webp` | ABOUT SOURDEN | **1920 × 1080** | 16:9 | `/about` hero |
 
 **This slot is a work photograph on purpose, not a founder portrait.** The page
 is the site's brand and trust page, so a portrait — a founder, a team, an office
@@ -330,8 +337,9 @@ under 250 KB.
 §2 specifies the eyebrow, the H1, the supporting paragraph and two actions and
 stops there. Every other page hero on the site carries a documentary image, so
 the alternative to this slot was a second hero design — text-only — which would
-be a new visual language for one page. Same 1600 × 1200 / 4:3 as every other
-hero, so it shares the frame and the crop rule.
+be a new visual language for one page. Same 1600 × 1200 / 4:3 as the
+split-column heroes (the five service detail pages and `/sourcing-request`),
+so it shares their frame and crop rule — not the 16:9 background hero.
 
 **What it must not be.** An FAQ page is the easiest place on the site to reach
 for a symbol, and every symbol is wrong here: a question mark, a speech bubble,
@@ -381,11 +389,13 @@ unlinked until it has a real subject.
 | --- | --- | --- |
 | `insights-hero.webp` | **1920 × 1080** | 16:9 |
 
-**The site's only full-bleed background hero.** The photograph sits behind the
-hub's copy (`InsightsHero.astro`); a left-weighted scrim of the hero ivory
-(`--scrim-hero`, tokens) keeps the overlaid text legible and fades out before
-the objects on the right. 16:9 rather than the site's 4:3 hero frame because
-`object-fit: cover` re-crops it into a wide band — a wide source loses less.
+**The first full-bleed background hero** — the shape has since spread to the
+homepage, `/services`, `/industries`, `/how-it-works` and `/about` (shared
+`BackgroundHero.astro`). The photograph sits behind the hub's copy; a
+left-weighted scrim of the hero ivory (`--scrim-hero`, tokens) keeps the
+overlaid text legible and fades out before the objects on the right. 16:9
+because `object-fit: cover` re-crops it into a wide band — a wide source loses
+less.
 
 The copy overlaid on it carries the page's meaning, so the slot's `alt` is
 **empty on purpose** (decorative image; same call as `ogDefault`).
