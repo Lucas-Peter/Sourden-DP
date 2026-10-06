@@ -30,9 +30,14 @@ export const hero = {
    * lines onto one line (Hero.astro wraps each in a `.bg-hero__line` span).
    * Reading the H1 end to end yields the exact spec §26 sentence:
    *   "Find the right suppliers. Manage the process. Get your products moving."
+   *
+   * A line may be a plain string or `{ text, accent: true }`. `accent` prints
+   * that word in the brass ink (still AA on ivory) as a single editorial
+   * stress — "suppliers" is the one the whole sentence turns on. It is pure
+   * typographic colour, not a link, not a claim.
    */
   stanzas: [
-    { lines: ['Find the right', 'suppliers.'] },
+    { lines: ['Find the right', { text: 'suppliers.', accent: true }] },
     { lines: ['Manage the process.'] },
     { lines: ['Get your products', 'moving.'] },
   ],
