@@ -238,6 +238,41 @@
   justify-items: start;
 }
 
+/* ---------------------------------------------------------------------------
+   04 — FIGURES (real photographs, e.g. the Christmas product-group shots)
+   ---------------------------------------------------------------------------
+   A figure carries a real image referenced by an `imageKey` in `media.js`.
+   It sits inside the reading column; the `banner` variant uses the full
+   container width for the opening hero image. The photograph is decorative
+   context for the prose, so the caption is muted reference text, not a claim.
+   --------------------------------------------------------------------------- */
+
+.ia-figure {
+  margin: 0;
+  max-width: 68ch;
+}
+
+.ia-figure--banner {
+  /* The opening image may use the whole narrow container, wider than the
+     reading measure, for a stronger lead-in. */
+  max-width: 100%;
+}
+
+.ia-figure__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: var(--rule) solid var(--divider-light);
+}
+
+.ia-figure__caption {
+  margin-block-start: var(--sp-3);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-snug);
+  max-width: 68ch;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ia-toc__link {
     transition: none;
