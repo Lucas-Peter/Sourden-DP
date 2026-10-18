@@ -46,19 +46,22 @@
  * ── WHY THE BODY IS A BLOCK DISPATCHER ────────────────────────────────────
  * An article has no fixed section vocabulary — its shape is whatever the author
  * wrote. So each section carries typed blocks (`p` / `list` / `h3` / `table` /
- * `links`) and this shell renders them. An unknown block type THROWS rather
+ * `links` / `figure`) and this shell renders them. An unknown block type THROWS rather
  * than rendering nothing, because a silently dropped paragraph is invisible in
  * review and obvious to a reader. Same rule as `IndustryDetailPage`.
  *
  * ── WHAT THIS SHELL DOES NOT DO ───────────────────────────────────────────
- *   · It emits no `datePublished` and no `image`. Both are the article's real
- *     values arriving as `null` (nothing is published and nothing is
- *     photographed), and `articleSchema` omits them rather than inventing them.
+ *   · It emits no `datePublished` and no `image` when the article has neither:
+ *     `article.publishedAt` and `article.imageKey` arrive from the registry,
+ *     and `articleSchema` omits each when its value is falsy rather than
+ *     inventing one. The Christmas article sets both, so its page carries a
+ *     real date and an Open Graph image.
  *   · It emits no `FAQPage`, no `Product`, no rating and no author.
- *   · It renders no image anywhere: the document's `[Image]` paragraphs are
- *     empty placeholders — `doc_get_images` returns no picture at all — so the
- *     article is text only, which is also what §7 of the hub brief prefers to a
- *     poor stock photograph.
+ *   · It renders no image by default: most article bodies are text-only, which
+ *     is what §7 of the hub brief prefers to a poor stock photograph. A body MAY
+ *     include `figure` blocks, which this shell renders from an `imageKey` in
+ *     `media.js`; the Christmas article uses four of them to show product
+ *     groups rather than an unrelated stock photo.
  * ---------------------------------------------------------------------------
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -69,6 +72,7 @@ import ArrowLink from '../ArrowLink.astro';
 import ServicesHero from '../services/ServicesHero.astro';
 
 import { articleHref, categoryFor } from '../../data/insights-articles.js';
+import { img } from '../../data/media.js';
 import { primaryCta } from '../../data/site.js';
 import {
   articleSchema,
@@ -85,6 +89,8 @@ interface Props {
     description: string;
     categorySlug: string;
     publishedAt: string | null;
+    imageKey: string | null;
+    keywords?: string;
   };
   /** The body, from `src/data/insight-<slug>.js`. */
   content: { tocHeading: string; sections: Array<Record<string, any>> };
@@ -140,6 +146,7 @@ const schema = [
     excerpt: article.description,
     href: path,
     publishedAt: article.publishedAt,
+    imageUrl: article.imageKey ? img(article.imageKey).src : undefined,
   }),
 ];
 ---
@@ -148,6 +155,7 @@ const schema = [
   title={pageMeta.title}
   description={pageMeta.description}
   path={path}
+  keywords={article.keywords}
   schema={schema}
 >
   <ServicesHero
@@ -235,6 +243,28 @@ const schema = [
                     ))}
                   </div>
                 );
+
+              case 'figure': {
+                const fig = img(block.imageKey);
+                return (
+                  <figure
+                    class={`ia-figure${block.variant === 'banner' ? ' ia-figure--banner' : ''}`}
+                  >
+                    <img
+                      class="ia-figure__img"
+                      src={fig.src}
+                      width={fig.width}
+                      height={fig.height}
+                      alt={fig.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {block.caption && (
+                      <figcaption class="ia-figure__caption">{block.caption}</figcaption>
+                    )}
+                  </figure>
+                );
+              }
 
               default:
                 /* A typo in a block `type` must not render nothing and pass the
