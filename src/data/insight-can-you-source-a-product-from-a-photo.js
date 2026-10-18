@@ -50,6 +50,12 @@ export const page = {
           type: 'p',
           text: 'Yes. A product photo can be a useful starting point for China sourcing, even when you do not know the product name or supplier.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleSourceFromPhoto',
+          variant: 'banner',
+          caption: "A supplier presenting product samples to a buyer.",
+        },
       ],
     },
 

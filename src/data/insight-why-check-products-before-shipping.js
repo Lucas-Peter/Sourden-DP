@@ -49,6 +49,12 @@ export const page = {
           type: 'p',
           text: 'Once production is finished, it may be tempting to arrange shipment immediately. For many orders, however, a quality check before shipment can be valuable.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleCheckBeforeShipping',
+          variant: 'banner',
+          caption: "Quality checks on the production floor before goods are packed.",
+        },
       ],
     },
 

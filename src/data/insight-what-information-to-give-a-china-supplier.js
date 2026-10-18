@@ -54,6 +54,12 @@ export const page = {
           type: 'p',
           text: 'The quality of a supplier quotation often depends on the quality of the information you provide.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleInfoToSupplier',
+          variant: 'banner',
+          caption: "Product specifications and documents prepared for a supplier.",
+        },
       ],
     },
 

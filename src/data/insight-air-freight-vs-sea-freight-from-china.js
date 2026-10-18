@@ -46,6 +46,12 @@ export const page = {
           type: 'p',
           text: 'Choosing between air freight and sea freight is not simply a question of which method is cheaper. The right option depends on shipment size, urgency, product characteristics, destination, and the total cost you are willing to accept.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleAirVsSea',
+          variant: 'banner',
+          caption: "Container shipping is one of the ways goods leave China.",
+        },
       ],
     },
 

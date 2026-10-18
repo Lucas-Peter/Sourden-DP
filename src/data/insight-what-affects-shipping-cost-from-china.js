@@ -50,6 +50,12 @@ export const page = {
           type: 'p',
           text: 'Shipping costs from China can vary significantly between orders, even when the products themselves have similar prices. Shipment size, weight, shipping method, destination, packaging, and service level can all make a difference.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleShippingCost',
+          variant: 'banner',
+          caption: "Cartons staged for dispatch — packaging and volume affect shipping cost.",
+        },
       ],
     },
 

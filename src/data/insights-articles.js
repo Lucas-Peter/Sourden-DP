@@ -114,7 +114,7 @@ export const insightArticles = [
     title: 'How to Find Reliable Suppliers in China',
     description:
       'A practical guide to researching suppliers, comparing options and identifying suppliers that fit your product and purchasing requirements.',
-    imageKey: null,
+    imageKey: 'articleFindSuppliers',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -126,7 +126,7 @@ export const insightArticles = [
     title: 'How to Verify a Chinese Supplier Before You Order',
     description:
       'What to look at before choosing a supplier, including product capability, MOQ, pricing, communication, production and other practical considerations.',
-    imageKey: null,
+    imageKey: 'articleVerifySupplier',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -138,7 +138,7 @@ export const insightArticles = [
     title: "China Supplier vs. Trading Company: What's the Difference?",
     description:
       'Understand the practical differences between manufacturers and trading companies, and why the right choice depends on your product and sourcing requirements.',
-    imageKey: null,
+    imageKey: 'articleSupplierVsTrading',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -150,7 +150,7 @@ export const insightArticles = [
     title: 'What Information Should You Give a China Supplier?',
     description:
       'The product details, specifications, quantities and requirements that can make supplier communication faster and quotations more useful.',
-    imageKey: null,
+    imageKey: 'articleInfoToSupplier',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -162,7 +162,7 @@ export const insightArticles = [
     title: 'MOQ in China Sourcing: What It Really Means',
     description:
       'Why suppliers set minimum order quantities, what affects MOQ and how buyers can approach smaller-volume sourcing.',
-    imageKey: null,
+    imageKey: 'articleMoq',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -174,7 +174,7 @@ export const insightArticles = [
     title: 'How to Compare Supplier Quotations in China',
     description:
       'A quotation is more than a unit price. Learn what to compare before deciding which supplier is actually the right fit.',
-    imageKey: null,
+    imageKey: 'articleCompareQuotations',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -186,7 +186,7 @@ export const insightArticles = [
     title: 'Why You Should Check Products Before They Ship',
     description:
       'What pre-shipment inspection can help identify, what it cannot guarantee, and why clear inspection criteria matter.',
-    imageKey: null,
+    imageKey: 'articleCheckBeforeShipping',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -198,7 +198,7 @@ export const insightArticles = [
     title: 'What Should a Pre-Shipment Inspection Check?',
     description:
       'A practical overview of quantity, appearance, specifications, packaging and other checks that may be relevant before shipment.',
-    imageKey: null,
+    imageKey: 'articleInspectionChecklist',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -210,7 +210,7 @@ export const insightArticles = [
     title: 'Air Freight vs. Sea Freight from China',
     description:
       'Understand the main differences between air and sea freight and the factors that should influence your shipping decision.',
-    imageKey: null,
+    imageKey: 'articleAirVsSea',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -222,7 +222,7 @@ export const insightArticles = [
     title: 'What Affects the Cost of Shipping from China?',
     description:
       'Weight, volume, destination, shipping method, packaging and other factors can all affect the final logistics cost.',
-    imageKey: null,
+    imageKey: 'articleShippingCost',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -234,7 +234,7 @@ export const insightArticles = [
     title: 'Can You Source a Product from a Photo?',
     description:
       'What a product image can tell a sourcing partner, what it cannot tell you, and what additional information helps identify suitable suppliers.',
-    imageKey: null,
+    imageKey: 'articleSourceFromPhoto',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,
@@ -246,7 +246,7 @@ export const insightArticles = [
     title: 'How Product Samples Fit Into the Sourcing Process',
     description:
       'Why samples can matter before bulk production and what buyers should evaluate before approving a product.',
-    imageKey: null,
+    imageKey: 'articleSamples',
     publishedAt: null,
     updatedAt: null,
     readingTime: null,

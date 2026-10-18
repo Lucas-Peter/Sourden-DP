@@ -50,6 +50,12 @@ export const page = {
           type: 'p',
           text: 'A sample is more than a small version of an order. It is an opportunity to test whether a supplier’s product and capabilities match your requirements before committing to larger production.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleSamples',
+          variant: 'banner',
+          caption: "A range of product samples on display.",
+        },
       ],
     },
 

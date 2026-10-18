@@ -44,6 +44,12 @@ export const page = {
           type: 'p',
           text: 'Receiving several supplier quotations is useful, but the prices may not be directly comparable.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleCompareQuotations',
+          variant: 'banner',
+          caption: "Comparing supplier quotations means looking past the unit price.",
+        },
       ],
     },
 

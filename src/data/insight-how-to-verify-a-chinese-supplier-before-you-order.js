@@ -96,6 +96,12 @@ export const page = {
           type: 'p',
           text: 'You do not need to investigate every supplier like a large corporation. A practical verification process can help you identify potential problems before money and time are committed.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleVerifySupplier',
+          variant: 'banner',
+          caption: "A worker inspecting materials on a factory floor.",
+        },
       ],
     },
 

@@ -105,6 +105,12 @@ export const page = {
           type: 'p',
           text: 'This guide explains a practical way to research and evaluate suppliers in China before you place an order.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleFindSuppliers',
+          variant: 'banner',
+          caption: "A supplier’s production floor in a manufacturing facility.",
+        },
       ],
     },
 

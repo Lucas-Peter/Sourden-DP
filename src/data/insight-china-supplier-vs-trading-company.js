@@ -97,6 +97,12 @@ export const page = {
           type: 'p',
           text: 'The right option depends on your product, order size, customization requirements, and how much sourcing and coordination support you need.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleSupplierVsTrading',
+          variant: 'banner',
+          caption: "A worker on a factory assembly line — the manufacturing side of sourcing.",
+        },
       ],
     },
 

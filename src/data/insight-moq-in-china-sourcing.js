@@ -49,6 +49,12 @@ export const page = {
           type: 'p',
           text: 'MOQ, or Minimum Order Quantity, is one of the first terms buyers encounter when sourcing from China.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleMoq',
+          variant: 'banner',
+          caption: "Bulk cartons on warehouse shelving — the kind of volume MOQs relate to.",
+        },
       ],
     },
 

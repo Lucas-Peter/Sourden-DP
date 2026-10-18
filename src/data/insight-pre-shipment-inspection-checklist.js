@@ -50,6 +50,12 @@ export const page = {
           type: 'p',
           text: 'A pre-shipment inspection is only useful when you know what you want to check. Different products require different inspection points, but most inspections can be organized around several basic areas.',
         },
+        {
+          type: 'figure',
+          imageKey: 'articleInspectionChecklist',
+          variant: 'banner',
+          caption: "Working through an inspection checklist against the order.",
+        },
       ],
     },
 
