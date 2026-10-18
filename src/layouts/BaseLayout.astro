@@ -37,6 +37,8 @@ interface Props {
   title?: string;
   /** Meta description. Keep under ~155 characters. */
   description?: string;
+  /** Comma-separated SEO keywords. Omitted from <head> when empty. */
+  keywords?: string;
   /** Root-relative path for canonical + og:url. Defaults to the current URL. */
   path?: string;
   ogType?: 'website' | 'article';
@@ -77,6 +79,7 @@ interface Props {
 const {
   title = seoDefaults.title,
   description = seoDefaults.description,
+  keywords = '',
   path,
   ogType = 'website',
   ogImage = `${IMAGE_DIR}/${images.ogDefault.file}`,
@@ -132,6 +135,7 @@ const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
     <link rel="canonical" href={canonical} />
 
     {noindex && <meta name="robots" content="noindex, nofollow" />}
