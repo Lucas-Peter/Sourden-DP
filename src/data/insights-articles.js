@@ -103,6 +103,7 @@ export const insightCategories = [
  * @property {string|null} updatedAt       ISO date. null — nothing is published.
  * @property {string|null} readingTime     null — a body that does not exist has no reading time.
  * @property {boolean}     featured        §14's first priority. Nothing renders it.
+ * @property {string}      [keywords]      Comma-separated SEO keywords for <meta name="keywords">.
  */
 
 /** @type {InsightArticle[]} */
@@ -250,6 +251,20 @@ export const insightArticles = [
     updatedAt: null,
     readingTime: null,
     featured: false,
+  },
+  {
+    slug: 'christmas-products-to-sell',
+    categorySlug: 'product-sourcing',
+    title: 'Christmas Products to Sell in 2026: Historical Trends and Sourcing Ideas',
+    description:
+      'Which Christmas products are worth sourcing for 2026 — what historical holiday shopping data suggests, product ideas across décor, gifts and wrapping, and how to plan sourcing timing and compliance.',
+    imageKey: 'christmasBanner',
+    publishedAt: '2026-10-18',
+    updatedAt: null,
+    readingTime: null,
+    featured: false,
+    keywords:
+      'Christmas products to sell, Christmas products from China, Christmas wholesale products, Christmas sourcing',
   },
 ];
 

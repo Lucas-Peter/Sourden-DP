@@ -71,6 +71,7 @@ import { page as airFreightVsSeaFreightFromChina } from './insight-air-freight-v
 import { page as whatAffectsShippingCostFromChina } from './insight-what-affects-shipping-cost-from-china.js';
 import { page as canYouSourceAProductFromAPhoto } from './insight-can-you-source-a-product-from-a-photo.js';
 import { page as productSamplesInChinaSourcing } from './insight-product-samples-in-china-sourcing.js';
+import { page as christmasProductsToSell } from './insight-christmas-products-to-sell.js';
 
 /**
  * One line per written article, keyed by the slug used in `insights-articles.js`.
@@ -93,6 +94,7 @@ export const insightDetailPages = {
   'what-affects-shipping-cost-from-china': whatAffectsShippingCostFromChina,
   'can-you-source-a-product-from-a-photo': canYouSourceAProductFromAPhoto,
   'product-samples-in-china-sourcing': productSamplesInChinaSourcing,
+  'christmas-products-to-sell': christmasProductsToSell,
 };
 
 /* ---------------------------------------------------------------------------

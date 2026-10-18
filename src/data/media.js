@@ -732,6 +732,58 @@ export const images = {
       'Documentary photo — ONE subject (a folded knit sweater) on a laminate bench, shallow depth of field. Category for this slot: Apparel, Footwear & Bags. Never a woodworking or craft scene: no timber, no wooden bench.',
   },
 
+  /* Christmas article (insight-christmas-products-to-sell.js) — four photographs
+     sourced from Pexels (free license, no attribution required), cropped to the
+     slot ratio and emitted as WebP. Category for all four: Consumer Products. */
+  christmasBanner: {
+    file: 'christmas-banner.webp',
+    width: 1920,
+    height: 1080,
+    ratio: '16:9',
+    label: 'CHRISTMAS PRODUCT GROUP',
+    alt: 'A festive flat-lay of red Christmas gift boxes with a decorative star, arranged on a surface.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection:
+      'Sourced from Pexels (free license). Not AI-generated.',
+  },
+  christmasHomeDecor: {
+    file: 'christmas-home-decor.webp',
+    width: 1400,
+    height: 933,
+    ratio: '3:2',
+    label: 'CHRISTMAS HOME DÉCOR',
+    alt: 'A cluster of red and gold Christmas baubles on a decorated tree.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection:
+      'Sourced from Pexels (free license). Not AI-generated.',
+  },
+  christmasKidsCraft: {
+    file: 'christmas-kids-craft.webp',
+    width: 1400,
+    height: 933,
+    ratio: '3:2',
+    label: 'CHRISTMAS KIDS CRAFT',
+    alt: 'Children making Christmas decorations at a table.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection:
+      'Sourced from Pexels (free license). Not AI-generated.',
+  },
+  christmasGiftWrap: {
+    file: 'christmas-gift-wrap.webp',
+    width: 1400,
+    height: 933,
+    ratio: '3:2',
+    label: 'CHRISTMAS GIFT WRAP',
+    alt: 'A flat-lay of Christmas gift wrapping supplies — wrapping paper, gift bags, boxes, ribbons and tags arranged together.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection:
+      'Sourced from Pexels (free license). Not AI-generated.',
+  },
+
   /* -------------------------------------------------------------- social -- */
   ogDefault: {
     file: 'og-default.png',
