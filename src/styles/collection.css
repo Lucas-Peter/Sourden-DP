@@ -13,9 +13,8 @@
    ---------------------------------------------------------------------------
    No hero banner, no background photograph (the collection brief's first
    structural rule). The band is a plain ivory section: breadcrumb, eyebrow,
-   H1, introduction, the customization block, the catalogue notice and one
-   CTA. The lead text is capped to a readable measure rather than stretched
-   across the full container.
+   H1, introduction, the catalogue notice and one CTA. The lead text is capped
+   to a readable measure rather than stretched across the full container.
    =========================================================================== */
 
 .pc-intro {
@@ -43,73 +42,6 @@
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
   color: var(--ink);
-}
-
-/* --- Customization block -------------------------------------------------- */
-/* A boxed panel so the option list reads as one "what you can specify"
-   decision, separate from the surrounding prose. */
-.pc-custom {
-  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
-  padding: clamp(var(--sp-5), 4vw, var(--sp-7));
-  border: var(--rule) solid var(--divider-light);
-  border-radius: var(--radius);
-  background-color: var(--white);
-}
-
-.pc-custom__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-h2);
-  font-weight: var(--fw-semibold);
-  line-height: var(--lh-heading);
-  letter-spacing: var(--ls-display);
-  margin-block-start: var(--sp-2);
-}
-
-.pc-custom__intro {
-  max-width: 60ch;
-  margin-block-start: var(--sp-3);
-  color: var(--muted);
-  line-height: var(--lh-body);
-}
-
-.pc-custom__options {
-  margin: var(--sp-6) 0 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0 var(--sp-6);
-  border-top: var(--rule) solid var(--divider-light);
-}
-
-.pc-custom__options dt,
-.pc-custom__options dd {
-  margin: 0;
-  padding-block: var(--sp-3);
-}
-
-.pc-custom__options dt {
-  padding-block-end: 0;
-  font-weight: var(--fw-semibold);
-  color: var(--ink);
-  font-size: var(--fs-body);
-}
-
-.pc-custom__options dd {
-  padding-block-start: var(--sp-1);
-  color: var(--muted);
-  font-size: var(--fs-body-sm);
-  line-height: 1.6;
-}
-
-/* Two columns once there is room, so the eight options read as a scannable
-   grid instead of a long vertical list. */
-@media (min-width: 768px) {
-  .pc-custom__options {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .pc-custom__options dt {
-    padding-block-end: var(--sp-1);
-  }
 }
 
 /* --- Catalogue notice ------------------------------------------------------ */
