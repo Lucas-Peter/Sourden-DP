@@ -47,9 +47,11 @@ export const soccerJerseys = {
 
   introduction: {
     paragraphs: [
-      'Soccer jerseys are one of the apparel categories we source most often — for clubs, school and academy programmes, fan merchandise and promotional runs. Almost every order is custom: colours, crests, names and numbers are produced to your artwork rather than picked from a stock catalogue.',
-      'Most orders are built around a short list of choices — fabric (polyester mesh, interlock or moisture-wicking knits), fit (slim, regular or youth), sleeve and collar style, colourway, name and number printing, crests and logos, sizes, and packaging. Each is confirmed against your artwork and your target market before anything is produced.',
-      'The reference styles below show the construction details that matter in this category — fabric weight and breathability, collar and sleeve finishes, how a number or a name sits on the back, how the panel seams run. Send us a design, a sample to match, or just a description, and we will work from there.',
+      'SOURDEN helps you source a wide range of soccer jerseys from China, including national team jerseys and club jerseys featuring some of the world\'s most popular teams.',
+      'National Team Jerseys:such as France, Spain, Argentina, Germany, Brazil, Portugal, Italy and England.',
+      'Club Jerseys:Well-known clubs such as Real Madrid, FC Barcelona, Atlético Madrid, Manchester United, Manchester City, Arsenal, Chelsea, Liverpool, Paris Saint-Germain and Bayern Munich.',
+	  'Personalization & Customization:Personalization options may include player names, numbers and sleeve patches, depending on the selected style and supplier. Adult and youth sizes are available in a range of options, subject to product availability.'
+	  'Looking for jerseys for your own team or a custom sportswear collection? We can help you explore customization options for fabrics, colors, patterns, team logos, sizes and more, based on your requirements.'
     ],
   },
 
