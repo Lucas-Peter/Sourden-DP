@@ -40,7 +40,7 @@ import { primaryCta } from './site.js';
 export const meta = {
   title: 'Products | SOURDEN',
   description:
-    'Browse product collections SOURDEN sources from China — reference styles by category, with the customization options each one carries.',
+    'Browse product collections SOURDEN sources from China — reference styles by category, each written around the customization a buyer can specify.',
 };
 
 export const breadcrumbs = [{ label: 'Products' }];

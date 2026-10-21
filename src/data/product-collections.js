@@ -9,9 +9,9 @@
  * ── WHY ONE ARCHITECTURE ───────────────────────────────────────────────────
  * The brief is explicit: the collection page is a reusable template — "adding
  * a new product category should mainly involve adding data and images, not
- * rewriting the page layout" — while every category's introduction,
- * customization copy and SEO metadata must be independently written, not the
- * same text with the title swapped. The architecture is how both are met: the
+ * rewriting the page layout" — while every category's introduction and SEO
+ * metadata must be independently written, not the same text with the title
+ * swapped. The architecture is how both are met: the
  * MODULE STRUCTURE (introduction → catalogue, pagination, card fields) is
  * fixed in the shell; every sentence inside it comes from the data file.
  *
@@ -28,9 +28,9 @@
  *                             crumb above the collection
  *   seoTitle, metaDescription per-page SEO, written for THIS category
  *   eyebrow, h1               the intro band's label and title
- *   introduction.paragraphs   what this category is and how SOURDEN sources it
- *   customization             eyebrow, title, intro, and the option rows
- *                             (fabric, fit, colours, prints, sizes, packaging)
+ *   introduction.paragraphs   what this category is and how SOURDEN sources it;
+ *                             the customization options are written into these
+ *                             paragraphs, not a separate block
  *   catalogNotice             the "partial reference set" statement
  *   cta                       the one primary action (href is always
  *                             `primaryCta.href` from site.js)

@@ -6,8 +6,8 @@
  * the words and the
  * reference list. Every sentence here is written for THIS category — the brief
  * is explicit that a collection must not be the same text with the title
- * swapped, so the introduction, customization copy and SEO metadata below were
- * written for soccer jerseys, not for "a product".
+ * swapped, so the introduction and SEO metadata below were written for soccer
+ * jerseys, not for "a product".
  *
  * ── THE REFERENCE LIST ─────────────────────────────────────────────────────
  * Twelve styles, each `code` unique and stable. The code is the product's
@@ -48,24 +48,8 @@ export const soccerJerseys = {
   introduction: {
     paragraphs: [
       'Soccer jerseys are one of the apparel categories we source most often — for clubs, school and academy programmes, fan merchandise and promotional runs. Almost every order is custom: colours, crests, names and numbers are produced to your artwork rather than picked from a stock catalogue.',
+      'Most orders are built around a short list of choices — fabric (polyester mesh, interlock or moisture-wicking knits), fit (slim, regular or youth), sleeve and collar style, colourway, name and number printing, crests and logos, sizes, and packaging. Each is confirmed against your artwork and your target market before anything is produced.',
       'The reference styles below show the construction details that matter in this category — fabric weight and breathability, collar and sleeve finishes, how a number or a name sits on the back, how the panel seams run. Send us a design, a sample to match, or just a description, and we will work from there.',
-    ],
-  },
-
-  customization: {
-    eyebrow: 'CUSTOMIZATION',
-    title: 'What can be customized',
-    intro:
-      'These are the choices a soccer-jersey order is usually built around. Each one is confirmed against your artwork and your target market before anything is produced.',
-    options: [
-      { label: 'Fabric', detail: 'Polyester mesh, interlock and moisture-wicking knits, in a range of weights.' },
-      { label: 'Fit', detail: 'Slim, regular and youth cuts, plus women’s sizing on request.' },
-      { label: 'Sleeves & collar', detail: 'Short or long sleeve; round, V or polo collar.' },
-      { label: 'Colours', detail: 'Full sublimation allows any colourway; screen print suits solid panels.' },
-      { label: 'Numbers & names', detail: 'Heat transfer, screen print, embroidery or sublimation.' },
-      { label: 'Crests & logos', detail: 'Woven, embroidered or printed team crests and sponsor marks.' },
-      { label: 'Sizes', detail: 'From youth to adult extended sizes, with size-set sampling.' },
-      { label: 'Packaging', detail: 'Individual polybags, hangers or export cartons.' },
     ],
   },
 
