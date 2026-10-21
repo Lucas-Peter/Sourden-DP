@@ -1,0 +1,326 @@
+/* ===========================================================================
+   SOURDEN — PRODUCT COLLECTION PAGE (detail)
+   ---------------------------------------------------------------------------
+   Namespace `.pc-`. One sheet for every `/products/<industry>/<slug>` page. It adds
+   only the devices this page type owns — the intro band and the product
+   catalogue grid — and reuses the shared core (buttons, breadcrumbs, media,
+   section rhythm) and `service-detail.css`'s `.sec-` devices for the intro
+   band's prose. See `src/styles/index.css` for the import-order rule.
+   =========================================================================== */
+
+/* ===========================================================================
+   MODULE ONE — THE PRODUCT INTRODUCTION
+   ---------------------------------------------------------------------------
+   No hero banner, no background photograph (the collection brief's first
+   structural rule). The band is a plain ivory section: breadcrumb, eyebrow,
+   H1, introduction, the customization block, the catalogue notice and one
+   CTA. The lead text is capped to a readable measure rather than stretched
+   across the full container.
+   =========================================================================== */
+
+.pc-intro {
+  padding-block-start: clamp(var(--sp-6), 5vw, var(--sp-8));
+}
+
+.pc-intro__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+  margin-block-start: var(--sp-3);
+}
+
+.pc-intro__lead {
+  max-width: 64ch;
+  margin-block-start: var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.pc-intro__lead p {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--ink);
+}
+
+/* --- Customization block -------------------------------------------------- */
+/* A boxed panel so the option list reads as one "what you can specify"
+   decision, separate from the surrounding prose. */
+.pc-custom {
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+  padding: clamp(var(--sp-5), 4vw, var(--sp-7));
+  border: var(--rule) solid var(--divider-light);
+  border-radius: var(--radius);
+  background-color: var(--white);
+}
+
+.pc-custom__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  margin-block-start: var(--sp-2);
+}
+
+.pc-custom__intro {
+  max-width: 60ch;
+  margin-block-start: var(--sp-3);
+  color: var(--muted);
+  line-height: var(--lh-body);
+}
+
+.pc-custom__options {
+  margin: var(--sp-6) 0 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--sp-6);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.pc-custom__options dt,
+.pc-custom__options dd {
+  margin: 0;
+  padding-block: var(--sp-3);
+}
+
+.pc-custom__options dt {
+  padding-block-end: 0;
+  font-weight: var(--fw-semibold);
+  color: var(--ink);
+  font-size: var(--fs-body);
+}
+
+.pc-custom__options dd {
+  padding-block-start: var(--sp-1);
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}
+
+/* Two columns once there is room, so the eight options read as a scannable
+   grid instead of a long vertical list. */
+@media (min-width: 768px) {
+  .pc-custom__options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pc-custom__options dt {
+    padding-block-end: var(--sp-1);
+  }
+}
+
+/* --- Catalogue notice ------------------------------------------------------ */
+/* The page's honest "this is a partial reference set" statement. A left brass
+   rule, not a box, so it reads as prose the visitor should not skip. */
+.pc-notice {
+  margin-block-start: var(--sp-6);
+  padding-inline-start: var(--sp-4);
+  border-inline-start: 2px solid var(--brass);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 64ch;
+}
+
+/* --- Primary action + related links ---------------------------------------- */
+.pc-intro__actions {
+  margin-block-start: var(--sp-6);
+}
+
+.pc-related {
+  margin-block-start: var(--sp-6);
+}
+
+.pc-related__label {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.pc-related__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-5);
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pc-related__list a {
+  color: var(--brass-ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  border-bottom: var(--rule) solid transparent;
+}
+
+.pc-related__list a:hover {
+  border-bottom-color: currentColor;
+}
+
+/* ===========================================================================
+   MODULE TWO — THE PRODUCT CATALOGUE
+   ---------------------------------------------------------------------------
+   A responsive card grid: 2 columns on a phone, 3 on a tablet, 4 on desktop
+   (the collection brief's exact breakpoints). Each card is the four fields
+   the brief lists — image, name, code, one line — with no price, stock, MOQ
+   or lead time anywhere.
+   =========================================================================== */
+
+.pc-catalog__head {
+  margin-block-end: var(--sp-5);
+}
+
+.pc-count {
+  margin-block-end: clamp(var(--sp-6), 3.5vw, var(--sp-7));
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  letter-spacing: 0.04em;
+}
+
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .pc-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .pc-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.pc-card {
+  display: flex;
+  flex-direction: column;
+  border: var(--rule) solid var(--divider-light);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.pc-card:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+/* The 4:5 frame. `overflow: hidden` clips the hover-scale of the inner media
+   to the card's top radius, so the zoom never bleeds past the corners. */
+.pc-card__media {
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.pc-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.pc-card__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+/* The reference code is the product's stable identity, rendered in the label
+   face so it reads as a catalogue key, not as a heading. */
+.pc-card__code {
+  color: var(--brass-ink);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps-wide);
+  text-transform: uppercase;
+}
+
+.pc-card__desc {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+/* ===========================================================================
+   PAGINATION CONTROLS
+   ---------------------------------------------------------------------------
+   Server-rendered: every control is a real <a href> to a real page, so the
+   controls work without scripting and a crawler can follow them. The current
+   page is an inverted surface plus `aria-current="page"` — never colour alone.
+   =========================================================================== */
+
+.pc-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-block-start: clamp(var(--sp-7), 5vw, var(--sp-8));
+}
+
+.pc-pagination__btn,
+.pc-pagination__gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  min-height: 46px;
+  padding-inline: var(--sp-3);
+  border: var(--rule) solid var(--border-strong);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+/* A control that has nowhere to go is rendered as a <span>, not a link: it
+   must not be focusable or clickable. The muted tone is a reinforcement, not
+   the only signal — the element is also not in the tab order. */
+.pc-pagination__btn[aria-disabled='true'] {
+  color: var(--muted);
+  border-color: var(--divider-light);
+  cursor: not-allowed;
+}
+
+.pc-pagination__btn:hover {
+  border-color: var(--ink);
+}
+
+.pc-pagination__btn:focus-visible {
+  border-radius: var(--radius);
+}
+
+.pc-pagination__btn.is-current {
+  border-color: var(--surface-slate);
+  background-color: var(--surface-slate);
+  color: var(--text-on-dark);
+}
+
+.pc-pagination__gap {
+  border-color: transparent;
+  background: none;
+  color: var(--muted);
+}

@@ -1,0 +1,106 @@
+/* ===========================================================================
+   SOURDEN — PRODUCT COLLECTIONS HUB
+   ---------------------------------------------------------------------------
+   Namespace `.cl-`. One sheet for `/products`. It owns only the directory
+   device — a visual grid of collection cards, each leading with the
+   collection's first reference style. The hero and closing band are the
+   shared devices (`services-shared.css` / `service-detail.css` /
+   `components.css`), re-used rather than re-implemented.
+   =========================================================================== */
+
+.cl-directory__head {
+  margin-block-end: var(--sp-5);
+}
+
+/* One card per collection. The card is a single anchor: the image, the title,
+   the one-line description and the "View collection" action are all one
+   target. */
+.cl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .cl-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .cl-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.cl-card {
+  display: flex;
+  border: var(--rule) solid var(--divider-light);
+  border-radius: var(--radius);
+  background-color: var(--white);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.cl-card:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.cl-card__link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.cl-card__media {
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.cl-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: var(--rule) solid var(--divider-light);
+}
+
+.cl-card__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-list-title);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.cl-card__desc {
+  flex: 1;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+}
+
+.cl-card__more {
+  margin-block-start: var(--sp-2);
+}
+
+/* The whole card is the hover target, so the arrow answers the card's hover —
+   the same call `InsightCard` makes on `/insights`. */
+.cl-card:hover .arrow-link__arrow {
+  transform: translateX(5px);
+}
+
+.cl-directory__scope {
+  margin-block-start: var(--sp-6);
+  max-width: 64ch;
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+}

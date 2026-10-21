@@ -325,6 +325,13 @@
   aspect-ratio: 3 / 2;
 }
 
+/* Product-collection cards: a 4:5 garment frame. The frame matches the source
+   image's own ratio, so `object-fit: cover` crops nothing — a garment shown
+   whole, never chopped at the shoulders or hem. */
+.media--4x5 {
+  aspect-ratio: 4 / 5;
+}
+
 /* Editorial caption under an image, e.g. "SOURCING IN CHINA". */
 .media-caption {
   color: var(--muted);
