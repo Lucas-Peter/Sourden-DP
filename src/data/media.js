@@ -121,7 +121,7 @@ export const images = {
     alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of the sourcing services in progress on a stainless-steel bench: machined metal fasteners in compartmented trays, rubber gaskets, a steel rule and a blank check sheet, arranged in the RIGHT two thirds of a 16:9 frame with the left third empty for the overlaid copy. No people, no hands, no readable text, no logos. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): staged corporate meetings and artificially perfect AI factory floors. Category: Industrial Products. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
+      'One documentary frame of the sourcing services in progress on a stainless-steel bench: machined metal fasteners in compartmented trays, rubber gaskets, a steel rule and a blank check sheet, arranged in the RIGHT two thirds of a 16:9 frame with the left third empty for the overlaid copy. No people, no hands, no readable text. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): staged corporate meetings and artificially perfect AI factory floors. Category: Industrial Products. Never a woodworking or craft scene: no timber, no wooden bench, no wood offcuts.',
     cropNote:
       'Rendered as a full-bleed background (object-fit: cover) behind the hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the objects right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
@@ -318,7 +318,7 @@ export const images = {
     alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One documentary frame of the buyer\u2019s comparison bench, composed for a background band: three supplier versions of one cosmetic product (a frosted cream jar, a white pump bottle and an aluminium tube) compared side by side on a light table with blank swatch cards, a steel ruler and a coiled measuring tape, the whole arrangement in the RIGHT two thirds of a 16:9 frame with the left third empty for the overlaid copy, a bright workshop softly out of focus behind. Category: Beauty & Personal Care. No posed people, no screens, no readable text, no logos. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and rustic timber-workshop drift — no timber, no wooden workbench, no wood offcuts. v6 (2026-10-02) recomposes v5 for the background shape.',
+      'One documentary frame of the buyer\u2019s comparison bench, composed for a background band: three supplier versions of one cosmetic product (a frosted cream jar, a white pump bottle and an aluminium tube) compared side by side on a light table with blank swatch cards, a steel ruler and a coiled measuring tape, the whole arrangement in the RIGHT two thirds of a 16:9 frame with the left third empty for the overlaid copy, a bright workshop softly out of focus behind. Category: Beauty & Personal Care. No posed people, no screens, no readable text. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe): handshakes, boardrooms, staged meeting rooms, office stock scenes, and rustic timber-workshop drift — no timber, no wooden workbench, no wood offcuts. v6 (2026-10-02) recomposes v5 for the background shape.',
     cropNote:
       'Rendered as a full-bleed background (object-fit: cover) behind the hero band: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides and anchor at 80% so the right-hand cluster stays in view. Keep the three products right of centre and inside the middle vertical band; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
@@ -355,7 +355,7 @@ export const images = {
     alt: 'A calm, organised sourcing still life on a warm ivory surface: a speckled stoneware carafe and two matching cups beside an open kraft box, a closed notebook with a steel ruler, blank specification sheets, a ceramic lid and a cork stopper, arranged on the right of the frame with clear empty space on the left.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One premium minimal editorial still life: a tidy sourcing workspace — sourcing-desk objects and homeware samples (a speckled stoneware carafe and two matching cups), an open kraft packaging box, a blank closed notebook, blank specification sheets, a steel ruler and two loose components (a ceramic lid, a cork stopper) — spaced with generous gaps on a warm ivory seamless surface, the whole arrangement on the RIGHT two thirds of the frame and the left third completely empty. No people, no hands, no screens, no readable text, no logos, no question-mark graphics, no icons, no lightbulbs, no headsets. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): cluttered desks, and rustic timber-workshop drift — no timber, no wooden blanks, no bamboo. v5 (2026-10-02) replaced the ceramic-comparison-with-hand frame per Songlin\u2019s minimal-editorial brief.',
+      'One premium minimal editorial still life: a tidy sourcing workspace — sourcing-desk objects and homeware samples (a speckled stoneware carafe and two matching cups), an open kraft packaging box, a blank closed notebook, blank specification sheets, a steel ruler and two loose components (a ceramic lid, a cork stopper) — spaced with generous gaps on a warm ivory seamless surface, the whole arrangement on the RIGHT two thirds of the frame and the left third completely empty. No people, no hands, no screens, no readable text, no question-mark graphics, no icons, no lightbulbs, no headsets. Banned alongside the site-wide clichés (Great Wall, national flag, panda, container-port sunset, globe, handshake, boardroom): cluttered desks, and rustic timber-workshop drift — no timber, no wooden blanks, no bamboo. v5 (2026-10-02) replaced the ceramic-comparison-with-hand frame per Songlin\u2019s minimal-editorial brief.',
     cropNote:
       'Shown 4:3 in the right-hand column (about 5 of 12 on desktop) and height-capped below the text on mobile. `object-fit: cover` crops symmetrically from the centre, so keep the subject inside the middle 70% horizontally and vertically and leave the outer 15% each side clear of anything that matters. Where several items are being compared, keep them all inside that middle band — a comparison cropped down to one item loses the point of the frame.',
   },
@@ -421,7 +421,7 @@ export const images = {
     alt: 'A worker guiding a hand plane along a long pale timber plank on a workbench, a pile of wood shavings in the foreground, the workshop behind out of focus.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Shipped 2026-10-06 as a real photograph, NOT generated: a single craftsman planing a long timber plank with a hand plane, shavings in the foreground, the workshop soft behind. It is the documentary register applied to the category rather than a bench still life, and it asserts nothing about SOURDEN, a supplier or an order. Unlike every other slot here, wood and timber ARE the subject; the neighbouring slots ban them precisely to keep the nine cards distinct. If the photography is ever replaced, keep it a real photograph of the category, keep the plank across the middle band (this slot crops to roughly 60% of the width on the homepage card) and keep the file name so the swap stays an overwrite. Banned as the main visual and as the first thing in frame: coffins, caskets, funerary and memorial objects, cemeteries and funeral scenes — Wood Products lists Funeral & Memorial Products among its product types, but that is copy, not the picture. Also banned: China clichés (flag, Great Wall), factory assembly-line stock, an overly perfect AI-rendered plant, branded logos, readable text.',
+      'Shipped 2026-10-06 as a real photograph, NOT generated: a single craftsman planing a long timber plank with a hand plane, shavings in the foreground, the workshop soft behind. It is the documentary register applied to the category rather than a bench still life, and it asserts nothing about SOURDEN, a supplier or an order. Unlike every other slot here, wood and timber ARE the subject; the neighbouring slots ban them precisely to keep the nine cards distinct. If the photography is ever replaced, keep it a real photograph of the category, keep the plank across the middle band (this slot crops to roughly 60% of the width on the homepage card) and keep the file name so the swap stays an overwrite. Banned as the main visual and as the first thing in frame: coffins, caskets, funerary and memorial objects, cemeteries and funeral scenes — Wood Products lists Funeral & Memorial Products among its product types, but that is copy, not the picture. Also banned: China clichés (flag, Great Wall), factory assembly-line stock, an overly perfect AI-rendered plant, readable text.',
   },
   industryPackaging: {
     file: 'industry-packaging.webp',
@@ -511,10 +511,10 @@ export const images = {
    * All nine went live as AI-generated documentary photographs on 2026-10-03
    * (1200x900 WebP, one calm group of 4-6 category-typical items, 50mm,
    * shallow depth of field, warm neutral grade, no wood). The frame must stay
-   * a premium editorial
-   * product photograph, 4:3 or close, with NO real brand
-   * logos, NO China shorthand (Great Wall / flag / panda / container sunset)
-   * and NO artificially-perfect AI product render. Category is fixed per slot
+ * a premium editorial
+ * product photograph, 4:3 or close, with NO China shorthand (Great Wall /
+ * flag / panda / container sunset) and NO artificially-perfect AI product
+ * render. Category is fixed per slot
    * and must NOT drift into woodworking/craft imagery (no timber, no wood).
    */
   sourceConsumerProducts: {
@@ -526,7 +526,7 @@ export const images = {
     alt: 'A stainless insulated bottle, silicone kitchen utensils, a lidded container, a ceramic mug and a folded umbrella arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Consumer Products. Documentary photo — a stainless insulated bottle, silicone kitchen utensils, a lidded container, a ceramic mug and a folded umbrella gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No brand logos, no people, no readable text, no wood.',
+      'Category for this slot: Consumer Products. Documentary photo — a stainless insulated bottle, silicone kitchen utensils, a lidded container, a ceramic mug and a folded umbrella gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No people, no readable text, no wood.',
   },
   sourceBeautyPersonalCare: {
     file: 'source-beauty-personal-care.webp',
@@ -537,7 +537,7 @@ export const images = {
     alt: 'A hair dryer, a flat iron, makeup brushes and a jar of cream arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Beauty & Personal Care. Documentary photo — a hair dryer, a flat iron, makeup brushes and a jar of cream gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No formulation claims, no brand logos, no readable text, no wood.',
+      'Category for this slot: Beauty & Personal Care. Documentary photo — a hair dryer, a flat iron, makeup brushes and a jar of cream gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No formulation claims, no readable text, no wood.',
   },
   sourceWoodProducts: {
     file: 'source-wood-products.webp',
@@ -548,7 +548,7 @@ export const images = {
     alt: 'A flat lay of wooden kitchenware on a pale background — cutting boards, serving trays, small bowls and cups in assorted shapes and sizes, with dried stems at the edges.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Shipped 2026-10-06 as a real photograph, NOT generated: a flat lay of finished wooden kitchenware — a handled cutting board, shallow trays, round and oval bowls, small cups — on a pale seamless surface with a few dried stems at the edges. It shows the range of what the category sources rather than one product. If the photography is ever replaced, keep it a real photograph of finished wooden goods, keep the pieces inside the middle 60% (this slot crops hard) and keep the file name so the swap stays an overwrite. Banned as the subject: coffins, caskets, funerary and memorial objects, cemeteries. No brand logos, no people, no readable text.',
+      'Shipped 2026-10-06 as a real photograph, NOT generated: a flat lay of finished wooden kitchenware — a handled cutting board, shallow trays, round and oval bowls, small cups — on a pale seamless surface with a few dried stems at the edges. It shows the range of what the category sources rather than one product. If the photography is ever replaced, keep it a real photograph of finished wooden goods, keep the pieces inside the middle 60% (this slot crops hard) and keep the file name so the swap stays an overwrite. Banned as the subject: coffins, caskets, funerary and memorial objects, cemeteries. No people, no readable text.',
   },
   sourcePackaging: {
     file: 'source-packaging.webp',
@@ -559,7 +559,7 @@ export const images = {
     alt: 'Blank paper boxes, a glass jar, a paper cup and a bubble mailer arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Packaging. Documentary photo — blank paper boxes, a glass jar, a paper cup and a bubble mailer gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Blank unprinted stock only, no logos, no readable text, no wood.',
+      'Category for this slot: Packaging. Documentary photo — blank paper boxes, a glass jar, a paper cup and a bubble mailer gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Blank unprinted stock only, no readable text, no wood.',
   },
   sourceElectronicsAccessories: {
     file: 'source-electronics-accessories.webp',
@@ -570,7 +570,7 @@ export const images = {
     alt: 'A laptop, a smartphone, a smartwatch and a speaker arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Electronics & Accessories. Documentary photo — a laptop, a smartphone, a smartwatch and a speaker gathered in one calm group on a pale seamless surface, screens off, 50mm, shallow depth of field, warm neutral grade. No brand logos, no readable text, no wood.',
+      'Category for this slot: Electronics & Accessories. Documentary photo — a laptop, a smartphone, a smartwatch and a speaker gathered in one calm group on a pale seamless surface, screens off, 50mm, shallow depth of field, warm neutral grade. No readable text, no wood.',
   },
   sourceIndustrialProducts: {
     file: 'source-industrial-products.webp',
@@ -581,7 +581,7 @@ export const images = {
     alt: 'A machined gear, a ball bearing, a wrench and a brass valve arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Industrial Products. Documentary photo — a machined gear, a ball bearing, a wrench and a brass valve gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Cast part numbers only, no brand logos, no readable spec text, no wood.',
+      'Category for this slot: Industrial Products. Documentary photo — a machined gear, a ball bearing, a wrench and a brass valve gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Cast part numbers only, no readable spec text, no wood.',
   },
   sourceSportsOutdoors: {
     file: 'source-sports-outdoors.webp',
@@ -592,7 +592,7 @@ export const images = {
     alt: 'A rolled yoga mat, a dumbbell, a steel water bottle, a jump rope and a carabiner arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Sports & Outdoors. Documentary photo — a rolled yoga mat, a dumbbell, a steel water bottle, a jump rope and a carabiner gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Gear only, no people, no brand logos, no readable text, no wood.',
+      'Category for this slot: Sports & Outdoors. Documentary photo — a rolled yoga mat, a dumbbell, a steel water bottle, a jump rope and a carabiner gathered in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Gear only, no people, no readable text, no wood.',
   },
   sourcePetSupplies: {
     file: 'source-pet-supplies.webp',
@@ -603,7 +603,7 @@ export const images = {
     alt: 'A stainless pet bowl, a rubber ball, a flying disc, a nylon leash and a rope toy resting on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Pet Supplies. Documentary photo — a stainless pet bowl, a rubber ball, a flying disc, a nylon leash and a rope toy resting flat in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No live animals, no brand logos, no readable text, no wood.',
+      'Category for this slot: Pet Supplies. Documentary photo — a stainless pet bowl, a rubber ball, a flying disc, a nylon leash and a rope toy resting flat in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No live animals, no readable text, no wood.',
   },
   sourceApparelFootwearBags: {
     file: 'source-apparel-footwear-bags.webp',
@@ -614,7 +614,7 @@ export const images = {
     alt: 'A leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Apparel, Footwear & Bags. Documentary photo — a leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged as one calm flat-lay group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Flat-lay only, never on-model, no brand logos, no readable text, no wood.',
+      'Category for this slot: Apparel, Footwear & Bags. Documentary photo — a leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged as one calm flat-lay group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Flat-lay only, never on-model, no readable text, no wood.',
   },
 
   /* --------------------------------------------------------- case studies -- */
@@ -687,7 +687,7 @@ export const images = {
     alt: '',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'One premium editorial still life of a sourcing research desk in warm ivory, beige and charcoal: ceramic mug, glass bottle and folded fabric swatch beside a fan of blank material-swatch cards, a kraft envelope, a linen notebook, two documents whose pages carry only blurred illegible grey marking, a steel rule and a caliper, with a dark-screened laptop angled away at the back. Objects weighted right of centre; the left of the frame is empty calm surface, because the page\u2019s copy is overlaid there over a light scrim. No people, no readable text, no logos, no Chinese characters, no UI elements, no question marks, no icons.',
+      'One premium editorial still life of a sourcing research desk in warm ivory, beige and charcoal: ceramic mug, glass bottle and folded fabric swatch beside a fan of blank material-swatch cards, a kraft envelope, a linen notebook, two documents whose pages carry only blurred illegible grey marking, a steel rule and a caliper, with a dark-screened laptop angled away at the back. Objects weighted right of centre; the left of the frame is empty calm surface, because the page\u2019s copy is overlaid there over a light scrim. No people, no readable text, no Chinese characters, no UI elements, no question marks, no icons.',
     cropNote:
       'Rendered as a full-bleed background (object-fit: cover) behind the hub hero band, so the frame is cropped again on display: desktop bands around 2.2-2.5:1 trim top and bottom, phones trim the sides. Keep the objects in the middle vertical band and right of centre; the left third stays empty for the overlaid copy. The watermark crop already removed the outer 12.5% right and bottom of the raw.',
   },
@@ -934,10 +934,8 @@ export const images = {
    * which is what the card actually renders (see the `alt` prop on Media.astro);
    * the slot default only protects any OTHER future consumer of the slot.
    *
-   * Source: Pexels (free license), documentary photography. Not AI-generated.
-   * Per the Apparel constraint in `product-collections.js`, no club or brand
-   * is named in copy; the alt text describes the garment, never the badge.
-   */
+ * Source: Pexels (free license), documentary photography. Not AI-generated.
+ */
   collectionsHero: {
     file: 'collections-hero.webp',
     width: 1200,

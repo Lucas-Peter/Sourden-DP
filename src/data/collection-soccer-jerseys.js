@@ -18,8 +18,7 @@
  * ── NO PRICE / STOCK / MOQ / LEAD TIME ─────────────────────────────────────
  * The cards show only what a sourcing buyer can point at: the garment, its
  * reference code, and one line on its construction. Nothing that could be read
- * as an offer, and no brand or club name anywhere (the Apparel constraint in
- * `product-collections.js`).
+ * as an offer.
  * ---------------------------------------------------------------------------
  */
 
@@ -48,9 +47,9 @@ export const soccerJerseys = {
   introduction: {
     paragraphs: [
       'SOURDEN helps you source a wide range of soccer jerseys from China, including national team jerseys and club jerseys featuring some of the world\'s most popular teams.',
-      'National Team Jerseys:such as France, Spain, Argentina, Germany, Brazil, Portugal, Italy and England.',
-      'Club Jerseys:Well-known clubs such as Real Madrid, FC Barcelona, Atlético Madrid, Manchester United, Manchester City, Arsenal, Chelsea, Liverpool, Paris Saint-Germain and Bayern Munich.',
-	  'Personalization & Customization:Personalization options may include player names, numbers and sleeve patches, depending on the selected style and supplier. Adult and youth sizes are available in a range of options, subject to product availability.'
+      'National Team Jerseys: such as France, Spain, Argentina, Germany, Brazil, Portugal, Italy and England.',
+      'Club Jerseys: Well-known clubs such as Real Madrid, FC Barcelona, Atlético Madrid, Manchester United, Manchester City, Arsenal, Chelsea, Liverpool, Paris Saint-Germain and Bayern Munich.',
+	  'Personalization & Customization: Personalization options may include player names, numbers and sleeve patches, depending on the selected style and supplier. Adult and youth sizes are available in a range of options, subject to product availability.',
 	  'Looking for jerseys for your own team or a custom sportswear collection? We can help you explore customization options for fabrics, colors, patterns, team logos, sizes and more, based on your requirements.'
     ],
   },

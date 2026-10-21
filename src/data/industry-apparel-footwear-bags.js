@@ -14,12 +14,6 @@
  * capability list, the ink rail and the long FAQ are gone. One range image,
  * short buyer needs, the six-word approach flow, four considerations, four
  * related services, the buyer groups, the MOQ statement, a short FAQ.
- *
- * ── THE PER-CATEGORY CONSTRAINT (brief §12) ────────────────────────────────
- * "Do not mention or suggest counterfeit branded goods." No brand is named
- * anywhere, and the source `note` states the position directly: sourcing is for
- * the buyer's own product, design or label, not another company's branded
- * goods.
  * ---------------------------------------------------------------------------
  */
 
@@ -84,7 +78,6 @@ export const sections = [
       'Wallets',
       'Fashion accessories',
     ],
-    note: 'These are examples rather than a fixed list. The work in this category is on your own product, your own design or your own label — sourcing is not a route to another company’s branded goods.',
     image: {
       key: 'sourceApparelFootwearBags',
       /** 〔added〕 — the brief specifies the image but not its caption. */

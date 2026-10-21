@@ -72,8 +72,6 @@
  *     described as certification, technical validation or regulatory approval.
  *   · Sports & Outdoors — no safety claim for products where safety
  *     certification may apply.
- *   · Apparel, Footwear & Bags — no counterfeit or trademark-infringing
- *     example, and no brand named.
  *
  * ── WHERE A SLUG IS NOT FOUND ──────────────────────────────────────────────
  * A slug with no page file still renders its reservation page — the routes were
