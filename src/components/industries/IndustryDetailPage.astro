@@ -145,6 +145,7 @@ const sectionId = (index) => `id-${page.slug}-${String(index + 1).padStart(2, '0
   description={page.meta.description}
   path={path}
   preloadImageKey={page.hero.image.key}
+  preloadImageSizes="(min-width: 1180px) 520px, (min-width: 768px) 46vw, 100vw"
   schema={schema}
 >
   <ServicesHero
