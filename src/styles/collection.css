@@ -32,7 +32,6 @@
 }
 
 .pc-intro__lead {
-  max-width: 64ch;
   margin-block-start: var(--sp-5);
   display: grid;
   gap: var(--sp-4);
@@ -54,7 +53,6 @@
   color: var(--ink);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  max-width: 64ch;
 }
 
 /* --- Primary action + related links ---------------------------------------- */
