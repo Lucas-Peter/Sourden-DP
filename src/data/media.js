@@ -923,8 +923,9 @@ export const images = {
 
   /* ------------------------------------------------- product collections -- */
   /*
-   * Thirteen slots for the `/products` section: the hub hero (4:3) and the
-   * twelve reference styles of the first collection, Soccer Jerseys. Every
+   * Seventeen slots for the `/products` section: the hub hero (4:3) and the
+   * sixteen national-team reference styles of the first collection, Soccer
+   * Jerseys. Every
    * product photograph is 4:5 (1000 × 1250) so the card frame — which is also
    * 4:5 — crops nothing: a garment shown whole, never chopped at the shoulders
    * or the hem (the collection brief's "keep the subject complete" rule).
@@ -954,7 +955,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey02: {
     file: 'soccer-jersey-02.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -962,7 +963,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey03: {
     file: 'soccer-jersey-03.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -970,7 +971,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey04: {
     file: 'soccer-jersey-04.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -978,7 +979,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey05: {
     file: 'soccer-jersey-05.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -986,7 +987,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey06: {
     file: 'soccer-jersey-06.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -994,7 +995,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey07: {
     file: 'soccer-jersey-07.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -1002,7 +1003,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey08: {
     file: 'soccer-jersey-08.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -1010,7 +1011,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey09: {
     file: 'soccer-jersey-09.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -1018,7 +1019,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey10: {
     file: 'soccer-jersey-10.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -1026,7 +1027,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey11: {
     file: 'soccer-jersey-11.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -1034,7 +1035,7 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
   soccerJersey12: {
     file: 'soccer-jersey-12.webp', width: 1000, height: 1250, ratio: '4:5',
@@ -1042,7 +1043,39 @@ export const images = {
     alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
-    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
+  },
+  soccerJersey13: {
+    file: 'soccer-jersey-13.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 13',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
+  },
+  soccerJersey14: {
+    file: 'soccer-jersey-14.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 14',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
+  },
+  soccerJersey15: {
+    file: 'soccer-jersey-15.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 15',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
+  },
+  soccerJersey16: {
+    file: 'soccer-jersey-16.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 16',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
 
   /* -------------------------------------------------------------- social -- */
