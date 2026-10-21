@@ -48,6 +48,10 @@ pnpm-debug.log*
 # on every prebuild; never commit — Cloudflare regenerates it from the sources)
 .srcset-manifest.json
 
+# Responsive @w variants are regenerated at build time (locally by prebuild,
+# in the cloud by the Cloudflare build) — never upload/commit them.
+public/images/*@*.webp
+
 # Generated placeholder art is committed on purpose (it is the V1 visual
 # baseline). Un-comment the next line only if you switch to build-time
 # generation. See IMAGES.md.
