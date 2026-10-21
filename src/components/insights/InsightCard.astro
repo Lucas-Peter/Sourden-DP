@@ -75,7 +75,7 @@ const { article, category, href, readLabel } = Astro.props;
     reveal device staggers a group's direct children. */}
 <li class="in-card">
   <a class="in-card__link" href={href}>
-    {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom class="in-card__media" />}
+    {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom class="in-card__media" sizes="(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 100vw" />}
 
     <span class="in-card__tag">{category.tag}</span>
     <h3 class="in-card__title">{article.title}</h3>

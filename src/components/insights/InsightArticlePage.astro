@@ -72,7 +72,7 @@ import ArrowLink from '../ArrowLink.astro';
 import ServicesHero from '../services/ServicesHero.astro';
 
 import { articleHref, categoryFor } from '../../data/insights-articles.js';
-import { img } from '../../data/media.js';
+import { img, srcsetFor } from '../../data/media.js';
 import { primaryCta } from '../../data/site.js';
 import {
   articleSchema,
@@ -246,13 +246,16 @@ const schema = [
 
               case 'figure': {
                 const fig = img(block.imageKey);
+                const isBanner = block.variant === 'banner';
                 return (
                   <figure
-                    class={`ia-figure${block.variant === 'banner' ? ' ia-figure--banner' : ''}`}
+                    class={`ia-figure${isBanner ? ' ia-figure--banner' : ''}`}
                   >
                     <img
                       class="ia-figure__img"
                       src={fig.src}
+                      srcset={srcsetFor(block.imageKey)}
+                      sizes={isBanner ? '(min-width: 768px) 860px, 100vw' : '(min-width: 768px) 68ch, 100vw'}
                       width={fig.width}
                       height={fig.height}
                       alt={fig.alt}
