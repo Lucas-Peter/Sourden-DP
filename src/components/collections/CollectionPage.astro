@@ -10,8 +10,8 @@
  *
  * ── THE TWO MODULES, AND ONLY TWO ──────────────────────────────────────────
  * The brief is explicit: a collection page carries (1) the product
- * introduction — breadcrumb, H1, introduction, customization, catalogue
- * notice, one CTA — and (2) the product catalogue grid. No hero banner, no
+ * introduction — breadcrumb, H1, introduction, catalogue notice, one CTA —
+ * and (2) the product catalogue grid. No hero banner, no
  * large background image, no third band. The page closes on the catalogue's
  * own pagination; the site-wide closing CTA band is deliberately NOT rendered
  * here, because module one already carries the page's one call to action.
@@ -69,12 +69,6 @@ interface Props {
     eyebrow: string;
     h1: string;
     introduction: { paragraphs: string[] };
-    customization: {
-      eyebrow: string;
-      title: string;
-      intro: string;
-      options: Array<{ label: string; detail: string }>;
-    };
     catalogNotice: string;
     cta: { label: string; href: string };
     relatedLinks: Array<{ label: string; href: string }>;
@@ -183,8 +177,8 @@ const schema = [
 >
   {/* ==================================================================
       MODULE ONE — the product introduction. Breadcrumb, H1, introduction,
-      customization, catalogue notice, one CTA. No banner, no background
-      photograph (the brief's first structural rule).
+      catalogue notice, one CTA. No banner, no background photograph (the
+      brief's first structural rule).
       ================================================================== */}
   <section class="section section--ivory pc-intro" aria-labelledby={`pc-${collection.slug}-h1`}>
     <div class="container">
@@ -195,21 +189,6 @@ const schema = [
 
       <div class="pc-intro__lead">
         {collection.introduction.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
-
-      <div class="pc-custom">
-        <p class="eyebrow">{collection.customization.eyebrow}</p>
-        <h2 class="pc-custom__title">{collection.customization.title}</h2>
-        <p class="pc-custom__intro">{collection.customization.intro}</p>
-
-        <dl class="pc-custom__options">
-          {collection.customization.options.map((option) => (
-            <>
-              <dt class="pc-custom__label">{option.label}</dt>
-              <dd class="pc-custom__detail">{option.detail}</dd>
-            </>
-          ))}
-        </dl>
       </div>
 
       {/* The catalogue notice: the page shows a PARTIAL reference set, and
