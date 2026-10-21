@@ -1,5 +1,7 @@
 import { services } from './services.js';
 import { industries } from './industries.js';
+import { collections, collectionPageHref } from './product-collections.js';
+import { primaryCta } from './cta.js';
 
 /**
  * SOURDEN — SITE CONFIG
@@ -7,16 +9,15 @@ import { industries } from './industries.js';
  * Brand constants, navigation and SEO defaults.
  *
  * RULE (spec §34): every primary call-to-action across the entire site points
- * at the single `primaryCta.href` below. Never create a second destination
- * for the same action.
+ * at the single `primaryCta.href`. Never create a second destination for the
+ * same action. The constant itself lives in the leaf module `./cta.js` (so the
+ * collection registry can import it without importing this file back — see the
+ * header there); it is re-exported here for every existing importer.
  * ---------------------------------------------------------------------------
  */
 
 /** The one and only destination for "Start a Sourcing Request". */
-export const primaryCta = {
-  label: 'Start a Sourcing Request',
-  href: '/sourcing-request',
-};
+export { primaryCta };
 
 /* ---------------------------------------------------------------------------
    CONFIRMED CONTACT FACTS — do not change without asking the business.
@@ -109,10 +110,11 @@ export const navCta = {
    Deliberately excludes phone, WhatsApp, login, cart, currency selector and
    language selector. Do not add them without an explicit requirement.
 
-   Services and Industries carry a `children` list so the header can render a
-   second level under them. The children are DERIVED from `services.js` and
-   `industries.js` — the same registries the footer columns already read — so
-   a service or category added there appears in the header drop-down, the
+   Services, Industries and Products carry a `children` list so the header can
+   render a second level under them. The children are DERIVED from
+   `services.js`, `industries.js` and `product-collections.js` — the same
+   registries the footer columns already read — so a service, category or
+   product collection added there appears in the header drop-down, the
    homepage section and the footer at once. An item with no `children` renders
    as a plain link.
    --------------------------------------------------------------------------- */
@@ -134,6 +136,14 @@ export const nav = [
       href: industry.href,
     })),
   },
+  {
+    label: 'Products',
+    href: '/products',
+    children: collections.map((collection) => ({
+      label: collection.categoryName,
+      href: collectionPageHref(collection.slug, 1),
+    })),
+  },
   { label: 'How It Works', href: '/how-it-works' },
   { label: 'About', href: '/about' },
   { label: 'Insights', href: '/insights' },
@@ -150,6 +160,7 @@ export const nav = [
 export const footerCompanyNav = [
   { label: 'How It Works', href: '/how-it-works' },
   { label: 'About', href: '/about' },
+  { label: 'Products', href: '/products' },
   { label: 'Insights', href: '/insights' },
   { label: 'FAQ', href: '/faq' },
 ];

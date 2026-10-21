@@ -38,7 +38,7 @@ import path from 'node:path';
 
 export const IMAGE_DIR = '/images';
 
-/** @typedef {'hero'|'service'|'industry'|'case-study'|'insight'|'social'} ImageRole */
+/** @typedef {'hero'|'service'|'industry'|'case-study'|'insight'|'product'|'social'} ImageRole */
 
 export const images = {
   /* ---------------------------------------------------------------- hero -- */
@@ -919,6 +919,132 @@ export const images = {
     role: /** @type {ImageRole} */ ('insight'),
     placeholder: false,
     artDirection: 'Sourced from Pexels (free license). Not AI-generated.',
+  },
+
+  /* ------------------------------------------------- product collections -- */
+  /*
+   * Thirteen slots for the `/products` section: the hub hero (4:3) and the
+   * twelve reference styles of the first collection, Soccer Jerseys. Every
+   * product photograph is 4:5 (1000 × 1250) so the card frame — which is also
+   * 4:5 — crops nothing: a garment shown whole, never chopped at the shoulders
+   * or the hem (the collection brief's "keep the subject complete" rule).
+   *
+   * The slot `alt` is a short generic fallback. Each product record in
+   * `collection-soccer-jerseys.js` carries its own descriptive `altText`,
+   * which is what the card actually renders (see the `alt` prop on Media.astro);
+   * the slot default only protects any OTHER future consumer of the slot.
+   *
+   * Source: Pexels (free license), documentary photography. Not AI-generated.
+   * Per the Apparel constraint in `product-collections.js`, no club or brand
+   * is named in copy; the alt text describes the garment, never the badge.
+   */
+  collectionsHero: {
+    file: 'collections-hero.webp',
+    width: 1200,
+    height: 900,
+    ratio: '4:3',
+    label: 'PRODUCT COLLECTIONS',
+    alt: 'Soccer jerseys hanging on a market rail.',
+    role: /** @type {ImageRole} */ ('hero'),
+    artDirection:
+      'A rail or line of sports jerseys, documentary, warm light — the product the section trades in, not a factory cliché. No Great Wall / flag / panda / handshake / container-port clichés. Sourced from Pexels (free license). Not AI-generated.',
+  },
+
+  soccerJersey01: {
+    file: 'soccer-jersey-01.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 01',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey02: {
+    file: 'soccer-jersey-02.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 02',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey03: {
+    file: 'soccer-jersey-03.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 03',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey04: {
+    file: 'soccer-jersey-04.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 04',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey05: {
+    file: 'soccer-jersey-05.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 05',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey06: {
+    file: 'soccer-jersey-06.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 06',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey07: {
+    file: 'soccer-jersey-07.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 07',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey08: {
+    file: 'soccer-jersey-08.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 08',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey09: {
+    file: 'soccer-jersey-09.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 09',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey10: {
+    file: 'soccer-jersey-10.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 10',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey11: {
+    file: 'soccer-jersey-11.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 11',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
+  },
+  soccerJersey12: {
+    file: 'soccer-jersey-12.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 12',
+    alt: 'A short-sleeve soccer jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single soccer jersey, subject complete, documentary. Sourced from Pexels (free license). Not AI-generated.',
   },
 
   /* -------------------------------------------------------------- social -- */
