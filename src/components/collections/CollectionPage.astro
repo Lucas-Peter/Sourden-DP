@@ -188,7 +188,7 @@ const schema = [
       <h1 class="pc-intro__title" id={`pc-${collection.slug}-h1`}>{collection.h1}</h1>
 
       <div class="pc-intro__lead">
-        {collection.introduction.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        {collection.introduction.paragraphs.map((paragraph) => <p set:html={paragraph} />)}
       </div>
 
       {/* The catalogue notice: the page shows a PARTIAL reference set, and
