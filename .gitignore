@@ -52,3 +52,11 @@ pnpm-debug.log*
 # baseline). Un-comment the next line only if you switch to build-time
 # generation. See IMAGES.md.
 # public/images/
+
+# Collection source material (incoming/) — raw owner uploads + the filled-in
+# collection.md are a local workspace for scripts/add-collection.mjs; the
+# script emits the real page into src/data/ and public/images/. Only the
+# template and the instructions are committed.
+incoming/*
+!incoming/_TEMPLATE/
+!incoming/README.md
