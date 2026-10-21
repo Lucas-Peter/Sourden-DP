@@ -10,8 +10,8 @@
 #
 # 规则：
 #   · 以 # 开头的行是注释，会被忽略
-#   · paragraph: / option: / product: 可以写多行（写几行就是几条）
-#   · option 和 product 行里用「 | 」分隔（竖线两边有空格）
+#   · paragraph: / product: 可以写多行（写几行就是几条）
+#   · product 行里用「 | 」分隔（竖线两边有空格）
 #   · 图片请让产品主体居中、完整，四周留一点边（脚本会裁成 4:5 竖图）
 # ============================================================================
 
@@ -29,20 +29,11 @@ cardDescription: Custom match, training and fan jerseys — sublimated artwork, 
 eyebrow: PRODUCT COLLECTION
 h1: Basketball Jerseys.
 
-# —— 介绍段落（必填，写 1–3 段，每段一行 paragraph:）——
+# —— 介绍段落（必填，写 2–3 段，每段一行 paragraph:）——
+# 定制项不再单独列模块，直接写进介绍段落里（fabric / fit / 颜色 / 印花 / 尺码 / 包装等）
 paragraph: Basketball jerseys are one of the apparel categories we source most often — for clubs, school and academy programmes, fan merchandise and promotional runs.
+paragraph: Most orders are built around a short list of choices — fabric, fit, colourway, name and number printing, sizes and packaging. Each is confirmed against your artwork before production.
 paragraph: The reference styles below show the construction details that matter — fabric weight, fit, and how a number or a name sits on the back.
-
-# —— 定制项（必填，label | detail 一行一项）——
-customEyebrow: CUSTOMIZATION
-customTitle: What can be customized
-customIntro: These are the choices a basketball-jersey order is usually built around.
-option: Fabric | Polyester mesh, interlock and moisture-wicking knits.
-option: Fit | Slim, regular and youth cuts.
-option: Numbers & names | Heat transfer, screen print, embroidery or sublimation.
-option: Colours | Full sublimation allows any colourway.
-option: Sizes | From youth to adult extended sizes.
-option: Packaging | Individual polybags or export cartons.
 
 # —— 目录区块（必填）——
 catalogEyebrow: REFERENCE CATALOGUE
