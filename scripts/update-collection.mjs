@@ -45,6 +45,11 @@ const ROOT = path.resolve(__dirname, '..');
 const NN = (n) => String(n).padStart(2, '0');
 const camelSlugOf = (slug) => slug.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
 
+/* Emit a single-quoted JS string (matching the rest of media.js / collection
+   data files) with apostrophes escaped. The parse helpers below only read
+   single-quoted fields, so newly written slots must use single quotes too. */
+const q = (v) => `'${String(v).replace(/'/g, "\\'")}'`;
+
 function fail(msg) {
   console.error(`\n[update-collection] ${msg}\n`);
   process.exit(1);
@@ -122,31 +127,34 @@ function findSlot(content, key) {
 }
 
 function slotField(slotText, field) {
-  const m = slotText.match(new RegExp(`${field}: '([^']*)'`));
+  const m = slotText.match(new RegExp(`${field}: ['"]([^'"]*)['"]`));
   return m ? m[1] : null;
 }
 
-/** Replace a single-quoted string field (e.g. `alt`) in a located block. */
+/** Replace a string field (single- or double-quoted) in a located block. */
 function setFieldInBlock(block, field, value) {
-  const f = block.text.indexOf(`${field}: '`);
-  if (f === -1) fail(`槽里找不到字段 "${field}"`);
-  const valStart = f + `${field}: '`.length;
-  const valEnd = block.text.indexOf(`'`, valStart);
+  const m = block.text.match(new RegExp(`${field}: (['"])`));
+  if (!m) fail(`槽里找不到字段 "${field}"`);
+  const quote = m[1];
+  const f = m.index;
+  const valStart = f + `${field}: `.length + 1; // skip quote char
+  const valEnd = block.text.indexOf(quote, valStart);
   if (valEnd === -1) fail(`字段 "${field}" 未闭合`);
-  return block.text.slice(0, f) + `${field}: ${JSON.stringify(value)}` + block.text.slice(valEnd + 1);
+  return block.text.slice(0, f) + `${field}: ${q(value)}` + block.text.slice(valEnd + 1);
 }
 
 /** Replace `altText: '…'` in collection-<slug>.js, located by `imageKey`. */
 function setAltTextInData(content, imageKey, value) {
-  const anchor = `imageKey: '${imageKey}'`;
-  const a = content.indexOf(anchor);
+  const a = content.search(new RegExp(`imageKey:\\s*['"]${imageKey}['"]`));
   if (a === -1) fail(`数据文件里找不到 imageKey "${imageKey}"`);
-  const f = content.indexOf(`altText: '`, a);
-  if (f === -1) fail(`数据文件里找不到该产品的 altText`);
-  const valStart = f + `altText: '`.length;
-  const valEnd = content.indexOf(`'`, valStart);
+  const m = content.slice(a).match(/altText: (['"])/);
+  if (!m) fail(`数据文件里找不到该产品的 altText`);
+  const f = a + m.index;
+  const quote = m[1];
+  const valStart = f + `altText: `.length + 1;
+  const valEnd = content.indexOf(quote, valStart);
   if (valEnd === -1) fail(`altText 未闭合`);
-  return content.slice(0, f) + `altText: ${JSON.stringify(value)}` + content.slice(valEnd + 1);
+  return content.slice(0, f) + `altText: ${q(value)}` + content.slice(valEnd + 1);
 }
 
 /* --------------------------------------------------------------- crop photo */
@@ -165,6 +173,7 @@ async function cropTo(file) {
     console.warn(`  ⚠ 源图 ${meta.width}×${meta.height}，小于 1000×1250，放大后可能偏糊。`);
   }
   await sharp(imagePath)
+    .rotate()
     .resize(1000, 1250, { fit: 'cover', position: 'centre' })
     .webp({ quality: 78 })
     .toFile(outName(file));
@@ -270,22 +279,22 @@ if (opts.add) {
 
   const newSlotText =
     `  ${imageKey}: {\n` +
-    `    file: ${JSON.stringify(newFile)}, width: 1000, height: 1250, ratio: '4:5',\n` +
-    `    label: ${JSON.stringify(newLabel)},\n` +
-    `    alt: ${JSON.stringify(opts.alt)},\n` +
+    `    file: ${q(newFile)}, width: 1000, height: 1250, ratio: '4:5',\n` +
+    `    label: ${q(newLabel)},\n` +
+    `    alt: ${q(opts.alt)},\n` +
     `    role: /** @type {ImageRole} */ ('product'),\n` +
     `    placeholder: false,\n` +
-    `    artDirection: ${JSON.stringify(artDirection)},\n` +
+    `    artDirection: ${q(artDirection)},\n` +
     `  },`;
 
   const productBlock =
     `    {\n` +
-    `      id: ${JSON.stringify(newProduct.id)},\n` +
-    `      code: ${JSON.stringify(newProduct.code)},\n` +
-    `      name: ${JSON.stringify(newProduct.name)},\n` +
-    `      imageKey: ${JSON.stringify(newProduct.imageKey)},\n` +
-    `      shortDescription: ${JSON.stringify(newProduct.shortDescription)},\n` +
-    `      altText: ${JSON.stringify(newProduct.altText)},\n` +
+    `      id: ${q(newProduct.id)},\n` +
+    `      code: ${q(newProduct.code)},\n` +
+    `      name: ${q(newProduct.name)},\n` +
+    `      imageKey: ${q(newProduct.imageKey)},\n` +
+    `      shortDescription: ${q(newProduct.shortDescription)},\n` +
+    `      altText: ${q(newProduct.altText)},\n` +
     `      sortOrder: ${newProduct.sortOrder},\n` +
     `    },`;
 
@@ -305,7 +314,7 @@ if (opts.add) {
     console.log(`  ✓ media.js 已新增槽 "${imageKey}"`);
 
     let data = fs.readFileSync(dataFile, 'utf8');
-    const lastProductIdx = data.indexOf(`imageKey: '${lastProduct.imageKey}'`);
+    const lastProductIdx = data.search(new RegExp(`imageKey:\\s*['"]${lastProduct.imageKey}['"]`));
     if (lastProductIdx === -1) fail(`数据文件里找不到最后一个产品 "${lastProduct.imageKey}"`);
     // find the close of that product block: the `    },` after its imageKey
     const closeRel = data.indexOf('\n    },', lastProductIdx);
