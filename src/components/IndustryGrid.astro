@@ -39,7 +39,12 @@ import { industries, industriesIntro } from '../data/industries.js';
             data-span-lg={item.grid.spanLg}
             data-span-md={item.grid.spanMd}
           >
-            <Media imageKey={item.imageKey} zoom class="industry__media" />
+            <Media
+              imageKey={item.imageKey}
+              zoom
+              class="industry__media"
+              sizes={`(min-width: 1200px) ${((item.grid.spanLg / 12) * 100).toFixed(1)}vw, (min-width: 768px) ${((item.grid.spanMd / 8) * 100).toFixed(1)}vw, 100vw`}
+            />
 
             <span class="industry__caption">
               <span class="industry__title">{item.title}</span>

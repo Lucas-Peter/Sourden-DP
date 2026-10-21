@@ -27,7 +27,7 @@ const imageKey = study.images[0]?.key;
 ---
 
 <article class="case-feature">
-    {imageKey && <Media imageKey={imageKey} ratio="4x3" zoom />}
+    {imageKey && <Media imageKey={imageKey} ratio="4x3" zoom sizes="(min-width: 1200px) 58vw, 100vw" />}
 
     <div class="case-feature__body">
       <span class="num">{study.number}</span>

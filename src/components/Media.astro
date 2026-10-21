@@ -19,7 +19,16 @@ interface Props {
   /** Key from the image manifest in src/data/media.js — unknown keys throw. */
   imageKey: string;
   /** Optional fixed aspect ratio. Omit when a grid row dictates the height. */
-  ratio?: '4x3' | '3x2';
+  ratio?: '4x3' | '3x2' | '4x5';
+  /**
+   * Override the manifest slot's `alt` with page-level copy.
+   *
+   * Used by the product collection cards: the spec asks every product record to
+   * carry its own `altText` (it is per-product copy, so it lives with the
+   * product data, not with the image slot). The slot keeps a generic default so
+   * any other consumer of the slot still gets a description.
+   */
+  alt?: string;
   /** Enable the subtle hover scale. */
   zoom?: boolean;
   /** Above-the-fold images: load eagerly with high fetch priority. */
@@ -38,6 +47,7 @@ interface Props {
 const {
   imageKey,
   ratio,
+  alt,
   zoom = false,
   priority = false,
   sizes = '(min-width: 1180px) 1180px, 100vw',
@@ -64,7 +74,7 @@ const classes = [
     sizes={sizes}
     width={image.width}
     height={image.height}
-    alt={image.alt}
+    alt={alt ?? image.alt}
     loading={priority ? 'eager' : 'lazy'}
     decoding={priority ? 'sync' : 'async'}
     fetchpriority={priority ? 'high' : undefined}

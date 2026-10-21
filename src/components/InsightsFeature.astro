@@ -26,7 +26,7 @@ const { article } = Astro.props;
 
 <article class="article-feature">
   <a class="article-feature__link" href={`/insights/${article.slug}`}>
-    {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom />}
+    {article.imageKey && <Media imageKey={article.imageKey} ratio="3x2" zoom sizes="(min-width: 1200px) 58vw, 100vw" />}
 
     <div class="article-feature__body">
       <span class="article__category">{article.category}</span>
