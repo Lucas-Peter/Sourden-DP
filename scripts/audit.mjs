@@ -15,7 +15,9 @@
  *   4. No page accidentally exposes a `noindex` page as indexable, and no
  *      page in the sitemap is marked noindex (contradictory signals).
  *   5. Every image declares width and height (layout-shift protection).
- *   6. No inline `style="` attributes and no render-blocking third-party
+ *   6. Every image has a responsive `srcset`, and every image preload carries
+ *      `imagesrcset` (mobile bandwidth budget).
+ *   7. No inline `style="` attributes and no render-blocking third-party
  *      requests.
  * ---------------------------------------------------------------------------
  */
@@ -172,6 +174,30 @@ for (const file of htmlFiles) {
     if (!/alt="/.test(tag)) fail(page, 'image without alt');
   }
 
+  /* --- 5b. responsive image budget ----------------------------------------
+     Every <img> must carry a srcset so a phone downloads a variant, not the
+     full-size file (the mobile double-download defect shipped 2026-10-21).
+     Vector images (.svg) are exempt — they have no responsive variants. A hero
+     preload must also carry `imagesrcset` next to its `href`, otherwise it
+     downloads the original ON TOP of the variant the <img> actually picks. */
+
+  for (const match of html.matchAll(/<img\b[^>]*>/g)) {
+    const tag = match[0];
+    const src = (tag.match(/\ssrc="([^"]+)"/) || [])[1] || '';
+    if (src.endsWith('.svg')) continue;
+    if (!/\ssrcset="/.test(tag)) {
+      fail(page, `image without srcset — mobile downloads the full-size file → ${tag.slice(0, 90)}…`);
+    }
+  }
+
+  for (const match of html.matchAll(/<link\b[^>]*rel="preload"[^>]*>/g)) {
+    const tag = match[0];
+    if (!/as="image"/.test(tag)) continue;
+    if (!/imagesrcset=/.test(tag)) {
+      fail(page, `image preload without imagesrcset → ${tag.slice(0, 90)}…`);
+    }
+  }
+
   /* --- 6. hygiene --------------------------------------------------------- */
 
   if (/\sstyle="/.test(html)) fail(page, 'contains an inline style="" attribute');
@@ -281,6 +307,8 @@ const PAGE_SHEETS = [
   'legal.css',
   'insights.css',
   'insight-article.css',
+  'collections.css',
+  'collection.css',
 ];
 
 /** Rough selector extraction — comments stripped, at-rules skipped, lists split. */
