@@ -52,8 +52,8 @@ export const hero = {
     'Reference styles from the categories we source, shown the way a buyer needs to see them: construction, fit, prints and finishes. Point at what you want — or send your own design — and we will work from there.',
   primaryCta,
   secondaryCta: { label: 'How It Works', href: '/how-it-works' },
-  imageKey: 'collectionsHero',
-  imageCaption: 'Soccer jerseys on a rail — one of the reference styles in this section.',
+  imageKey: 'soccerJerseyHero',
+  imageCaption: 'A shop wall of national-team soccer jerseys — one of the reference styles in this section.',
 };
 
 /**

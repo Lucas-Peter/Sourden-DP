@@ -935,18 +935,18 @@ export const images = {
    * which is what the card actually renders (see the `alt` prop on Media.astro);
    * the slot default only protects any OTHER future consumer of the slot.
    *
- * Source: Pexels (free license), documentary photography. Not AI-generated.
+ * Source: owner-provided photograph. Not AI-generated.
  */
-  collectionsHero: {
-    file: 'collections-hero.webp',
+  soccerJerseyHero: {
+    file: 'soccer-jersey-hero.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
     label: 'PRODUCT COLLECTIONS',
-    alt: 'Soccer jerseys hanging on a market rail.',
+    alt: 'Shop wall of national-team soccer jerseys and soccer balls.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'A rail or line of sports jerseys, documentary, warm light — the product the section trades in, not a factory cliché. No Great Wall / flag / panda / handshake / container-port clichés. Sourced from Pexels (free license). Not AI-generated.',
+      'A packed shop wall of national-team soccer jerseys, training gear and match balls — the product the section trades in, not a factory cliché. No Great Wall / flag / panda / handshake / container-port clichés. Owner-provided photograph. Not AI-generated.',
   },
 
   soccerJersey01: {
