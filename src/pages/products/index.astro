@@ -1,0 +1,87 @@
+---
+/**
+ * /products — Products
+ * ---------------------------------------------------------------------------
+ * The section hub: what a product collection is, the directory of the
+ * collections that exist today, and the exit to /sourcing-request. It is the
+ * parent crumb of every `/products/<industry>/<slug>` page and the target of
+ * the header nav's "Products" item.
+ *
+ * STRUCTURE
+ *   01 Hero        eyebrow, H1, one-line copy, two actions
+ *   02 Directory   the collections, one card each (lead style + one line)
+ *   03 Final CTA   the single closing action
+ *
+ * INDEXABILITY
+ *   This page is real, so it is indexable and appears in sitemap.xml. The
+ *   whole `/products` section is new, so there is no `reservedTopLevel`
+ *   entry to delete and no noindex list to leave — see
+ *   `src/data/collections-page.js`.
+ *
+ * IMPORT ORDER IS LOAD-BEARING
+ *   Layout first, then the shared section devices, then this page's own sheet
+ *   — otherwise these rules lose every same-specificity conflict against the
+ *   shared core and `npm run audit` fails the build.
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/services-shared.css';
+import '../../styles/service-detail.css';
+import '../../styles/collections.css';
+
+import FinalCTA from '../../components/FinalCTA.astro';
+import CollectionsDirectory from '../../components/collections/CollectionsDirectory.astro';
+import ServicesHero from '../../components/services/ServicesHero.astro';
+
+import {
+  breadcrumbs,
+  directory,
+  finalCta,
+  hero,
+  meta,
+} from '../../data/collections-page.js';
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
+
+const path = '/products';
+
+/**
+ * One graph for the page: the page itself and its breadcrumb. There are no
+ * Product or ItemList nodes — the directory is navigation toward the
+ * collection pages, and structured data that describes a list of products the
+ * page does not actually list would be a claim, not metadata.
+ */
+const schema = [
+  webPageSchema({ title: meta.title, description: meta.description, path }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey={hero.imageKey} preloadImageSizes="(min-width: 1180px) 520px, (min-width: 768px) 46vw, 100vw" schema={schema}>
+  <ServicesHero
+    breadcrumbs={breadcrumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    description={hero.description}
+    primaryCta={hero.primaryCta}
+    secondaryCta={hero.secondaryCta}
+    imageKey={hero.imageKey}
+    imageCaption={hero.imageCaption}
+    titleId="cl-01"
+  />
+
+  <CollectionsDirectory
+    eyebrow={directory.eyebrow}
+    title={directory.title}
+    items={directory.items}
+    scopeNote={directory.scopeNote}
+    tone="white"
+    titleId="cl-02"
+  />
+
+  <FinalCTA
+    eyebrow={finalCta.eyebrow}
+    title={finalCta.title}
+    description={finalCta.description}
+    cta={finalCta.cta}
+  />
+</BaseLayout>

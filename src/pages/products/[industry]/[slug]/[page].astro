@@ -1,0 +1,40 @@
+---
+/**
+ * DETAIL ROUTE — /products/[industry]/[slug]/page/[n]  (catalogue page 2+)
+ * ---------------------------------------------------------------------------
+ * The second and later pages of a collection whose reference list is longer
+ * than 24 styles. Each page is its own statically generated HTML document with
+ * real <a href> controls — the collection brief requires server-side paging
+ * ("do not load the whole category's images into the first screen") and
+ * crawlable pages, so nothing here is hidden with CSS or JavaScript.
+ *
+ * Page 1 lives at the clean `/products/[industry]/[slug]` URL (see
+ * `[slug]/index.astro`). A page number that exceeds a collection's length
+ * generates no route at all and falls through to the site's 404.
+ * ---------------------------------------------------------------------------
+ */
+import CollectionPage from '../../../../components/collections/CollectionPage.astro';
+import { collections, paginateProducts } from '../../../../data/product-collections.js';
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const collection of collections) {
+    const { totalPages } = paginateProducts(collection.products, 1);
+    for (let page = 2; page <= totalPages; page += 1) {
+      paths.push({
+        params: { industry: collection.industrySlug, slug: collection.slug, page: String(page) },
+        props: {
+          collection,
+          page,
+          pagination: paginateProducts(collection.products, page),
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const { collection, page, pagination } = Astro.props;
+---
+
+<CollectionPage collection={collection} page={page} pagination={pagination} />
