@@ -29,7 +29,7 @@ import StickyMobileCTA from '../components/StickyMobileCTA.astro';
 import BackToTop from '../components/BackToTop.astro';
 
 import { site, seoDefaults } from '../data/site.js';
-import { IMAGE_DIR, images, img } from '../data/media.js';
+import { IMAGE_DIR, images, img, srcsetFor } from '../data/media.js';
 import { organizationSchema, websiteSchema, graph } from '../data/schema.js';
 
 interface Props {
@@ -48,13 +48,19 @@ interface Props {
    * Preload the page's LCP hero photograph.
    *
    * Pass the SAME image key the page hands to `<BackgroundHero imageKey=…>`
-   * (e.g. `hero.image.key` or the literal `"insightsHero"`). The layout resolves
-   * it through `img(key).src` and emits `<link rel="preload" as="image">` in
-   * <head> — one early round-trip ahead of the hero `<img>` itself. The hero
-   * `<img>` already carries `fetchpriority="high"` + `loading="eager"`, so this
-   * link only tightens discovery; it is harmless if omitted.
+   * (e.g. `hero.image.key` or the literal `"insightsHero"`). The layout emits
+   * `<link rel="preload" as="image">` carrying `imagesrcset` + `imagesizes`, so
+   * the preloaded file is the SAME variant the hero `<img srcset>` actually
+   * picks — never a second, larger download. `href` keeps the full original as
+   * the fallback for browsers without `srcset`.
+   *
+   * `preloadImageSizes` MUST equal the hero `<img>`'s `sizes` value — see
+   * `BackgroundHero` (`100vw`) vs `ServicesHero` / `SourcingRequestHero`
+   * (`(min-width: 1180px) 520px, (min-width: 768px) 46vw, 100vw`).
    */
   preloadImageKey?: string;
+  /** `sizes` for the hero preload's `imagesrcset`. Defaults to `100vw`. */
+  preloadImageSizes?: string;
   /** Emit robots noindex,nofollow. Used by the 404 page. */
   noindex?: boolean;
   /** Extra JSON-LD nodes appended to the site graph. */
@@ -84,6 +90,7 @@ const {
   ogType = 'website',
   ogImage = `${IMAGE_DIR}/${images.ogDefault.file}`,
   preloadImageKey,
+  preloadImageSizes = '100vw',
   noindex = false,
   schema = [],
   hideStickyCta = false,
@@ -130,7 +137,14 @@ const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
     <link rel="preload" as="font" type="font/woff2" href="/_astro/inter-latin-wght-normal.Dx4kXJAl.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/_astro/manrope-latin-wght-normal.DHIcAJRg.woff2" crossorigin />
     {preloadImageKey && (
-      <link rel="preload" as="image" href={img(preloadImageKey).src} fetchpriority="high" />
+      <link
+        rel="preload"
+        as="image"
+        href={img(preloadImageKey).src}
+        imagesrcset={srcsetFor(preloadImageKey)}
+        imagesizes={preloadImageSizes}
+        fetchpriority="high"
+      />
     )}
 
     <title>{title}</title>
