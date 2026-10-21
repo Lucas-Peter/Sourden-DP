@@ -14,11 +14,11 @@
  *
  * ── WHAT IT DOES ───────────────────────────────────────────────────────────
  *   1. Parses `collection.md` (a `label: value` template with repeating
- *      `paragraph:` / `option:` / `product:` rows).
+ *      `paragraph:` / `product:` rows).
  *   2. Crops every photo to the card's 4:5 frame (1000 × 1250, centre cover),
  *      encodes WebP ~78%, and writes `public/images/<slug>-NN.webp`.
- *   3. Writes `src/data/collection-<slug>.js` — SEO, intro, customization,
- *      the catalogue notice and the product list, all from the template.
+ *   3. Writes `src/data/collection-<slug>.js` — SEO, intro, the catalogue
+ *      notice and the product list, all from the template.
  *   4. Registers the image slots in `src/data/media.js` and the collection in
  *      `src/data/product-collections.js`, so the `[industry]/[slug]` route
  *      picks the new page up on the next build with no route-file edit.
@@ -75,12 +75,9 @@ const SINGLE = new Set([
   'catalogTitle',
   'catalogNotice',
   'ctaLabel',
-  'customEyebrow',
-  'customTitle',
-  'customIntro',
 ]);
 
-const data = { paragraph: [], option: [], product: [] };
+const data = { paragraph: [], product: [] };
 for (const rawLine of fs.readFileSync(mdPath, 'utf8').split(/\r?\n/)) {
   const line = rawLine.trim();
   if (!line || line.startsWith('#')) continue;
@@ -89,7 +86,7 @@ for (const rawLine of fs.readFileSync(mdPath, 'utf8').split(/\r?\n/)) {
   const key = m[1];
   const value = m[2].trim();
   if (SINGLE.has(key)) data[key] = value;
-  else if (key === 'paragraph' || key === 'option' || key === 'product') data[key].push(value);
+  else if (key === 'paragraph' || key === 'product') data[key].push(value);
 }
 
 /* ============================================================== validation */
@@ -100,7 +97,6 @@ for (const key of REQUIRED) {
 }
 if (!/^[a-z0-9-]+$/.test(data.slug)) fail(`slug 只能用小写字母/数字/连字符，收到 "${data.slug}"`);
 if (data.paragraph.length === 0) fail('至少填一行 paragraph:（介绍段落）');
-if (data.option.length === 0) fail('至少填一行 option:（定制项）');
 if (data.product.length === 0) fail('至少填一行 product:（产品）');
 
 const industry = industries.find((i) => i.slug === data.industrySlug);
@@ -134,12 +130,6 @@ const products = data.product.map((row, idx) => {
     imageFile,
     sortOrder: n,
   };
-});
-
-const options = data.option.map((row) => {
-  const parts = row.split(' | ').map((p) => p.trim());
-  if (parts.length < 2) fail(`option 行缺字段（需 label | detail）: "${row}"`);
-  return { label: parts[0], detail: parts.slice(1).join(' | ') };
 });
 
 /* ================================================================= images */
@@ -199,12 +189,6 @@ ${JSON.stringify(
     eyebrow: data.eyebrow,
     h1: data.h1,
     introduction: { paragraphs: data.paragraph },
-    customization: {
-      eyebrow: data.customEyebrow,
-      title: data.customTitle,
-      intro: data.customIntro,
-      options,
-    },
     catalogNotice: data.catalogNotice,
     catalog: { eyebrow: data.catalogEyebrow, title: data.catalogTitle },
     products: products.map(({ id, code, name, imageKey, shortDescription, altText, sortOrder }) => ({
