@@ -1,0 +1,79 @@
+---
+/**
+ * CollectionsDirectory — the hub's category directory
+ * ---------------------------------------------------------------------------
+ * One card per collection, leading with the collection's first reference
+ * style. Unlike `/industries`' ruled text entries, this directory is visual:
+ * a visitor here is asking "what do these actually look like?", and the
+ * category's lead garment answers that before they click.
+ *
+ * ── THE IMAGE IS THE COLLECTION'S FIRST STYLE ──────────────────────────────
+ * Each card shows the collection's first product image (`imageKey` derived in
+ * `collections-page.js` from `collection.products[0]`), so the card always
+ * displays the category's lead garment without a second image slot per
+ * collection. The 4:5 frame matches the product photos' own ratio.
+ *
+ * ── WHY THE WHOLE CARD IS ONE ANCHOR ───────────────────────────────────────
+ * Same call as `InsightCard`: the card is one link, and the "View collection"
+ * action is an <ArrowLink as="span"> so no anchor nests inside an anchor.
+ *
+ * ── HEADINGS ───────────────────────────────────────────────────────────────
+ * Section h2 → one h3 per collection. The h3s put the collections in the
+ * document outline, which is the point of a directory.
+ * ---------------------------------------------------------------------------
+ */
+import SectionHeader from '../SectionHeader.astro';
+import Media from '../Media.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  items: Array<{
+    title: string;
+    href: string;
+    description: string;
+    imageKey: string;
+    altText: string;
+    ctaLabel: string;
+  }>;
+  scopeNote: string;
+  tone: 'ivory' | 'white';
+  titleId: string;
+}
+
+const { eyebrow, title, items, scopeNote, tone, titleId } = Astro.props;
+---
+
+<section class={`section section--${tone} cl-directory`} aria-labelledby={titleId}>
+  <div class="container">
+    <SectionHeader id={titleId} eyebrow={eyebrow} title={title} class="cl-directory__head" />
+
+    <ul class="cl-grid" data-reveal-group>
+      {
+        items.map((item) => (
+          <li class="cl-card">
+            <a class="cl-card__link" href={item.href}>
+              <Media
+                imageKey={item.imageKey}
+                ratio="4x5"
+                alt={item.altText}
+                zoom
+                sizes="(min-width: 1180px) 25vw, (min-width: 768px) 33vw, 50vw"
+                class="cl-card__media"
+              />
+
+              <span class="cl-card__body">
+                <h3 class="cl-card__title">{item.title}</h3>
+                <p class="cl-card__desc">{item.description}</p>
+                <ArrowLink as="span" label={item.ctaLabel} caps class="cl-card__more" />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="cl-directory__scope">{scopeNote}</p>
+  </div>
+</section>

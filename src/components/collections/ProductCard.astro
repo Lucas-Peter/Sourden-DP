@@ -1,0 +1,64 @@
+---
+/**
+ * ProductCard — one reference style in a product collection grid
+ * ---------------------------------------------------------------------------
+ * The card is exactly the four things the collection-page brief lists: image,
+ * name, unique reference code, one short line of description. Nothing else —
+ * no price, no MOQ, no stock, no lead time, no "from $X". The brief forbids
+ * every one of those by name, and a sourcing catalogue that prints a price it
+ * cannot honour is worse than one that prints none.
+ *
+ * ── WHY THE CARD IS NOT A LINK ─────────────────────────────────────────────
+ * There is no product detail page in the first version, so there is nothing
+ * for the card to link to. A card that looks clickable and is not is a lie
+ * told with a cursor; the whole card stays static until detail pages exist,
+ * at which point the card grows one anchor around the image and the title.
+ *
+ * ── WHY `alt` IS PASSED EXPLICITLY ─────────────────────────────────────────
+ * The alt text is per-product copy (the brief lists `altText` as a product
+ * field), so it comes from the product record rather than from the image
+ * slot's generic default — see the `alt` prop on <Media>.
+ *
+ * ── THE 4:5 FRAME ──────────────────────────────────────────────────────────
+ * Every product photograph is 4:5 and the frame is 4:5, so `object-fit: cover`
+ * has nothing to crop: the garment is shown whole, never chopped at the
+ * shoulders or the hem (the brief's "keep the subject complete" rule). The
+ * `sizes` attribute is tuned to the grid — 2 columns on a phone, 3 on a
+ * tablet, 4 on desktop — so a phone pulls the 640w variant instead of the
+ * 1000px original.
+ * ---------------------------------------------------------------------------
+ */
+import Media from '../Media.astro';
+
+interface Props {
+  product: {
+    code: string;
+    name: string;
+    imageKey: string;
+    shortDescription: string;
+    altText: string;
+  };
+}
+
+const { product } = Astro.props;
+---
+
+<li class="pc-card">
+  <Media
+    imageKey={product.imageKey}
+    ratio="4x5"
+    alt={product.altText}
+    zoom
+    sizes="(min-width: 1180px) 25vw, (min-width: 768px) 33vw, 50vw"
+    class="pc-card__media"
+  />
+
+  <div class="pc-card__body">
+    <h3 class="pc-card__name">{product.name}</h3>
+    {/* The reference code is the product's stable identity — the same code on
+        every page of the catalogue, whatever the sort order or the page size.
+        Rendered as text, not a badge: it is information, not decoration. */}
+    <p class="pc-card__code">Ref. {product.code}</p>
+    <p class="pc-card__desc">{product.shortDescription}</p>
+  </div>
+</li>

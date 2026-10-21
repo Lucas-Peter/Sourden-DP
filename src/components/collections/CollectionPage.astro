@@ -1,0 +1,305 @@
+---
+/**
+ * CollectionPage — the shell for every `/products/<industry>/<slug>` product
+ * collection
+ * ---------------------------------------------------------------------------
+ * One shell, N collections. It owns the document, the stylesheets, the
+ * structured data and the two-module structure; the page's words come in as
+ * `collection`, a data object from `src/data/collection-<slug>.js`, and the
+ * architecture of that object is documented in `src/data/product-collections.js`.
+ *
+ * ── THE TWO MODULES, AND ONLY TWO ──────────────────────────────────────────
+ * The brief is explicit: a collection page carries (1) the product
+ * introduction — breadcrumb, H1, introduction, customization, catalogue
+ * notice, one CTA — and (2) the product catalogue grid. No hero banner, no
+ * large background image, no third band. The page closes on the catalogue's
+ * own pagination; the site-wide closing CTA band is deliberately NOT rendered
+ * here, because module one already carries the page's one call to action.
+ *
+ * ── WHY PAGINATION IS SERVER-SIDE ─────────────────────────────────────────
+ * `/insights` pages its directory client-side: every card is in the HTML and
+ * a script decides which are visible. That pattern is right for twelve
+ * articles and wrong here — the brief says a category with dozens of
+ * reference styles must not load the whole category's images into the first
+ * screen. So each page of the catalogue is its own statically generated HTML
+ * document (`/products/<industry>/<slug>` for page 1,
+ * `/products/<industry>/<slug>/page/N`
+ * after that), with real <a href> controls a crawler can follow and a visitor
+ * without scripting can use. Nothing is hidden with CSS or JS.
+ *
+ * ── WHY THE SHELL OWNS THE STYLESHEET ─────────────────────────────────────
+ * Same reason `IndustryDetailPage` does: a page that renders this shell
+ * cannot forget to import its CSS, and the import order (layout → shared
+ * devices → this route's own sheet) is stated in exactly one place.
+ * `service-detail.css` is imported for the shared section devices the intro
+ * band reuses; `collection.css` carries the ones this page type adds.
+ *
+ * ── WHAT THIS SHELL DOES NOT DO ───────────────────────────────────────────
+ *   · It does not emit a `Product` node, a price, an availability or an
+ *     aggregateRating for anything. These are reference styles, not offers —
+ *     see the honesty rule in `src/data/schema.js`.
+ *   · It does not render a search box, a filter row or a sort control. The
+ *     brief defers all three; the grid is one page of the registry order.
+ *   · It does not touch the header, the footer or any shared device.
+ * ---------------------------------------------------------------------------
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/service-detail.css';
+import '../../styles/collection.css';
+
+import Breadcrumbs from '../Breadcrumbs.astro';
+import Button from '../Button.astro';
+import ProductCard from './ProductCard.astro';
+import SectionHeader from '../SectionHeader.astro';
+
+import {
+  collectionBreadcrumbs,
+  collectionPaging,
+  collectionPageHref,
+} from '../../data/product-collections.js';
+import { breadcrumbItems, breadcrumbSchema, webPageSchema } from '../../data/schema.js';
+
+interface Props {
+  /** The whole page, from `src/data/collection-<slug>.js`. */
+  collection: {
+    slug: string;
+    categoryName: string;
+    seoTitle: string;
+    metaDescription: string;
+    eyebrow: string;
+    h1: string;
+    introduction: { paragraphs: string[] };
+    customization: {
+      eyebrow: string;
+      title: string;
+      intro: string;
+      options: Array<{ label: string; detail: string }>;
+    };
+    catalogNotice: string;
+    cta: { label: string; href: string };
+    relatedLinks: Array<{ label: string; href: string }>;
+    catalog: { eyebrow: string; title: string };
+    products: Array<{
+      id: string;
+      code: string;
+      name: string;
+      imageKey: string;
+      shortDescription: string;
+      altText: string;
+      sortOrder: number;
+    }>;
+  };
+  /** Current catalogue page, 1-based. */
+  page: number;
+  /** The slice for this page plus the totals, from `paginateProducts()`. */
+  pagination: {
+    products: Array<Record<string, any>>;
+    current: number;
+    totalPages: number;
+    total: number;
+  };
+}
+
+const { collection, page, pagination } = Astro.props;
+const { products, current, totalPages, total } = pagination;
+
+const path = collectionPageHref(collection.slug, current);
+
+/**
+ * The breadcrumb trail is built once and used twice — by the visible
+ * <Breadcrumbs> and by `breadcrumbItems()` for the BreadcrumbList node — so
+ * the trail a visitor sees and the trail Google reads cannot disagree.
+ */
+const breadcrumbs = collectionBreadcrumbs(collection.slug);
+
+/**
+ * The catalogue section needs an id for `aria-labelledby`, prefixed with the
+ * slug because every collection is built into one route and an id is only
+ * unique within its own document.
+ */
+const catalogTitleId = `pc-${collection.slug}-catalog`;
+
+/**
+ * The count line under the catalogue header. One page: "12 reference styles".
+ * Several pages: "Showing 1–12 of 34 reference styles" — the {from}, {to} and
+ * {total} tokens are the contract with the template in
+ * `product-collections.js`; the substitution is the one line here.
+ */
+const from = (current - 1) * 24 + 1;
+const to = Math.min(current * 24, total);
+const countText =
+  totalPages <= 1
+    ? collectionPaging.countSingle.replace('{total}', String(total))
+    : collectionPaging
+        .countPaged
+        .replace('{from}', String(from))
+        .replace('{to}', String(to))
+        .replace('{total}', String(total));
+
+/**
+ * A compact window of page numbers: 1 … (p-1) p (p+1) … last, all numbers
+ * once the catalogue is seven pages or shorter. Server-rendered, so the
+ * controls are real links on every page of the catalogue.
+ */
+function pageWindow(current: number, last: number): Array<number | 'gap'> {
+  if (last <= 7) return Array.from({ length: last }, (_, i) => i + 1);
+  const window: Array<number | 'gap'> = [1];
+  if (current > 3) window.push('gap');
+  for (let p = Math.max(2, current - 1); p <= Math.min(last - 1, current + 1); p += 1) {
+    window.push(p);
+  }
+  if (current < last - 2) window.push('gap');
+  window.push(last);
+  return window;
+}
+
+/**
+ * Related-page links live in the collection's data file, where their hrefs are
+ * built from the industry and service registries — a service renamed in
+ * `services.js` moves the link with it, and no href is re-typed here.
+ */
+
+/**
+ * One graph for the page: the page itself and its breadcrumb. There is no
+ * ItemList of the products and no Product nodes — these are reference styles
+ * without prices or availability, and structured data that describes an offer
+ * the page does not make is a claim, not metadata.
+ */
+const schema = [
+  webPageSchema({
+    title: collection.seoTitle,
+    description: collection.metaDescription,
+    path,
+  }),
+  breadcrumbSchema(breadcrumbItems(breadcrumbs)),
+];
+---
+
+<BaseLayout
+  title={collection.seoTitle}
+  description={collection.metaDescription}
+  path={path}
+  schema={schema}
+>
+  {/* ==================================================================
+      MODULE ONE — the product introduction. Breadcrumb, H1, introduction,
+      customization, catalogue notice, one CTA. No banner, no background
+      photograph (the brief's first structural rule).
+      ================================================================== */}
+  <section class="section section--ivory pc-intro" aria-labelledby={`pc-${collection.slug}-h1`}>
+    <div class="container">
+      <Breadcrumbs items={breadcrumbs} class="pc-intro__crumbs" />
+
+      <p class="eyebrow">{collection.eyebrow}</p>
+      <h1 class="pc-intro__title" id={`pc-${collection.slug}-h1`}>{collection.h1}</h1>
+
+      <div class="pc-intro__lead">
+        {collection.introduction.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+
+      <div class="pc-custom">
+        <p class="eyebrow">{collection.customization.eyebrow}</p>
+        <h2 class="pc-custom__title">{collection.customization.title}</h2>
+        <p class="pc-custom__intro">{collection.customization.intro}</p>
+
+        <dl class="pc-custom__options">
+          {collection.customization.options.map((option) => (
+            <>
+              <dt class="pc-custom__label">{option.label}</dt>
+              <dd class="pc-custom__detail">{option.detail}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+
+      {/* The catalogue notice: the page shows a PARTIAL reference set, and
+          saying so is both honest and the page's main conversion message —
+          "we can find more" is the service. Rendered as a note strip, not a
+          card, so it reads as part of the introduction rather than as a
+          promotion. */}
+      <p class="pc-notice">{collection.catalogNotice}</p>
+
+      <div class="pc-intro__actions">
+        <Button href={collection.cta.href} label={collection.cta.label} arrow />
+      </div>
+
+      {/* Internal linking: the parent product category and the services a
+          buyer in this category usually needs. Plain text links, one row,
+          under the CTA — the brief asks for links to the parent category and
+          related pages without turning the intro into a link farm. */}
+      <nav class="pc-related" aria-label="Related pages">
+        <span class="pc-related__label">Related</span>
+        <ul class="pc-related__list">
+          {collection.relatedLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  {/* ==================================================================
+      MODULE TWO — the product catalogue. A responsive card grid, one page
+      of the registry order at a time, with server-rendered pagination.
+      ================================================================== */}
+  <section class="section section--white pc-catalog" aria-labelledby={catalogTitleId}>
+    <div class="container">
+      <SectionHeader
+        id={catalogTitleId}
+        eyebrow={collection.catalog.eyebrow}
+        title={collection.catalog.title}
+        class="pc-catalog__head"
+      />
+
+      <p class="pc-count">{countText}</p>
+
+      <ul class="pc-grid" data-reveal-group>
+        {products.map((product) => <ProductCard product={product} />)}
+      </ul>
+
+      {
+        totalPages > 1 && (
+          <nav class="pc-pagination" aria-label={collectionPaging.navLabel}>
+            {current > 1 ? (
+              <a class="pc-pagination__btn" href={collectionPageHref(collection.slug, current - 1)} rel="prev">
+                ← {collectionPaging.prev}
+              </a>
+            ) : (
+              <span class="pc-pagination__btn" aria-disabled="true">
+                ← {collectionPaging.prev}
+              </span>
+            )}
+
+            {pageWindow(current, totalPages).map((entry) =>
+              entry === 'gap' ? (
+                <span class="pc-pagination__gap" aria-hidden="true">
+                  {collectionPaging.gap}
+                </span>
+              ) : entry === current ? (
+                <span class="pc-pagination__btn is-current" aria-current="page">
+                  {entry}
+                </span>
+              ) : (
+                <a class="pc-pagination__btn" href={collectionPageHref(collection.slug, entry)}>
+                  {entry}
+                </a>
+              )
+            )}
+
+            {current < totalPages ? (
+              <a class="pc-pagination__btn" href={collectionPageHref(collection.slug, current + 1)} rel="next">
+                {collectionPaging.next} →
+              </a>
+            ) : (
+              <span class="pc-pagination__btn" aria-disabled="true">
+                {collectionPaging.next} →
+              </span>
+            )}
+          </nav>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
