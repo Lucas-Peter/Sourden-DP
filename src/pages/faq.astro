@@ -120,7 +120,7 @@ const schema = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey={hero.image.key} schema={schema}>
+<BaseLayout title={meta.title} description={meta.description} path={path} preloadImageKey={hero.image.key} preloadImageSizes="(min-width: 1180px) 520px, (min-width: 768px) 46vw, 100vw" schema={schema}>
   <ServicesHero
     breadcrumbs={breadcrumbs}
     eyebrow={hero.eyebrow}
