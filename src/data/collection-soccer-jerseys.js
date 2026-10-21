@@ -220,5 +220,23 @@ export const soccerJerseys = {
       altText: 'Front view of a USA home soccer jersey with red and white wavy stripes on a mannequin.',
       sortOrder: 16,
     },
+    {
+      id: 'soccer-jerseys-17',
+      code: 'SJ-017',
+      name: 'Barcelona Home Jersey',
+      imageKey: 'soccerJerseys17',
+      shortDescription: 'Customization of names and numbers available.',
+      altText: 'Barcelona home jersey.',
+      sortOrder: 17,
+    },
+    {
+      id: 'soccer-jerseys-18',
+      code: 'SJ-018',
+      name: 'PSG Home Jersey',
+      imageKey: 'soccerJerseys18',
+      shortDescription: 'Customization of names and numbers available.',
+      altText: 'PSG home jersey.',
+      sortOrder: 18,
+    },
   ],
 };

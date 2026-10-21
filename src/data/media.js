@@ -1077,6 +1077,22 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
+  soccerJerseys17: {
+    file: 'soccer-jersey-17.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 17',
+    alt: 'Barcelona home jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
+  },
+  soccerJerseys18: {
+    file: 'soccer-jersey-18.webp', width: 1000, height: 1250, ratio: '4:5',
+    label: 'SOCCER JERSEY 18',
+    alt: 'PSG home jersey.',
+    role: /** @type {ImageRole} */ ('product'),
+    placeholder: false,
+    artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
+  },
 
   /* -------------------------------------------------------------- social -- */
   ogDefault: {
