@@ -250,7 +250,7 @@ Each of these sits in the right-hand column of its category page's "What We
 Can Source" module (added 2026-10-03), beside the product-category list. It is a
 **range** image — several different items from the category gathered in one
 premium editorial frame — not a single product and not a grid. Keep it 4:3,
-shallow depth of field, mixed materials, no real brand logos, no China shorthand
+shallow depth of field, mixed materials, no China shorthand
 (Great Wall / flag / panda / container sunset), and no artificially-perfect AI
 render. Category is fixed per slot; never drift into woodworking or craft
 imagery (no timber, no wood).
