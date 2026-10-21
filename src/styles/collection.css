@@ -43,6 +43,18 @@
   color: var(--ink);
 }
 
+/* Editorial lead: the first paragraph sets the reading rhythm at a larger
+   step, and emphasised terms (author-written <strong>) pick up the brass
+   accent so key phrases stand out without a heavy weight. */
+.pc-intro__lead > p:first-child {
+  font-size: clamp(1.1875rem, 1.05rem + 0.55vw, 1.375rem);
+  line-height: 1.5;
+}
+.pc-intro__lead strong {
+  font-weight: var(--fw-semibold);
+  color: var(--brass-ink);
+}
+
 /* --- Catalogue notice ------------------------------------------------------ */
 /* The page's honest "this is a partial reference set" statement. A left brass
    rule, not a box, so it reads as prose the visitor should not skip. */
