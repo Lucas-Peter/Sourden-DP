@@ -155,6 +155,7 @@ for (const p of products) {
   }
 
   await sharp(src)
+    .rotate()
     .resize(1000, 1250, { fit: 'cover', position: 'centre' })
     .webp({ quality: 78 })
     .toFile(out);
