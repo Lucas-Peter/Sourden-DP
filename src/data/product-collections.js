@@ -67,6 +67,7 @@
  */
 
 import { soccerJerseys } from './collection-soccer-jerseys.js';
+import { basketballJerseys } from './collection-basketball-jerseys.js';
 import { industries } from './industries.js';
 
 /* ===========================================================================
@@ -79,6 +80,7 @@ import { industries } from './industries.js';
 /** @type {Record<string, typeof soccerJerseys>} */
 export const collectionPages = {
   'soccer-jerseys': soccerJerseys,
+  'basketball-jerseys': basketballJerseys,
 };
 
 /** @param {string} slug */
