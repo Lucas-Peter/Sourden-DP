@@ -949,15 +949,15 @@ export const images = {
       'A packed shop wall of national-team soccer jerseys, training gear and match balls — the product the section trades in, not a factory cliché. No Great Wall / flag / panda / handshake / container-port clichés. Owner-provided photograph. Not AI-generated.',
   },
 
-  soccerJersey01: {
+  soccerJerseys01: {
     file: 'soccer-jersey-01.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 01',
-    alt: 'A short-sleeve soccer jersey.',
+    alt: 'Messi Argentina Commemorative Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey02: {
+  soccerJerseys02: {
     file: 'soccer-jersey-02.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 02',
     alt: 'A short-sleeve soccer jersey.',
@@ -965,7 +965,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey03: {
+  soccerJerseys03: {
     file: 'soccer-jersey-03.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 03',
     alt: 'A short-sleeve soccer jersey.',
@@ -973,7 +973,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey04: {
+  soccerJerseys04: {
     file: 'soccer-jersey-04.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 04',
     alt: 'A short-sleeve soccer jersey.',
@@ -981,7 +981,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey05: {
+  soccerJerseys05: {
     file: 'soccer-jersey-05.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 05',
     alt: 'A short-sleeve soccer jersey.',
@@ -989,7 +989,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey06: {
+  soccerJerseys06: {
     file: 'soccer-jersey-06.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 06',
     alt: 'A short-sleeve soccer jersey.',
@@ -997,7 +997,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey07: {
+  soccerJerseys07: {
     file: 'soccer-jersey-07.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 07',
     alt: 'A short-sleeve soccer jersey.',
@@ -1005,7 +1005,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey08: {
+  soccerJerseys08: {
     file: 'soccer-jersey-08.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 08',
     alt: 'A short-sleeve soccer jersey.',
@@ -1013,7 +1013,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey09: {
+  soccerJerseys09: {
     file: 'soccer-jersey-09.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 09',
     alt: 'A short-sleeve soccer jersey.',
@@ -1021,7 +1021,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey10: {
+  soccerJerseys10: {
     file: 'soccer-jersey-10.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 10',
     alt: 'A short-sleeve soccer jersey.',
@@ -1029,7 +1029,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey11: {
+  soccerJerseys11: {
     file: 'soccer-jersey-11.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 11',
     alt: 'A short-sleeve soccer jersey.',
@@ -1037,7 +1037,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey12: {
+  soccerJerseys12: {
     file: 'soccer-jersey-12.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 12',
     alt: 'A short-sleeve soccer jersey.',
@@ -1045,7 +1045,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey13: {
+  soccerJerseys13: {
     file: 'soccer-jersey-13.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 13',
     alt: 'A short-sleeve soccer jersey.',
@@ -1053,7 +1053,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey14: {
+  soccerJerseys14: {
     file: 'soccer-jersey-14.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 14',
     alt: 'A short-sleeve soccer jersey.',
@@ -1061,7 +1061,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey15: {
+  soccerJerseys15: {
     file: 'soccer-jersey-15.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 15',
     alt: 'A short-sleeve soccer jersey.',
@@ -1069,7 +1069,7 @@ export const images = {
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
   },
-  soccerJersey16: {
+  soccerJerseys16: {
     file: 'soccer-jersey-16.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 16',
     alt: 'A short-sleeve soccer jersey.',
@@ -1080,7 +1080,7 @@ export const images = {
   soccerJerseys17: {
     file: 'soccer-jersey-17.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 17',
-    alt: 'Barcelona home jersey.',
+    alt: 'A short-sleeve soccer jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1088,7 +1088,7 @@ export const images = {
   soccerJerseys18: {
     file: 'soccer-jersey-18.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 18',
-    alt: 'PSG home jersey.',
+    alt: 'Barcelona home jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1096,7 +1096,7 @@ export const images = {
   soccerJerseys19: {
     file: 'soccer-jersey-19.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 19',
-    alt: '26 AS Monaco Home Jersey',
+    alt: 'PSG home jersey.',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1104,7 +1104,7 @@ export const images = {
   soccerJerseys20: {
     file: 'soccer-jersey-20.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 20',
-    alt: '26 Atlético Madrid Home Jersey',
+    alt: '26 AS Monaco Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1112,7 +1112,7 @@ export const images = {
   soccerJerseys21: {
     file: 'soccer-jersey-21.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 21',
-    alt: '26 Al-Nassr Home Jersey',
+    alt: '26 Atlético Madrid Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1120,7 +1120,7 @@ export const images = {
   soccerJerseys22: {
     file: 'soccer-jersey-22.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 22',
-    alt: '26 AC Milan Home Jersey',
+    alt: '26 Al-Nassr Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1128,7 +1128,7 @@ export const images = {
   soccerJerseys23: {
     file: 'soccer-jersey-23.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 23',
-    alt: '26 Arsenal Home Jersey',
+    alt: '26 AC Milan Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1136,7 +1136,7 @@ export const images = {
   soccerJerseys24: {
     file: 'soccer-jersey-24.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 24',
-    alt: '26 AS Roma Home Jersey',
+    alt: '26 Arsenal Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1144,7 +1144,7 @@ export const images = {
   soccerJerseys25: {
     file: 'soccer-jersey-25.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 25',
-    alt: '26 Bayern Munich Home Jersey',
+    alt: '26 AS Roma Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1152,7 +1152,7 @@ export const images = {
   soccerJerseys26: {
     file: 'soccer-jersey-26.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 26',
-    alt: '26 Borussia Dortmund Home Jersey',
+    alt: '26 Bayern Munich Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1160,7 +1160,7 @@ export const images = {
   soccerJerseys27: {
     file: 'soccer-jersey-27.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 27',
-    alt: '26 Chelsea Home Jersey',
+    alt: '26 Borussia Dortmund Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1168,7 +1168,7 @@ export const images = {
   soccerJerseys28: {
     file: 'soccer-jersey-28.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 28',
-    alt: '26 Inter Miami Home Jersey',
+    alt: '26 Chelsea Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1176,7 +1176,7 @@ export const images = {
   soccerJerseys29: {
     file: 'soccer-jersey-29.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 29',
-    alt: '26 Juventus Home Jersey',
+    alt: '26 Inter Miami Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1184,7 +1184,7 @@ export const images = {
   soccerJerseys30: {
     file: 'soccer-jersey-30.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 30',
-    alt: '26 Liverpool Home Jersey',
+    alt: '26 Juventus Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1192,7 +1192,7 @@ export const images = {
   soccerJerseys31: {
     file: 'soccer-jersey-31.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 31',
-    alt: '26 Manchester City Home Jersey',
+    alt: '26 Liverpool Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1200,7 +1200,7 @@ export const images = {
   soccerJerseys32: {
     file: 'soccer-jersey-32.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 32',
-    alt: '26 Manchester United Home Jersey',
+    alt: '26 Manchester City Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1208,7 +1208,7 @@ export const images = {
   soccerJerseys33: {
     file: 'soccer-jersey-33.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 33',
-    alt: '26 Real Madrid Home Jersey',
+    alt: '26 Manchester United Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1216,7 +1216,7 @@ export const images = {
   soccerJerseys34: {
     file: 'soccer-jersey-34.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 34',
-    alt: '26 Sporting Lisbon Home Jersey',
+    alt: '26 Real Madrid Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1224,7 +1224,7 @@ export const images = {
   soccerJerseys35: {
     file: 'soccer-jersey-35.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 35',
-    alt: '26 Tottenham Hotspur Home Jersey',
+    alt: '26 Sporting Lisbon Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
@@ -1232,7 +1232,7 @@ export const images = {
   soccerJerseys36: {
     file: 'soccer-jersey-36.webp', width: 1000, height: 1250, ratio: '4:5',
     label: 'SOCCER JERSEY 36',
-    alt: 'Messi Argentina commemorative Jersey',
+    alt: '26 Tottenham Hotspur Home Jersey',
     role: /** @type {ImageRole} */ ('product'),
     placeholder: false,
     artDirection: 'A single national-team soccer jersey on a mannequin, front view, subject complete. Owner-provided photograph. Not AI-generated.',
