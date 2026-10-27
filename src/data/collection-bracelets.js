@@ -23,11 +23,7 @@ export const bracelets = {
   "h1": "Bracelets.",
   "introduction": {
     "paragraphs": [
-      "Bracelets are one of the jewellery categories we source most often — rigid bangles, open cuffs and chain styles, in gold, silver and rose-gold tones.",
-      "<strong>Metal and plating:</strong> brass and stainless steel are the two bases used most. Plating thickness and the finish — polished, brushed or antiqued — decide how a piece wears and how it photographs.",
-      "<strong>Setting and stones:</strong> pavé, bezel or channel setting, with cubic zirconia, glass or synthetic stones. Stone colour and size can be matched to a sample you send.",
-      "<strong>Sizing and packaging:</strong> inner circumference and band width are specified per style, with pouches, boxes and carton markings to your requirement.",
-      "<strong>Looking for a specific style?</strong> Send a photo or a sample and we will look for a construction that matches it."
+      "Source bangles, cuffs, and chain bracelets in a variety of styles and finishes. Options may include different metals, gold, silver, and rose-gold tones, decorative stones, sizes, and customized packaging."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set. We can source additional designs, metals and colourways on request — if you do not see what you need, describe it and we will look for it.",

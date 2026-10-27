@@ -23,10 +23,7 @@ export const basketballJerseys = {
   "h1": "Basketball Jerseys.",
   "introduction": {
     "paragraphs": [
-      "SOURDEN helps you source a wide range of basketball jerseys from China — current league styles, retro editions and plain team bodies, in adult and youth size runs.",
-      "<strong>Front and back views:</strong> every reference style is listed twice. The front view shows the crest position and colourway; the back view shows how a name and number sit on the garment.",
-      "<strong>Personalization:</strong> names, numbers, neck and armhole trim, and team marks can be specified per style, subject to the selected supplier and order minimums. Fabric, fit, colourway, sizes and packaging are confirmed against your artwork before production.",
-      "<strong>Looking for jerseys for your own team or a custom sportswear range?</strong> Describe the design and we will look for a construction that matches it."
+      "Source basketball jerseys in current and retro styles for adults and youth. Customization options include names, numbers, colors, trims, and team designs, depending on supplier capabilities."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set, listed as a front view and a back view per design. We can source additional designs, colours and constructions on request — if you do not see what you need, describe it and we will look for it.",

@@ -23,11 +23,7 @@ export const glasses = {
   "h1": "Glasses.",
   "introduction": {
     "paragraphs": [
-      "<strong>How to choose your perfect frames.</strong> Three checks — face shape, the look you are after, and lens width — narrow the field faster than scrolling through every style.",
-      "<strong>1. Check your face shape.</strong> A round face works best with square or angular frames. A square face softens with round frames. An oval face suits almost any shape, so pick by the look you want.",
-      "<strong>2. Check the vibe.</strong> Work and office — clean metal or classic square frames. Everyday — lightweight round or clear frames. Vacation and fashion — bold, oversized frames or cat-eye sunglasses.",
-      "<strong>3. Check your size (lens width).</strong> Under 50 mm suits a smaller face, 51–54 mm is the standard range, and 55 mm and above gives an oversized look. The code after each style reads lens, bridge and temple in millimetres — the first number is the lens width.",
-      "<strong>Looking for a specific frame?</strong> Send the shape, material and lens width you need and we will look for a construction that matches it."
+      "Source a variety of eyeglasses and sunglasses from China, including classic, modern, and fashion-forward styles. Explore different frame shapes, materials, colors, and sizes, with lens options available depending on the supplier."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set. We can source additional shapes, materials and colourways on request — if you do not see what you need, describe it and we will look for it.",

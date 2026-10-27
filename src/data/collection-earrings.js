@@ -23,11 +23,7 @@ export const earrings = {
   "h1": "Earrings.",
   "introduction": {
     "paragraphs": [
-      "Earrings cover the widest range in the jewellery category — small studs, hoops, drops and statement pieces — and the smallest change in size or weight changes how a pair sits and sells.",
-      "<strong>Metal and plating:</strong> brass and stainless steel bases, with plating in gold, silver or rose-gold tone. Plating thickness is worth fixing early: it is the difference between a pair that survives daily wear and one that does not.",
-      "<strong>Weight and backing:</strong> the gram weight per earring matters more than the dimensions — a large drop in thin sheet metal is wearable, the same shape in solid brass is not. Posts, butterflies, clips and screw backs can each be specified.",
-      "<strong>Stones and finishing:</strong> pavé, prong or glue setting with cubic zirconia, glass or synthetic stones, matched to a sample where you have one.",
-      "<strong>Looking for a specific pair?</strong> Send a photo or a sample and we will look for a construction that matches it."
+      "Explore stud, hoop, drop, and statement earrings in a range of styles. Choose from different materials, finishes, stones, and backing types to suit your target market and product range."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set. We can source additional designs, metals and colourways on request — if you do not see what you need, describe it and we will look for it.",

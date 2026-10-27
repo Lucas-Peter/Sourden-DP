@@ -23,11 +23,7 @@ export const necklaces = {
   "h1": "Necklaces.",
   "introduction": {
     "paragraphs": [
-      "Necklaces are usually ordered as a range rather than a single piece: one motif across three lengths, or one chain across several pendants. Getting the chain and clasp right matters as much as the pendant.",
-      "<strong>Chain and clasp:</strong> cable, curb, rope and box chains each behave differently against the neck. Lobster, spring-ring and box clasps can be specified, with an extender if the same piece has to fit several markets.",
-      "<strong>Metal and plating:</strong> brass and stainless steel bases, plated in gold, silver or rose-gold tone. Plating thickness is set per style, and the same motif can be run in two or three finishes.",
-      "<strong>Length and weight:</strong> chain length, link size and pendant drop are specified in millimetres, and total weight is quoted per piece so freight can be estimated before production.",
-      "<strong>Looking for a specific piece?</strong> Send a photo or a sample and we will look for a construction that matches it."
+      "Source a variety of necklaces, from simple chains to pendant designs. Customize chain styles, lengths, pendants, metal finishes, and packaging according to your requirements."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set. We can source additional designs, metals and colourways on request — if you do not see what you need, describe it and we will look for it.",

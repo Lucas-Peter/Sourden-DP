@@ -23,11 +23,7 @@ export const sportShoes = {
   "h1": "Sport Shoes.",
   "introduction": {
     "paragraphs": [
-      "SOURDEN helps you source sport shoes from China across running, trail, court and lifestyle categories — from performance-built running shoes to low-top leather sneakers.",
-      "<strong>Running and trail:</strong> cushioning setup, upper material and outsole pattern are the three choices that decide how a shoe performs. Each can be specified per style, together with the colourway.",
-      "<strong>Court and lifestyle:</strong> high-top and low-top constructions, cupsole or vulcanised bottoms, and leather, suede or knit uppers — with colourways matched to your range.",
-      "<strong>Sizes and packaging:</strong> adult, youth and children's size runs, with shoe boxes, tissue and carton markings to your specification.",
-      "<strong>Looking for a specific silhouette?</strong> Describe the style, material and colourway and we will look for a construction that matches it."
+      "Source running shoes, trail shoes, court shoes, and casual sneakers from China. Choose from different materials, colors, styles, sizes, and packaging options to suit your needs."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set. We can source additional designs, materials and colourways on request — if you do not see what you need, describe it and we will look for it.",

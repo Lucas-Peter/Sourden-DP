@@ -23,11 +23,7 @@ export const rings = {
   "h1": "Rings.",
   "introduction": {
     "paragraphs": [
-      "Rings are the category where sizing decides whether an order sells through or comes back: a single size run, or a spread across the sizes your market actually buys.",
-      "<strong>Sizing:</strong> US, EU and UK sizing can each be produced, and the size range is fixed before the mould is made — changing it afterwards means new tooling.",
-      "<strong>Metal and plating:</strong> brass and stainless steel bases, with gold, silver and rose-gold tone plating at a stated thickness, polished or brushed.",
-      "<strong>Band and setting:</strong> band width, profile and stone count are the three variables that change the look most. Pavé, bezel and prong settings can be combined on the same band.",
-      "<strong>Looking for a specific design?</strong> Send a photo or a sample and we will look for a construction that matches it."
+      "Source fashion rings in a variety of designs, from minimalist bands to decorative stone settings. Options may include different materials, finishes, ring sizes, and packaging to suit your collection."
     ]
   },
   "catalogNotice": "The styles shown are a partial reference set. We can source additional designs, metals and colourways on request — if you do not see what you need, describe it and we will look for it.",

@@ -47,11 +47,7 @@ export const soccerJerseys = {
 
   introduction: {
     paragraphs: [
-      'SOURDEN helps you source a wide range of soccer jerseys from China, including national team jerseys and club jerseys featuring some of the world\'s most popular teams.',
-      '<strong>National Team Jerseys:</strong> such as France, Spain, Argentina, Germany, Brazil, Portugal, Italy and England.',
-      '<strong>Club Jerseys:</strong> Well-known clubs such as Real Madrid, FC Barcelona, Atlético Madrid, Manchester United, Manchester City, Arsenal, Chelsea, Liverpool, Paris Saint-Germain and Bayern Munich.',
-	  '<strong>Personalization & Customization:</strong> Personalization options may include player names, numbers and sleeve patches, depending on the selected style and supplier. Adult and youth sizes are available in a range of options, subject to product availability.',
-	  '<strong>Looking for jerseys for your own team or a custom sportswear collection?</strong> We can help you explore customization options for fabrics, colors, patterns, team logos, sizes and more, based on your requirements.'
+      'Source national team and club soccer jerseys from China, with adult and youth sizes available. Customization options include names, numbers, and sleeve patches. Custom team jerseys can also be developed to match your designs.'
     ],
   },
 
