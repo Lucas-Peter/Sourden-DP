@@ -67,9 +67,13 @@
  */
 
 import { soccerJerseys } from './collection-soccer-jerseys.js';
-import { glasses } from './collection-glasses.js';
-import { sportShoes } from './collection-sport-shoes.js';
 import { basketballJerseys } from './collection-basketball-jerseys.js';
+import { sportShoes } from './collection-sport-shoes.js';
+import { glasses } from './collection-glasses.js';
+import { bracelets } from './collection-bracelets.js';
+import { earrings } from './collection-earrings.js';
+import { necklaces } from './collection-necklaces.js';
+import { rings } from './collection-rings.js';
 import { industries } from './industries.js';
 
 /* ===========================================================================
@@ -82,9 +86,13 @@ import { industries } from './industries.js';
 /** @type {Record<string, typeof soccerJerseys>} */
 export const collectionPages = {
   'soccer-jerseys': soccerJerseys,
-  'glasses': glasses,
-  'sport-shoes': sportShoes,
   'basketball-jerseys': basketballJerseys,
+  'sport-shoes': sportShoes,
+  'glasses': glasses,
+  'bracelets': bracelets,
+  'earrings': earrings,
+  'necklaces': necklaces,
+  'rings': rings,
 };
 
 /** @param {string} slug */
