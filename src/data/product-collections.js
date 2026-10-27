@@ -32,6 +32,11 @@
  *                             the customization options are written into these
  *                             paragraphs, not a separate block
  *   catalogNotice             the "partial reference set" statement
+ *   cardImageKey              OPTIONAL — the product image used on the
+ *                             /products directory card. Omit it and the card
+ *                             shows the first product; set it when the first
+ *                             product is a spec sheet or a multi-item shot that
+ *                             reads badly as a cover.
  *   cta                       the one primary action (href is always
  *                             `primaryCta.href` from site.js)
  *   relatedLinks              parent category + related services, hrefs built
@@ -67,6 +72,7 @@
  */
 
 import { soccerJerseys } from './collection-soccer-jerseys.js';
+import { hairSystemsForMen } from './collection-hair-systems-for-men.js';
 import { basketballJerseys } from './collection-basketball-jerseys.js';
 import { sportShoes } from './collection-sport-shoes.js';
 import { glasses } from './collection-glasses.js';
@@ -93,6 +99,7 @@ export const collectionPages = {
   'earrings': earrings,
   'necklaces': necklaces,
   'rings': rings,
+  'hair-systems-for-men': hairSystemsForMen,
 };
 
 /** @param {string} slug */

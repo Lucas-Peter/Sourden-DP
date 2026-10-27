@@ -66,14 +66,24 @@ export const hero = {
 export const directory = {
   eyebrow: 'THE COLLECTIONS',
   title: 'Browse by category',
-  items: collections.map((collection) => ({
-    title: collection.categoryName,
-    href: collectionPageHref(collection.slug, 1),
-    description: collection.cardDescription,
-    imageKey: collection.products[0].imageKey,
-    altText: collection.products[0].altText,
-    ctaLabel: 'View collection',
-  })),
+  items: collections.map((collection) => {
+    /* The card image is the first reference style, unless the collection names
+       a different one: some categories open with a spec sheet or a multi-item
+       shot that reads badly as a cover, and `cardImageKey` lets that collection
+       point the card at a single-subject photo without reordering its
+       catalogue. */
+    const lead =
+      collection.products.find((p) => p.imageKey === collection.cardImageKey) ??
+      collection.products[0];
+    return {
+      title: collection.categoryName,
+      href: collectionPageHref(collection.slug, 1),
+      description: collection.cardDescription,
+      imageKey: lead.imageKey,
+      altText: lead.altText,
+      ctaLabel: 'View collection',
+    };
+  }),
   scopeNote:
     'More categories are added as their reference sets are photographed and written. If the category you need is not here yet, tell us what you are looking for — that is what the sourcing request is for.',
 };
