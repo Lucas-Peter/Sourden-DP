@@ -14,7 +14,7 @@ const industryHref = (slug) => industries.find((i) => i.slug === slug)?.href ?? 
 export const rings = {
 
   "slug": "rings",
-  "industrySlug": "apparel-footwear-bags",
+  "industrySlug": "fashion-accessories",
   "categoryName": "Rings",
   "seoTitle": "Rings: Custom Sourcing from China | SOURDEN",
   "metaDescription": "Source rings from China — band, signet and stone-set styles in brass or stainless steel, with plating, ring sizing and packaging to your specification.",
@@ -365,7 +365,7 @@ export const rings = {
   cta: { label: "Request More Styles", href: primaryCta.href },
 
   relatedLinks: [
-    { label: "Apparel, Footwear & Bags", href: industryHref("apparel-footwear-bags") },
+    { label: "Fashion & Accessories", href: industryHref("fashion-accessories") },
     { label: 'Product Sourcing', href: serviceHref('product-sourcing') },
     { label: 'Quality Control', href: serviceHref('quality-control') },
     { label: 'Shipping from China', href: serviceHref('shipping-from-china') },

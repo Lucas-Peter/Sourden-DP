@@ -14,7 +14,7 @@ const industryHref = (slug) => industries.find((i) => i.slug === slug)?.href ?? 
 export const necklaces = {
 
   "slug": "necklaces",
-  "industrySlug": "apparel-footwear-bags",
+  "industrySlug": "fashion-accessories",
   "categoryName": "Necklaces",
   "seoTitle": "Necklaces: Custom Sourcing from China | SOURDEN",
   "metaDescription": "Source necklaces from China — chain, pendant and collar styles in brass or stainless steel, with plating, clasp type, length and packaging to your specification.",
@@ -473,7 +473,7 @@ export const necklaces = {
   cta: { label: "Request More Styles", href: primaryCta.href },
 
   relatedLinks: [
-    { label: "Apparel, Footwear & Bags", href: industryHref("apparel-footwear-bags") },
+    { label: "Fashion & Accessories", href: industryHref("fashion-accessories") },
     { label: 'Product Sourcing', href: serviceHref('product-sourcing') },
     { label: 'Quality Control', href: serviceHref('quality-control') },
     { label: 'Shipping from China', href: serviceHref('shipping-from-china') },

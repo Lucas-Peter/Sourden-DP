@@ -25,11 +25,12 @@
  * ── THE PAGE FILE DECLARES NO CATEGORY AND NO SERVICE ──────────────────────
  * Titles, numbers, slugs and hrefs come from `industries.js`. The brief writes
  * the ninth category as "Clothing, Shoes & Bags" with the route
- * `/industries/clothing-shoes-bags`; the site already publishes that category
- * as "Apparel, Footwear & Bags" at `/industries/apparel-footwear-bags` and the
- * business confirmed on 2026-09-23 that the site's name is the one to use
- * site-wide. So this file maps the brief's ninth entry onto the registry's
- * record instead of typing a second name for the same category.
+ * `/industries/clothing-shoes-bags`; the site publishes that category as
+ * "Fashion & Accessories" at `/industries/fashion-accessories` (renamed by the
+ * business on 2026-10-27, having first published it as "Apparel, Footwear &
+ * Bags" on 2026-09-23), and the registry is the single source of the name. So
+ * this file maps the brief's ninth entry onto the registry's record instead of
+ * typing a second name for the same category.
  *
  * ── SCOPE OF THE NINE CATEGORIES ───────────────────────────────────────────
  * The directory is a navigation framework, not a claim of exclusivity. The
@@ -134,8 +135,8 @@ const categoryDescriptions = {
     'Sports equipment, outdoor products, fitness accessories and related goods.',
   'pet-supplies':
     'Pet accessories, supplies, toys and everyday products for pet businesses and buyers.',
-  'apparel-footwear-bags':
-    'Apparel, footwear, bags, accessories and related fashion products.',
+  'fashion-accessories':
+    'Clothing, footwear, bags, jewellery and related fashion accessories.',
 };
 
 /** @param {string} slug */

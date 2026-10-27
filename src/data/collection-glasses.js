@@ -14,7 +14,7 @@ const industryHref = (slug) => industries.find((i) => i.slug === slug)?.href ?? 
 export const glasses = {
 
   "slug": "glasses",
-  "industrySlug": "apparel-footwear-bags",
+  "industrySlug": "fashion-accessories",
   "categoryName": "Glasses",
   "seoTitle": "Glasses: Custom Sourcing from China | SOURDEN",
   "metaDescription": "Source glasses and sunglasses from China — acetate, metal and rimless frames with lens, colourway and packaging options to your specification. Browse reference styles and request more.",
@@ -401,7 +401,7 @@ export const glasses = {
   cta: { label: "Request More Styles", href: primaryCta.href },
 
   relatedLinks: [
-    { label: "Apparel, Footwear & Bags", href: industryHref("apparel-footwear-bags") },
+    { label: "Fashion & Accessories", href: industryHref("fashion-accessories") },
     { label: 'Product Sourcing', href: serviceHref('product-sourcing') },
     { label: 'Quality Control', href: serviceHref('quality-control') },
     { label: 'Shipping from China', href: serviceHref('shipping-from-china') },

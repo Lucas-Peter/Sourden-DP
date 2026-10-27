@@ -1,7 +1,7 @@
 /**
  * SOURDEN — PRODUCT COLLECTION: SOCCER JERSEYS
  * ---------------------------------------------------------------------------
- * The data file for `/products/apparel-footwear-bags/soccer-jerseys`. Its shape
+ * The data file for `/products/fashion-accessories/soccer-jerseys`. Its shape
  * is documented in `src/data/product-collections.js`; this file only supplies
  * the words and the
  * reference list. Every sentence here is written for THIS category — the brief
@@ -34,7 +34,7 @@ export const soccerJerseys = {
   slug: 'soccer-jerseys',
   /** Parent category (大类) — a slug in `industries.js`. Drives the URL segment
    *  and the breadcrumb crumb above the collection. */
-  industrySlug: 'apparel-footwear-bags',
+  industrySlug: 'fashion-accessories',
   categoryName: 'Soccer Jerseys',
   seoTitle: 'Soccer Jerseys: Custom Sourcing from China | SOURDEN',
   metaDescription:
@@ -64,7 +64,7 @@ export const soccerJerseys = {
   },
 
   relatedLinks: [
-    { label: 'Apparel, Footwear & Bags', href: industryHref('apparel-footwear-bags') },
+    { label: 'Fashion & Accessories', href: industryHref('fashion-accessories') },
     { label: 'Product Sourcing', href: serviceHref('product-sourcing') },
     { label: 'Quality Control', href: serviceHref('quality-control') },
     { label: 'Shipping from China', href: serviceHref('shipping-from-china') },

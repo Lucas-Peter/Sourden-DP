@@ -9,7 +9,9 @@
  * catalogue — it is a set of entry points, not a product catalogue.
  *
  * NINE CATEGORIES (spec §12 originally specified six; three were added at the
- * business's request — Sports & Outdoors, Pet Supplies, Apparel/Footwear/Bags).
+ * business's request — Sports & Outdoors, Pet Supplies, and the ninth, which
+ * the business first published as Apparel/Footwear/Bags and renamed
+ * "Fashion & Accessories" on 2026-10-27).
  * Adding an entry here is all that is needed: the homepage grid, the footer
  * column, the `/industries/<slug>` reservation page and the `noindex` list are
  * all derived from this file.
@@ -103,11 +105,11 @@ export const industries = [
   },
   {
     number: '09',
-    title: 'Apparel, Footwear & Bags',
-    slug: 'apparel-footwear-bags',
-    href: '/industries/apparel-footwear-bags',
-    imageKey: 'industryApparelFootwearBags',
-    summaryNoun: 'apparel, footwear and bags',
+    title: 'Fashion & Accessories',
+    slug: 'fashion-accessories',
+    href: '/industries/fashion-accessories',
+    imageKey: 'industryFashionAccessories',
+    summaryNoun: 'fashion and accessories',
     grid: { spanLg: 4, spanMd: 8, feature: false },
   },
 ];

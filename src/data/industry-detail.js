@@ -89,7 +89,7 @@ import { electronicsAccessories } from './industry-electronics-accessories.js';
 import { industrialProducts } from './industry-industrial-products.js';
 import { sportsOutdoors } from './industry-sports-outdoors.js';
 import { petSupplies } from './industry-pet-supplies.js';
-import { apparelFootwearBags } from './industry-apparel-footwear-bags.js';
+import { fashionAccessories } from './industry-fashion-accessories.js';
 
 /* ===========================================================================
    RE-EXPORTED so a page shell has one import.
@@ -124,7 +124,7 @@ export const industryDetailPages = {
   'industrial-products': industrialProducts,
   'sports-outdoors': sportsOutdoors,
   'pet-supplies': petSupplies,
-  'apparel-footwear-bags': apparelFootwearBags,
+  'fashion-accessories': fashionAccessories,
 };
 
 /** @param {string} slug */

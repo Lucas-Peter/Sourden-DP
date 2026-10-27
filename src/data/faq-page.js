@@ -25,11 +25,12 @@
  *   1. Q01's list of categories is the site's nine-category list written as
  *      prose ("consumer products, beauty and personal care items, home and
  *      living products, …"), and the brief ends it "clothing, shoes and bags".
- *      The site publishes that category as "Apparel, Footwear & Bags"
- *      (`industries.js`; confirmed as the site-wide name on 2026-09-23), so the
- *      prose says "apparel, footwear and bags". The brief's OTHER eight are
- *      left exactly as written — they are prose forms, not labels, and only the
- *      ninth has a decided divergence from the brief.
+ *      The site now publishes that category as "Fashion & Accessories"
+ *      (`industries.js`; the business renamed it on 2026-10-27, having first
+ *      published it as "Apparel, Footwear & Bags" on 2026-09-23), so the prose
+ *      says "fashion and accessories" and then names the goods it covers. The
+ *      brief's OTHER eight are left exactly as written — they are prose forms,
+ *      not labels, and only the ninth has a decided divergence from the brief.
  *
  *   2. Q15's link label is "Purchasing & Order Management →". The site
  *      publishes that service as "Purchasing Management" (`services.js`), so
@@ -217,9 +218,10 @@ const faqSections = [
         question: 'What can SOURDEN help me source from China?',
         answer: [
           /* 〔RENAMED〕 the brief's ninth category reads "clothing, shoes and
-             bags"; the site publishes it as "Apparel, Footwear & Bags". See the
+             bags"; the site publishes it as "Fashion & Accessories", then names
+             the goods so the answer still carries the search terms. See the
              file header. */
-          'SOURDEN can help source a wide range of products, including consumer products, beauty and personal care items, home and living products, packaging, electronics and accessories, industrial products, sports and outdoor products, pet supplies, and apparel, footwear and bags.',
+          'SOURDEN can help source a wide range of products, including consumer products, beauty and personal care items, home and living products, packaging, electronics and accessories, industrial products, sports and outdoor products, pet supplies, and fashion and accessories — clothing, footwear, bags and jewellery.',
           'If you have a specific product in mind that is not listed on our website, you can still send us a sourcing request. We assess each project based on the product, requirements, quantity and destination.',
         ],
         link: { label: 'Explore What We Source', href: '/industries' },

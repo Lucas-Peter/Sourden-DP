@@ -14,7 +14,7 @@ const industryHref = (slug) => industries.find((i) => i.slug === slug)?.href ?? 
 export const sportShoes = {
 
   "slug": "sport-shoes",
-  "industrySlug": "apparel-footwear-bags",
+  "industrySlug": "fashion-accessories",
   "categoryName": "Sport Shoes",
   "seoTitle": "Sport Shoes: Custom Sourcing from China | SOURDEN",
   "metaDescription": "Source sport shoes from China — running, court and lifestyle styles, with upper materials, colourways, size runs and packaging to your specification. Browse reference styles and request more.",
@@ -41,7 +41,7 @@ export const sportShoes = {
       "code": "SS-001",
       "name": "Balenciaga Air-Cushion",
       "imageKey": "sportShoes01",
-      "shortDescription": "Balenciaga Air-Cushion Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Air-Cushion Shoes",
       "sortOrder": 1
     },
@@ -50,7 +50,7 @@ export const sportShoes = {
       "code": "SS-002",
       "name": "Balenciaga Air-Cushion Black & Red",
       "imageKey": "sportShoes02",
-      "shortDescription": "Balenciaga Air-Cushion Black & Red Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Air-Cushion Black & Red Shoes",
       "sortOrder": 2
     },
@@ -59,7 +59,7 @@ export const sportShoes = {
       "code": "SS-003",
       "name": "Balenciaga",
       "imageKey": "sportShoes03",
-      "shortDescription": "Balenciaga Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes",
       "sortOrder": 3
     },
@@ -68,7 +68,7 @@ export const sportShoes = {
       "code": "SS-004",
       "name": "Balenciaga 2",
       "imageKey": "sportShoes04",
-      "shortDescription": "Balenciaga Shoes 2",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 2",
       "sortOrder": 4
     },
@@ -77,7 +77,7 @@ export const sportShoes = {
       "code": "SS-005",
       "name": "Balenciaga 3",
       "imageKey": "sportShoes05",
-      "shortDescription": "Balenciaga Shoes 3",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 3",
       "sortOrder": 5
     },
@@ -86,7 +86,7 @@ export const sportShoes = {
       "code": "SS-006",
       "name": "Balenciaga 4",
       "imageKey": "sportShoes06",
-      "shortDescription": "Balenciaga Shoes 4",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 4",
       "sortOrder": 6
     },
@@ -95,7 +95,7 @@ export const sportShoes = {
       "code": "SS-007",
       "name": "Balenciaga 5",
       "imageKey": "sportShoes07",
-      "shortDescription": "Balenciaga Shoes 5",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 5",
       "sortOrder": 7
     },
@@ -104,7 +104,7 @@ export const sportShoes = {
       "code": "SS-008",
       "name": "Balenciaga 6",
       "imageKey": "sportShoes08",
-      "shortDescription": "Balenciaga Shoes 6",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 6",
       "sortOrder": 8
     },
@@ -113,7 +113,7 @@ export const sportShoes = {
       "code": "SS-009",
       "name": "Balenciaga 7",
       "imageKey": "sportShoes09",
-      "shortDescription": "Balenciaga Shoes 7",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 7",
       "sortOrder": 9
     },
@@ -122,7 +122,7 @@ export const sportShoes = {
       "code": "SS-010",
       "name": "Balenciaga 8",
       "imageKey": "sportShoes10",
-      "shortDescription": "Balenciaga Shoes 8",
+      "shortDescription": "More colourways on request",
       "altText": "Balenciaga Shoes 8",
       "sortOrder": 10
     },
@@ -131,7 +131,7 @@ export const sportShoes = {
       "code": "SS-011",
       "name": "HOKA ANACAPA",
       "imageKey": "sportShoes11",
-      "shortDescription": "HOKA ANACAPA Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA ANACAPA Shoes",
       "sortOrder": 11
     },
@@ -140,7 +140,7 @@ export const sportShoes = {
       "code": "SS-012",
       "name": "HOKA Bondi 9",
       "imageKey": "sportShoes12",
-      "shortDescription": "HOKA Bondi 9 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Bondi 9 Shoes",
       "sortOrder": 12
     },
@@ -149,7 +149,7 @@ export const sportShoes = {
       "code": "SS-013",
       "name": "HOKA Challenger 7",
       "imageKey": "sportShoes13",
-      "shortDescription": "HOKA Challenger 7 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Challenger 7 Shoes",
       "sortOrder": 13
     },
@@ -158,7 +158,7 @@ export const sportShoes = {
       "code": "SS-014",
       "name": "HOKA Clifton 10",
       "imageKey": "sportShoes14",
-      "shortDescription": "HOKA Clifton 10 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Clifton 10 Shoes",
       "sortOrder": 14
     },
@@ -167,7 +167,7 @@ export const sportShoes = {
       "code": "SS-015",
       "name": "HOKA Clifton 11",
       "imageKey": "sportShoes15",
-      "shortDescription": "HOKA Clifton 11 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Clifton 11 Shoes",
       "sortOrder": 15
     },
@@ -176,7 +176,7 @@ export const sportShoes = {
       "code": "SS-016",
       "name": "HOKA Clifton PRO",
       "imageKey": "sportShoes16",
-      "shortDescription": "HOKA Clifton PRO Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Clifton PRO Shoes",
       "sortOrder": 16
     },
@@ -185,7 +185,7 @@ export const sportShoes = {
       "code": "SS-017",
       "name": "HOKA KAHA 2 FROST MOC GTX",
       "imageKey": "sportShoes17",
-      "shortDescription": "HOKA KAHA 2 FROST MOC GTX Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA KAHA 2 FROST MOC GTX Shoes",
       "sortOrder": 17
     },
@@ -194,7 +194,7 @@ export const sportShoes = {
       "code": "SS-018",
       "name": "HOKA KAHA 2 Low GTX",
       "imageKey": "sportShoes18",
-      "shortDescription": "HOKA KAHA 2 Low GTX Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA KAHA 2 Low GTX Shoes",
       "sortOrder": 18
     },
@@ -203,7 +203,7 @@ export const sportShoes = {
       "code": "SS-019",
       "name": "HOKA KAHA 3",
       "imageKey": "sportShoes19",
-      "shortDescription": "HOKA KAHA 3 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA KAHA 3 Shoes",
       "sortOrder": 19
     },
@@ -212,7 +212,7 @@ export const sportShoes = {
       "code": "SS-020",
       "name": "HOKA MACH 6",
       "imageKey": "sportShoes20",
-      "shortDescription": "HOKA MACH 6 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA MACH 6 Shoes",
       "sortOrder": 20
     },
@@ -221,7 +221,7 @@ export const sportShoes = {
       "code": "SS-021",
       "name": "HOKA Mafate X",
       "imageKey": "sportShoes21",
-      "shortDescription": "HOKA Mafate X Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Mafate X Shoes",
       "sortOrder": 21
     },
@@ -230,7 +230,7 @@ export const sportShoes = {
       "code": "SS-022",
       "name": "HOKA Speedgoat 5",
       "imageKey": "sportShoes22",
-      "shortDescription": "HOKA Speedgoat 5 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Speedgoat 5 Shoes",
       "sortOrder": 22
     },
@@ -239,7 +239,7 @@ export const sportShoes = {
       "code": "SS-023",
       "name": "HOKA SPEEDGOAT 7",
       "imageKey": "sportShoes23",
-      "shortDescription": "HOKA SPEEDGOAT 7 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA SPEEDGOAT 7 Shoes",
       "sortOrder": 23
     },
@@ -248,7 +248,7 @@ export const sportShoes = {
       "code": "SS-024",
       "name": "HOKA Stinson 7",
       "imageKey": "sportShoes24",
-      "shortDescription": "HOKA Stinson 7 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "HOKA Stinson 7 Shoes",
       "sortOrder": 24
     },
@@ -257,7 +257,7 @@ export const sportShoes = {
       "code": "SS-025",
       "name": "Jordan 1 High",
       "imageKey": "sportShoes25",
-      "shortDescription": "Jordan 1 High Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 1 High Shoes",
       "sortOrder": 25
     },
@@ -266,7 +266,7 @@ export const sportShoes = {
       "code": "SS-026",
       "name": "Jordan 1 Low",
       "imageKey": "sportShoes26",
-      "shortDescription": "Jordan 1 Low Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 1 Low Shoes",
       "sortOrder": 26
     },
@@ -275,7 +275,7 @@ export const sportShoes = {
       "code": "SS-027",
       "name": "Jordan 3",
       "imageKey": "sportShoes27",
-      "shortDescription": "Jordan 3 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 3 Shoes",
       "sortOrder": 27
     },
@@ -284,7 +284,7 @@ export const sportShoes = {
       "code": "SS-028",
       "name": "Jordan 3.5 Spizike Low",
       "imageKey": "sportShoes28",
-      "shortDescription": "Jordan 3.5 Spizike Low Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 3.5 Spizike Low Shoes",
       "sortOrder": 28
     },
@@ -293,7 +293,7 @@ export const sportShoes = {
       "code": "SS-029",
       "name": "AJ4 & Bruce Lee Collaboration",
       "imageKey": "sportShoes29",
-      "shortDescription": "AJ4 & Bruce Lee Collaboration Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "AJ4 & Bruce Lee Collaboration Shoes",
       "sortOrder": 29
     },
@@ -302,7 +302,7 @@ export const sportShoes = {
       "code": "SS-030",
       "name": "Jordan 4",
       "imageKey": "sportShoes30",
-      "shortDescription": "Jordan 4 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 4 Shoes",
       "sortOrder": 30
     },
@@ -311,7 +311,7 @@ export const sportShoes = {
       "code": "SS-031",
       "name": "Jordan 5 Raging Bull",
       "imageKey": "sportShoes31",
-      "shortDescription": "Jordan 5 Raging Bull Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 5 Raging Bull Shoes",
       "sortOrder": 31
     },
@@ -320,7 +320,7 @@ export const sportShoes = {
       "code": "SS-032",
       "name": "Jordan 6",
       "imageKey": "sportShoes32",
-      "shortDescription": "Jordan 6 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 6 Shoes",
       "sortOrder": 32
     },
@@ -329,7 +329,7 @@ export const sportShoes = {
       "code": "SS-033",
       "name": "Jordan 7",
       "imageKey": "sportShoes33",
-      "shortDescription": "Jordan 7 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 7 Shoes",
       "sortOrder": 33
     },
@@ -338,7 +338,7 @@ export const sportShoes = {
       "code": "SS-034",
       "name": "Jordan 8",
       "imageKey": "sportShoes34",
-      "shortDescription": "Jordan 8 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 8 Shoes",
       "sortOrder": 34
     },
@@ -347,7 +347,7 @@ export const sportShoes = {
       "code": "SS-035",
       "name": "Jordan 9",
       "imageKey": "sportShoes35",
-      "shortDescription": "Jordan 9 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 9 Shoes",
       "sortOrder": 35
     },
@@ -356,7 +356,7 @@ export const sportShoes = {
       "code": "SS-036",
       "name": "Jordan 10",
       "imageKey": "sportShoes36",
-      "shortDescription": "Jordan 10 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 10 Shoes",
       "sortOrder": 36
     },
@@ -365,7 +365,7 @@ export const sportShoes = {
       "code": "SS-037",
       "name": "Jordan 11",
       "imageKey": "sportShoes37",
-      "shortDescription": "Jordan 11 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 11 Shoes",
       "sortOrder": 37
     },
@@ -374,7 +374,7 @@ export const sportShoes = {
       "code": "SS-038",
       "name": "Jordan 11 Baby",
       "imageKey": "sportShoes38",
-      "shortDescription": "Jordan 11 Baby Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 11 Baby Shoes",
       "sortOrder": 38
     },
@@ -383,7 +383,7 @@ export const sportShoes = {
       "code": "SS-039",
       "name": "Jordan 12",
       "imageKey": "sportShoes39",
-      "shortDescription": "Jordan 12 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 12 Shoes",
       "sortOrder": 39
     },
@@ -392,7 +392,7 @@ export const sportShoes = {
       "code": "SS-040",
       "name": "Jordan 13",
       "imageKey": "sportShoes40",
-      "shortDescription": "Jordan 13 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 13 Shoes",
       "sortOrder": 40
     },
@@ -401,7 +401,7 @@ export const sportShoes = {
       "code": "SS-041",
       "name": "Jordan 13 Baby",
       "imageKey": "sportShoes41",
-      "shortDescription": "Jordan 13 Baby Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 13 Baby Shoes",
       "sortOrder": 41
     },
@@ -410,7 +410,7 @@ export const sportShoes = {
       "code": "SS-042",
       "name": "Jordan 13 Children",
       "imageKey": "sportShoes42",
-      "shortDescription": "Jordan 13 Children Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 13 Children Shoes",
       "sortOrder": 42
     },
@@ -419,7 +419,7 @@ export const sportShoes = {
       "code": "SS-043",
       "name": "Jordan 14",
       "imageKey": "sportShoes43",
-      "shortDescription": "Jordan 14 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Jordan 14 Shoes",
       "sortOrder": 43
     },
@@ -428,7 +428,7 @@ export const sportShoes = {
       "code": "SS-044",
       "name": "TS & Jordan Jumpman Jack",
       "imageKey": "sportShoes44",
-      "shortDescription": "TS & Jordan Jumpman Jack Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "TS & Jordan Jumpman Jack Shoes",
       "sortOrder": 44
     },
@@ -437,7 +437,7 @@ export const sportShoes = {
       "code": "SS-045",
       "name": "LV",
       "imageKey": "sportShoes45",
-      "shortDescription": "LV Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "LV Shoes",
       "sortOrder": 45
     },
@@ -446,7 +446,7 @@ export const sportShoes = {
       "code": "SS-046",
       "name": "Nike Air Max 95",
       "imageKey": "sportShoes46",
-      "shortDescription": "Nike Air Max 95 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Nike Air Max 95 Shoes",
       "sortOrder": 46
     },
@@ -455,7 +455,7 @@ export const sportShoes = {
       "code": "SS-047",
       "name": "Nike Air Max TN",
       "imageKey": "sportShoes47",
-      "shortDescription": "Nike Air Max TN Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Nike Air Max TN Shoes",
       "sortOrder": 47
     },
@@ -464,7 +464,7 @@ export const sportShoes = {
       "code": "SS-048",
       "name": "Nike Dunk",
       "imageKey": "sportShoes48",
-      "shortDescription": "Nike Dunk Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Nike Dunk Shoes",
       "sortOrder": 48
     },
@@ -473,7 +473,7 @@ export const sportShoes = {
       "code": "SS-049",
       "name": "Nike Hardaway",
       "imageKey": "sportShoes49",
-      "shortDescription": "Nike Hardaway Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Nike Hardaway Shoes",
       "sortOrder": 49
     },
@@ -482,7 +482,7 @@ export const sportShoes = {
       "code": "SS-050",
       "name": "On & KITH K-Tech 1",
       "imageKey": "sportShoes50",
-      "shortDescription": "On & KITH K-Tech 1 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On & KITH K-Tech 1 Shoes",
       "sortOrder": 50
     },
@@ -491,7 +491,7 @@ export const sportShoes = {
       "code": "SS-051",
       "name": "On Cloud 4 Coast",
       "imageKey": "sportShoes51",
-      "shortDescription": "On Cloud 4 Coast Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloud 4 Coast Shoes",
       "sortOrder": 51
     },
@@ -500,7 +500,7 @@ export const sportShoes = {
       "code": "SS-052",
       "name": "On Cloud 6 Geo WP",
       "imageKey": "sportShoes52",
-      "shortDescription": "On Cloud 6 Geo WP Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloud 6 Geo WP Shoes",
       "sortOrder": 52
     },
@@ -509,7 +509,7 @@ export const sportShoes = {
       "code": "SS-053",
       "name": "On Cloud X Tempo",
       "imageKey": "sportShoes53",
-      "shortDescription": "On Cloud X Tempo Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloud X Tempo Shoes",
       "sortOrder": 53
     },
@@ -518,7 +518,7 @@ export const sportShoes = {
       "code": "SS-054",
       "name": "On Cloud X5",
       "imageKey": "sportShoes54",
-      "shortDescription": "On Cloud X5 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloud X5 Shoes",
       "sortOrder": 54
     },
@@ -527,7 +527,7 @@ export const sportShoes = {
       "code": "SS-055",
       "name": "On Cloudboom Volt",
       "imageKey": "sportShoes55",
-      "shortDescription": "On Cloudboom Volt Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudboom Volt Shoes",
       "sortOrder": 55
     },
@@ -536,7 +536,7 @@ export const sportShoes = {
       "code": "SS-056",
       "name": "On Cloudhorizon 2 Mid WP",
       "imageKey": "sportShoes56",
-      "shortDescription": "On Cloudhorizon 2 Mid WP Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudhorizon 2 Mid WP Shoes",
       "sortOrder": 56
     },
@@ -545,7 +545,7 @@ export const sportShoes = {
       "code": "SS-057",
       "name": "On Cloudmonster 1 V2",
       "imageKey": "sportShoes57",
-      "shortDescription": "On Cloudmonster 1 V2 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudmonster 1 V2 Shoes",
       "sortOrder": 57
     },
@@ -554,7 +554,7 @@ export const sportShoes = {
       "code": "SS-058",
       "name": "On Cloudmonster 3 Hyper",
       "imageKey": "sportShoes58",
-      "shortDescription": "On Cloudmonster 3 Hyper Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudmonster 3 Hyper Shoes",
       "sortOrder": 58
     },
@@ -563,7 +563,7 @@ export const sportShoes = {
       "code": "SS-059",
       "name": "On Cloudpulse 2",
       "imageKey": "sportShoes59",
-      "shortDescription": "On Cloudpulse 2 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudpulse 2 Shoes",
       "sortOrder": 59
     },
@@ -572,7 +572,7 @@ export const sportShoes = {
       "code": "SS-060",
       "name": "On Cloudsurfer",
       "imageKey": "sportShoes60",
-      "shortDescription": "On Cloudsurfer Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudsurfer Shoes",
       "sortOrder": 60
     },
@@ -581,7 +581,7 @@ export const sportShoes = {
       "code": "SS-061",
       "name": "On Cloudswift Amp",
       "imageKey": "sportShoes61",
-      "shortDescription": "On Cloudswift Amp Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudswift Amp Shoes",
       "sortOrder": 61
     },
@@ -590,7 +590,7 @@ export const sportShoes = {
       "code": "SS-062",
       "name": "On Cloudtilt Remix",
       "imageKey": "sportShoes62",
-      "shortDescription": "On Cloudtilt Remix Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Cloudtilt Remix Shoes",
       "sortOrder": 62
     },
@@ -599,7 +599,7 @@ export const sportShoes = {
       "code": "SS-063",
       "name": "On Running Tunning Cloudsurfer",
       "imageKey": "sportShoes63",
-      "shortDescription": "On Running Tunning Cloudsurfer Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On Running Tunning Cloudsurfer Shoes",
       "sortOrder": 63
     },
@@ -608,7 +608,7 @@ export const sportShoes = {
       "code": "SS-064",
       "name": "On The Roger Clubhouse 3",
       "imageKey": "sportShoes64",
-      "shortDescription": "On The Roger Clubhouse 3 Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On The Roger Clubhouse 3 Shoes",
       "sortOrder": 64
     },
@@ -617,7 +617,7 @@ export const sportShoes = {
       "code": "SS-065",
       "name": "On The Roger Pro",
       "imageKey": "sportShoes65",
-      "shortDescription": "On The Roger Pro Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "On The Roger Pro Shoes",
       "sortOrder": 65
     },
@@ -626,7 +626,7 @@ export const sportShoes = {
       "code": "SS-066",
       "name": "Versace",
       "imageKey": "sportShoes66",
-      "shortDescription": "Versace Shoes",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes",
       "sortOrder": 66
     },
@@ -635,7 +635,7 @@ export const sportShoes = {
       "code": "SS-067",
       "name": "Versace 1",
       "imageKey": "sportShoes67",
-      "shortDescription": "Versace Shoes 1",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes 1",
       "sortOrder": 67
     },
@@ -644,7 +644,7 @@ export const sportShoes = {
       "code": "SS-068",
       "name": "Versace 2",
       "imageKey": "sportShoes68",
-      "shortDescription": "Versace Shoes 2",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes 2",
       "sortOrder": 68
     },
@@ -653,7 +653,7 @@ export const sportShoes = {
       "code": "SS-069",
       "name": "Versace 3",
       "imageKey": "sportShoes69",
-      "shortDescription": "Versace Shoes 3",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes 3",
       "sortOrder": 69
     },
@@ -662,7 +662,7 @@ export const sportShoes = {
       "code": "SS-070",
       "name": "Versace 4",
       "imageKey": "sportShoes70",
-      "shortDescription": "Versace Shoes 4",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes 4",
       "sortOrder": 70
     },
@@ -671,7 +671,7 @@ export const sportShoes = {
       "code": "SS-071",
       "name": "Versace 5",
       "imageKey": "sportShoes71",
-      "shortDescription": "Versace Shoes 5",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes 5",
       "sortOrder": 71
     },
@@ -680,7 +680,7 @@ export const sportShoes = {
       "code": "SS-072",
       "name": "Versace 6",
       "imageKey": "sportShoes72",
-      "shortDescription": "Versace Shoes 6",
+      "shortDescription": "More colourways on request",
       "altText": "Versace Shoes 6",
       "sortOrder": 72
     }
@@ -689,7 +689,7 @@ export const sportShoes = {
   cta: { label: "Request More Styles", href: primaryCta.href },
 
   relatedLinks: [
-    { label: "Apparel, Footwear & Bags", href: industryHref("apparel-footwear-bags") },
+    { label: "Fashion & Accessories", href: industryHref("fashion-accessories") },
     { label: 'Product Sourcing', href: serviceHref('product-sourcing') },
     { label: 'Quality Control', href: serviceHref('quality-control') },
     { label: 'Shipping from China', href: serviceHref('shipping-from-china') },

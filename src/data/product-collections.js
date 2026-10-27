@@ -172,7 +172,7 @@ function requireCollection(slug) {
 /**
  * The collection's clean (page-1) address: `/products/<industry>/<slug>`.
  * The industry segment is the parent 大类 — the brief requires the URL to carry
- * it, so a collection URL reads `/products/apparel-footwear-bags/soccer-jerseys`.
+ * it, so a collection URL reads `/products/fashion-accessories/soccer-jerseys`.
  * @param {string} slug
  */
 export function collectionPath(slug) {

@@ -90,7 +90,7 @@ export const images = {
     alt: 'Two workers laying folded woven fabric and a canvas pouch beside blank requirement sheets on a long bench, with stacked cartons and a rolling trolley behind.',
     role: /** @type {ImageRole} */ ('hero'),
     artDirection:
-      'A workbench or table with product samples, reference drawings, measuring tools or packaging being handled and compared. It must read as evidence of the sourcing process — not an office scene, not a handshake, not smiling people in suits, and none of the China clichés (Great Wall / flag / panda / container port / globe). Category for this slot: Apparel, Footwear & Bags — woven fabric, a canvas pouch and metal zip hardware. Never a woodworking or craft scene: no timber, no wooden blocks, no wooden bench.',
+      'A workbench or table with product samples, reference drawings, measuring tools or packaging being handled and compared. It must read as evidence of the sourcing process — not an office scene, not a handshake, not smiling people in suits, and none of the China clichés (Great Wall / flag / panda / container port / globe). Category for this slot: Fashion & Accessories — woven fabric, a canvas pouch and metal zip hardware. Never a woodworking or craft scene: no timber, no wooden blocks, no wooden bench.',
     cropNote:
       'Displayed 4:3 in a single column up to ~46% of the container on desktop, and height-capped at 240px on mobile (spec §48) — so the mobile frame crops the bottom and top of the source. Keep the subject inside the middle ~70%, horizontally and vertically.',
   },
@@ -489,16 +489,16 @@ export const images = {
     artDirection:
       'Category for this slot: Pet Supplies — shipped 2026-10-05 as a real photograph (Unsplash: Tran Mau Tri Tam), NOT generated. Frame: a tabby cat lying in front of a husky dog with its tongue out, on a white chair against grey cushions, indoor, daylight. It is the brief\'s documentary register applied to the category rather than to a bench still life, and it asserts nothing about SOURDEN, a supplier or an order. If the photography is ever replaced, keep it a real photograph of the category, keep the animals in the middle band (the homepage card crops to roughly 60% of the width) and keep the file name so the swap stays an overwrite.',
   },
-  industryApparelFootwearBags: {
-    file: 'industry-apparel-footwear-bags.webp',
+  industryFashionAccessories: {
+    file: 'industry-fashion-accessories.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
-    label: 'APPAREL, FOOTWEAR & BAGS',
-    alt: 'A neatly folded heathered knit sweater on a light bench, the workshop soft behind.',
+    label: 'FASHION & ACCESSORIES',
+    alt: 'A shopper in a burgundy coat and sunglasses carrying several paper shopping bags against a pale wall.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Apparel, Footwear & Bags. One folded garment centred on a bench, shallow depth of field, subject in the middle band so it survives the wide grid crop. Flat-lay only, never on-model, no timber, no wood.',
+      'Category for this slot: Fashion & Accessories. One folded garment centred on a bench, shallow depth of field, subject in the middle band so it survives the wide grid crop. Flat-lay only, never on-model, no timber, no wood. NOTE: the file shipped on 2026-10-05 is the studio portrait described by `alt` — a shopper carrying bags — not the flat-lay this note was written for. The alt text now describes what is actually in the frame; if the photo is ever replaced, either match this note or update the alt with it.',
   },
 
   /* --------------------------------------- industry source range images -- */
@@ -605,16 +605,16 @@ export const images = {
     artDirection:
       'Category for this slot: Pet Supplies. Documentary photo — a stainless pet bowl, a rubber ball, a flying disc, a nylon leash and a rope toy resting flat in one calm group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. No live animals, no readable text, no wood.',
   },
-  sourceApparelFootwearBags: {
-    file: 'source-apparel-footwear-bags.webp',
+  sourceFashionAccessories: {
+    file: 'source-fashion-accessories.webp',
     width: 1200,
     height: 900,
     ratio: '4:3',
-    label: 'APPAREL, FOOTWEAR & BAGS — SOURCED RANGE',
+    label: 'FASHION & ACCESSORIES — SOURCED RANGE',
     alt: 'A leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged together on a pale surface.',
     role: /** @type {ImageRole} */ ('industry'),
     artDirection:
-      'Category for this slot: Apparel, Footwear & Bags. Documentary photo — a leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged as one calm flat-lay group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Flat-lay only, never on-model, no readable text, no wood.',
+      'Category for this slot: Fashion & Accessories. Documentary photo — a leather handbag, a folded garment, a baseball cap, sunglasses and a sneaker arranged as one calm flat-lay group on a pale seamless surface, 50mm, shallow depth of field, warm neutral grade. Flat-lay only, never on-model, no readable text, no wood.',
   },
 
   /* --------------------------------------------------------- case studies -- */
@@ -729,7 +729,7 @@ export const images = {
     alt: 'A folded heathered knit sweater lying alone on a laminate bench, a sewing workshop floor blurred behind.',
     role: /** @type {ImageRole} */ ('insight'),
     artDirection:
-      'Documentary photo — ONE subject (a folded knit sweater) on a laminate bench, shallow depth of field. Category for this slot: Apparel, Footwear & Bags. Never a woodworking or craft scene: no timber, no wooden bench.',
+      'Documentary photo — ONE subject (a folded knit sweater) on a laminate bench, shallow depth of field. Category for this slot: Fashion & Accessories. Never a woodworking or craft scene: no timber, no wooden bench.',
   },
 
   /* Christmas article (insight-christmas-products-to-sell.js) — four photographs

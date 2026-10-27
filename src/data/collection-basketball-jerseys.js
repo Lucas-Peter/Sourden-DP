@@ -14,7 +14,7 @@ const industryHref = (slug) => industries.find((i) => i.slug === slug)?.href ?? 
 export const basketballJerseys = {
 
   "slug": "basketball-jerseys",
-  "industrySlug": "apparel-footwear-bags",
+  "industrySlug": "fashion-accessories",
   "categoryName": "Basketball Jerseys",
   "seoTitle": "Basketball Jerseys: Custom Sourcing from China | SOURDEN",
   "metaDescription": "Source custom basketball jerseys from China — sublimation, name and number printing, team marks, fit and size runs to your specifications. Browse reference styles and request more.",
@@ -580,7 +580,7 @@ export const basketballJerseys = {
   cta: { label: "Request More Styles", href: primaryCta.href },
 
   relatedLinks: [
-    { label: "Apparel, Footwear & Bags", href: industryHref("apparel-footwear-bags") },
+    { label: "Fashion & Accessories", href: industryHref("fashion-accessories") },
     { label: 'Product Sourcing', href: serviceHref('product-sourcing') },
     { label: 'Quality Control', href: serviceHref('quality-control') },
     { label: 'Shipping from China', href: serviceHref('shipping-from-china') },
