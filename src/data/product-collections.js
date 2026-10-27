@@ -67,6 +67,7 @@
  */
 
 import { soccerJerseys } from './collection-soccer-jerseys.js';
+import { glasses } from './collection-glasses.js';
 import { sportShoes } from './collection-sport-shoes.js';
 import { basketballJerseys } from './collection-basketball-jerseys.js';
 import { industries } from './industries.js';
@@ -81,6 +82,7 @@ import { industries } from './industries.js';
 /** @type {Record<string, typeof soccerJerseys>} */
 export const collectionPages = {
   'soccer-jerseys': soccerJerseys,
+  'glasses': glasses,
   'sport-shoes': sportShoes,
   'basketball-jerseys': basketballJerseys,
 };
