@@ -72,6 +72,7 @@
  */
 
 import { soccerJerseys } from './collection-soccer-jerseys.js';
+import { hairExtensionsForWomen } from './collection-hair-extensions-for-women.js';
 import { hairSystemsForMen } from './collection-hair-systems-for-men.js';
 import { basketballJerseys } from './collection-basketball-jerseys.js';
 import { sportShoes } from './collection-sport-shoes.js';
@@ -100,6 +101,7 @@ export const collectionPages = {
   'necklaces': necklaces,
   'rings': rings,
   'hair-systems-for-men': hairSystemsForMen,
+  'hair-extensions-for-women': hairExtensionsForWomen,
 };
 
 /** @param {string} slug */
