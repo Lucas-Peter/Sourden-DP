@@ -42,37 +42,53 @@
  * fields exist here — which is why this module KEEPS a few that nothing renders
  * today — and the ones that would be fabricated are empty:
  *
- *   · `publishedAt` / `updatedAt` — no article has a publication date, because
- *     none has been published. §6 and §14 both forbid inventing one.
- *     ⚠ FILLING ONE IN DOES NOT MAKE IT APPEAR. No component on this page
- *     renders these fields — `InsightCard.astro` writes no `<time>` and says so
- *     in its own header. Publishing the first dated article is a FIELD change
- *     and a MARKUP change, together. An earlier version of this comment claimed
- *     the card already rendered whatever date it was given, which would have
- *     led straight to filling the field in and seeing nothing — the same
- *     "silently prints nothing" failure as reading `item.category` where the
- *     record holds `categorySlug` (see `routes.js`).
+ *   · `publishedAt` / `updatedAt` — a real date or null. Two articles carry one
+ *     today (`christmas-products-to-sell`, `start-a-small-business-without-a-
+ *     store`); the other twelve are undated because they have no publication
+ *     date to state, and §6 / §14 forbid inventing one.
+ *     ⚠ A DATE STILL PRINTS NOTHING. `InsightCard.astro` writes no `<time>` and
+ *     says so in its own header, so what a date changes is the hub's ORDER (see
+ *     `insightArticlesNewestFirst`) — not a line on the card. Showing the date
+ *     as well is a MARKUP change in the card, and one worth making deliberately.
+ *     An earlier version of this comment claimed the card already rendered
+ *     whatever date it was given, which would have led straight to filling the
+ *     field in and seeing nothing — the same "silently prints nothing" failure
+ *     as reading `item.category` where the record holds `categorySlug` (see
+ *     `routes.js`).
  *   · `readingTime` — same: a reading time for a body that does not exist is a
  *     fabricated statistic (§6, §14).
- *   · `imageKey` — §12's `image` slot. All twelve are `null`: §6 makes the card
- *     image optional and §7 says plainly that "if appropriate high-quality
+ *   · `imageKey` — §12's `image` slot, and it is what the card shows. §6 makes
+ *     the image optional and §7 says plainly that "if appropriate high-quality
  *     images are not available, a clean editorial card without an image is
- *     preferable to a poor stock image". No documentary photography exists yet,
- *     so the directory is text-only on purpose. Giving an article a picture is a
- *     `media.js` slot plus this field — nothing else on the page changes.
+ *     preferable to a poor stock image", so a `null` here is a decision, not an
+ *     omission. Giving an article a picture is a `media.js` slot plus this field
+ *     — nothing else on the page changes.
  *   · `featured` — §12's slot for §14's "only the featured article needs to be
- *     treated as the first priority". Nothing renders it: the directory shows
- *     all twelve equally and in array order, so the first record IS the lead
- *     article. Read it as the record of which article the brief leads with
- *     rather than as a display switch — a featured surface would consume it.
+ *     treated as the first priority". Nothing renders it: the directory lists
+ *     every article equally, in publication order. Read it as the record of
+ *     which article the brief leads with rather than as a display switch — a
+ *     featured surface would consume it.
  *
- * ── ORDER IS THE DISPLAY ORDER ─────────────────────────────────────────────
- * The array is the brief's article order (01–12) and the grid renders it as
- * written. Nothing sorts it: a `publishedAt` sort would move every card the day
- * a date is filled in, which is not what a content library should do silently.
- * It is also what decides which articles land on which page of the directory's
- * pagination (§12: "make it easy to add future articles without redesigning the
- * Insights page").
+ * ── ORDER: THE ARRAY IS THE REGISTRY, THE PAGE IS NEWEST FIRST ─────────────
+ * This array is the brief's article order (01–12) with later articles appended,
+ * and it stays that way: it is what `routes.js` builds the route table and the
+ * sitemap from, and reshuffling it every time something is published would make
+ * that diff unreadable for no gain.
+ *
+ * The HUB does not render this array. It renders `insightArticlesNewestFirst`
+ * below — published date, newest first, which is what a reader expects of a
+ * library and what puts a new article on page 1 of the directory instead of
+ * behind twelve older ones. That is a change made on 2026-11-02; the previous
+ * rule was "the array is the display order and nothing sorts it", and its stated
+ * reason (a date sort moving every card the day a date is filled in) is exactly
+ * what is now wanted: filling in a date IS publishing the article.
+ *
+ * An article with `publishedAt: null` is not published yet. It sorts AFTER every
+ * dated article and keeps its registry order among its undated peers (the sort
+ * is stable), so the twelve unwritten-dated brief articles stay in 01–12 order
+ * behind whatever is real. Giving them dates is a data change, not a code
+ * change — and inventing a date to make the order look tidy is precisely what
+ * §6 and §14 forbid.
  * ---------------------------------------------------------------------------
  */
 
@@ -99,8 +115,9 @@ export const insightCategories = [
  * @property {string}      title
  * @property {string}      description     The listing sentence (§5) — the card's.
  * @property {string|null} imageKey        Key from `media.js`, or null.
- * @property {string|null} publishedAt     ISO date. null — nothing is published.
- * @property {string|null} updatedAt       ISO date. null — nothing is published.
+ * @property {string|null} publishedAt     ISO date. null = not published: the
+ *                                         hub sorts it after every dated article.
+ * @property {string|null} updatedAt       ISO date. null unless the body was revised.
  * @property {string|null} readingTime     null — a body that does not exist has no reading time.
  * @property {boolean}     featured        §14's first priority. Nothing renders it.
  * @property {string}      [keywords]      Comma-separated SEO keywords for <meta name="keywords">.
@@ -266,7 +283,55 @@ export const insightArticles = [
     keywords:
       'Christmas products to sell, Christmas products from China, Christmas wholesale products, Christmas sourcing',
   },
+  {
+    slug: 'start-a-small-business-without-a-store',
+    categorySlug: 'sourcing-guides',
+    title: 'Want to Start a Small Business? Start Selling Without a Store',
+    description:
+      'Thinking about starting a small business? Learn how to sell through Facebook, find products from China, test demand, and get sourcing support from SOURDEN.',
+    imageKey: 'smallBusinessBanner',
+    publishedAt: '2026-11-02',
+    updatedAt: null,
+    readingTime: null,
+    featured: false,
+    keywords:
+      'Start a Small Business, Sell Products on Facebook, China Product Sourcing, Start an Online Business, Small Business Ideas',
+  },
 ];
+
+/**
+ * The library in the order the hub displays it: newest publication first.
+ *
+ * A derived export rather than a reordered array, so the registry keeps one job
+ * (what exists) and the page keeps another (what order to read it in). The hub
+ * is the only consumer — `routes.js`, the sitemap and `insightPageFor()` all
+ * read `insightArticles` and are order-independent — so this cannot silently
+ * change a URL or a sitemap entry.
+ *
+ * Two rules, both deliberate:
+ *   · Dated first, newest first. `Date.parse` on the ISO date string, so the
+ *     comparison is on the calendar day and not on the string.
+ *   · Undated last, in registry order. `Array.prototype.sort` is stable
+ *     (ES2019), so returning 0 for two undated records preserves the brief's
+ *     order instead of inventing one. An undated article is an unpublished one;
+ *     it belongs behind everything real, not in front of it because it happens
+ *     to sit at index 0.
+ *
+ * @type {InsightArticle[]}
+ */
+export const insightArticlesNewestFirst = [...insightArticles].sort((a, b) => {
+  const left = a.publishedAt ? Date.parse(a.publishedAt) : NaN;
+  const right = b.publishedAt ? Date.parse(b.publishedAt) : NaN;
+  const leftUndated = Number.isNaN(left);
+  const rightUndated = Number.isNaN(right);
+
+  if (leftUndated || rightUndated) {
+    if (leftUndated && rightUndated) return 0;
+    return leftUndated ? 1 : -1;
+  }
+
+  return right - left;
+});
 
 /**
  * Look up an article record, or fail the build.

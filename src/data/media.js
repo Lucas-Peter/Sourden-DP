@@ -784,6 +784,42 @@ export const images = {
       'Sourced from Pexels (free license). Not AI-generated.',
   },
 
+  /* Small-business article (insight-start-a-small-business-without-a-store.js).
+     Two owner-supplied photographs, served at their native resolution — the
+     banner is 1422 px wide, not the 1920 px the Pexels banners use, because it
+     was supplied at 1433 × 800 and upscaling it would only add softness.
+     The article's third figure reuses `articleInspectionChecklist` rather than
+     shipping a fourth file: the frame the owner supplied was 620 × 465 and
+     carried a third-party inspection company's logo on both the wall sign and
+     the operator's badge, which cannot be removed without retouching the
+     picture. Reuse is honest; a 620 px photo with someone else's brand on it is
+     not. If a clean ≥1400 px inspection frame arrives, give it its own slot
+     here and point the article's figure at it. */
+  smallBusinessBanner: {
+    file: 'insight-small-business-banner.webp',
+    width: 1422,
+    height: 800,
+    ratio: '16:9',
+    label: 'STARTING SMALL',
+    alt: 'A woman in a green knit sweater holding a small amber dropper bottle beside an open laptop showing an online storefront, kraft shipping boxes stacked behind her.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection:
+      'Owner-supplied photograph. This slot: one person at a wooden table, an open laptop showing an online shop, one product held up for inspection, plain kraft cartons in the background. Warm daylight, shallow depth of field, no visible brand marks on the screen or the boxes.',
+  },
+  smallBusinessPacking: {
+    file: 'insight-small-business-packing.webp',
+    width: 1400,
+    height: 933,
+    ratio: '3:2',
+    label: 'PACKING ORDERS',
+    alt: 'A woman kneeling on a wooden floor writing an address on a kraft parcel, with an open laptop, packing paper and more parcels around her.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection:
+      'Owner-supplied photograph. This slot: one person packing and addressing kraft parcels at home, laptop open on the floor, packing paper and tape in frame. Bright daylight, timber floor, no logos and no readable addresses.',
+  },
+
   /* Insight hub — one lead photograph per article (articles 01–12). All sourced
      from Pexels (free license, no attribution required), cropped to 16:9 and
      emitted as WebP. They are not AI-generated. The figure renderer reads

@@ -18,11 +18,13 @@
  * a compact hero, the listing, and the closing bands. What that removed, named
  * so that nobody later reads the absence as an oversight:
  *
- *   · §3's FEATURED BAND. Its article still leads the page: it is card 01 of the
- *     directory and the first record in `insights-articles.js`, which is what
- *     §14's "only the featured article needs to be treated as the first
- *     priority" asks for. The band's longer §3 sentence went with the band —
- *     every card, that one included, prints §5's `description`.
+ *   · §3's FEATURED BAND. §14's "only the featured article needs to be treated
+ *     as the first priority" is carried by the directory's order instead: card
+ *     01 is the newest published article (see `insightArticlesNewestFirst` in
+ *     `insights-articles.js`), which is where a reader expects the latest thing
+ *     written and which subsumed the old "card 01 is the first record" rule on
+ *     2026-11-02. The band's longer §3 sentence went with the band — every card,
+ *     including that one, prints §5's `description`.
  *   · §4's CATEGORY FILTER. The categories are still the taxonomy: each card
  *     prints its category's uppercase tag. What is gone is the chip row and the
  *     `?category=` state.
@@ -71,19 +73,21 @@
  * ── NO FABRICATED METADATA ─────────────────────────────────────────────────
  * §6 and §14 forbid, by name: author names, reading statistics, view counts,
  * comment counts, publication dates, "Coming soon" and "we have no articles
- * yet". The article records carry those fields as `null` (see
- * `insights-articles.js`) and the card renders no markup for them, so there is
- * nothing to fake and nothing to remove later. The count line reports how many
- * articles the library holds — §14 states plainly that the initial twelve cards
- * ARE the planned content library, so the number is a count of what is on the
- * page, not a statistic about the business.
+ * yet". The article records carry those fields as `null` — except
+ * `publishedAt`, which two published articles now state for real (it decides
+ * the directory's order; see `insightArticlesNewestFirst`) — and the card
+ * renders no markup for any of them, so there is nothing to fake and nothing to
+ * remove later. The count line reports how many articles the library holds —
+ * §14 states plainly that the initial twelve cards ARE the planned content
+ * library, so the number is a count of what is on the page, not a statistic
+ * about the business.
  *
  * ── PAGINATION IS AN ENHANCEMENT, NOT A DEPENDENCY ─────────────────────────
- * The server renders all twelve cards. The script in `InsightsDirectory.astro`
- * then shows one page of them at a time and builds the controls, which do not
- * appear at all while the library fits on a single page — so with today's twelve
- * articles against a page size of twelve, the control band is hidden, and a
- * thirteenth article is what makes it appear.
+ * The server renders every card. The script in `InsightsDirectory.astro` then
+ * shows one page of them at a time and builds the controls, which do not appear
+ * at all while the library fits on a single page. It has not fitted since
+ * 2026-11-02: fourteen articles against a page size of twelve, so the band is
+ * live and pages 1 and 2 hold twelve and two.
  *
  * With scripting off nothing is hidden and the whole library is on the page:
  * the honest fallback, and the one a crawler sees. `pageSize` and the control
@@ -92,7 +96,7 @@
  * ---------------------------------------------------------------------------
  */
 
-import { insightArticles } from './insights-articles.js';
+import { insightArticlesNewestFirst } from './insights-articles.js';
 import { serviceForSlug } from './service-links.js';
 import { primaryCta } from './site.js';
 
@@ -163,17 +167,20 @@ export const directory = {
    * with two wordings.
    */
   readLabel: 'Read Article',
-  /** Order is display order — see `insights-articles.js`. */
-  articles: insightArticles,
+  /**
+   * Display order is publication order, newest first — see
+   * `insightArticlesNewestFirst` in `insights-articles.js` for the rule and for
+   * what happens to an article that has no date yet.
+   */
+  articles: insightArticlesNewestFirst,
 
   /**
    * Paging, and every word the paging controls can print.
    *
    * 〔added〕 The brief specifies neither a page size nor any control label, and
    * §12 only asks that the structure make future articles easy to add. Twelve per
-   * page is the number the project's directory prototype settled on, and it is
-   * also the size of the whole library today — which is why no control appears
-   * until a thirteenth article exists.
+   * page is the number the project's directory prototype settled on. The library
+   * passed twelve on 2026-11-02, so the control band is live from that date.
    *
    * The templates carry tokens because the same three sentences are produced
    * twice: once here at build time for the state the page ships in, and once in

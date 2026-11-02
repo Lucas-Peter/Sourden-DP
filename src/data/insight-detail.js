@@ -73,6 +73,10 @@ import { page as canYouSourceAProductFromAPhoto } from './insight-can-you-source
 import { page as productSamplesInChinaSourcing } from './insight-product-samples-in-china-sourcing.js';
 import { page as christmasProductsToSell } from './insight-christmas-products-to-sell.js';
 
+/* The small-business guide — the first article aimed at someone who has not
+   started selling yet, rather than at an existing buyer. */
+import { page as startASmallBusinessWithoutAStore } from './insight-start-a-small-business-without-a-store.js';
+
 /**
  * One line per written article, keyed by the slug used in `insights-articles.js`.
  *
@@ -95,6 +99,8 @@ export const insightDetailPages = {
   'can-you-source-a-product-from-a-photo': canYouSourceAProductFromAPhoto,
   'product-samples-in-china-sourcing': productSamplesInChinaSourcing,
   'christmas-products-to-sell': christmasProductsToSell,
+  'start-a-small-business-without-a-store': startASmallBusinessWithoutAStore,
+
 };
 
 /* ---------------------------------------------------------------------------
