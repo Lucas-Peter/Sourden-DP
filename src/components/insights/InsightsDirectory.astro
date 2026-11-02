@@ -82,12 +82,11 @@ interface Props {
 const { directory, tone, titleId } = Astro.props;
 const { paging } = directory;
 
-/* The state the page ships in. The library fits on one page today, so this is
-   the "N articles" form; if it did not fit, the paged form would be rendered
-   for page 1 and the script would agree with it on load.
-
-   With scripting off this line is never corrected, and it stays true for the
-   reason the header gives: the whole library is on the page. */
+/* The state the page ships in — always the "N articles" form, and since
+   2026-11-02 deliberately so: fourteen articles against a page size of twelve
+   means the script replaces this line with "Showing 12 of 14" the moment it
+   runs, but with scripting off nothing is hidden, the whole library is on the
+   page, and "14 articles" stays the only sentence that is true. */
 const total = directory.articles.length;
 const initialCount =
   total === 1 ? paging.countOne : paging.countMany.replace('{count}', String(total));
