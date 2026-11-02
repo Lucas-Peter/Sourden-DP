@@ -183,8 +183,12 @@
   color: var(--brass-ink);
 }
 
-/* The checklist's five group names. One step down from a chapter title, since
-   they sit INSIDE a chapter and organise it rather than starting a new one. */
+/* A sub-heading INSIDE a chapter — one step down from the chapter title, since
+   it groups the paragraphs below it rather than starting a new chapter.
+   The chapter is a grid with a uniform `--sp-5` gap, which gives a sub-heading
+   the same air above as below and makes it read as a bold paragraph. The extra
+   `margin-block-start` restores the asymmetry a heading needs: 40px above
+   against the grid's 24px below. */
 .ia-h3 {
   font-family: var(--font-display);
   font-size: var(--fs-list-title);
@@ -192,6 +196,7 @@
   line-height: var(--lh-heading);
   letter-spacing: var(--ls-display);
   max-width: 40ch;
+  margin-block-start: var(--sp-4);
 }
 
 .ia-table-wrap {

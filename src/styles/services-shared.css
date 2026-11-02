@@ -85,12 +85,16 @@
   }
 }
 
-/* ---- no image: one column at every width -------------------------------
-   No page passes no `imageKey` today — `/insights`, the consumer this was
-   written for, left for its own background hero (`InsightsHero.astro`) on
-   2026-10-02 — but the capability stays with the component: a page that
-   renders `ServicesHero` without an image must not fall into a hole where
-   the figure used to be.
+/* ---- no image: two columns from 768px, headline left, standfirst right ---
+   Every written `/insights/<slug>` page renders this branch, so this is the
+   article hero's composition, not a fallback.
+
+   It used to be one column at every width with the figure's track simply
+   removed — and on a 1440px viewport that left the H1 ending around the middle
+   of the band with the whole right half empty. Widening the copy was not the
+   answer: 22ch is the headline's measure, and a 1200px line is not a headline.
+   So the four elements the hero already carries are split instead — eyebrow and
+   H1 in the left column, standfirst + tagline + actions in the right.
 
    Two classes on purpose. `.sec-hero--solo .sec-hero__grid` outranks the
    single-class `.sec-hero__grid` above on its own terms, so the rule holds
@@ -98,11 +102,39 @@
    adds no specificity of its own. A one-class override placed after the media
    query would work today and break the first time two sheets are reordered.
 
-   The text column is not widened to fill the row: `.sec-hero__title` and
-   `.sec-hero__lead` each cap their own measure, so a full-width track produces
-   the same reading width as before rather than a 1280px line. */
+   Mobile keeps one column and the copy's original reading order. The row gap is
+   `--sp-4`, not the grid's `clamp(sp-6, 4vw, sp-7)`: that larger gap is the
+   distance this hero puts between copy and a PHOTOGRAPH, and between an H1 and
+   its own standfirst it reads as a break in the sentence. */
 .sec-hero--solo .sec-hero__grid {
   grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--sp-4);
+}
+
+/* The right column exists only in the no-image branch; the class is styled
+   unconditionally so the composition is one block of rules, and it lays itself
+   out exactly as `.sec-hero__text` does so the two columns share a rhythm. */
+.sec-hero__aside {
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .sec-hero--solo .sec-hero__grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  /* Both columns start on the same line. The standfirst is the larger of the
+     two first items, so without this nudge its cap-height sits a few pixels
+     below the eyebrow's and the two columns look misaligned rather than
+     paired. */
+  .sec-hero--solo .sec-hero__aside {
+    padding-block-start: var(--sp-1);
+  }
 }
 
 .sec-hero__text {
