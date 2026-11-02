@@ -36,6 +36,29 @@
  *   `imageKey` is absent, which collapses the grid to one column via
  *   `sec-hero--solo`.
  *
+ * ── WHAT THE NO-IMAGE HERO DOES WITH THE FREED-UP WIDTH ────────────────────
+ * It did nothing, and that was wrong. Collapsing to one column left the copy
+ * in a 22ch column on the left and roughly half the band empty beside it: on a
+ * 1440px viewport the article H1 stopped around x=696 of a 1216px container and
+ * the rest of the row was background. Every written `/insights/<slug>` page
+ * renders this branch, so "the hero looks half-finished" was the first thing a
+ * reader saw on fourteen pages.
+ *
+ * The fix splits the copy instead of widening it: the eyebrow and the H1 keep
+ * the left column, and the standfirst, the optional tagline and the two actions
+ * take the right one (`sec-hero__aside`, grid `1.1fr / 0.9fr` from 768px).
+ * Nothing is duplicated from the list below and no new device is invented —
+ * it is the editorial "headline left, standfirst right" split, made from the
+ * elements this hero already carries. The left column stays at its 22ch
+ * measure because that measure is the headline's, not a leftover.
+ *
+ * ⚠ THE TWO BRANCHES CARRY THE SAME FOUR ELEMENTS. That duplication is the
+ * price of not shipping a second hero component (rule 12 in MEMORY.md: add an
+ * optional prop, do not copy the component) and of keeping every image-bearing
+ * page's markup byte-identical. If you change the standfirst, the tagline or
+ * the actions, change BOTH branches — the `imageKey &&` one and the
+ * `!imageKey &&` one.
+ *
  *   This is an ADDITIVE change: every consumer that passes an image passes the
  *   same values and renders the same markup it did before, which is why the
  *   other ten heroes needed no edit. Same rule as `tagline` below — a new
@@ -113,15 +136,38 @@ const {
 
         <h1 class="sec-hero__title" id={titleId}>{title}</h1>
 
-        <p class="sec-hero__lead">{description}</p>
+        {
+          imageKey && (
+            <>
+              <p class="sec-hero__lead">{description}</p>
 
-        {tagline && <p class="sec-hero__tagline">{tagline}</p>}
+              {tagline && <p class="sec-hero__tagline">{tagline}</p>}
 
-        <div class="sec-hero__actions">
-          <Button href={primaryCta.href} label={primaryCta.label} />
-          <ArrowLink href={secondaryCta.href} label={secondaryCta.label} />
-        </div>
+              <div class="sec-hero__actions">
+                <Button href={primaryCta.href} label={primaryCta.label} />
+                <ArrowLink href={secondaryCta.href} label={secondaryCta.label} />
+              </div>
+            </>
+          )
+        }
       </div>
+
+      {/* The no-image branch's right-hand column. Mobile reads it directly
+          under the H1, which is the order the copy already had. */}
+      {
+        !imageKey && (
+          <div class="sec-hero__aside">
+            <p class="sec-hero__lead">{description}</p>
+
+            {tagline && <p class="sec-hero__tagline">{tagline}</p>}
+
+            <div class="sec-hero__actions">
+              <Button href={primaryCta.href} label={primaryCta.label} />
+              <ArrowLink href={secondaryCta.href} label={secondaryCta.label} />
+            </div>
+          </div>
+        )
+      }
 
       {
         imageKey && (
