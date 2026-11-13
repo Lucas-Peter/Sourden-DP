@@ -77,6 +77,9 @@ import { page as christmasProductsToSell } from './insight-christmas-products-to
    started selling yet, rather than at an existing buyer. */
 import { page as startASmallBusinessWithoutAStore } from './insight-start-a-small-business-without-a-store.js';
 
+/* The shipping guide — air freight, postal shipping and sea freight options. */
+import { page as shippingFromChinaGuide } from './insight-shipping-from-china-guide.js';
+
 /**
  * One line per written article, keyed by the slug used in `insights-articles.js`.
  *
@@ -100,7 +103,7 @@ export const insightDetailPages = {
   'product-samples-in-china-sourcing': productSamplesInChinaSourcing,
   'christmas-products-to-sell': christmasProductsToSell,
   'start-a-small-business-without-a-store': startASmallBusinessWithoutAStore,
-
+  'shipping-from-china-guide': shippingFromChinaGuide,
 };
 
 /* ---------------------------------------------------------------------------

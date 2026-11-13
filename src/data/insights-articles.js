@@ -121,6 +121,7 @@ export const insightCategories = [
  * @property {string|null} readingTime     null — a body that does not exist has no reading time.
  * @property {boolean}     featured        §14's first priority. Nothing renders it.
  * @property {string}      [keywords]      Comma-separated SEO keywords for <meta name="keywords">.
+ * @property {string}      [seoTitle]      Optional short title for the `<title>` tag only; the H1 still uses `title`.
  */
 
 /** @type {InsightArticle[]} */
@@ -296,6 +297,21 @@ export const insightArticles = [
     featured: false,
     keywords:
       'Start a Small Business, Sell Products on Facebook, China Product Sourcing, Start an Online Business, Small Business Ideas',
+  },
+  {
+    slug: 'shipping-from-china-guide',
+    categorySlug: 'shipping',
+    title: 'How Much Does Shipping from China Cost? Real Rates Explained',
+    seoTitle: 'How Much Does Shipping from China Cost?',
+    description:
+      'Real shipping rates from China, with actual price points. Compare express air, postal and sea freight costs, delivery times and customs options.',
+    imageKey: 'shippingPortAerial',
+    publishedAt: '2026-11-13',
+    updatedAt: null,
+    readingTime: null,
+    featured: false,
+    keywords:
+      'shipping from China, China shipping methods, Shipping from China to USA, Air freight from China, Sea freight from China, International shipping from China, China sourcing and shipping, Door-to-door shipping from China',
   },
 ];
 

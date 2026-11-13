@@ -957,6 +957,56 @@ export const images = {
     artDirection: 'Sourced from Pexels (free license). Not AI-generated.',
   },
 
+  /* Four owner-supplied logistics scenes for the shipping-from-china-guide
+   * article (2026-11-13). They replace the three reused site slots the article
+   * first shipped with, so the article does not repeat imagery already shown
+   * elsewhere on the site. Each slot is a different scene — sea port, express
+   * courier, container loading, air cargo hub — as the brief asks. */
+  shippingPortAerial: {
+    file: 'insight-shipping-port.webp',
+    width: 1080,
+    height: 565,
+    ratio: '16:9',
+    label: 'INSIGHTS IMAGE',
+    alt: 'An aerial view of a container ship loaded with multicoloured shipping containers sailing through a harbour, with gantry cranes and a container terminal behind.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection: 'Owner-supplied photograph of sea freight at a container port.',
+  },
+  shippingExpressCourier: {
+    file: 'insight-shipping-express.webp',
+    width: 1032,
+    height: 541,
+    ratio: '16:9',
+    label: 'INSIGHTS IMAGE',
+    alt: 'A worker in a high-visibility vest scanning a cardboard parcel on a pallet beside a parked cargo aircraft on the tarmac.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection: 'Owner-supplied photograph of express air courier handling.',
+  },
+  shippingContainerLoading: {
+    file: 'insight-shipping-loading.webp',
+    width: 1000,
+    height: 563,
+    ratio: '16:9',
+    label: 'INSIGHTS IMAGE',
+    alt: 'Workers and a forklift loading palletised cartons into a shipping container at a warehouse loading dock.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection: 'Owner-supplied photograph of container loading and consolidation.',
+  },
+  shippingAirCargoHub: {
+    file: 'insight-shipping-aircargo.webp',
+    width: 1080,
+    height: 589,
+    ratio: '16:9',
+    label: 'INSIGHTS IMAGE',
+    alt: 'Parcels moving along conveyor belts in an air cargo sorting facility, with workers in high-visibility vests handling the packages.',
+    role: /** @type {ImageRole} */ ('insight'),
+    placeholder: false,
+    artDirection: 'Owner-supplied photograph of an air cargo sorting hub.',
+  },
+
   /* ------------------------------------------------- product collections -- */
   /*
    * Seventeen slots for the `/products` section: the hub hero (4:3) and the
